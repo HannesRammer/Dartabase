@@ -208,6 +208,10 @@ HOW TO REVERT MIGRATIONS
 
 DARTABASE DATA TYPES
 --------------------
+Dartabase types are Specified in capitals.
+
+on the left hand you see the Dartabase data type name
+on the right the data type your database will use
 
 MYSQL
 -----
@@ -293,12 +297,15 @@ TODO
 ----
 
     *migrate/revert to specific migration version
+    *workarround for database problems with reserved words when switching DBAdapter from PG to MY.
+        eg. table name 'user' will break in MySQL
+        fix -> add '_' as prefix to column and table name
     *test on other systems
         currently only tested on Win7 64bit Dart M5 32bit
     *adding rename action
     *adding option to specify variable length
         currently VARCHAR fix at 255
-    *test provided datatypes, currently only tested INT VARCHAR and TIMESTAMP
+    *test more data types, currently only tested INT VARCHAR and TIMESTAMP
     *and much more
 
 Please tell me about bugs you find and or improvements/features you would like to see in future.
