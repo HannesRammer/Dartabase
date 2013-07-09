@@ -1,5 +1,4 @@
 {
-    "source_mapping": "http://en.wikibooks.org/wiki/Converting_MySQL_to_PostgreSQL#Data_Types",
     "BIGINT": "bigint",
     "BIGINT UNSIGNED": "numeric(20)",
     "BINARY": "bytea",

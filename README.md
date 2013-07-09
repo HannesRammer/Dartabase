@@ -10,7 +10,7 @@ PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.8
 HOW TO SETUP
 ------------
 
-    1.Download Dartabase application package and paste it into the parent folder of your Project/s
+    1.Download Dartabase application package and run pubspec install
 
     2.Execute Dartabase/bin/dbInit.dart to initiate the Dartabase tool for your project.
 
@@ -206,17 +206,99 @@ HOW TO REVERT MIGRATIONS
 !!!REVERT CURRENTLY REVERTS ALL THE WAY BACK!!!
 *******************************************************************************************
 
+DARTABASE DATA TYPES
+--------------------
+
+MYSQL
+-----
+    {
+        "BIGINT": "BIGINT",
+        "BIGINT UNSIGNED": "BIGINT UNSIGNED",
+        "BINARY": "BINARY",
+        "BIT": "BIT",
+        "BLOB": "BLOB",
+        "BOOLEAN": "BOOLEAN",
+        "BYTEARRAY": "BLOB",
+        "CHAR": "CHAR(255)",
+        "DATE": "DATE",
+        "DATETIME": "DATETIME",
+        "DOUBLE": "DOUBLE",
+        "FLOAT": "FLOAT(2)",
+        "FLOAT UNSIGNED": "FLOAT(2) UNSIGNED",
+        "INT": "INT",
+        "INTEGER": "INT",
+        "INTEGER UNSIGNED": "INT UNSIGNED",
+        "LONGBLOB": "LONGBLOB",
+        "LONGTEXT": "LONGTEXT",
+        "MEDIUMBLOB": "MEDIUMBLOB",
+        "MEDIUMINT": "MEDIUMINT",
+        "MEDIUMINT UNSIGNED": "MEDIUMINT UNSIGNED",
+        "MEDIUMTEXT": "MEDIUMTEXT",
+        "SMALLINT": "SMALLINT",
+        "SMALLINT UNSIGNED": "SMALLINT UNSIGNED",
+        "TEXT": "TEXT",
+        "TIME": "TIME",
+        "TIMESTAMP": "TIMESTAMP",
+        "TINYBLOB": "TINYBLOB",
+        "TINYINT": "TINYINT",
+        "TINYINT UNSIGNED": "TINYINT UNSIGNED",
+        "TINYTEXT": "TINYTEXT",
+        "VARBINARY": "VARBINARY(255)",
+        "VARCHAR": "VARCHAR(255)"
+    }
+
+PGSQL
+-----
+    {
+        "BIGINT": "bigint",
+        "BIGINT UNSIGNED": "numeric(20)",
+        "BINARY": "bytea",
+        "BIT": "bytea",
+        "BLOB": "bytea",
+        "BOOLEAN": "boolean",
+        "BYTEARRAY": "bytea",
+        "CHAR": "char(255)",
+        "DATE": "date",
+        "DATETIME": "timestamp",
+        "DOUBLE": "double precision",
+        "FLOAT": "real",
+        "FLOAT UNSIGNED": "real",
+        "INT": "integer",
+        "INTEGER": "integer",
+        "INTEGER UNSIGNED": "bigint",
+        "LONGBLOB": "bytea",
+        "LONGTEXT": "text",
+        "MEDIUMBLOB": "bytea",
+        "MEDIUMINT": "integer",
+        "MEDIUMINT UNSIGNED": "integer",
+        "MEDIUMTEXT": "text",
+        "SMALLINT": "smallint",
+        "SMALLINT UNSIGNED": "integer",
+        "TEXT": "text",
+        "TIME": "time",
+        "TIMESTAMP": "timestamp",
+        "TINYBLOB": "bytea",
+        "TINYINT": "smallint",
+        "TINYINT UNSIGNED": "smallint",
+        "TINYTEXT": "text",
+        "VARBINARY": "bytea",
+        "VARCHAR": "varchar(255)"
+    }
+
+*******************************************************************************************
+
 Now you can add migration files for simple database manipulation
 
-
 TODO
+----
+
     *migrate/revert to specific migration version
     *test on other systems
         currently only tested on Win7 64bit Dart M5 32bit
     *adding rename action
     *adding option to specify variable length
         currently VARCHAR fix at 255
-    *testing
+    *test provided datatypes, currently only tested INT VARCHAR and TIMESTAMP
     *and much more
 
 Please tell me about bugs you find and or improvements/features you would like to see in future.
