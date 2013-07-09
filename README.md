@@ -306,6 +306,7 @@ TODO
     *adding option to specify variable length
         currently VARCHAR fix at 255
     *test more data types, currently only tested INT VARCHAR and TIMESTAMP
+    *improvements, adapt more functionality from db connectors
     *and much more
 
 Please tell me about bugs you find and or improvements/features you would like to see in future.
