@@ -1,0 +1,6 @@
+name: Dartabase
+description: A sample command-line application
+dependencies:
+  sqljocky: 0.5.2
+  postgresql: any
+#  unittest: any
