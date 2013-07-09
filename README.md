@@ -309,4 +309,6 @@ TODO
     *improvements, adapt more functionality from db connectors
     *and much more
 
-Please tell me about bugs you find and or improvements/features you would like to see in future.
+Please let me know about bugs you find and or improvements/features you would like to see in future.
+
+ENJOY & BE NICE ;)
