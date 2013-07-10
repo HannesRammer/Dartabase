@@ -58,7 +58,7 @@ void main() {
           print("migration $rootPath/db/migrations/${dateTime}_$line.json created");
         }else if(projectMapping[line] != null){
           rootPath = projectMapping[line];
-          print("please enter migration name");
+          print("please enter migration name eg. create_table_player");
         }else{
           print("Project '$line' dosn't exist");
         }

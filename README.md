@@ -48,8 +48,15 @@ HOW TO SETUP
 *******************************************************************************************
 HOW TO CREATE MIGRATIONS
 ------------------------
-
-    1.Create a migration json file "timestamp_action.json"
+	
+	Either
+	1a.execute Dartabase/bin/createMigration.dart and follow the instructions
+		*enter project name
+		*enter migration name
+	
+	or
+	
+    1b.Create a migration json file "timestamp_action.json"
 
         inside "$yourProjectName/db/migrations"
 
