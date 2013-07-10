@@ -1,10 +1,10 @@
 name: dartabase
-version: 0.0.1
-author: Hannes.Rammer@gmail.com
-description: A sample command-line application
+version: 0.0.2
+author: Hannes Rammer <Hannes.Rammer@gmail.com>
+description: Serverside Database migration tool inspired by Ruby on Rails
 homepage: https://github.com/HannesRammer/dartabase
 dependencies:
-  postgresql: any
-  sqljocky: any
+  postgresql: ">=0.2.8"
+  sqljocky: ">=0.5.4"
 
 #  unittest: any

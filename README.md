@@ -10,7 +10,7 @@ Dartabase
 HOW TO SETUP
 ------------
 
-    1.Download Dartabase application package and run pubspec install
+    1.Download Dartabase application package and run pubspec install inside this package
 
     2.Execute Dartabase/bin/dbInit.dart to initiate the Dartabase tool for your project.
 
