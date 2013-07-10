@@ -9,8 +9,9 @@ Dartabase
 
 HOW TO SETUP
 ------------
+    IGNORE THE INSTALL PAGE!!! Curently this is a stand alone app!
 
-    1.Download Dartabase application package and run pubspec install inside this package
+    1.Download Dartabase somewhere on your drive and run install on Dartabase/pubspec.yaml
 
     2.Execute Dartabase/bin/dbInit.dart to initiate the Dartabase tool for your project.
 
@@ -294,14 +295,14 @@ PGSQL
     }
 
 *******************************************************************************************
-ENGING
+ENDING
 ======
-currently you need to manually stop the scripts from the editor or console after migration is done.
+Currently you need to manually stop the scripts from the editor or console after migration is done.
 
-when is it done?
+And when is it done?
 
-should be quite fast, once you have gone through all migration steps
-and there have been no errors, than it should be done.   
+Once it has printed some output and there have been no errors,
+it should be done.
 
 *******************************************************************************************
 Now you can add migration files for simple database manipulation
@@ -310,6 +311,7 @@ TODO
 ----
 
 	*fix async outputtext
+	*script to create migration file via console eg. createMigration.dart
     *workarround for database problems with reserved words when switching DBAdapter from PG to MY.
         eg. table name 'user' will break in MySQL
         fix -> add '_' as prefix to column and table name
