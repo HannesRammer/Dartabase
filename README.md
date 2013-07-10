@@ -174,8 +174,10 @@ HOW TO RUN MIGRATIONS
 
     2.Follow instructions in console
         *enter project name
+        *enter goal migration version
 
-    Dartabase should have executed the actions specified inside the "UP" key.
+    Dartabase should have executed the actions specified inside the "UP" key
+    for all files INCLUDING the goal migration version.
 
     Additionally it will update
 
@@ -191,9 +193,11 @@ HOW TO REVERT MIGRATIONS
     1.Execute Dartabase/bin/dbDown.dart to execute the Dartabase migration actions you specified inside the "DOWN" key.
 
     2.Follow instructions in console
-        -enter project name
+        *enter project name
+        *enter goal migration version 
 
-    Dartabase should have executed the actions specified inside the "UP" key.
+    Dartabase should have executed the actions specified inside the "DOWN" key
+    for all files EXCLUDING the goal migration version.
 
     Additionally it will update
 
@@ -203,7 +207,7 @@ HOW TO REVERT MIGRATIONS
         *$yourProjectName/db/schemaVersion.json
         with the name of latest migrated migration file
 
-!!!REVERT CURRENTLY REVERTS ALL THE WAY BACK!!!
+
 *******************************************************************************************
 
 DARTABASE DATA TYPES
@@ -290,13 +294,22 @@ PGSQL
     }
 
 *******************************************************************************************
+ENGING
+======
+currently you need to manually stop the scripts from the editor or console after migration is done.
 
+when is it done?
+
+should be quite fast, once you have gone through all migration steps
+and there have been no errors, than it should be done.   
+
+*******************************************************************************************
 Now you can add migration files for simple database manipulation
 
 TODO
 ----
 
-    *migrate/revert to specific migration version
+	*fix async outputtext
     *workarround for database problems with reserved words when switching DBAdapter from PG to MY.
         eg. table name 'user' will break in MySQL
         fix -> add '_' as prefix to column and table name
@@ -308,6 +321,7 @@ TODO
     *test more data types, currently only tested INT VARCHAR and TIMESTAMP
     *improvements, adapt more functionality from db connectors
     *and much more
+    *end scripts automatically 
 
 Please let me know about bugs you find and or improvements/features you would like to see in future.
 

@@ -1,6 +1,10 @@
-name: Dartabase
+name: dartabase
+version: 0.0.1
+author: Hannes.Rammer@gmail.com
 description: A sample command-line application
+homepage: https://github.com/HannesRammer/dartabase
 dependencies:
-  sqljocky: any
   postgresql: any
+  sqljocky: any
+
 #  unittest: any

@@ -25,13 +25,13 @@ void main() {
   print("Enter the project name and press the ENTER key to proceed");
 
   projectMapping = DBHelper.jsonFilePathToMap("projectsMapping.json");
-  print("");
-  print("Project name : Path : Schema version");
+  
+  print("\nProject name *:* Path *:* Schema version");
   print("-----------------------------");
+  Map schemaV;
   for(var name in projectMapping.keys){
-    Map schemaV = DBHelper.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
-    print("$name : ${projectMapping[name]} : schemaVersion : ${schemaV['schemaVersion']}");
-    
+    schemaV = DBHelper.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
+    print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
   }
   Stream<List<int>> stream = stdin;
   
@@ -41,9 +41,32 @@ void main() {
       .transform(new LineTransformer())
       .listen((String line) { /* Do something with line. */
         if(projectMapping[line]!=null){
-          run("DOWN", projectMapping[line]);
+          
+          
+          Directory directory = new Directory("${projectMapping[line]}/db/migrations");
+          List files = directory.listSync();
+          if (files.length > 0) {
+            print("\nMigration number : Name");
+            print("0 : revert all");
+            for(int i=0;i<files.length;i++){ 
+              String version = files[i].path.split("migrations")[1].replaceAll("\\","") ;
+              if(schemaV['schemaVersion'] == version ){
+                print("${i+1} : $version <--- current version");
+              }else{
+                print("${i+1} : $version");
+              }
+            }
+          }
+          print("please enter goal migration number");
+          
+         rootPath = projectMapping[line];   
+          
+        }else if(rootPath != null){
+          lastMigrationNumber = int.parse(line);
+          run("DOWN");  
         }else{
-          run("DOWN", line);
+          rootPath = line;
+          run("DOWN");
         }
       },
       onDone: () { /* No more lines */ 

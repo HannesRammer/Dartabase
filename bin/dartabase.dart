@@ -45,6 +45,7 @@ int fileId = null;
 String direction;
 String rootPath;
 Map projectMapping ;
+int lastMigrationNumber;
 
 void initiateDartabase(String path,String projectName) {
   print("add project mapping ${projectName}:${path}");
@@ -84,8 +85,8 @@ void initiateDartabase(String path,String projectName) {
 * in ascending order which have not been migrated to the database. 
 **/
 
-void run(String migrationDirection,String path) {
-  rootPath = path;
+void run(String migrationDirection) {
+  
   direction = migrationDirection;
   schema = DBHelper.loadSchemaToMap();
   loadConfigFile();
@@ -97,7 +98,6 @@ void run(String migrationDirection,String path) {
       print('Min connections established.');
       pool.connect().then((conn) {
         migrate(conn);
-
       });
     });
 
@@ -131,28 +131,46 @@ void migrate(conn) {
   var directory = new Directory("$rootPath/db/migrations");
   files = directory.listSync();
   if (files.length > 0) {
-    files.forEach((file){ 
-      
-      if(file.path.split("migrations")[1].replaceAll("\\","") == schemaVersion ){
-        if (direction == "UP") {
-          fileId = files.indexOf(file)+1;
-        } else if (direction == "DOWN") {
-          fileId = files.indexOf(file);
-        }
+    
+      files.forEach((file){ 
         
+        if(file.path.split("migrations")[1].replaceAll("\\","") == schemaVersion ){
+          if (direction == "UP") {
+            fileId = files.indexOf(file)+1;
+          
+          } else if (direction == "DOWN") {
+            fileId = files.indexOf(file);
+          
+          }
+          
+        }
+      });
+    
+      
+      if (fileId == null){
+        if (direction == "UP") {
+          fileId = 0;
+        } else if (direction == "DOWN") {
+          fileId = files.length - 1;
+        }
       }
-    });
-    if (fileId == null){
       if (direction == "UP") {
-        fileId = 0;
-      } else if (direction == "DOWN") {
-        fileId = files.length - 1;
+        if (lastMigrationNumber >= fileId) {
+          doFile(conn);
+        }else{
+          print("goal migration smaller than current migration");
+        }
+      }else if (direction == "DOWN") {
+        if (lastMigrationNumber <= fileId) {
+          doFile(conn);
+        }else{
+          print("goal migration higher than current migration");
+        }
       }
-    }
-    doFile(conn);
-
+      
   } else {
     print("\nno migration files in folder ${directory.path}");
+    exit(0);
   }
 
 
@@ -165,6 +183,7 @@ void doFile(conn) {
     createTable(conn);
   } else {
     print("migration direction '$direction' not specified in file ${files[fileId].path}");
+    exit(0);
   }
 //load with next file after this has finished
 
@@ -316,15 +335,34 @@ void removeTable(conn) {
     if (direction == "UP") {
       fileId++;
       if (fileId < files.length) {
-        doFile(conn);
+        if(fileId <= lastMigrationNumber){
+          doFile(conn);
+        }else{
+          print("goal migration reached");
+          //exit(0);
+        }
+        
+      }else{
+        print("goal migration reached");
+        //exit(0);
       }
 
     } else if (direction == "DOWN") {
       fileId--;
       if (fileId >= 0) {
-        doFile(conn);
+        if(fileId >= lastMigrationNumber){
+            doFile(conn);
+        }else{
+          var filePath = files[fileId].path;
+          schemaVersion = filePath.split("migrations")[1].replaceAll("\\","");
+          DBHelper.mapToJsonFilePath({"schemaVersion":schemaVersion},'$rootPath/db/schemaVersion.json');
+          print("goal migration reached");
+          //exit(0);
+        }
       }else{
         DBHelper.mapToJsonFilePath({"schemaVersion":""},'$rootPath/db/schemaVersion.json');
+        print("goal migration reached");
+        //exit(0);
       }
     }
 
