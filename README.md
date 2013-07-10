@@ -50,16 +50,20 @@ HOW TO CREATE MIGRATIONS
 ------------------------
 	
 	Either
+	
 	1a.execute Dartabase/bin/createMigration.dart and follow the instructions
 		*enter project name
-		*enter migration name
+		*enter migration name eg. "create_table_user"
+	
+	it will create a dummy migration inside
+	
+	"$yourProjectName/db/migrations/YYYYMMTTHHMMSS_create_table_user" 
 	
 	or
 	
-    1b.Create a migration json file "timestamp_action.json"
+    1b.Create a migration json file "timestamp_action.json" 
 
         inside "$yourProjectName/db/migrations"
-
 
         eg. "20130709134700_create_table_user.json"
 
@@ -318,8 +322,7 @@ TODO
 ----
 
 	*fix async outputtext
-	*script to create migration file via console eg. createMigration.dart
-    *workarround for database problems with reserved words when switching DBAdapter from PG to MY.
+	*workarround for database problems with reserved words when switching DBAdapter from PG to MY.
         eg. table name 'user' will break in MySQL
         fix -> add '_' as prefix to column and table name
     *test on other systems
