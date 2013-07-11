@@ -2,7 +2,6 @@ Dartabase
 =========
 
     Serverside Database migration inspired by Ruby on Rails
-    (tested on Windows7)
 
     MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.5.4
     PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.8
