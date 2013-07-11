@@ -308,7 +308,7 @@ PGSQL
 *******************************************************************************************
 ENDING
 ======
-Currently you need to manually stop the scripts from the editor or console after migration is done.
+Currently you need to manually stop the scripts from the editor or console after they are done.
 
 And when is it done?
 
@@ -326,11 +326,13 @@ TODO
         eg. table name 'user' will break in MySQL
         fix -> add '_' as prefix to column and table name
     *test on other systems
-        currently only tested on Win7 64bit Dart M5 32bit
+        currently only tested on Win7 64bit 
+        Dart Editor version 0.6.3_r24898 32bit
+		Dart SDK version 0.6.3.3_r24898 32bit
     *adding rename action
     *adding option to specify variable length
         currently VARCHAR fix at 255
-    *test more data types, currently only tested INT VARCHAR and TIMESTAMP
+    *test functionality of all data types
     *improvements, adapt more functionality from db connectors
     *and much more
     *end scripts automatically 

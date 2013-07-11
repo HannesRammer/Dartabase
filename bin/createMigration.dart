@@ -11,7 +11,7 @@ void main() {
 
   projectMapping = DBHelper.jsonFilePathToMap("projectsMapping.json");
   
-  print("\nProject name *:* Path *:* Schema version");
+  print("\nProject name *:* Path *:* Current schema version");
   print("-----------------------------");
   Map schemaV;
   for(var name in projectMapping.keys){
