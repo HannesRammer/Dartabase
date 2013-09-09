@@ -1,32 +1,42 @@
-Dartabase
-=========
+Dartabase Migration 0.0.5
+===================
 
-    Serverside Database migration inspired by Ruby on Rails
+    Serverside Database migration for easy database structure manipulation 
+    inspired by Ruby on Rails migrations
 
-    MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.5.4
+Version
+	0.0.5 adapted breaking changes due to dart:encoder
+
+tested on 
+	Win7 64bit 
+    Dart Editor version 0.7.1_r27025 32bit
+	Dart SDK version 0.7.1.0_r27025 32bit	
+
+Uses
+    MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.5.5
     PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.8
 
 HOW TO SETUP
 ------------
-    IGNORE THE INSTALL PAGE!!! Curently this is a stand alone app!
+    USE THIS INSTALL GUIDE AND IGNORE THE INSTALL PAGE!!! Curently this is a stand alone app!
 
-    1.Download Dartabase somewhere on your drive and run install on Dartabase/pubspec.yaml
+    1.Download dartabase_migration somewhere on your drive and run install on dartabase_migration/pubspec.yaml
 
-    2.Execute Dartabase/bin/dbInit.dart to initiate the Dartabase tool for your project.
+    2.Execute dartabase_migration/bin/dbInit.dart to initiate the dartabase_migration tool for your project.
 
     3.follow the instructions
       *enter a project name
       *enter path to project root folder
 
-    4.Dartabase will create files and folders needed for Dartabase to do its magic
-      *Dartabase/bin/projectsMapping.json       #maps project names to absolute project path
+    4.dartabase_migration will create files and folders needed for dartabase_migration to do its magic
+      *dartabase_migration/bin/projectsMapping.json       #maps project names to absolute project path
       *$yourProjectName/db/
-      *$yourProjectName/db/config.json          #setting database information needed to connect IP/PORT/DBType
-      *$yourProjectName/db/schema.json          #current database structure as JSON
+      *$yourProjectName/db/config.json          #setting dartabase_migration information needed to connect IP/PORT/DBType
+      *$yourProjectName/db/schema.json          #current dartabase_migration structure as JSON
       *$yourProjectName/db/schemaVersion.json   #safes name of latest migrated version
       *$yourProjectName/db/migrations           #folder where you can add your database migrations
 
-    5.Edit the config.json file so Dartabase can connect to your existing database.
+    5.Edit the config.json file so dartabase_migration can connect to your existing database.
 
     eg.
     --------config.json---------
@@ -50,7 +60,7 @@ HOW TO CREATE MIGRATIONS
 	
 	Either
 	
-	1a.execute Dartabase/bin/createMigration.dart and follow the instructions
+	1a.execute dartabase_migration/bin/createMigration.dart and follow the instructions
 		*enter project name
 		*enter migration name eg. "create_table_user"
 	
@@ -181,13 +191,13 @@ ORDER OF EXECUTION
 HOW TO RUN MIGRATIONS
 ---------------------
 
-    1.Execute Dartabase/bin/dbUp.dart
+    1.Execute dartabase_migration/bin/dbUp.dart
 
     2.Follow instructions in console
         *enter project name
         *enter goal migration version
 
-    Dartabase should have executed the actions specified inside the "UP" key
+    dartabase_migration should have executed the actions specified inside the "UP" key
     for all files INCLUDING the goal migration version.
 
     Additionally it will update
@@ -201,13 +211,13 @@ HOW TO RUN MIGRATIONS
 HOW TO REVERT MIGRATIONS
 ------------------------
 
-    1.Execute Dartabase/bin/dbDown.dart to execute the Dartabase migration actions you specified inside the "DOWN" key.
+    1.Execute dartabase_migration/bin/dbDown.dart to execute the dartabase_migration actions you specified inside the "DOWN" key.
 
     2.Follow instructions in console
         *enter project name
         *enter goal migration version 
 
-    Dartabase should have executed the actions specified inside the "DOWN" key
+    dartabase_migration should have executed the actions specified inside the "DOWN" key
     for all files EXCLUDING the goal migration version.
 
     Additionally it will update
@@ -223,9 +233,9 @@ HOW TO REVERT MIGRATIONS
 
 DARTABASE DATA TYPES
 --------------------
-Dartabase types are Specified in capitals.
+dartabase_migration types are Specified in capitals.
 
-on the left hand you see the Dartabase data type name
+on the left hand you see the dartabase_migration data type name
 on the right the data type your database will use
 
 MYSQL
@@ -325,9 +335,6 @@ TODO
         eg. table name 'user' will break in MySQL
         fix -> add '_' as prefix to column and table name
     *test on other systems
-        currently only tested on Win7 64bit 
-        Dart Editor version 0.6.3_r24898 32bit
-		Dart SDK version 0.6.3.3_r24898 32bit
     *adding rename action
     *adding option to specify variable length
         currently VARCHAR fix at 255
