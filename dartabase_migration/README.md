@@ -4,17 +4,17 @@ Dartabase Migration 0.0.5
     Serverside Database migration for easy database structure manipulation 
     inspired by Ruby on Rails migrations
 
-Version
-	0.0.5 adapted breaking changes due to dart:encoder
+	Version
+		0.0.5 adapted breaking changes due to dart:encoder
 
-tested on 
-	Win7 64bit 
-    Dart Editor version 0.7.1_r27025 32bit
-	Dart SDK version 0.7.1.0_r27025 32bit	
+	tested on 
+		Win7 64bit 
+    	Dart Editor version 0.7.1_r27025 32bit
+		Dart SDK version 0.7.1.0_r27025 32bit	
 
-Uses
-    MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.5.5
-    PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.8
+	Uses
+    	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.5.5
+    	PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.8
 
 HOW TO SETUP
 ------------
