@@ -6,7 +6,6 @@ homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_migrat
 dependencies:
   postgresql: '0.2.11'
   sqljocky: '0.7.0'
-  dartabase_core:
-    path: C:\Projects\Dart\dartabase\dartabase_core
+  dartabase_core: '0.1.0'
 environment: 
   sdk: ">=0.8.10+6 <2.0.0" 
