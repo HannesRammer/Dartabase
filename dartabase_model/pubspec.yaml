@@ -1,0 +1,13 @@
+name: dartabase_model
+version: 1.0.0
+author: Hannes Rammer <Hannes.Rammer@gmail.com>
+description: Serverside Database models inspired by Ruby on Rails migrations
+homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_model
+dependencies:
+  postgresql: '0.2.11'
+  sqljocky: '0.7.0'
+  dartabase_core:
+    path: C:\Projects\Dart\dartabase\dartabase_core
+  json_object: 'any'	
+environment: 
+  sdk: ">=0.8.10+6 <2.0.0" 

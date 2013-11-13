@@ -2,21 +2,20 @@
 #INTELJ
 .idea/
 
-#Dart
-dartabase.iml
-
-#Dartabase
-dartabase_migration/packages/
-dartabase_migration/pubspec.lock
-dartabase_migration/db/
-dartabase_migration/bin/projectsMapping.json
-dartabase_migration/bin/packages/
-dartabase_migration/tool/packages/
-dartabase_migration/web/packages/
-
-dartabase_migration/.settings/
 
 dartabase_migration/db/configMySQL.json
 dartabase_migration/db/configPGSQL.json
 dartabase_migration/db/migrations/20130623043400_create_player.json
 dartabase_migration/db/migrations/20130623043401_create_player2.json
+
+#Dart
+dartabase.iml
+
+#Dartabase
+packages/
+pubspec.lock
+.settings/
+
+dartabase_migration/db/
+dartabase_migration/bin/projectsMapping.json
+
