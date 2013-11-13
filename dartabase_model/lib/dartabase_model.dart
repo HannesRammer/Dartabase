@@ -20,7 +20,7 @@ String uri;
 
 class Model {
   
-  void initiate(String rootPath){
+  static void initiate(String rootPath){
     DBCore.rootPath = rootPath; 
     print(rootPath);
   }
