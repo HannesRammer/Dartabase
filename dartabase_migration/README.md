@@ -316,6 +316,13 @@ PGSQL
     }
 
 *******************************************************************************************
+COLUMN NAME
+===========
+    
+    NEVER create a column named 'id'
+    an primary key column with name 'id' will be generates automatically for every table by dartabase migration
+     
+*******************************************************************************************
 ENDING
 ======
 Currently you need to manually stop the scripts from the editor or console after they are done.
