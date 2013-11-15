@@ -3,11 +3,6 @@ library dartabaseCore;
 import "dart:io";
 import "dart:convert";
 
-
-
-
-
-
 class DBCore {
   static String rootPath;
   static Map parsedMap ;
@@ -49,14 +44,13 @@ class DBCore {
     }
     return  JSON.decode(fileText);
   }
-   static String primaryIDColumnString(String adapter) {
+   static String primaryIDColumnString(String adapter, String tableName) {
      String sql;
      if(adapter == DBCore.MySQL){
        sql = "id ${DBCore.typeMapping("INT")} NOT NULL AUTO_INCREMENT PRIMARY KEY,";
      }else if(adapter == DBCore.PGSQL){
-       sql = "id ${DBCore.typeMapping("INT")} NOT NULL PRIMARY KEY,";
+       sql = "id ${DBCore.typeMapping("INT")} PRIMARY KEY DEFAULT nextval('${tableName}_serial'),";
      }
-     
      return sql;
   }
   

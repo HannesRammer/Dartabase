@@ -3,10 +3,6 @@
 .idea/
 
 
-dartabase_migration/db/configMySQL.json
-dartabase_migration/db/configPGSQL.json
-dartabase_migration/db/migrations/20130623043400_create_player.json
-dartabase_migration/db/migrations/20130623043401_create_player2.json
 
 #Dart
 dartabase.iml
@@ -16,6 +12,6 @@ packages/
 pubspec.lock
 .settings/
 
-dartabase_migration/db/
+db/
 dartabase_migration/bin/projectsMapping.json
 

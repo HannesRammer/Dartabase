@@ -59,9 +59,10 @@ void initiateDartabase(String path,String projectName) {
     print("creating $path/db/schemaVersion.json");
     Map schemaVersion = {"schemaVersion":""};
     DBCore.mapToJsonFilePath(schemaVersion, "$path/db/schemaVersion.json");
+    exit(0);
+
   });
-  
-  }
+}
 
 /**Connects to a PG/MY-SQL Database (dependend on the db/config.json file).
 * 
@@ -75,15 +76,13 @@ void run(String migrationDirection) {
   schema = DBCore.loadSchemaToMap();
   DBCore.loadConfigFile();
   if (DBCore.adapter == DBCore.PGSQL) {
-    uri = 'postgres://$DBCore.username:$DBCore.password@$DBCore.host:$DBCore.port/$DBCore.database';
-
+    uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
+    
     Pool pool = new Pool(uri, min: 1, max: 1);
     pool.start().then((_) {
       print('Min connections established.');
       pool.connect().then((conn) {
-        migrate(conn).whenComplete(() {
-          conn.close();
-      });
+        migrate(conn);
       });
     });
 
@@ -97,6 +96,7 @@ void run(String migrationDirection) {
 
 
 Future migrate(conn) {
+  var completer = new Completer();
   DBCore.parsedMapping = DBCore.jsonFilePathToMap('../tool/typeMapper${DBCore.adapter}.json');
 
   var directory = new Directory("${DBCore.rootPath}/db/migrations");
@@ -138,13 +138,14 @@ Future migrate(conn) {
           print("goal migration higher than current migration");
         }
       }
-      
+      completer.complete("done");
   } else {
     print("\nno migration files in folder ${directory.path}");
-    exit(0);
+    completer.complete("done");
+    
   }
 
-
+  return completer.future;
 }
 
 void doFile(conn) {
@@ -154,7 +155,6 @@ void doFile(conn) {
     createTable(conn);
   } else {
     print("migration direction '$direction' not specified in file ${files[fileId].path}");
-    exit(0);
   }
 //load with next file after this has finished
 
@@ -166,7 +166,7 @@ void createTable(conn) {
     List tableNames = ct.keys.toList();
     for (var i = 0;i < tableNames.length;i++) {
       if (schema[tableNames[i]] == null) {
-        String sqlQuery = "CREATE TABLE IF NOT EXISTS ${tableNames[i]} ( ${DBCore.primaryIDColumnString(DBCore.adapter)}";
+        String sqlQuery = "CREATE SEQUENCE ${tableNames[i]}_serial START 1;CREATE TABLE IF NOT EXISTS ${tableNames[i]} ( ${DBCore.primaryIDColumnString(DBCore.adapter,tableNames[i])}";
         Map columns = ct[tableNames[i]];
         List columnNames = columns.keys.toList();
         schema[tableNames[i]] = {};
@@ -310,14 +310,14 @@ void removeTable(conn) {
           doFile(conn);
         }else{
           print("goal migration reached");
-          //exit(0);
+          exit(0);
         }
         
       }else{
         print("goal migration reached");
-        //exit(0);
+        exit(0);
       }
-
+      
     } else if (direction == "DOWN") {
       fileId--;
       if (fileId >= 0) {
@@ -328,12 +328,12 @@ void removeTable(conn) {
           schemaVersion = filePath.split("migrations")[1].replaceAll("\\","");
           DBCore.mapToJsonFilePath({"schemaVersion":schemaVersion},'${DBCore.rootPath}/db/schemaVersion.json');
           print("goal migration reached");
-          //exit(0);
+          exit(0);
         }
       }else{
         DBCore.mapToJsonFilePath({"schemaVersion":""},'${DBCore.rootPath}/db/schemaVersion.json');
         print("goal migration reached");
-        //exit(0);
+        exit(0);
       }
     }
 

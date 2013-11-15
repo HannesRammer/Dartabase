@@ -22,6 +22,7 @@ class Model {
   
   static void initiate(String rootPath){
     DBCore.rootPath = rootPath; 
+    DBCore.loadConfigFile();
     print(rootPath);
   }
   
@@ -32,27 +33,37 @@ class Model {
     String tableName = "${this.runtimeType}".toLowerCase();
     Map schema = DBCore.loadSchemaToMap();
     List usedObjectData = getObjectScemaAttributes(this);
-    String insertSQL="insert into $tableName (${usedObjectData[0].join(",")}) values (${usedObjectData[1].join(",")}) ";
-    print(insertSQL);
     //*loop through schema attributes and create sql 
     
     DBCore.loadConfigFile();
     if (DBCore.adapter == DBCore.PGSQL) {
-      uri = 'postgres://$DBCore.username:$DBCore.password@$DBCore.host:$DBCore.port/$DBCore.database';
+      String insertSQL="insert into $tableName values (${usedObjectData[1].join(",")}) ";
+      print(insertSQL);
+      print(usedObjectData[2].toString());
+      
+      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
+      
   
       Pool pool = new Pool(uri, min: 1, max: 1);
       pool.start().then((_) {
         print('Min connections established.');
         pool.connect().then((conn) {
-          //migrate(conn);
+          conn.execute(insertSQL, usedObjectData[2]).then((_) { 
+            conn.close();
+            completer.complete("done");
+          });
+          
         });
       });
   
     } else if (DBCore.adapter == DBCore.MySQL) {
+      String insertSQL="insert into $tableName (${usedObjectData[0].join(",")}) values (${usedObjectData[1].join(",")}) ";
+      print(insertSQL);
+      
       ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
       pool.prepare(insertSQL).then((query) {
         query.execute(usedObjectData[2]).then((result) {
-          print("New user's id: ${result.insertId}");
+//          print("New user's id: ${result.insertId}");
           completer.complete(result);
         });
       });
@@ -90,13 +101,27 @@ class Model {
     //*loop through schema attributes and fill object via reflections and mirrors
     DBCore.loadConfigFile();
     if (DBCore.adapter == DBCore.PGSQL) {
-      uri = 'postgres://$DBCore.username:$DBCore.password@$DBCore.host:$DBCore.port/$DBCore.database';
+      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
   
       Pool pool = new Pool(uri, min: 1, max: 1);
       pool.start().then((_) {
         print('Min connections established.');
         pool.connect().then((conn) {
-          //migrate(conn);
+          List data = new List();
+          conn.query(sql).toList().then((rows) {
+            for (var row in rows) {
+              var object = setObjectScemaAttributes(this , row);  
+              data.add(object);
+            }
+          }).then((_) { 
+            conn.close();
+            if(resultAsList == true){
+              completer.complete(data);  
+            }
+            else if(resultAsList == false){
+              completer.complete(data[0]);
+            }
+          });
         });
       });
   
@@ -104,16 +129,10 @@ class Model {
       ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
       List row;
       pool.query(sql).then((results) {
-//        for (var field in results.fields){
-//          print('Name: ${field.name}');
-//          
-//        }
         List data = new List();
         results.stream.listen((row) {
-          
           var object = setObjectScemaAttributes(this , row);  
           data.add(object);
-          
         }).asFuture().then((_){
           if(resultAsList == true){
             completer.complete(data);  
@@ -154,19 +173,33 @@ class Model {
     InstanceMirror instanceMirror = reflect(object);
     List usedColumns = [];
     List usedSpaceholder = [];
-    List usedValues = [];
+    List listValues = [];
+    Map mapValues;
+    var usedValues;
+    
     for(var column in columnNames){
-      Symbol symbol =new Symbol(column);
-      InstanceMirror field = instanceMirror.getField(symbol);
-      
-      var value = field.reflectee;
-      if(value != null){
-        usedColumns.add(column);
-        usedSpaceholder.add("?");
-        usedValues.add(value);
+      //if(column != "id"){
+        Symbol symbol =new Symbol(column);
+        InstanceMirror field = instanceMirror.getField(symbol);
         
-        print(value);
-      }
+        var value = field.reflectee;
+        if(value != null){
+          usedColumns.add(column);
+          listValues.add(value);
+          if (DBCore.adapter == DBCore.PGSQL) {
+            usedSpaceholder.add("@${column}");
+          }else if (DBCore.adapter == DBCore.MySQL) {
+            usedSpaceholder.add("?");
+          }
+        }
+      //}
+      
+    }
+    
+    if (DBCore.adapter == DBCore.PGSQL) {
+      usedValues = new Map.fromIterables(usedColumns, listValues); 
+    }else if (DBCore.adapter == DBCore.MySQL) {
+      usedValues = listValues;
     }
     return [usedColumns, usedSpaceholder, usedValues];
   }
