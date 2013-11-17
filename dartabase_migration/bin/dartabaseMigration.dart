@@ -166,7 +166,7 @@ void createTable(conn) {
     List tableNames = ct.keys.toList();
     for (var i = 0;i < tableNames.length;i++) {
       if (schema[tableNames[i]] == null) {
-        String sqlQuery = "CREATE SEQUENCE ${tableNames[i]}_serial START 1;CREATE TABLE IF NOT EXISTS ${tableNames[i]} ( ${DBCore.primaryIDColumnString(DBCore.adapter,tableNames[i])}";
+        String sqlQuery = "CREATE TABLE IF NOT EXISTS ${tableNames[i]} ( ${DBCore.primaryIDColumnString(DBCore.adapter,tableNames[i])}";
         Map columns = ct[tableNames[i]];
         List columnNames = columns.keys.toList();
         schema[tableNames[i]] = {};

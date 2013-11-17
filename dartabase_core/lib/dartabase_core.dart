@@ -47,9 +47,9 @@ class DBCore {
    static String primaryIDColumnString(String adapter, String tableName) {
      String sql;
      if(adapter == DBCore.MySQL){
-       sql = "id ${DBCore.typeMapping("INT")} NOT NULL AUTO_INCREMENT PRIMARY KEY,";
+       sql = "id ${DBCore.typeMapping("INT")} NOT NULL PRIMARY KEY,";
      }else if(adapter == DBCore.PGSQL){
-       sql = "id ${DBCore.typeMapping("INT")} PRIMARY KEY DEFAULT nextval('${tableName}_serial'),";
+       sql = "id ${DBCore.typeMapping("INT")} PRIMARY KEY,";
      }
      return sql;
   }
@@ -63,8 +63,33 @@ class DBCore {
   }
   
    static String typeMapping(String dartabaseType) {
-    return parsedMapping[dartabaseType];
-  }
+     return parsedMapping[dartabaseType];
+   }
+   
+   static defaultValueFor(String dartabaseType) {
+     if(["BINT","BINT UNSIGNED","DOUBLE","FLOAT","FLOAT UNSIGNED","INT","INT UNSIGNED","SINT","SINT UNSIGNED","TINT","TINT UNSIGNED"].contains(dartabaseType)){
+       return 0;  
+     }else if(dartabaseType == "BOOLEAN"){
+       return false;
+     }else if(["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"].contains(dartabaseType))
+     {       
+       return "";
+     }else{
+       /*"DATE": "date",
+       "DATETIME": "timestamp",
+       "TIME": "time",
+       "TIMESTAMP": "timestamp",
+       "BINARY": "bytea",
+       "BIT": "bytea",
+       "BLOB": "bytea",
+       "BYTEARRAY": "bytea",
+       "LBLOB": "bytea",
+       "MBLOB": "bytea",
+       "TBLOB": "bytea",
+       "VARBINARY": "bytea",*/
+     }
+       
+   }
    
    static void loadConfigFile() {
 //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configPGSQL.json');
