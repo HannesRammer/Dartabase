@@ -5,8 +5,8 @@ description: Serverside Database models inspired by Ruby on Rails migrations
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_model
 dependencies:
   postgresql: '0.2.11'
-  sqljocky: '0.7.0'
-  dartabase_core: '0.1.0'
-  json_object: 'any'	
+  sqljocky: '0.8.1'
+  dartabase_core: '0.1.1' 
+  json_object: '1.0.18+2'
 environment: 
   sdk: ">=0.8.10+6 <2.0.0" 

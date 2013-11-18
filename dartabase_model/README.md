@@ -1,19 +1,22 @@
 Dartabase Model 0.1.0
 ===================
 
-    Serverside Database Object Models for simple data manipulation 
-    that builds on Dartabase Miration 
+    Serverside Database Object Models for simple data manipulation
+    with MySQL/PGSQL
     inspired by Ruby on Rails models
     
+    This requires the use of 'Dartabase Miration' in your project
+    see http://pub.dartlang.org/packages/dartabase_migration
+     
     Version
 	    0.1.0 ready for Dart 1.0
 
-	tested on 
-		Dart Editor version 0.8.10_r30104 (DEV)
-        Dart SDK version 0.8.10.10_r30104
-    	
+	Tested on 
+		Dart Editor version 1.0.0_r30187 (DEV)
+		Dart SDK version 1.0.0.3_r30187
+		
 	Uses
-    	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.7.0
+    	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.8.1
     	PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.11
 
 HOW TO SETUP
@@ -180,9 +183,9 @@ TODO
 ----
 
 	*wait for 'await' to make this baby sync
-	*implement pgsql parts
-    *test functionality in bigger project
-    *improve
+	*test functionality in bigger project
+    *add more features
+    *add automated tests
     *and much more
 
 Please let me know about bugs you find and or improvements/features you would like to see in future.
