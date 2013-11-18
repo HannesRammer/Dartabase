@@ -29,14 +29,16 @@ class DBHelper {
   }
 
   static void removeDBTable(sql, conn) {
+    
     if (DBCore.adapter == DBCore.PGSQL) {
-      afterQuery("removeDBTable", conn.query(sql).toList(), sql);
+      afterQuery("removeDBTablen", conn.query(sql).toList(), sql, conn);
     } else if (DBCore.adapter == DBCore.MySQL) {
-      afterQuery("removeDBTable", conn.query(sql), sql);
+      conn.query(sql);
+      printQueryCompleted("removeDBTable", "table Removed", sql);
     }
   }
 
-  static void afterQuery(actionType, response, sql, [conn, x, count]) {
+  static void afterQuery(String actionType, response, String sql, [conn, x, count]) {
     response.then((result) {
       printQueryCompleted(actionType, result, sql);
       if (actionType == "createDBTable") {
@@ -61,7 +63,7 @@ class DBHelper {
     print("\ncompleted SQL Query: $sql");
     print("DB returned: $result");
     DBCore.mapToJsonFilePath(schema,'${DBCore.rootPath}/db/schema.json');
-    print("Schema: schema");
-    print("${type}Column Finish");
+    print("Schema: $schema");
+    print("${type} Finish");
   }
 }

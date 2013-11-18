@@ -125,18 +125,27 @@ Future migrate(conn) {
           fileId = files.length - 1;
         }
       }
-      if (direction == "UP") {
-        if (lastMigrationNumber >= fileId) {
-          doFile(conn);
-        }else{
-          print("goal migration smaller than current migration");
+      if(lastMigrationNumber >= 0 && lastMigrationNumber <= files.length){
+        print("lastMigrationNumber$lastMigrationNumber");
+        print("fileId$fileId");
+        
+        if (direction == "UP") {
+            if (lastMigrationNumber >= fileId) {
+              doFile(conn);
+            }else{
+              print("goal migration smaller or equal current migration, maybe you wanted to revert migration via dbDown instead");
+            }
+          
+          
+        }else if (direction == "DOWN") {
+          if (lastMigrationNumber <= fileId) {
+            doFile(conn);
+          }else{
+            print("goal migration higher or equal current migration, maybe you wanted to migrate via dbUp instead");
+          }
         }
-      }else if (direction == "DOWN") {
-        if (lastMigrationNumber <= fileId) {
-          doFile(conn);
-        }else{
-          print("goal migration higher than current migration");
-        }
+      }else{
+        print("goal migration number out of range. goal migration doesnt exist ");
       }
       completer.complete("done");
   } else {
@@ -279,6 +288,7 @@ void removeTable(conn) {
     for (var i = 0;i < tableNames.length;i++) {
       if (schema[tableNames[i]] != null) {
         schema.remove(tableNames[i]);
+        print(schema);
         String sqlQuery = "DROP TABLE IF EXISTS ${tableNames[i]} ";
 //   print("\nsqlQuery: $sqlQuery");
         DBHelper.removeDBTable(sqlQuery, conn);

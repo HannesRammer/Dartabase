@@ -26,16 +26,21 @@ void main() {
   print("|Dartabase revert migration|");
   print("|--------------------------|");
   print("");
+  print("Here a List of all Pojects that can be reverted");
   print("Enter the project name and press the ENTER key to proceed");
 
   projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
   
   print("\nProject name *:* Path *:* Current schema version");
   print("-----------------------------");
-  Map schemaV;
+  
   for(var name in projectMapping.keys){
-    schemaV = DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
-    print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
+    Map schemaV = DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
+    if(schemaV['schemaVersion'] == "" || schemaV['schemaVersion'] == null){
+      //print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
+    }else{
+      print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
+    }
   }
   Stream<List<int>> stream = stdin;
   
@@ -45,16 +50,17 @@ void main() {
         .transform(new LineSplitter())
           .listen((String line) { /* Do something with line. */
         if(projectMapping[line]!=null){
-          
-          
-          Directory directory = new Directory("${projectMapping[line]}/db/migrations");
+          String rootPath= projectMapping[line];
+          Map rootSchema = DBCore.jsonFilePathToMap("${rootPath}/db/schemaVersion.json");
+          Directory directory = new Directory("${rootPath}/db/migrations");
           List files = directory.listSync();
+          
           if (files.length > 0) {
             print("\nMigration number : Name");
             print("0 : revert all");
             for(int i=0;i<files.length;i++){ 
               String version = files[i].path.split("migrations")[1].replaceAll("\\","") ;
-              if(schemaV['schemaVersion'] == version ){
+              if(rootSchema['schemaVersion'] == version ){
                 print("${i+1} : $version <--- current version");
               }else{
                 print("${i+1} : $version");
@@ -63,7 +69,7 @@ void main() {
           }
           print("please enter goal migration number");
           
-         DBCore.rootPath = projectMapping[line];   
+         DBCore.rootPath = rootPath;   
           
         }else if(DBCore.rootPath != null){
           lastMigrationNumber = int.parse(line);
