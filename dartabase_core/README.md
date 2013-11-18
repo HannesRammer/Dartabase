@@ -1,17 +1,21 @@
-Dartabase Core 0.1.0
+Dartabase Core 0.1.1
 ===================
 
-    used by Dartabase Tools
+    shared lib used by Dartabase Tools no need for you to install
     
     Dartabase Migration 
 		
-		Serverside Database migration for simple version controlled 
-		database structure manipulation 
+		Serverside database migration for MySQL/PGSQL
+		simple version controlled database structure manipulation 
     	inspired by Ruby on Rails migrations 
+    	
+    	http://pub.dartlang.org/packages/dartabase_migration
     
     Dartabase Models
     
-        Serverside Database Object Models for simple data manipulation 
-        that builds on Dartabase Miration 
+        Serverside database object models for MySQL/PGSQL 
+        simple data manipulation that builds on Dartabase Miration 
         inspired by Ruby on Rails models
+        
+        http://pub.dartlang.org/packages/dartabase_model
     
