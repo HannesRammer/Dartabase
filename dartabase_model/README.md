@@ -1,4 +1,4 @@
-Dartabase Model 0.1.0
+Dartabase Model 0.1.1
 ===================
 
     Serverside Database Object Models for simple data manipulation
@@ -9,6 +9,7 @@ Dartabase Model 0.1.0
     see http://pub.dartlang.org/packages/dartabase_migration
      
     Version
+    	0.1.1 fix discription
 	    0.1.0 ready for Dart 1.0
 
 	Tested on 
