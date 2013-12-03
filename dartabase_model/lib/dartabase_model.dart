@@ -52,6 +52,7 @@ class Model {
             if(usedObjectData["createOrUpdate"]=="create"){
               String insertSQL="insert into $tableName values (${usedObjectData["insertSpaceholder"].join(",")}) ";
               print(insertSQL);
+              print(usedObjectData["insertValues"].toString());
               conn.execute(insertSQL, usedObjectData["insertValues"]).then((_) { 
                 conn.close();
                 completer.complete("done");
@@ -71,16 +72,28 @@ class Model {
         });
         
       } else if (DBCore.adapter == DBCore.MySQL) {
-        String insertSQL="replace into $tableName (${usedObjectData["insertColumns"].join(",")}) values (${usedObjectData["insertSpaceholder"].join(",")}) ";
-        print(insertSQL);
-        
-        ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
-        pool.prepare(insertSQL).then((query) {
-          query.execute(usedObjectData["insertValues"]).then((result) {
+        if(usedObjectData["createOrUpdate"]=="create"){
+          String insertSQL="insert into $tableName (${usedObjectData["insertColumns"].join(",")}) values (${usedObjectData["insertSpaceholder"].join(",")}) ";
+          print(insertSQL);
+          
+          ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+          pool.prepare(insertSQL).then((query) {
+            query.execute(usedObjectData["insertValues"]).then((result) {
 //          print("New user's id: ${result.insertId}");
-            completer.complete(result);
+              completer.complete(result);
+            });
+          });  
+        }else if(usedObjectData["createOrUpdate"]=="update"){
+          String updateSQL="UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
+          print(updateSQL);
+          
+          ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+          pool.query(updateSQL).then((result) {
+//          print("New user's id: ${result.insertId}");
+              completer.complete(result);
           });
-        });
+        }
+        
       }
     });
     return completer.future; 
@@ -211,7 +224,7 @@ class Model {
           insertColumns.add("id");
           listValues.add(id);
         }else if(column == "id" && value != null){
-          if(value >id){
+          if(value >=id){
             createOrUpdate="create";
             listValues.add(id);  
           }else{
