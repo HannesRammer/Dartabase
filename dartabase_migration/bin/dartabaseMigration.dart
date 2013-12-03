@@ -175,7 +175,7 @@ void createTable(conn) {
     List tableNames = ct.keys.toList();
     for (var i = 0;i < tableNames.length;i++) {
       if (schema[tableNames[i]] == null) {
-        String sqlQuery = "CREATE TABLE IF NOT EXISTS ${tableNames[i]} ( ${DBCore.primaryIDColumnString(DBCore.adapter,tableNames[i])}";
+        String sqlQuery = "CREATE TABLE IF NOT EXISTS ${tableNames[i]} ( ${DBHelper.primaryIDColumnString(DBCore.adapter)} ,";
         Map columns = ct[tableNames[i]];
         List columnNames = columns.keys.toList();
         schema[tableNames[i]] = {};
@@ -195,7 +195,12 @@ void createTable(conn) {
             print("\nSCHEMA createTable Cancle: Column ${columnNames[j]} already exists in table ${tableNames[i]}, column not added");
           }
         }
-        sqlQuery += ")";
+        schemaTableMap["created_at"] = "TIMESTAMP";
+        schemaTableMap["updated_at"] = "TIMESTAMP";
+        sqlQuery += ", ${DBHelper.dateTimeColumnString(DBCore.adapter)});";
+        if(DBCore.adapter == DBCore.PGSQL){
+          sqlQuery += DBHelper.pgTriggerForUpdatedAt(tableNames[i]);
+        }
 //   print("\nsqlQuery: $sqlQuery");
         DBHelper.createDBTable(sqlQuery, conn,i,tableNames.length);
       } else {
