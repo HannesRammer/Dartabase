@@ -15,12 +15,12 @@ Dartabase Model 0.2.0
 	    0.1.0 ready for Dart 1.0
 
 	Tested on 
-		Dart Editor version 1.0.0_r30187 (DEV)
-		Dart SDK version 1.0.0.3_r30187
+		Dart Editor version 1.0.1_r30657 (DEV)
+		Dart SDK version 1.0.1.3_r30657
 		
 	Uses
-    	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.8.1
-    	PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.11
+    	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.9.0
+    	PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.12
 
 HOW TO SETUP
 ------------
