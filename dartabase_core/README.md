@@ -1,7 +1,7 @@
-Dartabase Core 0.1.1
+Dartabase Core 0.2.0
 ===================
 
-    shared lib used by Dartabase Tools no need for you to install
+    shared lib used by Dartabase Tools (no need for you to do anything)
     
     Dartabase Migration 
 		

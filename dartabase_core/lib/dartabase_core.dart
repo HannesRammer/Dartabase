@@ -44,16 +44,7 @@ class DBCore {
     }
     return  JSON.decode(fileText);
   }
-   static String primaryIDColumnString(String adapter, String tableName) {
-     String sql;
-     if(adapter == DBCore.MySQL){
-       sql = "id ${DBCore.typeMapping("INT")} NOT NULL PRIMARY KEY,";
-     }else if(adapter == DBCore.PGSQL){
-       sql = "id ${DBCore.typeMapping("INT")} PRIMARY KEY,";
-     }
-     return sql;
-  }
-  
+   
    static void mapToJsonFilePath(Map contentMap,String filePath) {
     String contentString = JSON.encode(contentMap);
     var file = new File(filePath);
@@ -74,11 +65,11 @@ class DBCore {
      }else if(["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"].contains(dartabaseType))
      {       
        return "";
+     }else if(["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType))
+     {       
+       return new DateTime.now();
      }else{
-       /*"DATE": "date",
-       "DATETIME": "timestamp",
-       "TIME": "time",
-       "TIMESTAMP": "timestamp",
+       /*
        "BINARY": "bytea",
        "BIT": "bytea",
        "BLOB": "bytea",
