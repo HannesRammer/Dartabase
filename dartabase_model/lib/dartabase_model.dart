@@ -28,7 +28,40 @@ class Model {
     print(rootPath);
   }
   
-  
+  Future delete() {
+    var completer = new Completer();
+    String tableName = "${this.runtimeType}".toLowerCase();
+    
+    String SQL="DELETE FROM $tableName WHERE id = ${this.id}";
+    print(SQL);
+    
+    if (DBCore.adapter == DBCore.PGSQL) {
+      
+      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
+      Pool pool = new Pool(uri, min: 1, max: 1);
+      pool.start().then((_) {
+        print('Min connections established.');
+        pool.connect().then((conn) {
+          conn.execute(SQL).then((_) { 
+            conn.close();
+            completer.complete("done");
+          });
+        });
+      });
+      
+    } else if (DBCore.adapter == DBCore.MySQL) {
+      
+      ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+      pool.query(SQL).then((result) {
+//        print("New user's id: ${result.insertId}");
+        completer.complete(result);
+      });
+     
+    }
+    
+    
+    return completer.future; 
+  }
   Future save() {
     var completer = new Completer();
     
