@@ -141,7 +141,7 @@ HOW TO USE
     	  
        other available find functions are currently
       
-	      Future find_by(String column, var value) 
+	      Future findBy(String column, var value) 
 	  
 	4. Delete
 	   To remove an object from the database simply write
