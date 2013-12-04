@@ -53,13 +53,10 @@ class Model {
       
       ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
       pool.query(SQL).then((result) {
-//        print("New user's id: ${result.insertId}");
         completer.complete(result);
       });
      
     }
-    
-    
     return completer.future; 
   }
   Future save() {
@@ -97,10 +94,7 @@ class Model {
                 conn.close();
                 completer.complete("done");
               });
-              
             }
-            
-            
           });
         });
         
@@ -112,7 +106,6 @@ class Model {
           ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
           pool.prepare(insertSQL).then((query) {
             query.execute(usedObjectData["insertValues"]).then((result) {
-//          print("New user's id: ${result.insertId}");
               completer.complete(result);
             });
           });  
@@ -122,35 +115,32 @@ class Model {
           
           ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
           pool.query(updateSQL).then((result) {
-//          print("New user's id: ${result.insertId}");
-              completer.complete(result);
+            completer.complete(result);
           });
         }
-        
       }
     });
     return completer.future; 
   }
-  Future find_by(String column, var value) {
+  Future findBy(String column, var value) {
     String tableName = "${this.runtimeType}".toLowerCase();
     String query = "SELECT * FROM $tableName WHERE $column = '$value' LIMIT 1";
     print(query);
     return find(query, false);
-    
   }
-  Future find_by_id(num id) {
-    return find_by("id", id);
+  Future findById(num id) {
+    return findBy("id", id);
   }
   
-  Future find_all_by(String column, var value ) {
+  Future findAllBy(String column, var value ) {
     String tableName = "${this.runtimeType}".toLowerCase();
     String query = "SELECT * FROM $tableName WHERE $column = '$value'";
     print(query);
     return find(query, true);
   }
   
-  Future find_all_by_id(num id) {
-    return find_all_by("id", id);
+  Future findAllById(num id) {
+    return findAllBy("id", id);
   }
   
   Future find(String sql, bool resultAsList) {
@@ -158,7 +148,6 @@ class Model {
     
     print(this.runtimeType);
     
-    //List usedObjectData = objectScemaAttributes(this);
     //*loop through schema attributes and fill object via reflections and mirrors
     DBCore.loadConfigFile();
     if (DBCore.adapter == DBCore.PGSQL) {
@@ -191,7 +180,7 @@ class Model {
       List row;
       pool.query(sql).then((results) {
         List data = new List();
-        results.stream.listen((row) {
+        results.listen((row) {
           var object = setObjectScemaAttributes(this , row);  
           data.add(object);
         }).asFuture().then((_){
@@ -201,22 +190,11 @@ class Model {
           else if(resultAsList == false){
             completer.complete(data[0]);
           }
-            
         });
-        
-        
-        
-        
       });
       pool.close();
-      
     }
-    //return this as future???
     return completer.future; 
-    //get schema
-    //filter scema for this.runtimeType
-    //if exists connect to db and fill 'this' with db values 
-   // "select * from ${this.runtimeType}";
   }
 
   
@@ -225,7 +203,6 @@ class Model {
     print(instanceMirror.reflectee == object); // true
     print(instanceMirror.reflectee);  
     return instanceMirror;
-    
   }
   Future<Map> getObjectScemaAttributes(object)
   {
@@ -248,10 +225,7 @@ class Model {
       for(var column in columnNames){
         Symbol symbol =new Symbol(column);
         InstanceMirror field = instanceMirror.getField(symbol);
-        
         var value = field.reflectee;
-        
-
         if(column == "id" && value == null){
           createOrUpdate = "create";
           insertColumns.add("id");
@@ -274,7 +248,6 @@ class Model {
         }else if(column != "id" && value == null){
           insertColumns.add(column);
           listValues.add(DBCore.defaultValueFor(objectSchemaMap[column]));
-          //updateValues.add("${column}=${DBCore.defaultValueFor(objectSchemaMap[column])}");
         }
         if (DBCore.adapter == DBCore.PGSQL) {
           insertSpaceholder.add("@${column}");
@@ -322,7 +295,6 @@ class Model {
       i++;
     }
     return newInstanceObject.reflectee;
-    //return completer.future;
   }
  
   Future getNewId() {
@@ -357,7 +329,7 @@ class Model {
       List row;
       pool.query("SELECT MAX(ID) FROM ${this.runtimeType}").then((results) {
         List data = new List();
-        results.stream.listen((row) {
+        results.listen((row) {
           num value ;
           
           if(row[0] == null){
