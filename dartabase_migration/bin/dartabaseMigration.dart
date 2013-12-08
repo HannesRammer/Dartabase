@@ -174,37 +174,41 @@ void createTable(conn) {
     Map ct = DBCore.parsedMap["createTable"];
     List tableNames = ct.keys.toList();
     for (var i = 0;i < tableNames.length;i++) {
-      if (schema[tableNames[i]] == null) {
-        String sqlQuery = "CREATE TABLE IF NOT EXISTS ${tableNames[i]} ( ${DBHelper.primaryIDColumnString(DBCore.adapter)} ,";
-        Map columns = ct[tableNames[i]];
+      String tableName = tableNames[i];
+      if (schema[tableName] == null) {
+        String sqlQuery="";
+        List sqlList = ["CREATE TABLE IF NOT EXISTS ${tableName} ( ${DBHelper.primaryIDColumnString(DBCore.adapter)} "];
+        Map columns = ct[tableName];
         List columnNames = columns.keys.toList();
-        schema[tableNames[i]] = {};
-        Map schemaTableMap = schema[tableNames[i]];
-        schemaTableMap["id"] = "INT";
+        schema[tableName] = {};
+        Map schemaTableMap = schema[tableName];
+        schemaTableMap["id"] = {"type":"INT"};
         for (int j = 0;j < columnNames.length;j++) {
-          if (schemaTableMap[columnNames[j]] == null) {
-
-            String columnType = columns[columnNames[j]];
-            sqlQuery += "${columnNames[j]} ${DBCore.typeMapping(columnType)} ";
-            if (j < columnNames.length - 1) {
-              sqlQuery += ", ";
-            }
-            schemaTableMap[columnNames[j]] = columnType;
-            print("\nSCHEMA createTable OK: Column ${columnNames[j]} added to table ${tableNames[i]}");
+          String columnName = columnNames[j];
+          if (schemaTableMap[columnName] == null) {
+            Map columnOptions = columns[columnName];
+            //TODO IMPLEMENT ALL OPTIONS NOT ONLY TYPE
+            String columnType = columnOptions["type"];
+            sqlList.add("${columnName} ${DBCore.typeMapping(columnType)} ");
+            schemaTableMap[columnName] = columnOptions;
+            print("\nSCHEMA createTable OK: Column ${columnName} added to table ${tableName}");
           } else {
-            print("\nSCHEMA createTable Cancle: Column ${columnNames[j]} already exists in table ${tableNames[i]}, column not added");
+            print("\nSCHEMA createTable Cancle: Column ${columnName} already exists in table ${tableName}, column not added");
           }
         }
-        schemaTableMap["created_at"] = "TIMESTAMP";
-        schemaTableMap["updated_at"] = "TIMESTAMP";
-        sqlQuery += ", ${DBHelper.dateTimeColumnString(DBCore.adapter)});";
+        schemaTableMap["created_at"] = {"type":"TIMESTAMP"};
+        schemaTableMap["updated_at"] = {"type":"TIMESTAMP"};
+        sqlList.add("${DBHelper.dateTimeColumnString(DBCore.adapter)});");
+        //sqlQuery += ", ${DBHelper.dateTimeColumnString(DBCore.adapter)});";
+        sqlQuery = sqlList.join(",");
         if(DBCore.adapter == DBCore.PGSQL){
-          sqlQuery += DBHelper.pgTriggerForUpdatedAt(tableNames[i]);
+          sqlQuery += DBHelper.pgTriggerForUpdatedAt(tableName);
         }
-//   print("\nsqlQuery: $sqlQuery");
+        
+        print("\n+++++sqlQuery: $sqlQuery");
         DBHelper.createDBTable(sqlQuery, conn,i,tableNames.length);
       } else {
-        print("\nSCHEMA createTable Cancle: Table ${tableNames[i]} already exists in schema, table and columns not added");
+        print("\nSCHEMA createTable Cancle: Table ${tableName} already exists in schema, table and columns not added");
         createColumn(conn);
       }
     }
@@ -220,30 +224,32 @@ void createColumn(conn) {
     Map ct = DBCore.parsedMap["createColumn"];
     List tableNames = ct.keys.toList();
     for (var i = 0;i < tableNames.length;i++) {
-      if (schema[tableNames[i]] != null) {
-        String sqlQuery = "ALTER TABLE ${tableNames[i]} ";
-        Map columns = ct["${tableNames[i]}"];
+      String tableName = tableNames[i];
+      if (schema[tableName] != null) {
+        String sqlQuery = "ALTER TABLE ${tableName} ";
+        List sqlList = [];
+        
+        Map columns = ct["${tableName}"];
         List columnNames = columns.keys.toList();
-        Map schemaTableMap = schema[tableNames[i]];
+        Map schemaTableMap = schema[tableName];
         for (var j = 0;j < columnNames.length;j++) {
-          String columnType = columns[columnNames[j]];
-          if (schema[tableNames[i]][columnNames[j]] == null) {
-            sqlQuery += "ADD COLUMN ${columnNames[j]} ${DBCore.typeMapping(columnType)} ";
-            if (j < columnNames.length - 1) {
-              sqlQuery += ", ";
-            }
-            schema[tableNames[i]][columnNames[j]] = columnType;
-            schemaTableMap[columnNames[j]] = columnType;
-            print("\nSCHEMA createColumn OK: Column ${columnNames[j]} added to table ${tableNames[i]}");
+          String columnName = columnNames[j];
+          Map columnOptions = columns[columnName];
+          String columnType = columnOptions["type"];
+          if (schema[tableName][columnName] == null) {
+            sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ");
+            schemaTableMap[columnName] = columnOptions;
+            print("\nSCHEMA createColumn OK: Column ${columnName} added to table ${tableName}");
           } else {
 
-            print("\nSCHEMA createColumn Cancle: Column ${columnNames[j]} already exists in ${tableNames[i]}, columns not added");
+            print("\nSCHEMA createColumn Cancle: Column ${columnName} already exists in ${tableName}, columns not added");
           }
         }
-//     print("\nsqlQuery: $sqlQuery");
+        sqlQuery += sqlList.join(",");
+        print("\n+++++sqlQuery: $sqlQuery");
         DBHelper.createDBColumn(sqlQuery, conn,i,tableNames.length);
       } else {
-        print("\nSCHEMA createColumn FAIL: Table ${tableNames[i]} doesnt exists, columns not added");
+        print("\nSCHEMA createColumn FAIL: Table ${tableName} doesnt exists, columns not added");
         removeColumn(conn);
       }
     }
@@ -258,26 +264,27 @@ void removeColumn(conn) {
     Map ct = DBCore.parsedMap["removeColumn"];
     List tableNames = ct.keys.toList();
     for (var i = 0;i < tableNames.length;i++) {
-      if (schema[tableNames[i]] != null) {
-        String sqlQuery = "ALTER TABLE ${tableNames[i]} ";
-        List columnNames = ct["${tableNames[i]}"];
+      String tableName = tableNames[i];
+      if (schema[tableName] != null) {
+        String sqlQuery = "ALTER TABLE ${tableName} ";
+        List columnNames = ct["${tableName}"];
         int j;
         for ( j = 0;j < columnNames.length;j++) {
-          if (schema[tableNames[i]][columnNames[j]] != null) {
+          if (schema[tableName][columnNames[j]] != null) {
             sqlQuery += "DROP COLUMN ${columnNames[j]} ";
             if (j < columnNames.length - 1) {
               sqlQuery += ", ";
             }
-            schema[tableNames[i]].remove(columnNames[j]);
-            print("\nSCHEMA removeColumn OK: Column ${columnNames[j]} removed from table ${tableNames[i]}");
+            schema[tableName].remove(columnNames[j]);
+            print("\nSCHEMA removeColumn OK: Column ${columnNames[j]} removed from table ${tableName}");
           } else {
-            print("\nSCHEMA removeColumn FAIL: Column ${columnNames[j]} doesnt exist, column not removed from table ${tableNames[i]}");
+            print("\nSCHEMA removeColumn FAIL: Column ${columnNames[j]} doesnt exist, column not removed from table ${tableName}");
           }
         }
 //print("\nsqlQuery: $sqlQuery");
         DBHelper.removeDBColumn(sqlQuery, conn,j,columnNames.length);
       } else {
-        print("\nSCHEMA removeColumn FAIL: Table ${tableNames[i]} doesnt exists, columns not removed");
+        print("\nSCHEMA removeColumn FAIL: Table ${tableName} doesnt exists, columns not removed");
         removeTable(conn);
       }
     }
@@ -291,15 +298,16 @@ void removeTable(conn) {
   if (DBCore.parsedMap["removeTable"] != null) {
     List tableNames = DBCore.parsedMap["removeTable"];
     for (var i = 0;i < tableNames.length;i++) {
-      if (schema[tableNames[i]] != null) {
-        schema.remove(tableNames[i]);
+      String tableName = tableNames[i];
+      if (schema[tableName] != null) {
+        schema.remove(tableName);
         print(schema);
-        String sqlQuery = "DROP TABLE IF EXISTS ${tableNames[i]} ";
+        String sqlQuery = "DROP TABLE IF EXISTS ${tableName} ";
 //   print("\nsqlQuery: $sqlQuery");
         DBHelper.removeDBTable(sqlQuery, conn);
 
       } else {
-        print("\nSCHEMA removeTable FAIL: Table ${tableNames[i]} doesnt exists, tables not removed");
+        print("\nSCHEMA removeTable FAIL: Table ${tableName} doesnt exists, tables not removed");
       }
     }
   } else {
