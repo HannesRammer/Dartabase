@@ -201,19 +201,23 @@ void createTable(conn) {
         for (int j = 0;j < columnNames.length;j++) {
           String columnName = columnNames[j];
           if (schemaTableMap[columnName] == null) {
-            Map columnOptions = columns[columnName];
-            //TODO IMPLEMENT ALL OPTIONS NOT ONLY TYPE
-            String columnType = columnOptions["type"];
-            
-            
-            sqlList.add("${columnName} ${DBCore.typeMapping(columnType)} ${notNull(columnOptions["null"])} ${defaultValue(columnOptions["default"])} ");
-            schemaTableMap[columnName] = columnOptions;
+            if (columns[columnName].runtimeType == String){
+              
+              String columnType = columns[columnName];
+              sqlList.add("${columnName} ${DBCore.typeMapping(columnType)} ");
+              schemaTableMap[columnName] = columnType;
+            }else if(columns[columnName].runtimeType.toString() == "_LinkedHashMap"){
+              Map columnOptions = columns[columnName];
+              String columnType = columnOptions["type"];
+              sqlList.add("${columnName} ${DBCore.typeMapping(columnType)} ${notNull(columnOptions["null"])} ${defaultValue(columnOptions["default"])} ");
+              schemaTableMap[columnName] = columnOptions; 
+            }
             print("\nSCHEMA createTable OK: Column ${columnName} added to table ${tableName}");
           } else {
             print("\nSCHEMA createTable Cancle: Column ${columnName} already exists in table ${tableName}, column not added");
           }
         }
-        schemaTableMap["created_at"] = {"type":"TIMESTAMP"};
+        schemaTableMap["created_at"] = "TIMESTAMP";
         schemaTableMap["updated_at"] = {"type":"TIMESTAMP"};
         sqlList.add("${DBHelper.dateTimeColumnString(DBCore.adapter)});");
         //sqlQuery += ", ${DBHelper.dateTimeColumnString(DBCore.adapter)});";
@@ -251,11 +255,19 @@ void createColumn(conn) {
         Map schemaTableMap = schema[tableName];
         for (var j = 0;j < columnNames.length;j++) {
           String columnName = columnNames[j];
-          Map columnOptions = columns[columnName];
-          String columnType = columnOptions["type"];
+          
           if (schema[tableName][columnName] == null) {
-            sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ${notNull(columnOptions["notNull"])} ${defaultValue(columnOptions["default"])} ");
-            schemaTableMap[columnName] = columnOptions;
+            print(columns[columnName].runtimeType);
+            if (columns[columnName].runtimeType == String){
+              String columnType = columns[columnName];
+              sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ");
+              schemaTableMap[columnName] = columnType;
+            }else if(columns[columnName].runtimeType.toString() == "_LinkedHashMap"){
+              Map columnOptions = columns[columnName];
+              String columnType = columnOptions["type"];
+              sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ${notNull(columnOptions["notNull"])} ${defaultValue(columnOptions["default"])} ");
+              schemaTableMap[columnName] = columnOptions; 
+            }
             print("\nSCHEMA createColumn OK: Column ${columnName} added to table ${tableName}");
           } else {
 

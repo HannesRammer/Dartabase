@@ -32,12 +32,13 @@ void main() {
               "UP": {
                 "createTable": {
                   "new_table_name": {
-                    "new_column_name": {"type":"DATATYPE","size":"255","default":"0","null":"true"}
+                    "new_column_name": {"type":"DATATYPE","null":"true"}
                   }
                 },
                 "createColumn": {
                   "existing_table_name": {
-                    "new_column_name": {"type":"DATATYPE","size":"255","default":"0","null":"true"}
+                    "new_column_name": {"type":"DATATYPE","default":"empty","null":"false"},
+                    "new_column_name_two": "DATATYPE"
                   }
                 },
                 "removeColumn": {

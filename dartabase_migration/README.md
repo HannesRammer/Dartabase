@@ -1,4 +1,4 @@
-Dartabase Migration 0.4.1
+Dartabase Migration 0.4.2
 ===================
 
     Serverside Database migration 
@@ -10,6 +10,8 @@ Dartabase Migration 0.4.1
     inspired by Ruby on Rails migrations
 
 	Version
+		0.4.2 -adapted column option to support old migration files
+			   migrations now support '"column" : "INT"' and '"column" : {"type":"INT"}'
 		0.4.1 -added column options 'default' and 'null'
 			   see "COLUMN OPTIONS"
 		0.4.0 -small breaking change -> added posibility for column options
@@ -120,7 +122,7 @@ HOW TO UPDATE DARTABASE MIGRATION
 		  
 		now you should be able to find your projects again when running dbUp or dbDown
 		  
-	UPDATE TO VERSION 0.4.0
+	UPDATE TO VERSION 0.4.2
 		inside your migration files createTable and createColumn hashes
 		
 		instead of
@@ -192,17 +194,20 @@ HOW TO CREATE MIGRATIONS
             keys    : non_existent_table_names
             values  : json object
                         keys    : non_existent_column_names
-                        values  : json object
+                        values  : DARTABASETYPE
+                        		  or
+                        		  json object
                         			keys: column options 
                         			values: column option values 
 
-            eg.
-            "createTable": {
-                "new_table_name_one": {
-                    "new_column_name": {
-                    	'type':"DATATYPE"
-                    }
-                }
+            eg. with options					or type only
+            "createTable": { 					"createTable": {
+                "new_table_name_one": {				"new_table_name_one": {
+                    "new_column_name": {			    "new_column_name": "DATATYPE"
+                    	'type':"DATATYPE",			}
+                        'default':"1234"		}
+                    }								
+                }								
             }
 
         createColumn
@@ -217,11 +222,11 @@ HOW TO CREATE MIGRATIONS
                         			values: column option values 
 
             eg.
-            "createColumn": {
-                "existing_table_name_one": {
-                    "new_column_name": {
-                    	'type':"DATATYPE"
-                    }
+            "createColumn": {					"createColumn": {
+                "existing_table_name_one": {		"existing_table_name_one": {
+                    "new_column_name": {				"new_column_name": "DATATYPE" 
+                    	'type':"DATATYPE"			}
+                    }							}
                 }
             }
 
