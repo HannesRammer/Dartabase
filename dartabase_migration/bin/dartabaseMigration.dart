@@ -169,6 +169,21 @@ void doFile(conn) {
 
 }
 
+String notNull(String notNull){ 
+  
+  if(notNull=="true"){
+    return " NOT NULL ";
+  }else{
+    return "";
+  }
+}
+String defaultValue(String dv){
+  if(dv != null){
+    return " DEFAULT '${dv}' ";
+  }else{
+    return "";
+  }
+}
 void createTable(conn) {
   if (DBCore.parsedMap["createTable"] != null) {
     Map ct = DBCore.parsedMap["createTable"];
@@ -189,7 +204,9 @@ void createTable(conn) {
             Map columnOptions = columns[columnName];
             //TODO IMPLEMENT ALL OPTIONS NOT ONLY TYPE
             String columnType = columnOptions["type"];
-            sqlList.add("${columnName} ${DBCore.typeMapping(columnType)} ");
+            
+            
+            sqlList.add("${columnName} ${DBCore.typeMapping(columnType)} ${notNull(columnOptions["null"])} ${defaultValue(columnOptions["default"])} ");
             schemaTableMap[columnName] = columnOptions;
             print("\nSCHEMA createTable OK: Column ${columnName} added to table ${tableName}");
           } else {
@@ -237,7 +254,7 @@ void createColumn(conn) {
           Map columnOptions = columns[columnName];
           String columnType = columnOptions["type"];
           if (schema[tableName][columnName] == null) {
-            sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ");
+            sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ${notNull(columnOptions["notNull"])} ${defaultValue(columnOptions["default"])} ");
             schemaTableMap[columnName] = columnOptions;
             print("\nSCHEMA createColumn OK: Column ${columnName} added to table ${tableName}");
           } else {
