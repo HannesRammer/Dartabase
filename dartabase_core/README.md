@@ -1,9 +1,9 @@
-Dartabase Core 0.2.0
+Dartabase Core 0.2.1
 ===================
 
     shared lib used by Dartabase Tools (no need for you to do anything)
     
-    Dartabase Migration 
+    Dartabase Migration
 		
 		Serverside database migration for MySQL/PGSQL
 		simple version controlled database structure manipulation 
@@ -19,3 +19,12 @@ Dartabase Core 0.2.0
         
         http://pub.dartlang.org/packages/dartabase_model
     
+
+	Compatibility
+		depending on the migration version you are using 
+		you have to use a differend model version in your app
+	    
+	    migration  			model
+	    -------------------------
+	    0.4.x	requires    0.4.x
+	    0.3.0	requires	0.3.0 deprecated!!
