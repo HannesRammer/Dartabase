@@ -57,40 +57,46 @@ class DBCore {
      return parsedMapping[dartabaseType];
    }
    
-   static defaultValueFor(Map options) {
-     String dartabaseType = options["type"];
-     String defaultValue = options["default"];
-     if(defaultValue == null){
-       if(["BINT","BINT UNSIGNED","DOUBLE","FLOAT","FLOAT UNSIGNED","INT","INT UNSIGNED","SINT","SINT UNSIGNED","TINT","TINT UNSIGNED"].contains(dartabaseType)){
-         return 0;  
-       }else if(["DOUBLE","FLOAT","FLOAT UNSIGNED"].contains(dartabaseType)){
-         return 0.0;  
-       }else if(dartabaseType == "BOOLEAN"){
-         return false;
-       }else if(["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"].contains(dartabaseType))
-       {       
-         return "";
-       }else if(["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType))
-       {       
-         return new DateTime.now();
+   static defaultValueFor(var mapOrString) {
+     String dartabaseType;
+     if (mapOrString.runtimeType == String){
+       return defaultForType(mapOrString);
+     }else if(mapOrString.runtimeType.toString() == "_LinkedHashMap"){
+       dartabaseType = mapOrString["type"];
+       String defaultValue = mapOrString["default"];
+       if(defaultValue == null){
+         return defaultForType(dartabaseType);
        }else{
-         /*
-         "BINARY": "bytea",
-         "BIT": "bytea",
-         "BLOB": "bytea",
-         "BYTEARRAY": "bytea",
-         "LBLOB": "bytea",
-         "MBLOB": "bytea",
-         "TBLOB": "bytea",
-         "VARBINARY": "bytea",*/
-       }
-     }else{
-       return defaultValue;
+         return defaultValue;
+       } 
      }
-     
-       
    }
    
+   static defaultForType(dartabaseType){
+     if(["BINT","BINT UNSIGNED","DOUBLE","FLOAT","FLOAT UNSIGNED","INT","INT UNSIGNED","SINT","SINT UNSIGNED","TINT","TINT UNSIGNED"].contains(dartabaseType)){
+       return 0;  
+     }else if(["DOUBLE","FLOAT","FLOAT UNSIGNED"].contains(dartabaseType)){
+       return 0.0;  
+     }else if(dartabaseType == "BOOLEAN"){
+       return false;
+     }else if(["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"].contains(dartabaseType))
+     {       
+       return "";
+     }else if(["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType))
+     {       
+       return new DateTime.now();
+     }else{
+       /*
+       "BINARY": "bytea",
+       "BIT": "bytea",
+       "BLOB": "bytea",
+       "BYTEARRAY": "bytea",
+       "LBLOB": "bytea",
+       "MBLOB": "bytea",
+       "TBLOB": "bytea",
+       "VARBINARY": "bytea",*/
+     }
+   }
    static void loadConfigFile() {
 //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configPGSQL.json');
 //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configMYSQL.json');
