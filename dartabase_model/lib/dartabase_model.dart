@@ -285,8 +285,7 @@ class Model {
       Symbol symbol = new Symbol(column);
       var value;
       if(row[i] == ""){
-        var columnOptions = objectSchemaMap[column];
-        value = DBCore.defaultValueFor(columnOptions);
+        value = DBCore.defaultValueFor(objectSchemaMap[column]);
       }else{
         value = row[i];
       }

@@ -1,4 +1,4 @@
-Dartabase Model 0.4.0
+Dartabase Model 0.4.1
 ===================
 
     Serverside Database Object Models for simple data manipulation
@@ -9,6 +9,7 @@ Dartabase Model 0.4.0
     see http://pub.dartlang.org/packages/dartabase_migration
      
     Version
+    	0.4.1 -adapted model to work with old and new migration files
     	0.4.0 -adapted model for migration 0.4.0 see compatibility below
     	0.3.0 -fixed possible crash in < 0.3.0 with mysql adapter, 
     	      -changed model method_names to methodNames (Dart Style Guide)
