@@ -1,4 +1,4 @@
-Dartabase Model 0.3.0
+Dartabase Model 0.4.0
 ===================
 
     Serverside Database Object Models for simple data manipulation
@@ -9,6 +9,7 @@ Dartabase Model 0.3.0
     see http://pub.dartlang.org/packages/dartabase_migration
      
     Version
+    	0.4.0 -adapted model for migration 0.4.0 see compatibility below
     	0.3.0 -fixed possible crash in < 0.3.0 with mysql adapter, 
     	      -changed model method_names to methodNames (Dart Style Guide)
     	0.2.1 -added delete function to remove object from database 
@@ -21,6 +22,15 @@ Dartabase Model 0.3.0
 		Dart Editor version 1.0.1_r30657 (DEV)
 		Dart SDK version 1.0.1.3_r30657
 		
+	Compatibility
+		depending on the migration version you are using 
+		you have to use a differend model version in your app
+	    
+	    migration  			model
+	    -------------------------
+	    0.4.x	requires    0.4.x
+	    0.3.0	requires	0.3.0 deprecated!!
+	
 	Uses
     	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.9.0
     	PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.12

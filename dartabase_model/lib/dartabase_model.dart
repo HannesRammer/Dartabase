@@ -285,8 +285,8 @@ class Model {
       Symbol symbol = new Symbol(column);
       var value;
       if(row[i] == ""){
-        var dartatype = objectSchemaMap[column];
-        value = DBCore.defaultValueFor(dartatype);
+        var columnOptions = objectSchemaMap[column];
+        value = DBCore.defaultValueFor(columnOptions);
       }else{
         value = row[i];
       }
