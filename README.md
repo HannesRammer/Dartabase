@@ -8,7 +8,7 @@ Dartabase
     	inspired by Ruby on Rails migrations 
     	
     
-  [Dartabase Models](http://pub.dartlang.org/packages/dartabase_model)
+  [Dartabase Model](http://pub.dartlang.org/packages/dartabase_model)
     
         Serverside database object models for MySQL/PGSQL 
         simple data manipulation that builds on Dartabase Miration 

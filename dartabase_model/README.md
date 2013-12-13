@@ -39,11 +39,12 @@ Dartabase Model 0.4.1
 HOW TO SETUP
 ------------
 After you have sucessfully finished setting up 'Dartabase Migration' 
+
 1. Install Dartabase Model the usual pubspec way 
     
 2. Inside your project, at the beginning of the main method insert
         
-    Model.initiate("path-to-your-project");
+	Model.initiate("path-to-your-project");
 
 	now it should look kinda like this:
 	
