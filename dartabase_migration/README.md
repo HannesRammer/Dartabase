@@ -106,7 +106,7 @@ there should not be a problem.
 		
 	
 **LOST 'projectsMapping.json'** 
-DONT PAN!C 
+DONT PAN**!**C 
 
 		1.create a file named projectsMapping.json inside 'dartabase_migration/bin/'
 		  
@@ -162,8 +162,7 @@ or
 
     to use migrations you can specify 4 keys/actions inside the "UP" value
 
-createTable
------------
+**createTable**
     
     "createTable" key takes a json object as value
 
@@ -176,14 +175,14 @@ createTable
                     			keys: column options 
                     			values: column option values 
 
-		or type only
+		type only
 		"createTable": {
 			"new_table_name_one": {
 				"new_column_name": "DATATYPE"
 				}
 			}
 			
-        eg. with options					
+        or with options					
         "createTable": { 					
             "new_table_name_one": {				
                 "new_column_name": {			    
@@ -193,24 +192,27 @@ createTable
             }								
         }
 
-createColumn
-------------
+**createColumn**
     
     "createColumn" key takes a json object as value
 
         keys    : existing_table_names
         values  : json object
                     keys    : non_existent_column_names
-                    values  : json object
+                    values  : DARTABASETYPE
+                    		  or
+                    		  json object
                     			keys: column options 
                     			values: column option values 
 
+		type only
 		"createColumn": {
 			"existing_table_name_one": {
 				"new_column_name": "DATATYPE"
 				}
 			}
-        eg.
+        
+        or with options
         "createColumn": {					
             "existing_table_name_one": {		
                 "new_column_name": {				 
@@ -219,8 +221,7 @@ createColumn
             }
         }
 
-removeColumn
-------------
+**removeColumn**
     
     "removeColumn" key takes a json object as value
 
@@ -232,8 +233,7 @@ removeColumn
             "existing_table_name_one": ["existing_column_name_one"]
         }
 
-removeTable
------------
+**removeTable**
     
     "removeTable" key takes array of existing_table_names
 
