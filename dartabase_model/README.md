@@ -34,6 +34,7 @@ Dartabase Model 0.4.1
 	
   Uses
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
+  
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
     	
 HOW TO SETUP
@@ -44,9 +45,9 @@ After you have sucessfully finished setting up 'Dartabase Migration'
     
 2. Inside your project, at the beginning of the main method insert
         
-	Model.initiate("path-to-your-project");
+		Model.initiate("path-to-your-project");
 
-	now it should look kinda like this:
+now it should look kinda like this:
 	
 		-----dataserver.dart--START--
 	
@@ -63,43 +64,43 @@ After you have sucessfully finished setting up 'Dartabase Migration'
 	
 3. Imagine you have ONLY created one database table named 'account' 
 
-    with the column 'name'
+    	with the column 'name'
 	
 4. You have to extend all classes that you want to connected to the database
 
-    with 'Model'
-	   
-	in this case we create a class Account with id, name and a counter
-	   
-	-----account.dart--START--
+	    with 'Model'
+		   
+		in this case we create a class Account with id, name and a counter
+		   
+		-----account.dart--START--
+			
+		part of dataServer;
 		
-	part of dataServer;
-	
-	class Account extends Model{
-	  num id;		
-	  String name;
-	  num counter;
-	}
-	
-	-----account.dart--END--
+		class Account extends Model{
+		  num id;		
+		  String name;
+		  num counter;
+		}
+		
+		-----account.dart--END--
 
 5. Now add account.dart as part to dataServer so you can access Account
    obviously when you have everything in the same file,
    you dont need 'part' and 'part_of' 
 	
-	-----dataserver.dart--START--
-		
-	library dataServer;
-
-	import 'package:dartabase_model/dartabase_model.dart';
-	part "account.dart";	
+		-----dataserver.dart--START--
+			
+		library dataServer;
 	
-	main(){
-	  Model.initiate("C:\\darttestproject\\DartabaseServer");
-	  ... your code
-	}
-
-	-----dataserver.dart--END--
+		import 'package:dartabase_model/dartabase_model.dart';
+		part "account.dart";	
+		
+		main(){
+		  Model.initiate("C:\\darttestproject\\DartabaseServer");
+		  ... your code
+		}
+	
+		-----dataserver.dart--END--
  
 
 *******************************************************************************************
@@ -110,42 +111,42 @@ HOW TO USE
 
   simple async save call
 
-  	Account account = new Account();
-  	account.name="dartabase";
-  	account.id=1;
- 	account.counter=0;
-	account.save();
+	  	Account account = new Account();
+	  	account.name="dartabase";
+	  	account.id=1;
+	 	account.counter=0;
+		account.save();
   
   this will create a new database entry inside account 
   with column name = "dartabase" and increment "id"
   
   NOTE: 
   
-    'id' wont be saved since it is controlled by Dartabase Migration
-    'counter' wont be saved inside the database 
-              since it is not represented in the account table.
+	    'id' wont be saved since it is controlled by Dartabase Migration
+    	'counter' wont be saved inside the database 
+        	      since it is not represented in the account table.
   
 **Loading data async**
 
   simple find single element call - returns a single account object
 	  
-	Account accountRequest = new Account();
-	accountRequest.findById(1).then((account){
-	  print("single#${account.name}");	// prints 'dartabase'
-	})
+		Account accountRequest = new Account();
+		accountRequest.findById(1).then((account){
+		  print("single#${account.name}");	// prints 'dartabase'
+		})
   
   simple find many elements call - returns a list of account objects
    
-	Account accountRequest = new Account();
-	accountfromDB.findAllBy('name','dartabase').then((list){
-      for(var loadedAccount in list){
-    	print("${account.id}${account.name}"); // prints '${id}dartabase'
-      }
-    })
+		Account accountRequest = new Account();
+		accountfromDB.findAllBy('name','dartabase').then((list){
+	      for(var loadedAccount in list){
+	    	print("${account.id}${account.name}"); // prints '${id}dartabase'
+	      }
+	    })
   
   NOTE:
   
-  the result is not returned inside the requestObject, but inside the then
+	  the result is not returned inside the requestObject, but inside the then
       
 **Complex find**
   
@@ -172,7 +173,7 @@ HOW TO USE
 	    account.delete();
       })
 	
-	WORKING EXAMPLE:
+**WORKING EXAMPLE**
 	
 		-----dataserver.dart--START--
 	
