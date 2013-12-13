@@ -4,8 +4,7 @@ Dartabase Migration 0.4.2
     Serverside Database migration 
     for simple version controlled database structure manipulation 
     
-    now possible to combine the power of Dartabase Model and Dartabase Migration 
-    *see http://pub.dartlang.org/packages/dartabase_model
+    now possible to combine the power of [Dartabase Model](http://pub.dartlang.org/packages/dartabase_model) and Dartabase Migration 
     
     inspired by Ruby on Rails migrations
 
@@ -36,8 +35,8 @@ Dartabase Migration 0.4.2
 	    0.3.0	requires	0.3.0 deprecated!!
 		
 	Uses
-    	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.9.0
-    	PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.12
+    	MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
+    	PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
 
 HOW TO SETUP
 ------------
@@ -276,7 +275,7 @@ COLUMN ID
 	as primary key. Dont add 'id' in any of the migration files.
 	
 	This is to let 'Dartabase Model' decide when to create or update an Object
-	on save() - see http://pub.dartlang.org/packages/dartabase_model   	
+	on save() - see [Dartabase Model](http://pub.dartlang.org/packages/dartabase_model)   	
 	     
 *******************************************************************************************
 COLUMN CREATED/UPDATED

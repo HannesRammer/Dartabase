@@ -5,8 +5,8 @@ Dartabase Model 0.4.1
     with MySQL/PGSQL
     inspired by Ruby on Rails models
     
-    This requires the use of 'Dartabase Miration' in your project
-    see http://pub.dartlang.org/packages/dartabase_migration
+    This requires the use of [Dartabase Miration](http://pub.dartlang.org/packages/dartabase_migration) in your project
+    
      
     Version
     	0.4.1 -adapted model to work with old and new migration files
@@ -33,9 +33,9 @@ Dartabase Model 0.4.1
 	    0.3.0	requires	0.3.0 deprecated!!
 	
 	Uses
-    	MYSQL via http://pub.dartlang.org/packages/sqljocky version 0.9.0
-    	PGSQL via http://pub.dartlang.org/packages/postgresql version 0.2.12
-
+    	MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
+    	PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
+    	
 HOW TO SETUP
 ------------
     After you have sucessfully finished setting up 'Dartabase Migration' 
