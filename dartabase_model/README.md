@@ -86,8 +86,8 @@ After you have sucessfully finished setting up 'Dartabase Migration'
 		-----account.dart--END--
 
 5. Now add account.dart as part to dataServer so you can access Account
-   obviously when you have everything in the same file,
-   you dont need 'part' and 'part_of' 
+   (obviously when you have everything in the same file,
+   you dont need 'part' and 'part_of') 
 	
 		-----dataserver.dart--START--
 			
@@ -108,7 +108,7 @@ After you have sucessfully finished setting up 'Dartabase Migration'
 HOW TO USE
 ----------
 
-**Saving data**
+**Saving data async**
 
   simple async save call
 
@@ -151,7 +151,7 @@ HOW TO USE
       
 **Complex find**
   
-   when you want to find an entry with more than one condition curently you can use 
+   when you want to find an entry with more than one condition currently you can use 
 	
 	  Future find(String sql, bool resultAsList)
 	  
