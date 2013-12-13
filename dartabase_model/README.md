@@ -1,13 +1,13 @@
 Dartabase Model 0.4.1
 ===================
 
-    Serverside Database Object Models for simple data manipulation
-    with MySQL/PGSQL
-    inspired by Ruby on Rails models
+  Serverside Database Object Models for simple data manipulation
+  with MySQL/PGSQL
+  
+  inspired by Ruby on Rails models
     
-    This requires the use of [Dartabase Miration](http://pub.dartlang.org/packages/dartabase_migration) in your project
+  This requires the use of [Dartabase Miration](http://pub.dartlang.org/packages/dartabase_migration) in your project
     
-     
     Version
     	0.4.1 -adapted model to work with old and new migration files
     	0.4.0 -adapted model for migration 0.4.0 see compatibility below
@@ -32,137 +32,145 @@ Dartabase Model 0.4.1
 	    0.4.x	requires    0.4.x
 	    0.3.0	requires	0.3.0 deprecated!!
 	
-	Uses
-    	MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
-    	PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
+  Uses
+  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
+  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
     	
 HOW TO SETUP
 ------------
-    After you have sucessfully finished setting up 'Dartabase Migration' 
-    1. Install Dartabase Model the usual pubspec way 
+After you have sucessfully finished setting up 'Dartabase Migration' 
+1. Install Dartabase Model the usual pubspec way 
     
-    2. Inside your project, at the beginning of the main method insert
+2. Inside your project, at the beginning of the main method insert
         
-        Model.initiate("path-to-your-project");
+    Model.initiate("path-to-your-project");
 
-		now it should look kinda like this:
-		
-			-----dataserver.dart--START--
-		
-			library dataServer;
+	now it should look kinda like this:
 	
-			import 'package:dartabase_model/dartabase_model.dart';
+		-----dataserver.dart--START--
 	
-			main(){
-			  Model.initiate("C:\\darttestproject\\DartabaseServer");
-			  ... your code
-			}
-		
-			-----dataserver.dart--END--
-	
-	3. Imagine you have ONLY created one database table named 'account' 
-	   with the column 'name'
-	
-	4. You have to extend all classes that you want to connected to the database
-	   with 'Model'
-	   
-	   in this case we create a class Account with id, name and a counter
-	   
-			-----account.dart--START--
-		
-			part of dataServer;
-		
-			class Account extends Model{
-			  num id;		
-			  String name;
-			  num counter;
-			}
-		
-			-----account.dart--END--
+		library dataServer;
 
-	5. Now add account.dart as part to dataServer so you can access Account
-	   obviously when you have everything in the same file,
-	   you dont need 'part' and 'part_of' 
+		import 'package:dartabase_model/dartabase_model.dart';
+
+		main(){
+		  Model.initiate("C:\\darttestproject\\DartabaseServer");
+		  ... your code
+		}
 	
-			-----dataserver.dart--START--
-		
-			library dataServer;
+		-----dataserver.dart--END--
 	
-			import 'package:dartabase_model/dartabase_model.dart';
-			part "account.dart";	
-			
-			main(){
-			  Model.initiate("C:\\darttestproject\\DartabaseServer");
-			  ... your code
-			}
+3. Imagine you have ONLY created one database table named 'account' 
+
+    with the column 'name'
+	
+4. You have to extend all classes that you want to connected to the database
+
+    with 'Model'
+	   
+	in this case we create a class Account with id, name and a counter
+	   
+	-----account.dart--START--
 		
-			-----dataserver.dart--END--
-	 
+	part of dataServer;
+	
+	class Account extends Model{
+	  num id;		
+	  String name;
+	  num counter;
+	}
+	
+	-----account.dart--END--
+
+5. Now add account.dart as part to dataServer so you can access Account
+   obviously when you have everything in the same file,
+   you dont need 'part' and 'part_of' 
+	
+	-----dataserver.dart--START--
+		
+	library dataServer;
+
+	import 'package:dartabase_model/dartabase_model.dart';
+	part "account.dart";	
+	
+	main(){
+	  Model.initiate("C:\\darttestproject\\DartabaseServer");
+	  ... your code
+	}
+
+	-----dataserver.dart--END--
+ 
 
 *******************************************************************************************
 HOW TO USE
 ----------
 
-	1. Saving data
-	
-	  //simple async save call
-	
-	  Account account = new Account();
-	  account.name="dartabase";
-	  account.id=1;
-	  account.counter=0;
-	  account.save();
+**Saving data**
+
+  simple async save call
+
+  	Account account = new Account();
+  	account.name="dartabase";
+  	account.id=1;
+ 	account.counter=0;
+	account.save();
+  
+  this will create a new database entry inside account 
+  with column name = "dartabase" and increment "id"
+  
+  NOTE: 
+  
+    'id' wont be saved since it is controlled by Dartabase Migration
+    'counter' wont be saved inside the database 
+              since it is not represented in the account table.
+  
+**Loading data async**
+
+  simple find single element call - returns a single account object
 	  
-	  this will create a new database entry inside account 
-	  with column name = "dartabase" and increment "id"
-	  
-	  NOTE: 'id' wont be saved since it is controlled by Dartabase Migration
-	        'counter' wont be saved inside the database 
-	                  since it is not represented in the account table.
-	  
-	2. Loading data async
-	
-	  simple find single element call - returns a single account object
-		  
-		  Account accountRequest = new Account();
-		  accountRequest.findById(1).then((account){
-		    print("single#${account.name}");	// prints 'dartabase'
-		  })
-	  
-	  simple find many elements call - returns a list of account objects
-	   
-		  Account accountRequest = new Account();
-		  accountfromDB.findAllBy('name','dartabase').then((list){
-	        for(var loadedAccount in list){
-	      		print("${account.id}${account.name}"); // prints '${id}dartabase'
-	        }
-	      })
-	  
-	  NOTE:the result is not returned inside the requestObject, but inside the then
-	      
-    3. Complex find
-       when you want to find an entry with more than one condition curently you can use 
-    	
-    	  Future find(String sql, bool resultAsList)
-    	  
-    	  where you provide a normal sql query as a String and tell the function 
-    	  
-    	  'true' returns a list of elements 
-    	  'false' returns the first of the found elements
-    	  
-    	  
-       other available find functions are currently
+	Account accountRequest = new Account();
+	accountRequest.findById(1).then((account){
+	  print("single#${account.name}");	// prints 'dartabase'
+	})
+  
+  simple find many elements call - returns a list of account objects
+   
+	Account accountRequest = new Account();
+	accountfromDB.findAllBy('name','dartabase').then((list){
+      for(var loadedAccount in list){
+    	print("${account.id}${account.name}"); // prints '${id}dartabase'
+      }
+    })
+  
+  NOTE:
+  
+  the result is not returned inside the requestObject, but inside the then
       
-	      Future findBy(String column, var value) 
+**Complex find**
+  
+   when you want to find an entry with more than one condition curently you can use 
+	
+	  Future find(String sql, bool resultAsList)
 	  
-	4. Delete
-	   To remove an object from the database simply write
-	   
-	      Account accountRequest = new Account();
-		  accountRequest.findById(13).then((account){
-		    account.delete();
-	      })
-		
+	  where you provide a normal sql query as a String and tell the function 
+	  
+	  'true' returns a list of elements 
+	  'false' returns the first of the found elements
+	  
+	  
+   other available find functions are currently
+  
+      Future findBy(String column, var value) 
+  
+**Delete**
+  
+   To remove an object from the database simply write
+   
+      Account accountRequest = new Account();
+	  accountRequest.findById(13).then((account){
+	    account.delete();
+      })
+	
 	WORKING EXAMPLE:
 	
 		-----dataserver.dart--START--

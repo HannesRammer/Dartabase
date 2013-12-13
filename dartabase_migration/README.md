@@ -105,8 +105,8 @@ there should not be a problem.
 		  (but not projectsMapping.json)
 		
 	
-**LOST 'projectsMapping.json'** 
-DONT PAN**!**C 
+**LOST 'projectsMapping.json' DONT PAN!C** 
+ 
 
 		1.create a file named projectsMapping.json inside 'dartabase_migration/bin/'
 		  
