@@ -33,6 +33,7 @@ Dartabase Model 0.4.1
 	    0.3.0	requires	0.3.0 deprecated!!
 	
   Uses
+  
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
@@ -47,7 +48,7 @@ After you have sucessfully finished setting up 'Dartabase Migration'
         
 		Model.initiate("path-to-your-project");
 
-now it should look kinda like this:
+   now it should look kinda like this:
 	
 		-----dataserver.dart--START--
 	

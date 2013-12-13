@@ -35,6 +35,7 @@ Dartabase Migration 0.4.2
 	    0.3.0	requires	0.3.0 deprecated!!
 		
   Uses
+  
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
