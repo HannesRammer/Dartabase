@@ -1,4 +1,4 @@
-Dartabase Migration 0.4.2
+Dartabase Migration 0.4.3
 ===================
 
   Serverside Database migration 
@@ -9,6 +9,7 @@ Dartabase Migration 0.4.2
   inspired by Ruby on Rails migrations
 
 	Version
+		0.4.3 -fixed crash when projectsMapping.json does not exist on dbInit.dart
 		0.4.2 -adapted column option to support old migration files
 			   migrations now support '"column" : "INT"' and '"column" : {"type":"INT"}'
 		0.4.1 -added column options 'default' and 'null'

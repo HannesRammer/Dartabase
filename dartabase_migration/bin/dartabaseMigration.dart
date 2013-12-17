@@ -33,7 +33,14 @@ int lastMigrationNumber;
 
 void initiateDartabase(String path,String projectName) {
   print("add project mapping ${projectName}:${path}");
-  projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
+  var file = new File("projectsMapping.json");
+  if(file.existsSync()){
+    projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
+    
+  }else{
+    DBCore.mapToJsonFilePath({}, "projectsMapping.json");
+    projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
+  }
   projectMapping[projectName]=path;
   DBCore.mapToJsonFilePath(projectMapping, "projectsMapping.json");
   Map config={
