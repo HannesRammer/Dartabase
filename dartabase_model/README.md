@@ -1,4 +1,4 @@
-Dartabase Model 0.4.1
+Dartabase Model 0.5.0
 ===================
 
   Serverside Database Object Models for simple data manipulation
@@ -9,6 +9,10 @@ Dartabase Model 0.4.1
   This requires the use of [Dartabase Miration](http://pub.dartlang.org/packages/dartabase_migration) in your project
     
     Version
+    	0.5.0 -required Migration 0.5.x - possible breaking change 
+    		   see Migration readme.md 'Update To Version 0.5.0' 
+    		  -added relations between tables
+    		   see  
     	0.4.1 -adapted model to work with old and new migration files
     	0.4.0 -adapted model for migration 0.4.0 see compatibility below
     	0.3.0 -fixed possible crash in < 0.3.0 with mysql adapter, 
@@ -20,8 +24,8 @@ Dartabase Model 0.4.1
 	    0.1.0 -ready for Dart 1.0
 
 	Tested on 
-		Dart Editor version 1.0.1_r30657 (DEV)
-		Dart SDK version 1.0.1.3_r30657
+		Dart Editor version 1.1.0.dev_05_00 (DEV)
+		Dart SDK version 1.1.0-dev.5.0
 		
 	Compatibility
 		depending on the migration version you are using 
@@ -29,6 +33,7 @@ Dartabase Model 0.4.1
 	    
 	    migration  			model
 	    -------------------------
+	    0.5.x <-requires->  0.5.x
 	    0.4.x	requires    0.4.x
 	    0.3.0	requires	0.3.0 deprecated!!
 	
