@@ -1,4 +1,4 @@
-Dartabase Migration 0.4.2
+Dartabase Migration 0.5.0
 ===================
 
   Serverside Database migration 
@@ -9,6 +9,8 @@ Dartabase Migration 0.4.2
   inspired by Ruby on Rails migrations
 
 	Version
+		0.5.0 -possible breaking change -> possible to added relations
+			   see "Update to version 0.5.0"
 		0.4.2 -adapted column option to support old migration files
 			   migrations now support '"column" : "INT"' and '"column" : {"type":"INT"}'
 		0.4.1 -added column options 'default' and 'null'
@@ -22,15 +24,16 @@ Dartabase Migration 0.4.2
 		0.0.5 -adapted breaking changes due to dart:encoder
 
 	Tested on 
-		Dart Editor version 1.0.1_r30657 (DEV)
-		Dart SDK version 1.0.1.3_r30657
+		Dart Editor version 1.1.0.dev_05_00 (DEV)
+		Dart SDK version 1.1.0-dev.5.0
 		
-	compatibility
+	Compatibility
 		depending on the migration version you are using 
 		you have to use a differend model version in your app
 	    
 	    migration  			model
 	    -------------------------
+	    0.5.x <-requires->  0.5.x
 	    0.4.x	requires    0.4.x
 	    0.3.0	requires	0.3.0 deprecated!!
 		
@@ -133,8 +136,46 @@ UPDATE TO VERSION 0.2.0
 
     	If you had already created a migration file with a comuln 'id' in version < 0.2.0 
     	remove the entry for 'id' from all your migration file UP and DOWN hashes
+
+UPDATE TO VERSION 0.5.0 (breakting change for some)
 		
+		This applies to you ONLY 
+		if a "table_name" you specified in your migration files actions
+		starts with a capital letter
+		
+		eg. like this
+		
+		"createTable": {
+			"Account": {
+				"name": "INT"
+			}
+		}
+
+		to fix this
+		
+		1.Change all "table_names" inside your migrations to lower case
+		
+		eg. like this
+		
+		"createTable": {
+			"account": {
+				"name": "INT"
+			}
+		}		  		
 		    
+		and 
+		2.Open schema.json and replace all capital table names to lower case aswell
+		
+		eg from
+		
+		{"Gamechar":{"id":{"type":"INT"}}}
+		
+		to
+		
+		{"gamechar":{"id":{"type":"INT"}}}
+		
+		now Migration and Model should work like a charm again ;)
+		      
 *******************************************************************************************
 HOW TO CREATE MIGRATIONS
 ------------------------
@@ -168,9 +209,9 @@ or
     
     "createTable" key takes a json object as value
 
-        keys    : non_existent_table_names
+        keys    : non_existent_table_names (lower_case)
         values  : json object
-                    keys    : non_existent_column_names
+                    keys    : non_existent_column_names (lower_case)
                     values  : DARTABASETYPE
                     		  or
                     		  json object
@@ -198,9 +239,9 @@ or
     
     "createColumn" key takes a json object as value
 
-        keys    : existing_table_names
+        keys    : existing_table_names (lower_case)
         values  : json object
-                    keys    : non_existent_column_names
+                    keys    : non_existent_column_names (lower_case)
                     values  : DARTABASETYPE
                     		  or
                     		  json object
@@ -227,8 +268,8 @@ or
     
     "removeColumn" key takes a json object as value
 
-        keys    : existing_table_names
-        values  : array[existing_column_names]
+        keys    : existing_table_names (lower_case)
+        values  : array[existing_column_names] (lower_case)
 
         eg.
         "removeColumn": {
@@ -240,7 +281,7 @@ or
     "removeTable" key takes array of existing_table_names
 
         eg.
-        "removeTable": ["existing_table_name_one"]
+        "removeTable": ["existing_table_name_one"] (lower_case)
 
 A simple migration could look like
 
@@ -344,12 +385,16 @@ Once you have more than one action in the migration file
 remember that the order of execution inside a migration will be
 
     createTable
+     ->
+     createColumn
+      ->
+      removeColumn
+       ->
+       createRelation
         ->
-        createColumn
-            ->
-            removeColumn
-                ->
-                removeTable
+        removeRelation
+         ->
+         removeTable
 
 but I cant think of a feasible example where that might bring up problems.
 

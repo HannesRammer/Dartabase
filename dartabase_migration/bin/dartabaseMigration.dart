@@ -314,11 +314,78 @@ void removeColumn(conn) {
         DBHelper.removeDBColumn(sqlQuery, conn,j,columnNames.length);
       } else {
         print("\nSCHEMA removeColumn FAIL: Table ${tableName} doesnt exists, columns not removed");
-        removeTable(conn);
+        createRelation(conn);
       }
     }
   } else {
 //print("\nNothing to remove since 'removeColumn' is not specified in json");
+    createRelation(conn);
+  }
+}
+
+
+void createRelation(conn) {
+  if (DBCore.parsedMap["createRelation"] != null) {
+    
+    List relations = DBCore.parsedMap["createRelation"];
+    for (var i = 0;i < relations.length;i++) {
+    
+      List tableNames = [relations[i][0].toLowerCase(),relations[i][1].toLowerCase()];
+      tableNames.sort();
+      String relationTable = "${tableNames[0]}_2_${tableNames[1]}";
+      
+      String intType = DBCore.typeMapping("INT");
+      
+      if (schema[relationTable] == null) {
+        List columns = ["${tableNames[0]}_id","${tableNames[1]}_id"];
+        
+        String sqlQuery = "CREATE TABLE IF NOT EXISTS $relationTable ( ${columns[0]} $intType NOT NULL, ${columns[1]} $intType NOT NULL) ;";
+        
+        
+        schema[relationTable] = {};
+        Map schemaTableMap = schema[relationTable];
+        schemaTableMap["id"] = {"type":"INT"};
+        for (int j = 0;j < columns.length;j++) {
+          String columnName = columns[j];
+          if (schemaTableMap[columnName] == null) {
+            schemaTableMap[columnName] = {"null":"true","type":"INT"}; 
+            print("\nSCHEMA createRelation OK: Column ${columnName} added to table ${relationTable}");
+          } else {
+            print("\nSCHEMA createRelation Cancle: Column ${columnName} already exists in table ${relationTable}, column not added");
+          }
+        }
+        print("\n+++++sqlQuery: $sqlQuery");
+        DBHelper.createDBRelation(sqlQuery, conn,i,relations.length);
+      } else {
+        print("\nSCHEMA createRelation Cancle: Table ${relationTable} already exists in schema, relations not added");
+        removeRelation(conn);
+      }
+      print("\nSCHEMA createRelation Finish: Table $relationTable");
+    }
+  } else {
+//print("\nNothing to relate since 'createRelation' is not specified in json");
+    removeRelation(conn);
+  }
+}
+void removeRelation(conn) {
+  if (DBCore.parsedMap["removeRelation"] != null) {
+    List relations = DBCore.parsedMap["removeRelation"];
+    for (var i = 0;i < relations.length;i++) {
+      List tableNames = [relations[i][0].toLowerCase(),relations[i][1].toLowerCase()];
+      tableNames.sort();
+      String relationTable = "${tableNames[0]}_2_${tableNames[1]}";
+      if (schema[relationTable] != null) {
+        schema.remove(relationTable);
+        print(schema);
+        String sqlQuery = "DROP TABLE IF EXISTS ${relationTable} ";
+        DBHelper.removeDBRelation(sqlQuery, conn,i,relations.length);
+      } else {
+        print("\nSCHEMA removeRelation FAIL: Table ${relationTable} doesnt exists, relation not removed");
+        removeTable(conn);
+      }
+    }
+  } else {
+    //print("\nNothing to remove since 'removeRelation' is not specified in json");
     removeTable(conn);
   }
 }
@@ -332,7 +399,6 @@ void removeTable(conn) {
         schema.remove(tableName);
         print(schema);
         String sqlQuery = "DROP TABLE IF EXISTS ${tableName} ";
-//   print("\nsqlQuery: $sqlQuery");
         DBHelper.removeDBTable(sqlQuery, conn);
 
       } else {
@@ -340,7 +406,7 @@ void removeTable(conn) {
       }
     }
   } else {
-//print("\nNothing to remove since 'removeTable' is not specified in json");
+    //print("\nNothing to remove since 'removeTable' is not specified in json");
   }
   Future query;
   if (DBCore.adapter == DBCore.PGSQL) {

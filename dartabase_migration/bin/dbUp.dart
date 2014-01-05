@@ -14,6 +14,8 @@ import "dartabaseMigration.dart";
  *   -createTable
  *   -createColumn
  *   -removeColumn
+ *   -createRelation
+ *   -removeRelation
  *   -removeTable    
  *  
  * starting with the last migrated version saved in

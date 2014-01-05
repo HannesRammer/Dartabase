@@ -27,6 +27,22 @@ class DBHelper {
       afterQuery("removeDBColumn", conn.query(sql), sql, conn, x, count);
     }
   }
+  
+  static void createDBRelation(sql, conn, x, count) {
+    if (DBCore.adapter == DBCore.PGSQL) {
+      afterQuery("createDBRelation", conn.query(sql).toList(), sql, conn, x, count);
+    } else if (DBCore.adapter == DBCore.MySQL) {
+      afterQuery("createDBRelation", conn.query(sql), sql, conn, x, count);
+    }
+  }
+  
+  static void removeDBRelation(sql, conn, x, count) {
+    if (DBCore.adapter == DBCore.PGSQL) {
+      afterQuery("removeDBRelation", conn.query(sql).toList(), sql, conn, x, count);
+    } else if (DBCore.adapter == DBCore.MySQL) {
+      afterQuery("removeDBRelation", conn.query(sql), sql, conn, x, count);
+    }
+  }
 
   static void removeDBTable(sql, conn) {
     
@@ -53,6 +69,16 @@ class DBHelper {
       }
       if (actionType == "removeDBColumn") {
         if (x == count) {
+          createRelation(conn);
+        }
+      }
+      if (actionType == "createDBRelation") {
+        if (x == count - 1) {
+          removeRelation(conn);
+        }
+      }
+      if (actionType == "removeDBRelation") {
+        if (x == count - 1) {
           removeTable(conn);
         }
       }

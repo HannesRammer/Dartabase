@@ -1,5 +1,5 @@
 name: dartabase_migration
-version: 0.4.2
+version: 0.5.0
 author: Hannes Rammer <Hannes.Rammer@gmail.com>
 description: Serverside Database migration for easy database structure manipulation inspired by Ruby on Rails migrations for mysql and postgresql
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_migration
