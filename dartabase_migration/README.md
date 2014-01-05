@@ -1,5 +1,5 @@
 Dartabase Migration 0.5.0
-===================
+=========================
 
   Serverside Database migration 
   for simple version controlled database structure manipulation 
@@ -11,6 +11,7 @@ Dartabase Migration 0.5.0
 	Version
 		0.5.0 -possible breaking change -> possible to added relations
 			   see "Update to version 0.5.0"
+		0.4.3 -fixed crash when projectsMapping.json does not exist on dbInit.dart
 		0.4.2 -adapted column option to support old migration files
 			   migrations now support '"column" : "INT"' and '"column" : {"type":"INT"}'
 		0.4.1 -added column options 'default' and 'null'
