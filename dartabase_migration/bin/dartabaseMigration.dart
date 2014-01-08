@@ -335,9 +335,37 @@ void createRelation(conn) {
   if (DBCore.parsedMap["createRelation"] != null) {
     
     List relations = DBCore.parsedMap["createRelation"];
+    Map dependencies;
+    List tableNames;
+    if(schema["dependencyRelations"] != null){
+      dependencies = schema["dependencyRelations"]; 
+    }else{
+      dependencies = {};
+      schema["dependencyRelations"] = dependencies;
+    }
     for (var i = 0;i < relations.length;i++) {
-    
-      List tableNames = [relations[i][0].toLowerCase(),relations[i][1].toLowerCase()];
+      if (relations[i].runtimeType == List){
+        tableNames = [relations[i][0].toLowerCase(),relations[i][1].toLowerCase()];
+      }else if(relations[i].runtimeType.toString() == "_LinkedHashMap"){
+        String master = relations[i]["master"];
+        String slave = relations[i]["slave"];
+        tableNames=[master,slave];
+        List list;
+        if(dependencies[master] != null){
+          list = dependencies[master];
+        }else{
+          list = [];
+        }
+        if(list.contains(slave)){
+          
+        }else{
+          list.add(slave); 
+        }
+        
+        dependencies[master] = list;
+        schema["dependencyRelations"] = dependencies;
+      }
+
       tableNames.sort();
       String relationTable = "${tableNames[0]}_2_${tableNames[1]}";
       
