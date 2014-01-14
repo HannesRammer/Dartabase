@@ -9,8 +9,8 @@ Dartabase Migration 0.5.0
   inspired by Ruby on Rails migrations
 
 	Version
-		0.5.0 -possible breaking change -> possible to added relations
-			   see "Update to version 0.5.0"
+		0.5.0  added relation functions has, recieve, remove 
+			   see "Update to version 0.5.0" for possible breaking change 
 		0.4.3 -fixed crash when projectsMapping.json does not exist on dbInit.dart
 		0.4.2 -adapted column option to support old migration files
 			   migrations now support '"column" : "INT"' and '"column" : {"type":"INT"}'
@@ -25,9 +25,9 @@ Dartabase Migration 0.5.0
 		0.0.5 -adapted breaking changes due to dart:encoder
 
 	Tested on 
-		Dart Editor version 1.1.0.dev_05_00 (DEV)
-		Dart SDK version 1.1.0-dev.5.0
-		
+		Dart Editor version 1.1.0.dev_05_06 (DEV)
+		Dart SDK version 1.1.0-dev.5.6
+
 	Compatibility
 		depending on the migration version you are using 
 		you have to use a differend model version in your app
@@ -204,7 +204,7 @@ or
 
     a JSON object with a key "UP" and a json object value
 
-    to use migrations you can specify 4 keys/actions inside the "UP" value
+    to use migrations you can specify the keys/actions below inside the "UP" value
 
 **createTable**
     
@@ -283,25 +283,61 @@ or
 
         eg.
         "removeTable": ["existing_table_name_one"] (lower_case)
+        
+**createRelation**
+    
+    "createRelation" key takes an array of arrays with two existing table names as value
 
+        value  : array[array[existing_table_name_one,existing_table_name_two]] (lower_case)
+
+        eg.
+        "createRelation": [
+        	["existing_table_name_one","existing_table_name_two"]
+    	]
+        
+**removeRelation**
+    
+    "removeRelation" key takes an array of arrays with two existing table names as value
+
+        value  : array[array[existing_table_name_one,existing_table_name_two]] (lower_case)
+
+        eg.
+        "removeRelation": [
+        	["existing_table_name_one","existing_table_name_two"]
+    	]
+    	
 A simple migration could look like
 
     ----------20130709134700_create_table_user.json--------------
     {
         "UP": {
             "createTable": {
-                "user": {
+                "account": {
                     "name": "VARCHAR"
+                },
+                "picture": {
+                    "file_name": "VARCHAR"
                 }
-            }
+            },
+            "createRelation": [
+              ["picture","account"]
+            ]
         },
         "DOWN": {
-            "removeTable": ["user"]
+        	"removeRelation": [
+              ["picture","account"]
+            ],
+            "removeTable": ["account","picture"]
         }
     }
 
-We create a table 
-named "user" with column "name" and datatype "variable length of characters"
+createTable creates a table named  
+"account" with column "name" and datatype "variable length of characters"
+"picture" with column "name" and datatype "variable length of characters"
+
+createRelation creates a table named
+"account_2_picture" with columns "account_id" and "picture_id"
+
 
 *******************************************************************************************
 COLUMN ID

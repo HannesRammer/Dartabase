@@ -336,12 +336,26 @@ void createRelation(conn) {
     
     List relations = DBCore.parsedMap["createRelation"];
     Map dependencies;
+    List masterList = [];
+    List slaveList = [];
     List tableNames;
     if(schema["dependencyRelations"] != null){
-      dependencies = schema["dependencyRelations"]; 
+      dependencies = schema["dependencyRelations"];
+      if(dependencies["masterList"] == null){
+        masterList=[];
+      }else{
+        masterList = dependencies["masterList"];  
+      }
+      if(dependencies["slaveList"] == null){
+        slaveList=[];
+      }else{
+        slaveList = dependencies["slaveList"];
+      }
     }else{
       dependencies = {};
       schema["dependencyRelations"] = dependencies;
+      masterList = [];
+      slaveList = [];
     }
     for (var i = 0;i < relations.length;i++) {
       if (relations[i].runtimeType == List){
@@ -361,9 +375,22 @@ void createRelation(conn) {
         }else{
           list.add(slave); 
         }
-        
+        if(masterList.contains(master)){
+          
+        }else{
+          masterList.add(master); 
+        }
+        if(slaveList.contains(slave)){
+          
+        }else{
+          slaveList.add(slave); 
+        }
         dependencies[master] = list;
+        dependencies["masterList"] = masterList;
+        dependencies["slaveList"] = slaveList;
+        
         schema["dependencyRelations"] = dependencies;
+        
       }
 
       tableNames.sort();
