@@ -289,18 +289,18 @@ class Model {
   //##########RELATIONS START############  
   
   /**
-   * Future recieve(object) 
+   * Future receive(object) 
    * 
    * once future completes
    * creates relation between the two objects (player and character)
    * ...
    * 
-   * player.recieve(character).then((result){
+   * player.receive(character).then((result){
    *   
    * }); 
    * 
    **/
-  Future recieve(object) {
+  Future receive(object) {
     Completer completer = new Completer();
     String initiatedObject = "${this.runtimeType}".toLowerCase();
     String relatedObject = "${object.runtimeType}".toLowerCase();

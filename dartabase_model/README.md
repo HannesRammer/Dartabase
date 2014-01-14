@@ -1,4 +1,4 @@
-Dartabase Model 0.5.1
+Dartabase Model 0.5.2
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -6,10 +6,11 @@ Dartabase Model 0.5.1
   
   inspired by Ruby on Rails models
     
-  This requires the use of [Dartabase Miration](http://pub.dartlang.org/packages/dartabase_migration) in your project
+  This requires the use of [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) in your project
     
     Version
-    	0.5.1 fixed README.md
+    	0.5.2 -corrected spelling
+    	0.5.1 -fixed README.md
     	0.5.0 -required Migration 0.5.x  
     		   see Migration readme.md  
     		  -added relations between tables
@@ -186,13 +187,13 @@ SIMPLE MODEL FUNCTIONS
 RELATIONS
 ---------
 
-**Future recieve(object)** 
+**Future receive(object)** 
 	 
 	once future completes
 	creates relation between the two objects (player and character)
 	...
 	    
-	player.recieve(character).then((result){
+	player.receive(character).then((result){
 	      
 	}); 
     
@@ -287,7 +288,7 @@ say we have a database with table account and table picture
 			  Completer completer = new Completer();
 			  save().then((List objects){
 			    find().then((_){
-			      recieve(objects[0],objects[1]).then((_){
+			      receive(objects[0],objects[1]).then((_){
 			        has(objects[0],objects[1]).then((_){
 			          remove(objects[0],objects[1]).then((_){
 			            delete(objects[0],objects[1]).then((_){
@@ -384,19 +385,19 @@ say we have a database with table account and table picture
 			/**
 			 * creates relation between data in db
 			 * 
-			 * account 1 recieve picture 1
-			 * account 2 recieve picture 2
-			 * account 2 recieve picture 3
+			 * account 1 receive picture 1
+			 * account 2 receive picture 2
+			 * account 2 receive picture 3
 			**/
-			Future recieve(List<Account> accounts,List<Picture> pictures) {
+			Future receive(List<Account> accounts,List<Picture> pictures) {
 			  Completer completer = new Completer();
-			  accounts[0].recieve(pictures[0]).then((_){
-			    print('account${accounts[0].id} recieved picture${pictures[0].id}');
-			    accounts[1].recieve(pictures[1]).then((_){
-			      print('account${accounts[1].id} recieved picture${pictures[1].id}');
-			      accounts[1].recieve(pictures[2]).then((_){
-			        print('account${accounts[1].id} recieved picture${pictures[2].id}');
-			        print("recieve() DONE!!!");
+			  accounts[0].receive(pictures[0]).then((_){
+			    print('account${accounts[0].id} received picture${pictures[0].id}');
+			    accounts[1].receive(pictures[1]).then((_){
+			      print('account${accounts[1].id} received picture${pictures[1].id}');
+			      accounts[1].receive(pictures[2]).then((_){
+			        print('account${accounts[1].id} received picture${pictures[2].id}');
+			        print("receive() DONE!!!");
 			        completer.complete(true);
 			      });
 			    });
