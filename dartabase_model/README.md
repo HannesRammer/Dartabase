@@ -1,5 +1,5 @@
 Dartabase Model 0.5.0
-===================
+=====================
 
   Serverside Database Object Models for simple data manipulation
   with MySQL/PGSQL
@@ -9,10 +9,9 @@ Dartabase Model 0.5.0
   This requires the use of [Dartabase Miration](http://pub.dartlang.org/packages/dartabase_migration) in your project
     
     Version
-    	0.5.0 -required Migration 0.5.x - possible breaking change 
-    		   see Migration readme.md 'Update To Version 0.5.0' 
+    	0.5.0 -required Migration 0.5.x  
+    		   see Migration readme.md  
     		  -added relations between tables
-    		   see  
     	0.4.1 -adapted model to work with old and new migration files
     	0.4.0 -adapted model for migration 0.4.0 see compatibility below
     	0.3.0 -fixed possible crash in < 0.3.0 with mysql adapter, 
@@ -24,9 +23,9 @@ Dartabase Model 0.5.0
 	    0.1.0 -ready for Dart 1.0
 
 	Tested on 
-		Dart Editor version 1.1.0.dev_05_00 (DEV)
-		Dart SDK version 1.1.0-dev.5.0
-		
+		Dart Editor version 1.1.0.dev_05_06 (DEV)
+		Dart SDK version 1.1.0-dev.5.6
+
 	Compatibility
 		depending on the migration version you are using 
 		you have to use a differend model version in your app
@@ -45,6 +44,7 @@ Dartabase Model 0.5.0
     	
 HOW TO SETUP
 ------------
+
 After you have sucessfully finished setting up 'Dartabase Migration' 
 
 1. Install Dartabase Model the usual pubspec way 
@@ -113,73 +113,160 @@ After you have sucessfully finished setting up 'Dartabase Migration'
 HOW TO USE
 ----------
 
-**Saving data async**
+SIMPLE MODEL FUNCTIONS
+----------------------
 
-  simple async save call
-
-	  	Account account = new Account();
-	  	account.name="dartabase";
-	  	account.id=1;
-	 	account.counter=0;
-		account.save();
-  
-  this will create a new database entry inside account 
-  with column name = "dartabase" and increment "id"
-  
-  NOTE: 
-  
-	    'id' wont be saved since it is controlled by Dartabase Migration
-    	'counter' wont be saved inside the database 
-        	      since it is not represented in the account table.
-  
-**Loading data async**
-
-  simple find single element call - returns a single account object
-	  
-		Account accountRequest = new Account();
-		accountRequest.findById(1).then((account){
-		  print("single#${account.name}");	// prints 'dartabase'
-		})
-  
-  simple find many elements call - returns a list of account objects
+**Future save()** 
+    
+    once future completes
+     
+    Returns ??? true || false ?? id || null ?? saved object not needed 
+    
+    player.save().then((isSaved){
+      if(isSaved){
+        //your code
+      }else{
+      }
+    }); 
    
-		Account accountRequest = new Account();
-		accountfromDB.findAllBy('name','dartabase').then((list){
-	      for(var loadedAccount in list){
-	    	print("${account.id}${account.name}"); // prints '${id}dartabase'
-	      }
-	    })
-  
-  NOTE:
-  
-	  the result is not returned inside the requestObject, but inside the then
-      
-**Complex find**
-  
-   when you want to find an entry with more than one condition currently you can use 
-	
-	  Future find(String sql, bool resultAsList)
-	  
-	  where you provide a normal sql query as a String and tell the function 
-	  
-	  'true' returns a list of elements 
-	  'false' returns the first of the found elements
-	  
-	  
-   other available find functions are currently
-  
-      Future findBy(String column, var value) 
-  
-**Delete**
-  
-   To remove an object from the database simply write
+**Future findBy(String column,var value)** 
+    
+    once future completes
+    
+    returns an (player) object if one exists 
+    else 
+    returns null
    
-      Account accountRequest = new Account();
-	  accountRequest.findById(13).then((account){
-	    account.delete();
-      })
+    player.findBy("name","tim").then((player){
+      if(player != null){
+        //your code
+      }else{
+      }
+    }); 
+    
+**Future findById(num id)** 
+    
+    once future completes
+    
+    returns an (player) object if one exists 
+    else 
+    returns null
+   
+    player.findById("3").then((player){
+      if(player != null){
+        //your code
+      }else{
+      }
+    }); 
+    
+**Future findAllBy(String column, var value)** 
+    
+    once future completes
+    
+    returns a list of (player) objects if one exists 
+    else 
+    returns empty list
+   
+    player.findAllBy("name","tim").then((players){
+      if(player != null){
+        //your code
+      }else{
+      }
+    }); 
+ 
+**Future delete()** 
+    
+    once future completes
+    
+    deletes the object //TODO and all its relations
+    
+    player.delete();
+    
+RELATIONS
+---------
+
+**Future recieve(object)** 
+	 
+	once future completes
+	creates relation between the two objects (player and character)
+	...
+	    
+	player.recieve(character).then((result){
+	      
+	}); 
+    
+**Future hasOne(object)** 
+   
+   once future completes
+   
+   returns an (character) object if one exists 
+   else 
+   returns null
+   
+   player.hasOne(new Character()).then((character){
+     if(character != null){
+       //your code
+     }else{
+     }
+   };
+  
+**Future hasMany(object)** 
+    
+    once future completes
+    
+    returns a list of (character) objects if one exists 
+    else 
+    returns empty list
+   
+    player.hasManyWith(new Character()).then((characters){
+      if(characters[0] != null){
+        //your code
+      }else{
+      }
+    }); 
+  
+**Future hasOneWith(object,String column,String value)** 
+	    
+	once future completes
+	 
+	returns an (character) object if one exists 
+	else 
+	returns null
+	 
+	player.hasOneWith(new Character(),'level','3').then((character){
+	  if(character != null){
+	    //your code
+	  }else{
+	  }
+	});
+
+**Future hasManyWith(object,String column,String value)** 
 	
+	once future completes
+	 
+	Returns a list of (character) objects if one exists 
+	else 
+	Returns empty list
+	   
+	player.hasManyWith(new Character(),'level','3').then((characters){
+	  if(characters[0] != null){
+	    //your code
+	  }else{
+	  }
+	}); 
+  
+**Future remove(object)** 
+	
+	once future completes
+	remove relation between the two objects (player and character)
+	...
+	
+	player.remove(character).then((result){
+	  
+	}); 
+
 **WORKING EXAMPLE**
+say we have a database with table account and table picture 
 	
 		-----dataserver.dart--START--
 	
@@ -188,43 +275,195 @@ HOW TO USE
 			import 'package:dartabase_model/dartabase_model.dart';
 			import 'dart:async';
 			part "account.dart";
+			part "picture.dart";
 			
 			void main() {
-			  Model.initiate("C:\\darttestproject\\DartabaseGameServer");
-			  
-			  account.username="username1";
-			  account.name="name";
-			  account.id=9;
-			  account.charname="charname1";
-			  account.save().then((isSaved){
-    
-			    Account accountfromDB = new Account();
-			    accountfromDB.findById(1).then((account){
-			      print("single#${account.toString()}");
-			    }).then((_){
-			        accountfromDB.findAllBy("name","name").then((list){
-			          for(var loadedAccount in list){
-			            print("List#${loadedAccount.toString()}");
-			          }
-			          list[1].delete().then((result){
-			          print("deleted");
-			          Account account = new Account();
-			          
-			          account.username="username2";
-			          account.name="name";
-			          account.id=8;
-			          account.charname="charname2";
-			          account.save().then((isSaved){
-			            accountfromDB.findAllBy("name","name").then((list){
-			              for(var loadedAccount in list){
-			                print("List#${loadedAccount.toString()}");
-			              }
+			  Model.initiate("C:\\darttestproject\\gameServer");
+			  testAll();
+			}
+			
+			Future testAll() {
+			  Completer completer = new Completer();
+			  save().then((List objects){
+			    find().then((_){
+			      recieve(objects[0],objects[1]).then((_){
+			        has(objects[0],objects[1]).then((_){
+			          remove(objects[0],objects[1]).then((_){
+			            delete(objects[0],objects[1]).then((_){
+			              print("2testAll DONE");
 			            });
 			          });
 			        });
 			      });
 			    });
 			  });
+			  return completer.future;
+			}
+			
+			/**
+			 * save test data into db
+			 * 
+			 * save account 1
+			 * save account 2
+			 * save picture 1
+			 * save picture 2
+			 * save picture 3
+			 **/
+			Future save() {
+			  Completer completer = new Completer();
+			  Account account1 = new Account();
+			  
+			  account1.username="testUser1";
+			  account1.name="guest";
+			  account1.id=1; // on empty db should save user.id =1
+			  account1.save().then((_){
+			    print('account1 saved : ${account1.toString()}');
+			    Account account2 = new Account();
+			    account2.username="testUser2";
+			    account2.name="guest";
+			    account2.id=2; // on empty db should save user.id =2
+			    account2.save().then((_){
+			      print('account2 saved : ${account2.toString()}');
+			      Picture picture1 = new Picture();
+			      picture1.filename="profile";
+			      picture1.id=1;
+			      picture1.save().then((_){
+			        print('picture1 saved : ${picture1.toString()}');
+			        Picture picture2 = new Picture();
+			        picture2.id=2;
+			        picture2.filename="profile";
+			        picture2.save().then((_){
+			          print('picture2 saved : ${picture2.toString()}');
+			          Picture picture3 = new Picture();
+			          picture3.id=3;
+			          picture3.filename="profile";
+			          picture3.save().then((_){
+			            print('picture3 saved : ${picture3.toString()}');
+			            print("testdata entered into DB");
+			            print("fillDB() DONE!!!");
+			            completer.complete([[account1,account2],[picture1,picture2,picture3]]);
+			            
+			          });
+			        });
+			      });
+			    });
+			  });
+			  return completer.future;
+			}
+			 
+			/**
+			 * find test data from db
+			 * 
+			 * account findBy username testUser
+			 * account findById 2
+			 * account findAllBy name guest
+			**/
+			Future find() {
+			  Completer completer = new Completer();
+			  Account accountSearch = new Account();
+			  accountSearch.findBy("username", "testUser1").then((account1){
+			    print('accountSearch.findBy("username", "testUser1") done. Result:');
+			    print(account1.toString());
+			    accountSearch.findById(2).then((Account account2){
+			      print('accountSearch.findById(2) done. Result:');
+			      print(account2.toString());
+			      accountSearch.findAllBy("name", "guest").then((List accounts){
+			        print('accountSearch.findAllBy("name", "guest") done. Results:');
+			        for(num i = 0;i<accounts.length;i++){
+			          print(accounts[i].toString());
+			        }
+			        print("find() DONE!!!");
+			        completer.complete(true);
+			      });
+			    });
+			  });
+			  return completer.future;
+			}
+			
+			/**
+			 * creates relation between data in db
+			 * 
+			 * account 1 recieve picture 1
+			 * account 2 recieve picture 2
+			 * account 2 recieve picture 3
+			**/
+			Future recieve(List<Account> accounts,List<Picture> pictures) {
+			  Completer completer = new Completer();
+			  accounts[0].recieve(pictures[0]).then((_){
+			    print('account${accounts[0].id} recieved picture${pictures[0].id}');
+			    accounts[1].recieve(pictures[1]).then((_){
+			      print('account${accounts[1].id} recieved picture${pictures[1].id}');
+			      accounts[1].recieve(pictures[2]).then((_){
+			        print('account${accounts[1].id} recieved picture${pictures[2].id}');
+			        print("recieve() DONE!!!");
+			        completer.complete(true);
+			      });
+			    });
+			    
+			  });
+			  return completer.future;
+			}
+			
+			/**
+			  * finds relation between data in db
+			  * 
+			  * account 1 hasOne picture
+			  * account 1 hasOneWith picture filename profile
+			  * account 2 hasMany picture
+			  * account 2 hasManyWith picture filename profile
+			**/
+			Future has(List<Account> accounts,List<Picture>  pictures) {
+			  Completer completer = new Completer();
+			  accounts[0].hasOne(new Picture()).then((picture){
+			    print('accounts[0].hasOne(new Picture()) done. Result:');
+			    print(picture.toString());
+			    accounts[0].hasOneWith(new Picture(),"filename","profile").then((picture){
+			      print('accounts[0].hasOneWith(new Picture(),"filename","profile")account done. Result:');
+			      print(picture.toString());
+			      accounts[1].hasMany(new Picture()).then((List pictures){
+			        print('accounts[1].hasMany(new Picture()) done. Results:');
+			        for(num i = 0;i<pictures.length;i++){
+			          print(pictures[i].toString());
+			        }
+			        accounts[1].hasManyWith(new Picture(),"filename","profile").then((List pictures){
+			          print('accounts[1].hasManyWith(new Picture(),"filename","profile") done. Results:');
+			          for(num i = 0;i<pictures.length;i++){
+			            print(pictures[i].toString());
+			          }
+			          print("has() DONE!!!");
+			          completer.complete(true);
+			        });
+			      });
+			    });
+			  });
+			  return completer.future;
+			}
+			
+			/**
+			 * remove picture 2 from account 2 
+			**/
+			Future remove(List<Account> accounts,List<Picture>  pictures) {
+			  Completer completer = new Completer();
+			  accounts[1].remove(pictures[1]).then((_){
+			    print('removed relation from picture.id = 2 and account.id = 2');
+			    print("remove() DONE!!!");
+			    completer.complete(true);
+			  });
+			  return completer.future;
+			}
+			
+			/**
+			 * delete account 1  
+			**/
+			Future delete(List<Account> accounts,List<Picture>  pictures) {
+			  Completer completer = new Completer();
+			  accounts[0].delete().then((_){
+			    print('removed all relations for account.id = ${accounts[0].id}');
+			    print('removed object account.id = ${accounts[0].id}');
+			    print("delete() DONE!!!");
+			    completer.complete(true);
+			  });
+			  return completer.future;
 			}
 				
 		-----dataserver.dart--END--
@@ -239,7 +478,7 @@ TODO
 
 	*wait for 'await' to make this baby sync
 	*test functionality in bigger project
-    *add more features
+    *add more features like implementing and removing dependencies
     *add examples code to git
     *add automated tests
     *and much more

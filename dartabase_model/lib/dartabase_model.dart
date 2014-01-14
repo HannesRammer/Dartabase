@@ -246,7 +246,7 @@ class Model {
    * 
    * once future completes
    * 
-   * deletes the object and all its relations
+   * deletes the object //TODO and all its relations
    * 
    * player.delete();
    * 
@@ -510,11 +510,7 @@ class Model {
     return completer.future;
     }
   
-  
-
-  
-  
-    
+      
   //################HELPERMETHODS
   InstanceMirror getMirrorOf(object){
     InstanceMirror instanceMirror = reflect(object); // Get an instance mirror
