@@ -1,4 +1,4 @@
-Dartabase Model 0.5.0
+Dartabase Model 0.5.1
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -9,6 +9,7 @@ Dartabase Model 0.5.0
   This requires the use of [Dartabase Miration](http://pub.dartlang.org/packages/dartabase_migration) in your project
     
     Version
+    	0.5.1 fixed README.md
     	0.5.0 -required Migration 0.5.x  
     		   see Migration readme.md  
     		  -added relations between tables
@@ -197,18 +198,18 @@ RELATIONS
     
 **Future hasOne(object)** 
    
-   once future completes
-   
-   returns an (character) object if one exists 
-   else 
-   returns null
-   
-   player.hasOne(new Character()).then((character){
-     if(character != null){
-       //your code
-     }else{
-     }
-   };
+	once future completes
+	  
+	returns an (character) object if one exists 
+	else 
+	returns null
+	   
+	player.hasOne(new Character()).then((character){
+	  if(character != null){
+	    //your code
+	  }else{
+	  }
+	};
   
 **Future hasMany(object)** 
     
