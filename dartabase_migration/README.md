@@ -1,4 +1,4 @@
-Dartabase Migration 0.5.0
+Dartabase Migration 0.5.1
 =========================
 
   Serverside Database migration 
@@ -9,7 +9,9 @@ Dartabase Migration 0.5.0
   inspired by Ruby on Rails migrations
 
 	Version
-		0.5.0  added relation functions has, recieve, remove 
+		0.5.1  fixed README.md
+		0.5.0  added migration functions createRelation and removeRelation
+			   see createRelation and removeRelation
 			   see "Update to version 0.5.0" for possible breaking change 
 		0.4.3 -fixed crash when projectsMapping.json does not exist on dbInit.dart
 		0.4.2 -adapted column option to support old migration files
@@ -288,7 +290,7 @@ or
     
     "createRelation" key takes an array of arrays with two existing table names as value
 
-        value  : array[array[existing_table_name_one,existing_table_name_two]] (lower_case)
+        value  : array[array[existing_table_name_one,existing_table_name_two]] 
 
         eg.
         "createRelation": [
@@ -299,7 +301,7 @@ or
     
     "removeRelation" key takes an array of arrays with two existing table names as value
 
-        value  : array[array[existing_table_name_one,existing_table_name_two]] (lower_case)
+        value  : array[array[existing_table_name_one,existing_table_name_two]] 
 
         eg.
         "removeRelation": [
