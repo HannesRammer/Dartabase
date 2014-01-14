@@ -1,5 +1,5 @@
 name: dartabase_model
-version: 0.5.0
+version: 0.5.1
 author: Hannes Rammer <Hannes.Rammer@gmail.com>
 description: Serverside Database models for easy database data manipulation inspired by Ruby on Rails models for mysql and postgresql
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_model
