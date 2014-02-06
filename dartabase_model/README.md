@@ -1,4 +1,4 @@
-Dartabase Model 0.5.2
+Dartabase Model 0.5.3
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -6,9 +6,11 @@ Dartabase Model 0.5.2
   
   inspired by Ruby on Rails models
     
-  This requires the use of [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) in your project
+  This requires the use of [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) 
     
     Version
+    	0.5.3 -added findAll()
+    	      -fixed code comments
     	0.5.2 -corrected spelling
     	0.5.1 -fixed README.md
     	0.5.0 -required Migration 0.5.x  
@@ -25,8 +27,8 @@ Dartabase Model 0.5.2
 	    0.1.0 -ready for Dart 1.0
 
 	Tested on 
-		Dart Editor version 1.1.0.dev_05_06 (DEV)
-		Dart SDK version 1.1.0-dev.5.6
+		Dart Editor version 1.2.0.dev_03_02 (DEV)
+		Dart SDK version 1.2.0-dev.3.2
 
 	Compatibility
 		depending on the migration version you are using 
@@ -35,7 +37,7 @@ Dartabase Model 0.5.2
 	    migration  			model
 	    -------------------------
 	    0.5.x <-requires->  0.5.x
-	    0.4.x	requires    0.4.x
+	    0.4.x	requires    0.4.x deprecated!!
 	    0.3.0	requires	0.3.0 deprecated!!
 	
   Uses
@@ -170,7 +172,22 @@ SIMPLE MODEL FUNCTIONS
     returns empty list
    
     player.findAllBy("name","tim").then((players){
-      if(player != null){
+      if(!players.isEmpty){
+        //your code
+      }else{
+      }
+    }); 
+ 
+**Future findAll()** 
+    
+    once future completes
+    
+    returns a list of all (player) objects if one exists 
+    else 
+    returns empty list
+   
+    player.findAll().then((players){
+      if(!players.isEmpty){
         //your code
       }else{
       }
@@ -221,7 +238,7 @@ RELATIONS
     returns empty list
    
     player.hasManyWith(new Character()).then((characters){
-      if(characters[0] != null){
+      if(!characters.isEmpty){
         //your code
       }else{
       }
@@ -251,7 +268,7 @@ RELATIONS
 	Returns empty list
 	   
 	player.hasManyWith(new Character(),'level','3').then((characters){
-	  if(characters[0] != null){
+	  if(!characters.isEmpty){
 	    //your code
 	  }else{
 	  }

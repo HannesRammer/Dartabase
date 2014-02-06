@@ -227,7 +227,7 @@ class Model {
    * returns empty list
    *
    * player.findAllBy("name","tim").then((players){
-   *   if(player != null){
+   *   if(!players.isEmpty){
    *     //your code
    *   }else{
    *   }
@@ -237,6 +237,30 @@ class Model {
   Future findAllBy(String column, var value ) {
     String tableName = "${this.runtimeType}".toLowerCase();
     String query = "SELECT * FROM $tableName WHERE $column = '$value'";
+    print(query);
+    return find(query, true);
+  }
+  
+  /**
+   * Future findAll() 
+   * 
+   * once future completes
+   * 
+   * returns a list of (player) objects if one exists 
+   * else 
+   * returns empty list
+   *
+   * player.findAll().then((players){
+   *   if(!players.isEmpty){
+   *     //your code
+   *   }else{
+   *   }
+   * }); 
+   * 
+   **/
+  Future findAll() {
+    String tableName = "${this.runtimeType}".toLowerCase();
+    String query = "SELECT * FROM $tableName";
     print(query);
     return find(query, true);
   }
@@ -404,7 +428,7 @@ class Model {
    * returns empty list
    *
    * player.hasManyWith(new Character()).then((characters){
-   *   if(characters[0] != null){
+   *   if(!characters.isEmpty){
    *     //your code
    *   }else{
    *   }
@@ -446,7 +470,7 @@ class Model {
    * Returns empty list
    *
    * player.hasManyWith(new Character(),'level','3').then((characters){
-   *   if(characters[0] != null){
+   *   if(!characters.isEmpty){
    *     //your code
    *   }else{
    *   }
