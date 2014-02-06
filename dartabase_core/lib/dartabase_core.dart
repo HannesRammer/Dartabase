@@ -71,6 +71,15 @@ class DBCore {
        } 
      }
    }
+   static dbType(var mapOrString) {
+     String dartabaseType;
+     if (mapOrString.runtimeType == String){
+       return mapOrString;
+     }else if(mapOrString.runtimeType.toString() == "_LinkedHashMap"){
+       dartabaseType = mapOrString["type"];
+         return dartabaseType;
+     }
+   }
    
    static defaultForType(dartabaseType){
      if(["BINT","BINT UNSIGNED","DOUBLE","FLOAT","FLOAT UNSIGNED","INT","INT UNSIGNED","SINT","SINT UNSIGNED","TINT","TINT UNSIGNED"].contains(dartabaseType)){
