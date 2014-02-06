@@ -162,7 +162,7 @@ class Model {
             if(data != null && data.length > 0){
               completer.complete(data[0]);  
             }else{
-              completer.complete([]);
+              completer.complete(null);
             }
           }
         });
