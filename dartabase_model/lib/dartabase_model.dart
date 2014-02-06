@@ -593,6 +593,14 @@ class Model {
           insertColumns.add("id");
         }else if(column != "id" && value != null){
           insertColumns.add(column);
+          var dbType = DBCore.dbType(objectSchemaMap[column]);
+          if(dbType == "BOOLEAN"){
+            if(value==false){
+              value = 0;
+            }else if(value==true){
+              value = 1;
+            }
+          }
           listValues.add(value);
           updateValues.add("${column}='${value}'");
           
@@ -650,7 +658,18 @@ class Model {
       if(row[i] == ""){
         value = DBCore.defaultValueFor(objectSchemaMap[column]);
       }else{
-        value = row[i];
+        var dbType = DBCore.dbType(objectSchemaMap[column]);
+        if(dbType == "BOOLEAN"){
+          if(row[i]==0){
+            value = false;
+          }else if(row[i]==1){
+            value = true;
+          }else{
+            value = row[i];
+          }
+        }else{
+          value = row[i];
+        }
       }
       InstanceMirror field = newInstanceObject.setField(symbol,value);
       //print("$column -> ${value}");

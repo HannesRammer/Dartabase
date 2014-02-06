@@ -1,4 +1,4 @@
-Dartabase Model 0.5.4
+Dartabase Model 0.5.5
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -9,6 +9,7 @@ Dartabase Model 0.5.4
   This requires the use of [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) 
     
     Version
+    	0.5.5 -fixed issue with database type bool
     	0.5.4 -fix: return null instead of empty list in mysql when single object was requested 
     	0.5.3 -added findAll()
     	      -fixed code comments
