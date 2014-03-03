@@ -33,10 +33,11 @@ class Model {
    * 
    * once future completes
    *  
-   * Returns ??? true || false ?? id || null ?? saved object not needed 
+   * Returns String "created" or "updated"
+   * TODO chatch errors ?? needed here? 
    * 
-   * player.save().then((isSaved){
-   *   if(isSaved){
+   * player.save().then((process){
+   *   if(process == "created" || process == "updated"){
    *     //your code
    *   }else{
    *   }
@@ -73,14 +74,14 @@ class Model {
               print(usedObjectData["insertValues"].toString());
               conn.execute(insertSQL, usedObjectData["insertValues"]).then((_) { 
                 conn.close();
-                completer.complete(object);
+                completer.complete("created");
               });
             }else if(usedObjectData["createOrUpdate"]=="update"){
               String updateSQL="UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
               print(updateSQL);
               conn.execute(updateSQL).then((_) { 
                 conn.close();
-                completer.complete(object);
+                completer.complete("updated");
               });
             }
           });
@@ -94,7 +95,7 @@ class Model {
           ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
           pool.prepare(insertSQL).then((query) {
             query.execute(usedObjectData["insertValues"]).then((result) {
-              completer.complete(object);
+              completer.complete("created");
             });
           });  
         }else if(usedObjectData["createOrUpdate"]=="update"){
@@ -103,7 +104,7 @@ class Model {
           
           ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
           pool.query(updateSQL).then((result) {
-            completer.complete(object);
+            completer.complete("updated");
           });
         }
       }
@@ -197,7 +198,7 @@ class Model {
   }
 
   /**
-   * Future findById(num id) 
+   * Future findById(var id) 
    * 
    * once future completes
    * 
@@ -213,7 +214,7 @@ class Model {
    * }); 
    * 
    **/
-  Future findById(num id) {
+  Future findById(var id) {
     return findBy("id", id);
   }
   
@@ -294,6 +295,7 @@ class Model {
         pool.connect().then((conn) {
           conn.execute(SQL).then((result) { 
             conn.close();
+            //completer.complete("deleted item with id ${this.id}");
             completer.complete(result);
           });
         });
@@ -303,6 +305,7 @@ class Model {
       
       ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
       pool.query(SQL).then((result) {
+        //completer.complete("deleted item with id ${this.id}");
         completer.complete(result);
       });
      
@@ -596,9 +599,9 @@ class Model {
           var dbType = DBCore.dbType(objectSchemaMap[column]);
           if(dbType == "BOOLEAN"){
             if(value==false){
-              value = 0;
+              value = '0';
             }else if(value==true){
-              value = 1;
+              value = '1';
             }
           }
           listValues.add(value);
@@ -660,9 +663,9 @@ class Model {
       }else{
         var dbType = DBCore.dbType(objectSchemaMap[column]);
         if(dbType == "BOOLEAN"){
-          if(row[i]==0){
+          if(row[i]==0 || row[i]=="0"){
             value = false;
-          }else if(row[i]==1){
+          }else if(row[i]==1 || row[i]=="1"){
             value = true;
           }else{
             value = row[i];
@@ -781,5 +784,23 @@ class Model {
     *String tableName = "${tableNames[0]}_2_${tableNames[1]}";
     **/
     return completer.future;
+  }
+  
+  Map toJson() { 
+      Map map = new Map();
+      InstanceMirror im = reflect(this);
+      ClassMirror cm = im.type;
+      var decls = cm.declarations.values.where((dm) => dm is VariableMirror);
+      decls.forEach((dm) {
+        var key = MirrorSystem.getName(dm.simpleName);
+        var val = im.getField(dm.simpleName).reflectee;
+        if(val.runtimeType==DateTime){
+          val = val.millisecondsSinceEpoch;
+        }
+        //print("val.runtimeType: ${val.runtimeType}");
+        map[key] = val;
+      });
+
+      return map;
   }
 }
