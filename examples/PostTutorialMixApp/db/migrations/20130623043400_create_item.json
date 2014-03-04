@@ -1,0 +1,15 @@
+{
+    "UP": {
+        "createTable": {
+            "item": {
+                "text": "VARCHAR",
+                "done": {"type":"BOOLEAN","default":"0"}
+            }
+        }
+    },
+    "DOWN": {
+        "removeTable": [
+            "item"
+        ]
+    }
+}
