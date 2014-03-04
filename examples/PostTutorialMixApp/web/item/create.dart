@@ -20,7 +20,7 @@ void main() {
     querySelector("#home").onClick.listen((e) => window.location.assign(homeUrl));
     params = loadParams(window);
     Element polyItem = new Element.tag('custom-item');
-    polyItem.apperance = "edit";
+    polyItem.apperance = "create";
     content.append(polyItem);
   });
 }
