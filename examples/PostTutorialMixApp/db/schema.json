@@ -1,1 +1,0 @@
-{"item":{"id":{"type":"INT"},"text":"VARCHAR","done":{"type":"BOOLEAN","default":"0"},"created_at":"TIMESTAMP","updated_at":{"type":"TIMESTAMP"}}}
