@@ -9,6 +9,7 @@ Dartabase Migration 0.5.2
   inspired by Ruby on Rails migrations
 
   Version
+    
     0.5.2 -updated core dependency to 0.2.4
     0.5.1 -fixed README.md
     0.5.0 -added migration functions createRelation and removeRelation
@@ -28,10 +29,12 @@ Dartabase Migration 0.5.2
     0.0.5 -adapted breaking changes due to dart:encoder
 
   Tested on 
+    
     Dart Editor version 1.1.0.dev_05_06 (DEV)
     Dart SDK version 1.1.0-dev.5.6
 
   Compatibility
+    
     depending on the migration version you are using 
     you have to use a differend model version in your app
       
@@ -49,6 +52,7 @@ Dartabase Migration 0.5.2
   
 HOW TO SETUP
 ------------
+
 USE THIS INSTALL GUIDE AND IGNORE THE INSTALL PAGE!!! 
 This is a stand alone app!
 
@@ -575,9 +579,9 @@ Now you can add migration files for simple database manipulation
 TODO
 ----
 
-  *fix async outputtext
-  *workarround for database problems with reserved words 
-   on creation or when switching DBAdapter from PG to MY.
+    *fix async outputtext
+    *workarround for database problems with reserved words 
+     on creation or when switching DBAdapter from PG to MY.
         eg. table name 'user' will break in MySQL
         fix -> add '_' as prefix to all column and table names
     *test on other systems
