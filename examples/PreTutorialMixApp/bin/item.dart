@@ -6,21 +6,21 @@ class Item {
   String toString() => "Item text=$text:done=$done";
 
   //return all items
-  static Future loadItems(HttpResponse res){
+  static loadItems(HttpResponse res){
     print("implement loadItems");
     res.write("implement loadItems");
     res.close();
   }
   
   //return item by id
-  static Future loadItem(HttpResponse res,id){
+  static loadItem(HttpResponse res,id){
     print("implement loadItem");
     res.write("implement loadItem");
     res.close();
   }
   
   //save item
-  static Future saveItem(HttpRequest req,HttpResponse res)
+  static saveItem(HttpRequest req,HttpResponse res)
   {
     req.listen((List<int> buffer) {
       Map postDataMap = JSON.decode(new String.fromCharCodes(buffer));
@@ -31,7 +31,7 @@ class Item {
   }
   
   //delete item
-  static Future deleteItem(HttpRequest req,HttpResponse res)
+  static deleteItem(HttpRequest req,HttpResponse res)
   {
     req.listen((List<int> buffer) {
       print("implement deleteItem");
