@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo.png" width="150">Dartabase Migration 0.5.3
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.5.4
 =========================
 
   Serverside Database migration 
@@ -119,14 +119,9 @@ there should not be a problem.
       
 now you should be able to find your projects again when running dbUp or dbDown
       
-UPDATE TO VERSION 0.2.0
-
-    If you had already created a migration file with a comuln 'id' in version < 0.2.0 
-    remove the entry for 'id' from all your migration file UP and DOWN hashes
-
 UPDATE TO VERSION 0.5.0 (breakting change for some)
     
-    This applies to you ONLY 
+    This applies ONLY 
     if a "table_name" you specified in your migration files actions
     starts with a capital letter
     
