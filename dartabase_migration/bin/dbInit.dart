@@ -2,7 +2,6 @@ import "dart:io";
 import "dart:convert";
 import "dart:async";
 
-
 import "dartabaseMigration.dart";
 
 /*
@@ -27,24 +26,30 @@ void main() {
   print("");
   print("!!ONLY RUN THIS ONCE FOR EACH PROJECT!!");
   print("");
-  print("Please type or paste a project name and press the ENTER key");
   Stream<List<int>> stream = stdin;
-  var count = 0;
-  var name = 0;
+  int count = 0;
+  String name = "";
   stream
       .transform(UTF8.decoder)
       .transform(new LineSplitter())
       .listen((String line) { /* Do something with line. */
-        if(count>0){
-            initiateDartabase(line,name);  
+        if(count>1){
+          initiateDartabase(line,name);  
         }
-        if(count == 0){
+
+        if(count == 1){
           name = line;
           count++;
           print("Please enter the absolute path to your project root folder and press the ENTER key to proceed");
           print("eg. c:\\DartProjects\\myApp");
           print("take care of capital letters!!");
         }
+        if(count == 0){
+          name = line; 
+          count++;
+          print("Please type or paste a project name and press the ENTER key");
+        }
+        
       },
       onDone: () { /* No more lines */ 
         print("Dartabase initiation done!");

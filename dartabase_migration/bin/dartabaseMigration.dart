@@ -13,12 +13,7 @@ import 'package:sqljocky/sqljocky.dart';
 
 part '../tool/dbhelper.dart';
 
-
-
-
 String uri;
-
-
 
 Map schema ;
 
@@ -33,7 +28,7 @@ int lastMigrationNumber;
 
 void initiateDartabase(String path,String projectName) {
   print("add project mapping ${projectName}:${path}");
-  var file = new File("projectsMapping.json");
+  File file = new File("projectsMapping.json");
   if(file.existsSync()){
     projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
     
@@ -52,7 +47,7 @@ void initiateDartabase(String path,String projectName) {
     "port": "5432",
     "schemaVersion":"0"
   };
-  var directory = new Directory("${path}/db/migrations");
+  Directory directory = new Directory("${path}/db/migrations");
   
   directory.create(recursive: true).then((_){
     print("created directory ${directory.path}");
@@ -103,10 +98,10 @@ void run(String migrationDirection) {
 
 
 Future migrate(conn) {
-  var completer = new Completer();
+  Completer completer = new Completer();
   DBCore.parsedMapping = DBCore.jsonFilePathToMap('../tool/typeMapper${DBCore.adapter}.json');
 
-  var directory = new Directory("${DBCore.rootPath}/db/migrations");
+  Directory directory = new Directory("${DBCore.rootPath}/db/migrations");
   files = directory.listSync();
   if (files.length > 0) {
     
@@ -133,11 +128,11 @@ Future migrate(conn) {
         }
       }
       if(lastMigrationNumber >= 0 && lastMigrationNumber <= files.length){
-        print("lastMigrationNumber$lastMigrationNumber");
-        print("fileId$fileId");
+        //print("lastMigrationNumber$lastMigrationNumber");
+        //print("fileId$fileId");
         
         if (direction == "UP") {
-            if (lastMigrationNumber >= fileId) {
+            if (lastMigrationNumber > fileId) {
               doFile(conn);
             }else{
               print("goal migration smaller or equal current migration, maybe you wanted to revert migration via dbDown instead");
@@ -195,7 +190,7 @@ void createTable(conn) {
   if (DBCore.parsedMap["createTable"] != null) {
     Map ct = DBCore.parsedMap["createTable"];
     List tableNames = ct.keys.toList();
-    for (var i = 0;i < tableNames.length;i++) {
+    for (int i = 0;i < tableNames.length;i++) {
       String tableName = tableNames[i];
       if (schema[tableName] == null) {
         String sqlQuery="";
@@ -251,7 +246,7 @@ void createColumn(conn) {
   if (DBCore.parsedMap["createColumn"] != null) {
     Map ct = DBCore.parsedMap["createColumn"];
     List tableNames = ct.keys.toList();
-    for (var i = 0;i < tableNames.length;i++) {
+    for (int i = 0;i < tableNames.length;i++) {
       String tableName = tableNames[i];
       if (schema[tableName] != null) {
         String sqlQuery = "ALTER TABLE ${tableName} ";
@@ -260,7 +255,7 @@ void createColumn(conn) {
         Map columns = ct["${tableName}"];
         List columnNames = columns.keys.toList();
         Map schemaTableMap = schema[tableName];
-        for (var j = 0;j < columnNames.length;j++) {
+        for (int j = 0;j < columnNames.length;j++) {
           String columnName = columnNames[j];
           
           if (schema[tableName][columnName] == null) {
@@ -299,7 +294,7 @@ void removeColumn(conn) {
   if (DBCore.parsedMap["removeColumn"] != null) {
     Map ct = DBCore.parsedMap["removeColumn"];
     List tableNames = ct.keys.toList();
-    for (var i = 0;i < tableNames.length;i++) {
+    for (int i = 0;i < tableNames.length;i++) {
       String tableName = tableNames[i];
       if (schema[tableName] != null) {
         String sqlQuery = "ALTER TABLE ${tableName} ";
@@ -357,7 +352,7 @@ void createRelation(conn) {
       masterList = [];
       slaveList = [];
     }
-    for (var i = 0;i < relations.length;i++) {
+    for (int i = 0;i < relations.length;i++) {
       if (relations[i].runtimeType == List){
         tableNames = [relations[i][0].toLowerCase(),relations[i][1].toLowerCase()];
       }else if(relations[i].runtimeType.toString() == "_LinkedHashMap"){
@@ -432,7 +427,7 @@ void createRelation(conn) {
 void removeRelation(conn) {
   if (DBCore.parsedMap["removeRelation"] != null) {
     List relations = DBCore.parsedMap["removeRelation"];
-    for (var i = 0;i < relations.length;i++) {
+    for (int i = 0;i < relations.length;i++) {
       List tableNames = [relations[i][0].toLowerCase(),relations[i][1].toLowerCase()];
       tableNames.sort();
       String relationTable = "${tableNames[0]}_2_${tableNames[1]}";
@@ -455,7 +450,7 @@ void removeRelation(conn) {
 void removeTable(conn) {
   if (DBCore.parsedMap["removeTable"] != null) {
     List tableNames = DBCore.parsedMap["removeTable"];
-    for (var i = 0;i < tableNames.length;i++) {
+    for (int i = 0;i < tableNames.length;i++) {
       String tableName = tableNames[i];
       if (schema[tableName] != null) {
         schema.remove(tableName);
@@ -481,7 +476,7 @@ void removeTable(conn) {
 
     print("\n-----------------------End migration-----------------------");
     var filePath = files[fileId].path;
-    var schemaVersion = filePath.split("migrations")[1].replaceAll("\\","");
+    String schemaVersion = filePath.split("migrations")[1].replaceAll("\\","");
     DBCore.mapToJsonFilePath({"schemaVersion":schemaVersion},'${DBCore.rootPath}/db/schemaVersion.json');
     if (direction == "UP") {
       fileId++;

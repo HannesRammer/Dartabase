@@ -1,4 +1,4 @@
-Dartabase Migration 0.5.2
+<img src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo.png" width="150">Dartabase Migration 0.5.3
 =========================
 
   Serverside Database migration 
@@ -10,6 +10,8 @@ Dartabase Migration 0.5.2
 
   Version
     
+    0.5.3 -fixed "stream.listen" problem when calling dbUp.dart and dbDown.dart
+           problem seems to have appeared with Dart 1.4 changes// note to me CHECK WHY!! listen var on init seems to be string path to dart.exe
     0.5.2 -updated core dependency to 0.2.4
     0.5.1 -fixed README.md
     0.5.0 -added migration functions createRelation and removeRelation
@@ -30,8 +32,8 @@ Dartabase Migration 0.5.2
 
   Tested on 
     
-    Dart Editor version 1.1.0.dev_05_06 (DEV)
-    Dart SDK version 1.1.0-dev.5.6
+    Dart Editor version 1.4.0.dev_04_00 (DEV)
+    Dart SDK version 1.4.0-dev.4.0
 
   Compatibility
     
