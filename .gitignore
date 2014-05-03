@@ -12,6 +12,7 @@ packages/
 pubspec.lock
 .settings/
 
-db/
 dartabase_migration/bin/projectsMapping.json
+
+stuff/
 
