@@ -6,6 +6,6 @@ homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_migrat
 dependencies:
   postgresql: '0.2.12'
   sqljocky: '0.9.0'
-  dartabase_core: '0.2.4'
+  dartabase_core: '0.2.5'
 environment: 
   sdk: ">=0.8.10+6 <2.0.0" 
