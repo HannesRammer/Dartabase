@@ -9,15 +9,15 @@ void main() {
   var projectExistsInProjectMapping = false;
   var projectDoesntExistsInProjectMapping = true;
   
-  print("|--------------------------|");
-  print("|     Create migration     |");
-  print("|--------------------------|");
+  print("|-------------------------|");
+  print("|  Dartabase scaffolding  |");
+  print("|-------------------------|");
   print("");
   
   projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
   
   print("\nProject name *:* Path *:* Current schema version");
-  print("-----------------------------");
+  print("------------------------------------------------");
   Map schemaV;
   for(var name in projectMapping.keys){
     schemaV = DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
@@ -155,8 +155,10 @@ createServerModel(String tableName, Map columnsMap){
 part of example.server;
 class ${className} extends Model{
   num id;
+//TODO*******************generate params 
   String text;
   bool done;
+//-----------------------------------
   DateTime created_at;
   DateTime updated_at;
   
@@ -242,8 +244,10 @@ class ${className} extends Model{
   }
 
   static fill(${className} ${varName},Map dataMap, HttpResponse res){
+//TODO*******************generate params
     ${varName}.done = dataMap['done'];
     ${varName}.text = dataMap['text'];
+//--------------------------------------
     ${varName}.save().then((process){
       if(process == "created" || process == "updated"){
         new ${className}().findById(${varName}.id).then((${className} reloaded${className}){
@@ -678,10 +682,12 @@ class ${className} extends PolymerElement {
     
     <template if="{{apperance == 'index'}}">
       <div class="custom-${polyName}" id="${tableName}_{{object['id']}}">
+        <span id="id">{{object['id']}}</span>
+//TODO*******************generate params
         <input id="done" type="checkbox" checked="{{object['done']}}" disabled>
         <label class="deactivated_toggle" for="done"></label>
-        <span id="id">{{object['id']}}</span>
         <span id="text">{{object['text']}}</span>
+//--------------------------------------
         <span id="created_at">{{object['created_at']}}</span>
         <span id="updated_at">{{object['updated_at']}}</span>
         <template if="{{inlineEdit == false}}" > 
@@ -693,10 +699,12 @@ class ${className} extends PolymerElement {
     
     <template if="{{apperance == 'view'}}">
       <div class="custom--${polyName}" id="${tableName}_{{object['id']}}">
+        <span id="id">ID: {{object['id']}}</span>
+//TODO*******************generate params
         <input id="done" type="checkbox" checked="{{object['done']}}" disabled>
         <label class="deactivated_toggle" for="done"></label>
-        <span id="id">ID: {{object['id']}}</span>
         <span id="text">Text: {{object['text']}}</span>
+//--------------------------------------
         <span id="created_at">created at: {{object['created_at']}}</span>
         <span id="updated_at">updated at: {{object['updated_at']}}</span>
         <template if="{{inlineEdit == false}}" > 
@@ -712,10 +720,12 @@ class ${className} extends PolymerElement {
     
     <template if="{{apperance == 'edit'}}">
       <div class="custom-${polyName}" id="${tableName}_{{object['id']}}">
+        ID: <input id="id" type="text" value="{{object['id']}}" disabled> 
+//TODO*******************generate params
         <input id="done" type="checkbox" checked="{{object['done']}}">
         <label class="toggle" for="done"></label>
-        ID: <input id="id" type="text" value="{{object['id']}}" disabled> 
         Text: <input id="text" type="text" value="{{object['text']}}"> 
+//--------------------------------------
         created at: <input type="text" value="{{object['created_at']}}" disabled>
         updated at: <input type="text" value="{{object['updated_at']}}" disabled>
         <button on-click="{{save}}">save</button>
@@ -726,9 +736,11 @@ class ${className} extends PolymerElement {
     
     <template if="{{apperance == 'create'}}">
       <div class="custom-${polyName}" id="${tableName}_{{object['id']}}">
+//TODO*******************generate params
         <input id="done" type="checkbox" checked="{{object['done']}}">
         <label class="toggle" for="done"></label>
         Text: <input id="text" type="text" value="{{object['text']}}"> 
+//--------------------------------------
         <button on-click="{{save}}">save</button>
       </div>
       
