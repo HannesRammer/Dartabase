@@ -46,12 +46,19 @@ class DBCore {
   }
    
    static void mapToJsonFilePath(Map contentMap,String filePath) {
-    String contentString = JSON.encode(contentMap);
-    var file = new File(filePath);
-    
-    file.writeAsStringSync(contentString, encoding: ASCII);
-    
-  }
+       String contentString = JSON.encode(contentMap);
+       var file = new File(filePath);
+       
+       file.writeAsStringSync(contentString, encoding: ASCII);
+       
+   }
+   
+   static void stringToFilePath(String text ,String filePath) {
+       var file = new File(filePath);
+       
+       file.writeAsStringSync(text, encoding: ASCII);
+       
+   }
   
    static String typeMapping(String dartabaseType) {
      return parsedMapping[dartabaseType];
