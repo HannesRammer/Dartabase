@@ -157,4 +157,30 @@ class DBCore {
      schemaVersion = DBCore.jsonFilePathToMap('$rootPath/db/schemaVersion.json')["schemaVersion"];
    }
    
+   void toTableName(String word){
+    //ItemObject ClassName
+    
+   //item_object db_table_name
+    List tableNameList = "${word}".split("");
+    String tableName = "";
+    for(num i=0;i< tableNameList.length;i++){
+      String letter = tableNameList[i];
+      bool  isSmall = letter == letter.toLowerCase();
+      bool  isBig = letter == letter.toUpperCase();
+      if (letter == "-" || letter == "_" || letter == " "){
+         tableName += "_";
+       } else if (isBig && i > 0) {
+        tableName += "_${letter.toLowerCase()}";
+      }else if(isBig && i == 0){
+        tableName += "${letter.toLowerCase()}";
+      }else if (isSmall){
+        tableName += "${letter}";
+      }
+      
+    }
+    return tableName;
+    //item_object db_table_name
+    //itemObject varName
+    //item-object polyName
+  }
 }
