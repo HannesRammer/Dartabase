@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.5.4
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.0
 =========================
 
   Serverside Database migration 
@@ -20,9 +20,9 @@
       
       migration           model
       -------------------------
+      0.6.x <-requires->  0.6.x
       0.5.x <-requires->  0.5.x
-      0.4.x   requires    0.4.x deprecated!!
-    
+      
   Uses
   
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
@@ -545,6 +545,11 @@ PGSQL
       "VARBINARY": "bytea",
       "VARCHAR": "varchar(255)"
   }
+
+*******************************************************************************************
+SCAFFOLDING
+-----------
+
 
 
 *******************************************************************************************

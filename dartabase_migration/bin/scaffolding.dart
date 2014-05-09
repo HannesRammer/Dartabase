@@ -103,7 +103,7 @@ void main() {
 createMigration(String tableName, Map columnsMap){
   List columnsList = [];
   columnsMap.forEach((key,value){
-    columnsList.add('"${key}" = "${value}"');
+    columnsList.add('"${key}" : "${value}"');
   });
       
   String migration =''' 
@@ -155,10 +155,7 @@ createServerModel(String tableName, Map columnsMap){
 part of example.server;
 class ${className} extends Model{
   num id;
-//TODO*******************generate params 
-  String text;
-  bool done;
-//-----------------------------------
+${generatedynamicFields("serverVars", columnsMap)}
   DateTime created_at;
   DateTime updated_at;
   
@@ -244,10 +241,7 @@ class ${className} extends Model{
   }
 
   static fill(${className} ${varName},Map dataMap, HttpResponse res){
-//TODO*******************generate params
-    ${varName}.done = dataMap['done'];
-    ${varName}.text = dataMap['text'];
-//--------------------------------------
+${generatedynamicFields("serverFill", columnsMap,varName)};
     ${varName}.save().then((process){
       if(process == "created" || process == "updated"){
         new ${className}().findById(${varName}.id).then((${className} reloaded${className}){
@@ -668,9 +662,8 @@ class ${className} extends PolymerElement {
   
     <template if="{{apperance == 'header'}}">
       <div class="custom-${polyName}">
-        <div style="display:none;">Done:</div>
         <span>ID:</span>
-        <span>Text:</span>
+${generatedynamicFields("header", columnsMap)}
         <span>created at:</span>
         <span>updated at:</span>
         <template if="{{inlineEdit == false}}" > 
@@ -683,11 +676,7 @@ class ${className} extends PolymerElement {
     <template if="{{apperance == 'index'}}">
       <div class="custom-${polyName}" id="${tableName}_{{object['id']}}">
         <span id="id">{{object['id']}}</span>
-//TODO*******************generate params
-        <input id="done" type="checkbox" checked="{{object['done']}}" disabled>
-        <label class="deactivated_toggle" for="done"></label>
-        <span id="text">{{object['text']}}</span>
-//--------------------------------------
+${generatedynamicFields("index", columnsMap)}
         <span id="created_at">{{object['created_at']}}</span>
         <span id="updated_at">{{object['updated_at']}}</span>
         <template if="{{inlineEdit == false}}" > 
@@ -700,12 +689,8 @@ class ${className} extends PolymerElement {
     <template if="{{apperance == 'view'}}">
       <div class="custom--${polyName}" id="${tableName}_{{object['id']}}">
         <span id="id">ID: {{object['id']}}</span>
-//TODO*******************generate params
-        <input id="done" type="checkbox" checked="{{object['done']}}" disabled>
-        <label class="deactivated_toggle" for="done"></label>
-        <span id="text">Text: {{object['text']}}</span>
-//--------------------------------------
-        <span id="created_at">created at: {{object['created_at']}}</span>
+${generatedynamicFields("view", columnsMap)}
+<span id="created_at">created at: {{object['created_at']}}</span>
         <span id="updated_at">updated at: {{object['updated_at']}}</span>
         <template if="{{inlineEdit == false}}" > 
           <span id="view"><button on-click="{{view}}">view</button></span>
@@ -721,11 +706,7 @@ class ${className} extends PolymerElement {
     <template if="{{apperance == 'edit'}}">
       <div class="custom-${polyName}" id="${tableName}_{{object['id']}}">
         ID: <input id="id" type="text" value="{{object['id']}}" disabled> 
-//TODO*******************generate params
-        <input id="done" type="checkbox" checked="{{object['done']}}">
-        <label class="toggle" for="done"></label>
-        Text: <input id="text" type="text" value="{{object['text']}}"> 
-//--------------------------------------
+${generatedynamicFields("edit", columnsMap)}
         created at: <input type="text" value="{{object['created_at']}}" disabled>
         updated at: <input type="text" value="{{object['updated_at']}}" disabled>
         <button on-click="{{save}}">save</button>
@@ -736,11 +717,7 @@ class ${className} extends PolymerElement {
     
     <template if="{{apperance == 'create'}}">
       <div class="custom-${polyName}" id="${tableName}_{{object['id']}}">
-//TODO*******************generate params
-        <input id="done" type="checkbox" checked="{{object['done']}}">
-        <label class="toggle" for="done"></label>
-        Text: <input id="text" type="text" value="{{object['text']}}"> 
-//--------------------------------------
+${generatedynamicFields("create", columnsMap)}
         <button on-click="{{save}}">save</button>
       </div>
       
@@ -757,37 +734,27 @@ class ${className} extends PolymerElement {
   viewDir.create(recursive: true).then((_){
     DBCore.stringToFilePath(createDart, "${viewPath}/create.dart");
     print("client view ${viewPath}/create.dart created");
-      
     DBCore.stringToFilePath(createHtml, "${viewPath}/create.html");
     print("client view ${viewPath}/create.html created");
-      
     DBCore.stringToFilePath(editDart, "${viewPath}/edit.dart");
     print("client view ${viewPath}/edit.dart created");
-
     DBCore.stringToFilePath(editHtml, "${viewPath}/edit.html");
     print("client view ${viewPath}/edit.html created");
-      
     DBCore.stringToFilePath(viewDart, "${viewPath}/view.dart");
     print("client view ${viewPath}/view.dart created");
-
     DBCore.stringToFilePath(viewHtml, "${viewPath}/view.html");
     print("client view ${viewPath}/view.html created");
-  
     DBCore.stringToFilePath(indexDart, "${viewPath}/index.dart");
     print("client view ${viewPath}/index.dart created");
-  
     DBCore.stringToFilePath(indexHtml, "${viewPath}/index.html");
     print("client view ${viewPath}/index.html created");
-
     polyDir.create(recursive: true).then((_){
     DBCore.stringToFilePath(polyDart, "${polyPath}/${varName}.dart");
     print("poly view ${polyPath}/${varName}.dart created");
-      
     DBCore.stringToFilePath(polyHtml, "${polyPath}/${varName}.html");
     print("poly view ${polyPath}/${varName}.html created");
     
     DateTime dT = new DateTime.now();
-       
     var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT.month}";
     var day = "${dT.day}".length == 1 ? "0${dT.day}" : "${dT.day}";
     var hour = "${dT.hour}".length == 1 ? "0${dT.hour}" : "${dT.hour}";
@@ -811,7 +778,6 @@ final ${varName}LoadUrl = "load${className}";
 final ${varName}SaveUrl = "save${className}";
 final ${varName}DeleteUrl = "delete${className}";
 ''';
-
       var pathPath = "${DBCore.rootPath}/lib/paths.dart";
       var file = new File(pathPath);
       file.writeAsStringSync(pathString, encoding: ASCII, mode:FileMode.APPEND);
@@ -820,4 +786,78 @@ final ${varName}DeleteUrl = "delete${className}";
   });
   
   
+}
+
+generatedynamicFields(String type, Map columnsMap, [String varName]){
+  String s = "";
+  
+  if(type=="header"){
+    columnsMap.forEach((k,v){
+      s+="<span> ${k}:</span>\n";
+    });
+  }
+  
+  if(type=="index"){
+    columnsMap.forEach((k,v){
+      if(v == "BOOLEAN"){
+        s+="<label class=\"deactivated_toggle\" for=\"${k}\"></label>\n";
+        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\" disabled>\n";
+      }else{
+        s += "<span id=\"${k}\">{{object[\"${k}\"]}}</span>\n";
+      }
+    });
+  }
+  if(type=="view"){
+    columnsMap.forEach((k,v){
+      if(v == "BOOLEAN"){
+        s+="<label class=\"deactivated_toggle\" for=\"${k}\">${k}: </label>\n";
+        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\" disabled>\n";
+      }else{
+        s += "<span id=\"${k}\">${k}: {{object[\"${k}\"]}}</span>\n";
+      }
+    });
+  }
+  if(type=="edit"){
+    columnsMap.forEach((k,v){
+      if(v == "BOOLEAN"){
+        s+="<label class=\"toggle\" for=\"${k}\">${k}: </label>\n";
+        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\">\n";
+      }else{
+        s += "${k}: <input id=\"${k}\" type=\"${k}\" value=\"{{object['${k}']}}\">\n";
+      }
+    });  
+  }
+  if(type=="create"){
+    columnsMap.forEach((k,v){
+      if(v == "BOOLEAN"){
+        s+="<label class=\"toggle\" for=\"${k}\">${k}: </label>\n";
+        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\">\n";
+      }else{
+        s += "${k}: <input id=\"${k}\" type=\"${k}\" value=\"{{object['${k}']}}\">\n";
+      }
+    });  
+  }
+  if(type=="serverVars"){
+    columnsMap.forEach((k,v){
+      s+="${DBCore.dartabaseTypeToDartType(v)} ${k};\n";        
+    });
+  }
+
+  if(type=="serverFill"){
+    columnsMap.forEach((k,v){
+      if(DBCore.dartabaseTypeToDartType(v) == "num" || DBCore.dartabaseTypeToDartType(v) == "double"){
+        s+="try{\n";  
+        s+="${varName}.${k} = int.parse(dataMap['${k}']);\n";  
+        s+="}catch(e){\n";
+        s+=" print('value of ${varName}.${k} cant be converted to a number!!!!');\n";
+        s+="}\n";
+      }else{
+        s+="${varName}.${k} = dataMap['${k}'];\n";
+      }
+      
+              
+    });
+  }
+
+  return s;
 }
