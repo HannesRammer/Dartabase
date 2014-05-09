@@ -1,6 +1,13 @@
 VERSION
 -------
       
+    0.6.0 -required Migration 0.6.x
+          -fix major bug 
+           apperently CamelCaseObject conversion to table_name was not done correct
+           now possible to habe server model with multiple capital letters 
+           e.g. "UserPicture.dart" converts to table name "user_picture"
+           before it converted to "userpicture" which did not exist
+          -adapt dartabaseCore   
     0.5.6 -added toJson() for custom classes extending model
           -changed return value for save()
           -accept string or int for findBy()

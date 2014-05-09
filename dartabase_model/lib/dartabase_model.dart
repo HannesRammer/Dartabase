@@ -47,7 +47,8 @@ class Model {
   Future save() {
     Completer completer = new Completer();
     
-    String tableName = "${this.runtimeType}".toLowerCase();
+    String tableName = DBCore.toTableName("${this.runtimeType}");
+    
     Map schema = DBCore.loadSchemaToMap();
     Future<Map> usedObjectDataFuture = getObjectScemaAttributes(this);
     InstanceMirror instanceMirror = reflect(this);
@@ -191,7 +192,9 @@ class Model {
    * 
    **/
   Future findBy(String column, var value) {
-    String tableName = "${this.runtimeType}".toLowerCase();
+    
+    String tableName = DBCore.toTableName("${this.runtimeType}");
+        
     String query = "SELECT * FROM $tableName WHERE $column = '$value' LIMIT 1";
     print(query);
     return find(query, false);
@@ -236,7 +239,9 @@ class Model {
    * 
    **/
   Future findAllBy(String column, var value ) {
-    String tableName = "${this.runtimeType}".toLowerCase();
+    
+    String tableName = DBCore.toTableName("${this.runtimeType}");
+        
     String query = "SELECT * FROM $tableName WHERE $column = '$value'";
     print(query);
     return find(query, true);
@@ -260,7 +265,9 @@ class Model {
    * 
    **/
   Future findAll() {
-    String tableName = "${this.runtimeType}".toLowerCase();
+
+    String tableName = DBCore.toTableName("${this.runtimeType}");
+          
     String query = "SELECT * FROM $tableName";
     print(query);
     return find(query, true);
@@ -278,16 +285,14 @@ class Model {
    **/
   Future delete() {
     Completer completer = new Completer();
-    String tableName = "${this.runtimeType}".toLowerCase();
     
-   
+    String tableName = DBCore.toTableName("${this.runtimeType}");
+           
     //TODO recursive master slave dependency removal via
     //this.removeDependentRelations();
     String SQL="DELETE FROM $tableName WHERE id = ${this.id}";
     print(SQL);
-    
-    if (DBCore.adapter == DBCore.PGSQL) {
-      
+    if(DBCore.adapter == DBCore.PGSQL) {
       uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
       Pool pool = new Pool(uri, min: 1, max: 1);
       pool.start().then((_) {
@@ -300,15 +305,12 @@ class Model {
           });
         });
       });
-      
-    } else if (DBCore.adapter == DBCore.MySQL) {
-      
+    }else if (DBCore.adapter == DBCore.MySQL) {
       ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
       pool.query(SQL).then((result) {
         //completer.complete("deleted item with id ${this.id}");
         completer.complete(result);
       });
-     
     }
     return completer.future; 
   }
@@ -329,8 +331,10 @@ class Model {
    **/
   Future receive(object) {
     Completer completer = new Completer();
-    String initiatedObject = "${this.runtimeType}".toLowerCase();
-    String relatedObject = "${object.runtimeType}".toLowerCase();
+    
+
+    String initiatedObject = DBCore.toTableName("${this.runtimeType}");
+    String relatedObject= DBCore.toTableName("${object.runtimeType}");
     
     List tableNames = [initiatedObject,relatedObject];
     tableNames.sort();
@@ -375,9 +379,10 @@ class Model {
   
   Future has(object,listOrValue,[String column,String value]) {
     Completer completer = new Completer();
-    String initiatedObject = "${this.runtimeType}".toLowerCase();
-    String relatedObject = "${object.runtimeType}".toLowerCase();
-    
+
+    String initiatedObject = DBCore.toTableName("${this.runtimeType}");
+    String relatedObject= DBCore.toTableName("${object.runtimeType}");
+        
     List tableNames = [initiatedObject,relatedObject];
     tableNames.sort();
     String tableName = "${tableNames[0]}_2_${tableNames[1]}";
@@ -499,9 +504,10 @@ class Model {
    **/
   Future remove(object) {
     Completer completer = new Completer();
-    String initiatedObject = "${this.runtimeType}".toLowerCase();
-    String relatedObject = "${object.runtimeType}".toLowerCase();
-    
+
+    String initiatedObject = DBCore.toTableName("${this.runtimeType}");
+    String relatedObject= DBCore.toTableName("${object.runtimeType}");
+            
     List tableNames = [initiatedObject,relatedObject];
     tableNames.sort();
     String tableName = "${tableNames[0]}_2_${tableNames[1]}";
@@ -560,7 +566,10 @@ class Model {
     Completer completer = new Completer();
     getNewId().then((id){
       Map schema = DBCore.loadSchemaToMap();
-      Map objectSchemaMap = schema["${object.runtimeType}".toLowerCase()];
+      
+      String tableName= DBCore.toTableName("${object.runtimeType}");
+          
+      Map objectSchemaMap = schema["${tableName}"];
       Iterable columnNames = objectSchemaMap.keys;
       num objectId;
       InstanceMirror instanceMirror = reflect(object);
@@ -649,7 +658,10 @@ class Model {
   setObjectScemaAttributes(object, row)
   {
     Map schema = DBCore.loadSchemaToMap();
-    Map objectSchemaMap = schema["${object.runtimeType}".toLowerCase()];
+    String tableName = DBCore.toTableName("${object.runtimeType}");
+              
+    Map objectSchemaMap = schema["${tableName}"];
+    
     Iterable columnNames = objectSchemaMap.keys;
     ClassMirror classMirror = reflectClass(object.runtimeType);
     var newInstanceObject = classMirror.newInstance(const Symbol(''), []);
@@ -693,7 +705,9 @@ class Model {
         print('Min connections established.');
         pool.connect().then((conn) {
           List data = new List();
-          String tableName = "${this.runtimeType}".toLowerCase();
+
+          String tableName = DBCore.toTableName("${this.runtimeType}");
+          
           conn.query("SELECT MAX(ID) FROM ${tableName}").toList().then((rows) {
             num value ;
             
@@ -712,7 +726,9 @@ class Model {
     } else if (DBCore.adapter == DBCore.MySQL) {
       ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
       List row;
-      String tableName = "${this.runtimeType}".toLowerCase();
+
+      String tableName = DBCore.toTableName("${this.runtimeType}");
+      
       pool.query("SELECT MAX(ID) FROM ${tableName}").then((results) {
         List data = new List();
         results.listen((row) {
@@ -737,7 +753,8 @@ class Model {
     print(schema);
     
     //TODO 1.find relations
-    String initiatedObject = "${this.runtimeType}".toLowerCase();
+    String initiatedObject = DBCore.toTableName("${this.runtimeType}");
+    
     Map m = {"a_2_m":{},"m_2_z":{}};
     List relationNames =[];
     List objectNames =[];
@@ -747,9 +764,6 @@ class Model {
       String relatedObject;
       if(tableName.contains("${initiatedObject}_2_")){
         relatedObject = tableName.split("${initiatedObject}_2_")[0];
-        
-        
-        
         //tableNames.add(tableName);
         //objectNames.add(tableName.split("_2_"));
         //delRelations.add("DELETE t$tableName FROM $tableName as t$tableName WHERE ${initiatedObject}_id = '${this.id}'");

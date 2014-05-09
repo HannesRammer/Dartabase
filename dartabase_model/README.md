@@ -1,4 +1,4 @@
-Dartabase Model 0.5.6
+Dartabase Model 0.6.0
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -9,8 +9,9 @@ Dartabase Model 0.5.6
   This requires the use of [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) 
     
 	Tested on 
-    Dart Editor version 1.2.0.dev_03_02 (DEV)
-    Dart SDK version 1.2.0-dev.3.2
+
+    Dart Editor version 1.4.0.dev_04_00 (DEV)
+    Dart SDK version 1.4.0-dev.4.0
 
 	Compatibility
 		depending on the migration version you are using 
@@ -18,10 +19,9 @@ Dartabase Model 0.5.6
 	    
 	    migration  			model
 	    -------------------------
-	    0.5.x <-requires->  0.5.x
-	    0.4.x	requires    0.4.x deprecated!!
-	    0.3.0	requires	0.3.0 deprecated!!
-	
+	    0.6.x <-requires->  0.6.x
+      0.5.x <-requires->  0.5.x
+	    
   Uses
   
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
