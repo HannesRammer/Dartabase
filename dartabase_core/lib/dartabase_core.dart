@@ -113,6 +113,33 @@ class DBCore {
        "VARBINARY": "bytea",*/
      }
    }
+   static dartabaseTypeToDartType(dartabaseType){
+      if(["BINT","BINT UNSIGNED","DOUBLE","FLOAT","FLOAT UNSIGNED","INT","INT UNSIGNED","SINT","SINT UNSIGNED","TINT","TINT UNSIGNED"].contains(dartabaseType)){
+        return "num";  
+      }else if(["DOUBLE","FLOAT","FLOAT UNSIGNED"].contains(dartabaseType)){
+        return "double";  
+      }else if(dartabaseType == "BOOLEAN"){
+        return "bool";
+      }else if(["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"].contains(dartabaseType))
+      {       
+        return "String";
+      }else if(["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType))
+      {       
+        return "DateTime";
+      }else{
+        return "List";
+        /*
+        "BINARY": "bytea",
+        "BIT": "bytea",
+        "BLOB": "bytea",
+        "BYTEARRAY": "bytea",
+        "LBLOB": "bytea",
+        "MBLOB": "bytea",
+        "TBLOB": "bytea",
+        "VARBINARY": "bytea",*/
+      }
+    }
+      
    static void loadConfigFile() {
 //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configPGSQL.json');
 //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configMYSQL.json');
@@ -129,4 +156,5 @@ class DBCore {
      
      schemaVersion = DBCore.jsonFilePathToMap('$rootPath/db/schemaVersion.json')["schemaVersion"];
    }
+   
 }
