@@ -157,7 +157,7 @@ class DBCore {
      schemaVersion = DBCore.jsonFilePathToMap('$rootPath/db/schemaVersion.json')["schemaVersion"];
    }
    
-   void toTableName(String word){
+   static String toTableName(String word){
     //ItemObject ClassName
     
    //item_object db_table_name
