@@ -1,6 +1,7 @@
 VERSION
 -------
-      
+    
+    0.6.1 -added link to tutorial in readme.md  
     0.6.0 -required Migration 0.6.x
           -fix major bug 
            apperently CamelCaseObject conversion to table_name was not done correct

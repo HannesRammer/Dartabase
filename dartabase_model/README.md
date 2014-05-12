@@ -1,8 +1,8 @@
-Dartabase Model 0.6.0
+Dartabase Model 0.6.1
 =====================
 
   Serverside Database Object Models for simple data manipulation
-  with MySQL/PGSQL
+  using MySQL/PGSQL without having to write SQL
   
   inspired by Ruby on Rails models
     
@@ -27,6 +27,8 @@ Dartabase Model 0.6.0
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
+  
+**TUTORIAL 1** [HOW TO SETUP AND RUN MIGRATION AND MODEL](https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md)
     	
 HOW TO SETUP
 ------------
@@ -269,7 +271,7 @@ RELATIONS
 	  
 	}); 
 
-**WORKING EXAMPLE**
+**TEST EXAMPLE**
 say we have a database with table account and table picture 
 	
 		-----dataserver.dart--START--
@@ -289,11 +291,17 @@ say we have a database with table account and table picture
 			Future testAll() {
 			  Completer completer = new Completer();
 			  save().then((List objects){
+			    print("save DONE");
 			    find().then((_){
+			      print("find DONE");
 			      receive(objects[0],objects[1]).then((_){
+			        print("receive DONE");
 			        has(objects[0],objects[1]).then((_){
+			          print("has DONE");
 			          remove(objects[0],objects[1]).then((_){
+			            print("remove DONE");
 			            delete(objects[0],objects[1]).then((_){
+			              print("delete DONE");
 			              print("2testAll DONE");
 			            });
 			          });
