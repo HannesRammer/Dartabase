@@ -1,5 +1,5 @@
 name: dartabase_migration
-version: 0.6.0
+version: 0.6.1
 author: Hannes Rammer <Hannes.Rammer@gmail.com>
 description: Database Migration stands for version controlled database structure manipulation for MySQL and PGSQL without having to write SQL. inspired by Ruby on Rails models
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_migration

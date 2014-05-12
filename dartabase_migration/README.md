@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.0
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.1
 =========================
 
   Serverside Database migration 
@@ -30,6 +30,8 @@
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
+  
+  **TUTORIAL 1** [HOW TO SETUP AND RUN MIGRATION AND MODEL](https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md)
   
 HOW TO SETUP
 ------------
@@ -562,7 +564,7 @@ HOW TO RUN SCAFFOLDING
   
   to generate the code we have to
   
-  1. dartabase_migration/bin/scaffolding.dart
+  1. run 'dartabase_migration/bin/scaffolding.dart'
   
   2. Select the project we initiallized with dartabase_migration 
   
