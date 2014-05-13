@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.1
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.2
 =========================
 
   Serverside Database migration 
@@ -27,7 +27,7 @@
       
   Uses
   
-  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
+  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.11.0
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
   
