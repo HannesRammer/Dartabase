@@ -1,4 +1,4 @@
-Dartabase Model 0.6.1
+Dartabase Model 0.6.2
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -24,7 +24,7 @@ Dartabase Model 0.6.1
 	    
   Uses
   
-  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.9.0
+  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.11.0
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
   

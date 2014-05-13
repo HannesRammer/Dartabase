@@ -1,6 +1,10 @@
 VERSION
 -------
     
+    0.6.2 -updated sqlJocky to 0.11.0
+          -fixed problem due to generation of table column created_at using now().
+           should work in mysql version >= 5.0 //tested on producktion 5.0 and 5.5
+           //pls file me a bug, if you still have problems creating tables via migration. 
     0.6.1 -added link to tutorial in readme.md  
     0.6.0 -required Migration 0.6.x
           -fix major bug 

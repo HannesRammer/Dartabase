@@ -38,7 +38,6 @@ class Model {
    * 
    * player.save().then((process){
    *   if(process == "created" || process == "updated"){
-   *     //your code
    *   }else{
    *   }
    * }); 
@@ -89,22 +88,25 @@ class Model {
         });
         
       } else if (DBCore.adapter == DBCore.MySQL) {
+        ConnectionPool savePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
+                  
         if(usedObjectData["createOrUpdate"]=="create"){
           String insertSQL="insert into $tableName (${usedObjectData["insertColumns"].join(",")}) values (${usedObjectData["insertSpaceholder"].join(",")}) ";
           print(insertSQL);
           
-          ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
-          pool.prepare(insertSQL).then((query) {
+          savePool.prepare(insertSQL).then((query) {
             query.execute(usedObjectData["insertValues"]).then((result) {
+              //savePool.close();
               completer.complete("created");
             });
+            
           });  
         }else if(usedObjectData["createOrUpdate"]=="update"){
           String updateSQL="UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
           print(updateSQL);
           
-          ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
-          pool.query(updateSQL).then((result) {
+          savePool.query(updateSQL).then((result) {
+            //savePool.close();
             completer.complete("updated");
           });
         }
@@ -149,27 +151,29 @@ class Model {
         });
       });
     } else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+      ConnectionPool findPool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
       List row;
-      pool.query(sql).then((results) {
+      findPool.query(sql).then((results) {
         List data = new List();
         results.listen((row) {
           var object = setObjectScemaAttributes(this , row);  
           data.add(object);
         }).asFuture().then((_){
           if(resultAsList == true){
+            //findPool.close();
             completer.complete(data);  
           }
           else if(resultAsList == false){
             if(data != null && data.length > 0){
+              //findPool.close();
               completer.complete(data[0]);  
             }else{
+              //findPool.close();
               completer.complete(null);
             }
           }
         });
       });
-      pool.close();
     }
     return completer.future; 
   }
@@ -306,9 +310,10 @@ class Model {
         });
       });
     }else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
-      pool.query(SQL).then((result) {
+      ConnectionPool deletePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
+      deletePool.query(SQL).then((result) {
         //completer.complete("deleted item with id ${this.id}");
+        //deletePool.close();
         completer.complete(result);
       });
     }
@@ -366,13 +371,15 @@ class Model {
       });
       
     } else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+      ConnectionPool receivePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
       //sql = preSql + "SELECT * FROM (SELECT '${this.id}', '${object.id}') AS tmp " + postSql;
       print(sql); 
       
-      pool.query(sql).then((result) {
+      receivePool.query(sql).then((result) {
+        //receivePool.close();
         completer.complete(result);
       });
+      
     }
     return completer.future;
   }
@@ -534,8 +541,9 @@ class Model {
       
     } else if (DBCore.adapter == DBCore.MySQL) {
       
-      ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
-      pool.query(SQL).then((result) {
+      ConnectionPool removePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
+      removePool.query(SQL).then((result) {
+        //removePool.close();
         completer.complete(result);
       });
      
@@ -612,6 +620,17 @@ class Model {
             }else if(value==true){
               value = '1';
             }
+          }
+          if(column == "updated_at"){
+            DateTime dT = new DateTime.now();
+               
+            var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT.month}";
+            var day = "${dT.day}".length == 1 ? "0${dT.day}" : "${dT.day}";
+            var hour = "${dT.hour}".length == 1 ? "0${dT.hour}" : "${dT.hour}";
+            var minute = "${dT.minute}".length == 1 ? "0${dT.minute}" : "${dT.minute}";
+            var second = "${dT.second}".length == 1 ? "0${dT.second}" : "${dT.second}";
+            value = "${dT.year}-$month-$day $hour:$minute:$second";
+            
           }
           listValues.add(value);
           updateValues.add("${column}='${value}'");
@@ -724,12 +743,12 @@ class Model {
       });
   
     } else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+      ConnectionPool newIdPool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
       List row;
 
       String tableName = DBCore.toTableName("${this.runtimeType}");
       
-      pool.query("SELECT MAX(ID) FROM ${tableName}").then((results) {
+      newIdPool.query("SELECT MAX(ID) FROM ${tableName}").then((results) {
         List data = new List();
         results.listen((row) {
           num value ;
@@ -740,10 +759,10 @@ class Model {
             value = row[0] + 1;
           }
           print("new Index ${value}");
+          //newIdPool.close();
           completer.complete(value);
         });
       });
-      pool.close();
     }
     return completer.future;
   }
