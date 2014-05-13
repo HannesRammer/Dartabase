@@ -260,8 +260,13 @@ ${generatedynamicFields("serverFill", columnsMap,varName)};
 }
 
   ''';
-  DBCore.stringToFilePath(file, "${DBCore.rootPath}/bin/${varName}.dart");
-  print("server model ${DBCore.rootPath}/bin/${varName}.dart created");
+  Directory binDir = new Directory("${DBCore.rootPath}/bin");
+  binDir.create(recursive: true).then((_){
+  
+  
+    DBCore.stringToFilePath(file, "${DBCore.rootPath}/bin/${varName}.dart");
+    print("server model ${DBCore.rootPath}/bin/${varName}.dart created");
+  });
 }
 
 createClientView(String tableName, Map columnsMap){
@@ -560,7 +565,7 @@ void append${className}s(List ${varName}s){
     <link rel="import" href="../poly/${varName}.html">
     <script type="application/dart"> export 'index.dart'; </script>
     <script src="packages/browser/dart.js"></script>
-    <link rel="stylesheet" href="index.css">
+    <!--link rel="stylesheet" href="index.css"-->
   </head>
   <body>
     <h1>${className}s View</h1>
@@ -658,7 +663,7 @@ class ${className} extends PolymerElement {
 <!DOCTYPE html>
 <polymer-element name="custom-${polyName}">
   <template>
-    <link rel="stylesheet" href="${varName}.css">
+    <link rel="stylesheet" href="../poly/${varName}.css">
   
     <template if="{{apperance == 'header'}}">
       <div class="custom-${polyName}">
@@ -753,6 +758,8 @@ ${generatedynamicFields("create", columnsMap)}
     print("poly view ${polyPath}/${varName}.dart created");
     DBCore.stringToFilePath(polyHtml, "${polyPath}/${varName}.html");
     print("poly view ${polyPath}/${varName}.html created");
+    DBCore.stringToFilePath("", "${polyPath}/${varName}.html");
+    print("poly view ${polyPath}/${varName}.css created");
     
     DateTime dT = new DateTime.now();
     var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT.month}";
@@ -780,8 +787,15 @@ final ${varName}DeleteUrl = "delete${className}";
 ''';
       var pathPath = "${DBCore.rootPath}/lib/paths.dart";
       var file = new File(pathPath);
-      file.writeAsStringSync(pathString, encoding: ASCII, mode:FileMode.APPEND);
-      print("paths for ${className} added to ${pathPath}"); 
+      
+      Directory libDir = new Directory("${DBCore.rootPath}/lib");
+      libDir.create(recursive: true).then((_){
+      
+        file.writeAsStringSync(pathString, encoding: ASCII, mode:FileMode.APPEND);
+        print("paths for ${className} added to ${pathPath}");
+              
+      });
+       
     });
   });
   
