@@ -1,4 +1,4 @@
-Dartabase Core 0.2.8
+Dartabase Core 0.2.9
 ===================
 
     shared lib used by Dartabase Tools (no need for you to do anything)

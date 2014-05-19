@@ -23,6 +23,8 @@ class DBCore {
   static String host;
 
   static int port;
+  
+  static String ssl;
 
   static String schemaVersion;
   
@@ -153,6 +155,7 @@ class DBCore {
      password = parsedMap["password"];
      host = parsedMap["host"];
      port = int.parse(parsedMap["port"]);
+     ssl = parsedMap["ssl"];
      
      schemaVersion = DBCore.jsonFilePathToMap('$rootPath/db/schemaVersion.json')["schemaVersion"];
    }
