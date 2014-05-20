@@ -1,7 +1,8 @@
 VERSION
 -------
     
-    0.6.3 -added ssl support for Mysql and PGSQL via config file
+    0.6.3 -requires Migration 0.6.3
+          -added ssl support see Migration readme ->config file
           -improved speed via single connection instead of multi pools
           -updated postgresql to 0.2.13 
     0.6.2 -updated sqlJocky to 0.11.0
