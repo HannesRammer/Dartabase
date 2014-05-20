@@ -45,7 +45,8 @@ void initiateDartabase(String path,String projectName) {
     "password": "DBPassword",
     "host": "localhost",
     "port": "5432",
-    "schemaVersion":"0"
+    "schemaVersion":"0",
+    "ssl": "false"
   };
   Directory directory = new Directory("${path}/db/migrations");
   
@@ -79,7 +80,9 @@ void run(String migrationDirection) {
   DBCore.loadConfigFile();
   if (DBCore.adapter == DBCore.PGSQL) {
     uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-    
+    if(DBCore.ssl){
+      uri +="?sslmode=require";
+    }
     Pool pool = new Pool(uri, min: 1, max: 1);
     pool.start().then((_) {
       print('Min connections established.');
@@ -89,7 +92,13 @@ void run(String migrationDirection) {
     });
 
   } else if (DBCore.adapter == DBCore.MySQL) {
-    ConnectionPool pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+    ConnectionPool pool;
+    if(DBCore.ssl){
+      pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5, useSSL: true);
+    }else{
+      pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+    }
+    
     migrate(pool);
   }
 }

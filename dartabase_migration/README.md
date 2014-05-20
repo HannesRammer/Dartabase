@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.2
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.3
 =========================
 
   Serverside Database migration 
@@ -77,13 +77,18 @@ This is a stand alone app!
         "username": "dbUsername",
         "password": "dbPassword",
         "host": "localhost",
-        "port": "3306"
+        "port": "3306",
+        "ssl": "false"
     }
     ----------------------------
 
     for postgresql use
 
     "adapter": "PGSQL"    (all capital)
+    
+    for SSL use 
+    
+    "ssl": "true"
 
 *******************************************************************************************
 HOW TO UPDATE DARTABASE MIGRATION
