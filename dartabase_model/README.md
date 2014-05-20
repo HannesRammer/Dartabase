@@ -10,9 +10,9 @@ Dartabase Model 0.6.3
     
 	Tested on 
 
-    Dart Editor version 1.4.0.dev_04_00 (DEV)
-    Dart SDK version 1.4.0-dev.4.0
-
+    Dart Editor version 1.4.0.dev_06_03 (DEV)
+    Dart SDK version 1.4.0-dev.6.3
+    
 	Compatibility
 		depending on the migration version you are using 
 		you have to use a differend model version in your app
@@ -26,7 +26,7 @@ Dartabase Model 0.6.3
   
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.11.0
   
-  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.12
+  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.13
   
 **TUTORIAL 1** [HOW TO SETUP AND RUN MIGRATION AND MODEL](https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md)
     	
