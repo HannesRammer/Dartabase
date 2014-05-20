@@ -80,7 +80,7 @@ void main() {
         }else if(state == 1){
           if(DBCore.rootPath != null){
             try{
-              lastMigrationNumber = int.parse(line);
+              lastMigrationNumber = (int.parse(line)-1);
               run("UP");
             }catch(e){
               print("not a number");

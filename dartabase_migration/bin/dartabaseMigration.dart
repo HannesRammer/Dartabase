@@ -141,7 +141,7 @@ Future migrate(conn) {
         //print("fileId$fileId");
         
         if (direction == "UP") {
-            if (lastMigrationNumber > fileId) {
+            if (lastMigrationNumber > fileId - 1) {
               doFile(conn);
             }else{
               print("goal migration smaller or equal current migration, maybe you wanted to revert migration via dbDown instead");
