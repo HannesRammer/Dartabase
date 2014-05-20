@@ -1,4 +1,4 @@
-Dartabase Model 0.6.2
+Dartabase Model 0.6.3
 =====================
 
   Serverside Database Object Models for simple data manipulation

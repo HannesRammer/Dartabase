@@ -1,23 +1,18 @@
 library dartabaseModel;
 
-import "dart:io";
-import "dart:convert";
 import "dart:mirrors";
-//import 'package:json_object/json_object.dart';
-
 import "dart:async";
 import 'package:dartabase_core/dartabase_core.dart';
 
-import 'package:postgresql/postgresql.dart';
 import 'package:postgresql/postgresql_pool.dart';
 
 import 'package:sqljocky/sqljocky.dart';
-
 
 var MAX = 1;
 
 String uri;
 
+var DBPOOL;
 
 class Model {
   num _id;
@@ -26,6 +21,19 @@ class Model {
     DBCore.rootPath = rootPath; 
     DBCore.loadConfigFile();
     print(rootPath);
+    if (DBCore.adapter == DBCore.PGSQL) {
+      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
+      if(DBCore.ssl){
+        uri +="?sslmode=require";
+      }
+      DBPOOL = new Pool(uri, min: 1, max: 10);
+    }else if (DBCore.adapter == DBCore.MySQL) {
+      if(DBCore.ssl){
+        DBPOOL = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5, useSSL: true);
+      }else{
+        DBPOOL = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+      }
+    }  
   }
 
   /**
@@ -61,10 +69,7 @@ class Model {
         
         print(usedObjectData["insertValues"].toString());
          
-        uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-        
-        
-        Pool pool = new Pool(uri, min: 1, max: 1);
+        Pool pool = DBPOOL;
         pool.start().then((_) {
           print('Min connections established.');
           pool.connect().then((conn) {
@@ -88,13 +93,13 @@ class Model {
         });
         
       } else if (DBCore.adapter == DBCore.MySQL) {
-        ConnectionPool savePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
+        ConnectionPool pool = DBPOOL;
                   
         if(usedObjectData["createOrUpdate"]=="create"){
           String insertSQL="insert into $tableName (${usedObjectData["insertColumns"].join(",")}) values (${usedObjectData["insertSpaceholder"].join(",")}) ";
           print(insertSQL);
           
-          savePool.prepare(insertSQL).then((query) {
+          pool.prepare(insertSQL).then((query) {
             query.execute(usedObjectData["insertValues"]).then((result) {
               //savePool.close();
               completer.complete("created");
@@ -105,7 +110,7 @@ class Model {
           String updateSQL="UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
           print(updateSQL);
           
-          savePool.query(updateSQL).then((result) {
+          pool.query(updateSQL).then((result) {
             //savePool.close();
             completer.complete("updated");
           });
@@ -123,9 +128,8 @@ class Model {
     //*loop through schema attributes and fill object via reflections and mirrors
     DBCore.loadConfigFile();
     if (DBCore.adapter == DBCore.PGSQL) {
-      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-  
-      Pool pool = new Pool(uri, min: 1, max: 1);
+      
+      Pool pool = DBPOOL;
       pool.start().then((_) {
         print('Min connections established.');
         pool.connect().then((conn) {
@@ -151,24 +155,24 @@ class Model {
         });
       });
     } else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool findPool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
+      ConnectionPool pool = DBPOOL;
       List row;
-      findPool.query(sql).then((results) {
+      pool.query(sql).then((results) {
         List data = new List();
         results.listen((row) {
           var object = setObjectScemaAttributes(this , row);  
           data.add(object);
         }).asFuture().then((_){
           if(resultAsList == true){
-            //findPool.close();
+            //pool.close();
             completer.complete(data);  
           }
           else if(resultAsList == false){
             if(data != null && data.length > 0){
-              //findPool.close();
+              //pool.close();
               completer.complete(data[0]);  
             }else{
-              //findPool.close();
+              //pool.close();
               completer.complete(null);
             }
           }
@@ -297,8 +301,8 @@ class Model {
     String SQL="DELETE FROM $tableName WHERE id = ${this.id}";
     print(SQL);
     if(DBCore.adapter == DBCore.PGSQL) {
-      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-      Pool pool = new Pool(uri, min: 1, max: 1);
+      
+      Pool pool = DBPOOL;
       pool.start().then((_) {
         print('Min connections established.');
         pool.connect().then((conn) {
@@ -310,8 +314,8 @@ class Model {
         });
       });
     }else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool deletePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
-      deletePool.query(SQL).then((result) {
+      ConnectionPool pool = DBPOOL;
+      pool.query(SQL).then((result) {
         //completer.complete("deleted item with id ${this.id}");
         //deletePool.close();
         completer.complete(result);
@@ -355,11 +359,8 @@ class Model {
     
     DBCore.loadConfigFile();
     if (DBCore.adapter == DBCore.PGSQL) {
-      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-      
-      //sql = preSql + "SELECT '${this.id}', '${object.id}' " + postSql;
       print(sql);   
-      Pool pool = new Pool(uri, min: 1, max: 1);
+      Pool pool = DBPOOL;
       pool.start().then((_) {
         print('Min connections established.');
         pool.connect().then((conn) {
@@ -371,12 +372,10 @@ class Model {
       });
       
     } else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool receivePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
-      //sql = preSql + "SELECT * FROM (SELECT '${this.id}', '${object.id}') AS tmp " + postSql;
+      ConnectionPool pool = DBPOOL;
       print(sql); 
-      
-      receivePool.query(sql).then((result) {
-        //receivePool.close();
+      pool.query(sql).then((result) {
+        //pool.close();
         completer.complete(result);
       });
       
@@ -527,8 +526,7 @@ class Model {
     
     if (DBCore.adapter == DBCore.PGSQL) {
       
-      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-      Pool pool = new Pool(uri, min: 1, max: 1);
+      Pool pool = DBPOOL;
       pool.start().then((_) {
         print('Min connections established.');
         pool.connect().then((conn) {
@@ -541,9 +539,9 @@ class Model {
       
     } else if (DBCore.adapter == DBCore.MySQL) {
       
-      ConnectionPool removePool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
-      removePool.query(SQL).then((result) {
-        //removePool.close();
+      ConnectionPool pool = DBPOOL;
+      pool.query(SQL).then((result) {
+        //pool.close();
         completer.complete(result);
       });
      
@@ -718,8 +716,7 @@ class Model {
     
     DBCore.loadConfigFile();
     if (DBCore.adapter == DBCore.PGSQL) {
-      uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-      Pool pool = new Pool(uri, min: 1, max: 1);
+      Pool pool = DBPOOL;
       pool.start().then((_) {
         print('Min connections established.');
         pool.connect().then((conn) {
@@ -743,12 +740,12 @@ class Model {
       });
   
     } else if (DBCore.adapter == DBCore.MySQL) {
-      ConnectionPool newIdPool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
+      ConnectionPool pool = DBPOOL;
       List row;
 
       String tableName = DBCore.toTableName("${this.runtimeType}");
       
-      newIdPool.query("SELECT MAX(ID) FROM ${tableName}").then((results) {
+      pool.query("SELECT MAX(ID) FROM ${tableName}").then((results) {
         List data = new List();
         results.listen((row) {
           num value ;
@@ -759,7 +756,7 @@ class Model {
             value = row[0] + 1;
           }
           print("new Index ${value}");
-          //newIdPool.close();
+          //pool.close();
           completer.complete(value);
         });
       });

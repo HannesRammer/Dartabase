@@ -1,6 +1,9 @@
 VERSION
 -------
     
+    0.6.3 -added ssl support for Mysql and PGSQL via config file
+          -improved speed via single connection instead of multi pools
+          -updated postgresql to 0.2.13 
     0.6.2 -updated sqlJocky to 0.11.0
           -fixed problem due to generation of table column created_at using now().
            should work in mysql version >= 5.0 //tested on producktion 5.0 and 5.5
