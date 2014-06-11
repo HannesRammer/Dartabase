@@ -750,7 +750,7 @@ ${generatedynamicFields("create", columnsMap)}
     print("poly view ${polyPath}/${varName}.dart created");
     DBCore.stringToFilePath(polyHtml, "${polyPath}/${varName}.html");
     print("poly view ${polyPath}/${varName}.html created");
-    DBCore.stringToFilePath("", "${polyPath}/${varName}.html");
+    DBCore.stringToFilePath("", "${polyPath}/${varName}.css");
     print("poly view ${polyPath}/${varName}.css created");
     
     DateTime dT = new DateTime.now();
