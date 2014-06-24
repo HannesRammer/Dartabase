@@ -362,7 +362,7 @@ void createRelation(conn) {
       slaveList = [];
     }
     for (int i = 0;i < relations.length;i++) {
-      if (relations[i].runtimeType == List){
+      if (relations[i].runtimeType.toString() == "List"){
         tableNames = [relations[i][0].toLowerCase(),relations[i][1].toLowerCase()];
       }else if(relations[i].runtimeType.toString() == "_LinkedHashMap"){
         String master = relations[i]["master"];
