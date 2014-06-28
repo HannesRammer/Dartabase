@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="custom-migration-view">
+<link rel="stylesheet" href="../poly/migrationView.css">
+<template>
+  <div>{{name}}</div>
+  UP:{
+  <br />
+  create table:<br />
+    <template repeat="{{table in tables | enumerate}}">
+      <custom-migration-create-table table="{{table.value}}"> </custom-migration-create-table> 
+    </template> 
+    <br />
+  } <br />
+  DOWN:{ <br />
+  <br />
+  } 
+</template>
+<br />
+</polymer-element>
+<script type="application/dart" src="../poly/migrationView.dart"></script>

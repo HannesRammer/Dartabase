@@ -24,7 +24,7 @@ import "dartabaseMigration.dart";
  * 
  */
 void main() {
-  var state = null;
+  var state = 0;
   var projectExistsInProjectMapping = false;
   var projectDoesntExistsInProjectMapping = true;
     

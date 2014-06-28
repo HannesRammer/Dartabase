@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="custom-create-project"> <template>
+<link rel="stylesheet" href="../poly/createProject.css">
+
+<core-animated-pages selected="{{page}}" transitions="hero-transition">
+
+<section>
+
+  <div class="chip-container" hero-p on-tap="{{transition}}"
+    title="Initiate a new Project with Dartabase">
+    
+    <div class="chip" hero-id="add-project"
+      hero?="{{name == 'name' }}">
+      <div class="chip-top" style="background: {{color}}"
+        hero-id="add-project-art"
+        hero?="{{name == 'name'}}"></div>
+      <div class="chip-bottom">
+        <div class="chip-album-title">Add Project</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="details">
+  <div class="card" layout horizontal hero-id="add-project" hero
+   ">
+    <div class="card-left" style="background: {{color}}"
+      hero-id="add-project-art" hero></div>
+    <div class="card-right" flex>
+      <div layout horizontal center>
+        <div>
+          <div class="card-icon" style="background: {{color}}" on-tap="{{transition}}"></div>
+        </div>
+        <div flex>
+          <div class="card-album-title">
+          Add Project
+          </div>
+          <div class="card-album-name">
+          <paper-input floatingLabel="true" label="Project Name" value="{{name}}"></paper-input>
+          <paper-input floatingLabel="true" label="Project Path" value="{{path}}"></paper-input>
+          <paper-button  on-tap="{{initiateMigration}}">
+          Initiate Project
+          </paper-button>
+          
+          </div>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+
+</core-animated-pages> </template> </polymer-element>
+<script type="application/dart" src="../poly/createProject.dart"></script>

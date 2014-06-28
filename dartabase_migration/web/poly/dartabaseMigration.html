@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+  <polymer-element name="dartabase-migration">
+  <template>
+  <link rel="stylesheet" href="../poly/dartabaseMigration.css">
+    <core-animated-pages selected="{{page}}" transitions="hero-transition">
+
+      <section>
+      <custom-create-project-label></custom-create-project-label>
+        <div class="chip-container" hero-p on-tap="{{transition}}" title="{{project.path}}">
+          <template repeat="{{projects as project}}">
+            <div class="chip" hero-id="{{project.name}}" hero?="{{selectedProject == project }}">
+              <div class="chip-top" style="background:{{project.color}};" hero-id="{{project.name}}-art" hero?="{{selectedProject == project}}"></div>
+              <div class="chip-bottom">
+                <div class="chip-album-title">{{project.name}}</div>
+                <!--div class="chip-name">{{project.path}}</div-->
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
+      <section id="details">
+        <div class="card" layout horizontal hero-id="{{selectedProject.name}}" hero on-tap="{{transition}}">
+          <div class="card-left" style="background:{{selectedProject.color}};" hero-id="{{selectedProject.name}}-art" hero></div>
+          <div class="card-right" flex>
+            <div layout horizontal center>
+              <div>
+                <div class="card-icon" style="background:{{selectedProject.color}};"></div>
+              </div>
+              <div flex>
+                <div class="card-album-title">{{selectedProject.name}}</div>
+                <div class="card-album-name">{{selectedProject.path}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </core-animated-pages>
+
+  </template>
+   </polymer-element>
+   <script type="application/dart" src="../poly/dartabaseMigration.dart"></script>

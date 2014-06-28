@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="custom-migration-create-column">
+  <link rel="stylesheet" href="../poly/migrationCreateColumn.css">
+  
+    <template>
+      <div class="migrationCreateColumn" style="border:1px solid black;">
+       <div>{{table['name']}}</div>
+       <template repeat="{{column in table['columns'] | enumerate}}">
+       <div style="clear:both;">
+       <div class="col">
+       {{column.value['name']}}
+       </div>
+       <div class="col">
+       {{column.value['type']}}
+       </div>
+       <div class="col">
+       <template if="{{column.value['hash'] == true}}">
+         Default:{{column.value['default']}}
+       </template>
+       </div>
+       </div>
+       </template>
+      </div>
+    </template>
+</polymer-element>
+<script type="application/dart" src="../poly/migrationCreateColumn.dart"></script>

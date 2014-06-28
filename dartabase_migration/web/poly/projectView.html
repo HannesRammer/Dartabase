@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="custom-project-view">
+<template>
+<link rel="stylesheet" href="../poly/projectView.css">
+
+<div class="projectView">
+  <div class="">Project: {{project}}</div>
+  <div class="">Path: {{path}}</div>
+  <div class="">Current Migration: {{currentMigration}}</div>
+  <div class="">Migrations:</div>
+
+  <div class="migrationView">
+
+    <table style="width:100%;">
+      <tr>
+        <td style="width:50%;">
+          <div class="migrationContentLeft">
+            <template repeat="{{migration in migrations}}"> 
+            <template if="{{migration['state'] == 'current'}}"> <br />
+            <div id="{{migration['version']}}" class="currentMigration" on-click="{{setActive}}" index="{{migration['index']}}">
+              <div class="text">{{migration['version']}} --
+                current</div>
+            </div>
+            <br />
+            </template> 
+            <template if="{{migration['state'] != 'current'}}">
+            <div id="{{migration['version']}}"
+              index="{{migration['index']}}"
+              class="{{migration['state']}}Migration"
+              on-click="{{setActive}}">
+              <div class="text">{{migration['version']}}</div>
+            </div>
+            </template> </template>
+            <template if="{{migrationDirection == ''}}">
+            <!--button on-click="{{createMigration}}">create new
+              migration</button-->
+            <paper-button disabled="disabled">migrate</paper-button>
+            </template>
+            <template if="{{migrationDirection == 'DOWN'}}">
+            <!--button on-click="{{createMigration}}">create new
+              migration</button-->
+            <paper-button on-click="{{runMigration}}">migrate to
+              older version</paper-button>
+            </template>
+            <template if="{{migrationDirection == 'UP'}}">
+            <!--button on-click="{{createMigration}}">create new
+              migration</button-->
+            <paper-button on-click="{{runMigration}}">migrate to
+              newer version</paper-button>
+            </template>
+          </div>
+        </td>
+        <td style="width:50%;">
+          <div class="migrationContentRight">
+          
+          
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+</template> 
+</polymer-element>
+<script type="application/dart" src="../poly/projectView.dart"></script>

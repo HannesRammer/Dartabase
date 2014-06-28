@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <title>Dartabase Migration</title>
+    
+
+  <script src="packages/web_components/platform.js"></script>
+  <script src="packages/web_components/dart_support.js"></script>
+  
+  <link href="packages/paper_elements/core_animated_pages.html" rel="import">
+  <link href="packages/paper_elements/paper_button.html" rel="import">
+  <link href="packages/paper_elements/paper_input.html" rel="import">
+
+  <link rel="import" href="../poly/projectLabel.html">
+  <link rel="import" href="../poly/createProject.html">
+  <link rel="import" href="../poly/projectView.html">
+    
+  <link rel="import" href="../poly/migrationView.html">
+  <link rel="import" href="../poly/migrationCreateTable.html">
+  <link rel="import" href="../poly/dartabaseMigration.html">
+  
+  <script type="application/dart"> export 'index.dart'; </script>
+    <script src="packages/browser/dart.js"></script>
+    
+    
+  <style>
+    body {
+      font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      background: #f1f1f1;
+    }
+
+    .green {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 350px;
+      background: #70c26f;
+    }
+  </style>
+</head>
+<body>
+<div id="warning">Dart is not running</div>
+
+<custom-create-project></custom-create-project>
+  <div class="green"></div>
+<div id="content"></div>
+  
+</body>
+</html>

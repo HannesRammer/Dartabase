@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="custom-migration-create-table">
+  <link rel="stylesheet" href="../poly/migrationCreateTable.css">
+  
+    <!--template>
+      <div style="border:1px solid black;">
+       <input type="text" value="{{table['name']}}" placeholder="table name">
+       <template repeat="{{column in table['columns'] | enumerate}}">
+         <br/>  
+         <input type="text" value="{{column.value['name']}}" placeholder="column name">  
+         <input type="text" value="{{column.value['type']}}" placeholder="column type">
+       </template>
+      </div>
+    </template-->
+    
+    <template>
+      <div class="migrationCreateTable" style="border:1px solid black;">
+       <div>{{table['name']}}</div>
+       <template repeat="{{column in table['columns'] | enumerate}}">
+       <div style="clear:both;">
+       <div class="col">
+       {{column.value['name']}}
+       </div>
+       <div class="col">
+       {{column.value['type']}}
+       </div>
+       <div class="col">
+       <template if="{{column.value['hash'] == true}}">
+         Default:{{column.value['default']}}
+       </template>
+       </div>
+       </div>
+       </template>
+      </div>
+    </template>
+</polymer-element>
+<script type="application/dart" src="../poly/migrationCreateTable.dart"></script>

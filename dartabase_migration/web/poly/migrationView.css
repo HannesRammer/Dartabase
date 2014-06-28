@@ -1,0 +1,21 @@
+.migrationView{
+  border-bottom: 1px solid #1682ba;
+  width:150px;
+  height:50px;
+  background:#00A4E4;
+  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
+  color:#ffffff;
+  display: table;
+  cursor: pointer;
+}
+
+.migrationView:HOVER {
+  background: #0081C6;
+  color:#eeeeee; 
+}
+
+.text{
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}

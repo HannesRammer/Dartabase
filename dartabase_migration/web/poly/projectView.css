@@ -1,0 +1,101 @@
+.projectView{
+  border: 1px solid #1682ba;
+  width:800px;
+  height:412px;
+  background:#f1f9fd;
+  color:#000000;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+
+.text{
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.currentMigration{
+  border-bottom: 1px solid #1682ba;
+  width:100%;
+  background:#00A4E4;
+  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
+  color:#ffffff;
+  display: table;
+}
+
+.olderMigration{
+  border-bottom: 1px solid #C9C9C9;
+  width:100%;
+  background:#D6D6D6;
+  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
+  color:#A9A9A9;
+  display: table;
+  cursor: pointer;
+}
+
+.newerMigration{
+  border-bottom: 1px solid #00D2B8;
+  width:100%;
+  background:#55DDCA;
+  color:#000000;
+  display: table;
+  cursor: pointer;
+}
+
+.olderMigration:HOVER{
+  background: #00D2B8;
+}
+.newerMigration:HOVER{
+  background: #00D2B8;
+}
+
+.migrationView{
+  border: 1px solid #1682ba;
+  width:100%;
+  height:320px;
+  background:#f1f9fd;
+  color:#000000;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: small;
+  overflow-x:none;
+  overflow-y:auto;
+}
+
+.currentSelection{
+  border-bottom: 1px solid #1682ba;
+  width:100%;
+  background:#0081C6;
+  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
+  color:#ffffff;
+  display: table;
+}
+
+.currentSelection:HOVER{
+  background: #0081C6;
+}
+
+.migrationContentLeft{
+  border-right: 1px solid #1682ba;
+  height:300px;
+  background:#f1f9fd;
+  color:#000000;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: small;
+  overflow-x:none;
+  overflow-y:auto;
+}
+
+.migrationContentRight{
+  border-left: 1px solid #1682ba;
+  height:300px;
+  background:#f1f9fd;
+  color:#000000;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: small;
+  overflow-x:none;
+  overflow-y:auto;
+}

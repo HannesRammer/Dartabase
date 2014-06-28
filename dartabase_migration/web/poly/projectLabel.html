@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="custom-project-label">
+    <link rel="stylesheet" href="../poly/projectLabel.css">
+    <template>
+    <div class="projectLabel" title="{{path}}" on-click="{{loadProject}}">
+        <div class="text">Project: {{project}}</div>
+    </div>
+    </template>
+</polymer-element>
+<script type="application/dart" src="../poly/projectLabel.dart"></script>
