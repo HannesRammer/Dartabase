@@ -30,11 +30,16 @@ class DBCore {
   
    static Map jsonFilePathToMap(String path) {
     var file = new File(path);
-    String fileText = file.readAsStringSync(encoding: ASCII);
-    if (fileText == "") {
-      fileText = "{}";
+    if(file.existsSync()){
+      String fileText = file.readAsStringSync(encoding: ASCII);
+      if (fileText == "") {
+        fileText = "{}";
+      }
+      return  JSON.decode(fileText);
+    }else{
+      return {};
     }
-    return  JSON.decode(fileText);
+    
   }
   
    static Map loadSchemaToMap() {
