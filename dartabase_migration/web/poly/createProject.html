@@ -1,59 +1,40 @@
 <!DOCTYPE html>
 <link rel="import" href="packages/polymer/polymer.html">
-<polymer-element name="custom-create-project"> <template>
+<polymer-element name="custom-create-project"> 
+<template>
 <link rel="stylesheet" href="../poly/createProject.css">
 
 <core-animated-pages selected="{{page}}" transitions="hero-transition">
 
-<section>
-
-  <div class="chip-container" hero-p on-tap="{{transition}}"
-    title="Initiate a new Project with Dartabase">
-    
-    <div class="chip" hero-id="add-project"
-      hero?="{{name == 'name' }}">
-      <div class="chip-top" style="background: {{color}}"
-        hero-id="add-project-art"
-        hero?="{{name == 'name'}}"></div>
-      <div class="chip-bottom">
-        <div class="chip-album-title">Add Project</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="details">
-  <div class="card" layout horizontal hero-id="add-project" hero
-   ">
-    <div class="card-left" style="background: {{color}}"
-      hero-id="add-project-art" hero></div>
-    <div class="card-right" flex>
-      <div layout horizontal center>
-        <div>
-          <div class="card-icon" style="background: {{color}}" on-tap="{{transition}}"></div>
+      <section>
+        <div class="chip-container" hero-p on-tap="{{transition}}" >
+            <div class="chip" hero-id="add-project" hero?="{{name == name}}" title="{{path}}">
+              <div class="chip-top" style="border:solid 1px {{backgroundColor}};" hero-id="new-project-art" hero?="{{name == name}}"></div>
+              <div class="chip-bottom" style="background:{{backgroundColor}};color:{{color}};">
+                <div class="chip-album-title">{{name}}</div>
+                <!--div class="chip-name">{{path}}</div-->
+              </div>
+            </div>
         </div>
-        <div flex>
-          <div class="card-album-title">
-          Add Project
+      </section>
+
+      <section id="details">
+        <div class="card" layout horizontal hero-id="add-project" hero>
+          <div class="card-left" style="background:{{backgroundColor}};" hero-id="new-project-art" hero></div>
+          <div class="card-right" flex>
+            <div layout horizontal center>
+              <paper-icon-button class="Card-icon" icon="close" label="X" value="{{name}}" floatinglabel="true" on-tap="{{transition}}" style="background:{{backgroundColor}};"></paper-icon-button>
+              <div flex>
+                <paper-input label="Project Name" value="{{name}}" floatinglabel="true"></paper-input>
+                <paper-input label="Project Path" value="{{path}}" floatinglabel="true"></paper-input>
+                <paper-button label="Enhance Project '{{name}}' at path '{{path}}'" floatinglabel="true" on-tap="{{initiateMigration}}" style="border:1px solid {{backgroundColor}};"></paper-button>
+              </div>
+            </div>
           </div>
-          <div class="card-album-name">
-          <paper-input floatingLabel="true" label="Project Name" value="{{name}}"></paper-input>
-          <paper-input floatingLabel="true" label="Project Path" value="{{path}}"></paper-input>
-          <paper-button  on-tap="{{initiateMigration}}">
-          Initiate Project
-          </paper-button>
-          
-          </div>
-          
-          
         </div>
-      </div>
-    </div>
-  </div>
+      </section>
 
-</section>
+    </core-animated-pages>
 
-
-
-</core-animated-pages> </template> </polymer-element>
+</template> </polymer-element>
 <script type="application/dart" src="../poly/createProject.dart"></script>

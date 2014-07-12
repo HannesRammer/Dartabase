@@ -1,12 +1,14 @@
 import 'package:polymer/polymer.dart';
 import 'dart:html';
+import 'package:material_paper_colors/material_paper_colors.dart' as MPC;
 
 @CustomTag('custom-create-project')
 class CreateProject extends PolymerElement {
-  @observable String name = "name";
+  @observable String name = "";
   @observable num page = 0;
-  @observable String path = "path";
-  @published String color = "#ff0000";
+  @observable String path = "";
+  @published String backgroundColor = MPC.Red["500"];
+  @published String color = MPC.RedT["500"][1];
 
   CreateProject.created() : super.created();
 

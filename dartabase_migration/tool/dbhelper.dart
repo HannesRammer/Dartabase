@@ -47,7 +47,7 @@ class DBHelper {
   static void removeDBTable(sql, conn) {
     
     if (DBCore.adapter == DBCore.PGSQL) {
-      afterQuery("removeDBTablen", conn.query(sql).toList(), sql, conn);
+      afterQuery("removeDBTable", conn.query(sql).toList(), sql, conn);
     } else if (DBCore.adapter == DBCore.MySQL) {
       conn.query(sql);
       printQueryCompleted("removeDBTable", "table Removed", sql);

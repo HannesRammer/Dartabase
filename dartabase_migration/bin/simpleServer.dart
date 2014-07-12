@@ -9,7 +9,7 @@ import 'package:postgresql/postgresql.dart';
 import 'package:postgresql/postgresql_pool.dart';
 
 import 'package:sqljocky/sqljocky.dart';
-import 'dartabaseMigration.dart';
+import 'dartabaseMigration.dart' as DM;
 
 import 'dart:convert';
 import 'package:params/server.dart';
@@ -73,7 +73,7 @@ void handleGet(HttpRequest req) {
   } else if (path.indexOf("/migrations") >= 0) {
     loadMigrations(res);
   } else if (path.indexOf("/initiateMigration") >= 0) {
-    initiateDartabase(params["path"], params["name"]);
+    DM.initiateDartabase(params["path"].replaceAll('%5C','\\'), params["name"]);
   } else if (path.indexOf("/runMigration") >= 0) {
       runMigration(res);
   }
@@ -139,7 +139,7 @@ void printError(error) => print(error);
 
 
 initiateGUI(HttpResponse res) {
-  projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
+  DM.projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
 
 
   /*print("\nProject name *:* Path *:* Current schema version");
@@ -153,11 +153,11 @@ initiateGUI(HttpResponse res) {
 }
 
 loadProjectMapping(HttpResponse res) {
-  projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
+  DM.projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
 
-  if (!projectMapping.isEmpty) {
-    print("found ${projectMapping.length} userAccounts");
-    res.write(JSON.encode(projectMapping));
+  if (!DM.projectMapping.isEmpty) {
+    print("found ${DM.projectMapping.length} userAccounts");
+    res.write(JSON.encode(DM.projectMapping));
     res.close();
   } else {
     print(JSON.encode({"no projects found":""}));
@@ -168,7 +168,7 @@ loadProjectMapping(HttpResponse res) {
 
 loadCurrentMigrationVersion(HttpResponse res) {
 
-  Map schemaV = DBCore.jsonFilePathToMap("${params["projectRootPath"]}/db/schemaVersion.json");
+  Map schemaV = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/schemaVersion.json");
   if (!schemaV.isEmpty && !schemaV['schemaVersion'].isEmpty) {
     print("found current schema version");
     res.write(schemaV['schemaVersion']);
@@ -181,7 +181,7 @@ loadCurrentMigrationVersion(HttpResponse res) {
 }
 
 loadMigrations(HttpResponse res) {
-  Map rootSchema = DBCore.jsonFilePathToMap("${params["projectRootPath"]}/db/schemaVersion.json");
+  Map rootSchema = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/schemaVersion.json");
   
   var state;
   List<Map> list;
@@ -194,7 +194,7 @@ loadMigrations(HttpResponse res) {
   }
   
     
-  Directory directory = new Directory("${params["projectRootPath"]}/db/migrations");
+  Directory directory = new Directory("${params["projectRootPath"].replaceAll('%5C','\\')}/db/migrations");
   List files = directory.listSync();
   if (files.length > 0) {
     print("Migration number : Name");
@@ -221,9 +221,9 @@ loadMigrations(HttpResponse res) {
 }
 
 runMigration(HttpResponse res){
-  lastMigrationNumber = num.parse(params['index']);
-  DBCore.rootPath = params["path"];
-  run(params["direction"]);
+  DM.lastMigrationNumber = num.parse(params['index']);
+  DBCore.rootPath = params["path"].replaceAll('%5C','\\');
+  DM.run(params["direction"]);
   res.write("done");
   res.close();
 }
@@ -232,14 +232,18 @@ loadMigration(HttpResponse res){
   List createTables=[];
   List createColumns=[];
   
-  Map migration = DBCore.jsonFilePathToMap("${params["path"]}/db/migrations/${params['migrationVersion']}");
+  Map migration = DBCore.jsonFilePathToMap("${params["path"].replaceAll('%5C','\\')}/db/migrations/${params['migrationVersion']}");
   Map up = migration["UP"];
-  
-  Map createTable = up["createTable"];
-  Map createColumn = up["createColumn"];
-  Map removeColumn = up["removeColumn"];
-  Map removeTable = up["removeTable"];
-  
+  Map createTable;
+  Map createColumn;
+  Map removeColumn;
+  Map removeTable;
+  if(up != null){
+  createTable = up["createTable"];
+  createColumn = up["createColumn"];
+  removeColumn = up["removeColumn"];
+  removeTable = up["removeTable"];
+  }
   
   if(createTable != null){
     createTable.forEach((String tableName, Map tableColumns){

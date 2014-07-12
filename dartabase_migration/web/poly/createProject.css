@@ -1,9 +1,10 @@
 .chip-container {
   position: absolute;
-  top: 275px;
+  top: 0px;
   right: 0;
   left: 0;
   text-align: center;
+  z-index:1;
 }
 
 .chip {
@@ -16,12 +17,10 @@
   background-color: #fff;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
 }
-
 .chip-top {
   width: 200px;
   height: 200px;
 }
-
 .chip-bottom {
   padding: 8px;
   line-height: 1.5;
@@ -37,7 +36,7 @@
 }
 
 .card {
-  height: 400px;
+  height: 200px;
   border-radius: 3px;
   text-align: start;
   overflow: hidden;
@@ -46,7 +45,7 @@
 }
 
 .card-left {
-  width: 400px;
+  width: 150px;
 }
 
 .card-right {

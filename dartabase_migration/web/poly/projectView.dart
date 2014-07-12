@@ -2,13 +2,12 @@ library projectView;
 import 'package:polymer/polymer.dart';
 import "dart:html";
 import "dart:convert" show JSON;
+import "../poly/project.dart";
 
 @CustomTag('custom-project-view')
 class ProjectView extends PolymerElement {
-  @observable String project = "none";
-  @observable String path = "none";
-  @observable List migrations = [];
-  @observable String currentMigration = "none";
+  @published Project project = null;
+  
   @observable Map schema= {};
   
   @observable String selectedMigration = "none" ;
@@ -17,6 +16,8 @@ class ProjectView extends PolymerElement {
     
   
   ProjectView.created() : super.created();
+  
+    
   
   setActive(Event e, var detail, DivElement target){
     if(this.shadowRoot.querySelectorAll(".currentSelection").isNotEmpty){
@@ -36,7 +37,7 @@ class ProjectView extends PolymerElement {
     loadMigrationView();
   }
   runMigration(){
-    var url = "http://127.0.0.1:8079/runMigration?path=${path}&direction=${migrationDirection}";
+    var url = "http://127.0.0.1:8079/runMigration?path=${project.path}&direction=${migrationDirection}";
     if(migrationDirection == "UP"){
       url+="&index=${selectedIndex-1}";
             
@@ -51,7 +52,7 @@ class ProjectView extends PolymerElement {
   }
   
   loadMigrationView(){
-    var url = "http://127.0.0.1:8079/loadMigration?path=${path}&migrationVersion=${selectedMigration}";
+    var url = "http://127.0.0.1:8079/loadMigration?path=${project.path}&migrationVersion=${selectedMigration}";
     var request = HttpRequest.getString(url).then(updateMigrationView);
   }
   updateMigrationView(responseText){
@@ -65,4 +66,5 @@ class ProjectView extends PolymerElement {
     container.innerHtml ="";
     container.append(migrationView);
     }
+  
 }

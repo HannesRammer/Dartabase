@@ -4,19 +4,17 @@ import 'dart:convert' show JSON;
 import 'package:params/client.dart';
 import '../poly/dartabaseMigration.dart';
 import '../poly/project.dart';
+import 'package:material_paper_colors/material_paper_colors.dart';
 
-/*
- * void main()
- * 
- * requests object from db if id is provided 
- * in location search string.
- * then calls displayList with response
-*/
+List<Project> projects = [];
 void main() {
   querySelector("#warning").remove();
   initPolymer().run(() {
     Polymer.onReady.then((e) {     
       initParams();
+      querySelector("#green").style.backgroundColor =Green["500"];
+      querySelector("#green").style.color =GreenT["500"][1];
+
       print("Request List");
       var url = "http://127.0.0.1:8079/projectMapping";
       var request = HttpRequest.getString(url).then(displayProjects);
@@ -24,30 +22,17 @@ void main() {
   });
 }
 
-/*
- * void displayUserAccount(responseText)
- * 
- * transforms the json response into a map,
- * passing it to the created poly object
-*/
 void displayProjects(responseText) {
   Map userProjects = JSON.decode(responseText);
-  List projects = [];
   DartabaseMigration polyItem = new Element.tag("dartabase-migration");
-      
+  var counter=0;
   userProjects.forEach((k,v){
-    
-    projects.add(new Project(name:k,path:v,color:"#34ad48"));
-    
-    
+    counter++;
+    Project project = new Project(name:k,path:v,colorPalette:getRandomColorT("500"));
+    projects.add(project);
+    project.requestMigrations();
+    project.requestCurrentMigrationVersion();
   });
   polyItem.projects = projects;
   querySelector("#content").append(polyItem);
-      
-  //querySelector("dartabase-migration").projects = projects; 
-  
 }
-
-
-
-  

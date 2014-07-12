@@ -32,12 +32,12 @@
 }
 
 #details {
-  padding: 200px 10% 0;
+  padding: 0px 10% 0;
   z-index: 2;
 }
 
 .card {
-  height: 400px;
+  height: 600px;
   border-radius: 3px;
   text-align: start;
   overflow: hidden;
@@ -46,7 +46,7 @@
 }
 
 .card-left {
-  width: 400px;
+  width: 100px;
 }
 
 .card-right {

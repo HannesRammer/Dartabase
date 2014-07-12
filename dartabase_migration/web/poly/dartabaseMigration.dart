@@ -7,7 +7,7 @@ import 'package:template_binding/template_binding.dart';
   class DartabaseMigration extends PolymerElement {
     @observable int page = 0;
     @observable Project selectedProject;
-    @observable List projects;
+    @observable List<Project> projects;
 
     
     DartabaseMigration.created() : super.created();

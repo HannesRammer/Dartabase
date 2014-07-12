@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="../poly/projectView.css">
 
 <div class="projectView">
-  <div class="">Project: {{project}}</div>
-  <div class="">Path: {{path}}</div>
-  <div class="">Current Migration: {{currentMigration}}</div>
+  <div class="">Project: {{project.name}}</div>
+  <div class="">Path: {{project.path}}</div>
+  <div class="">Current Migration: {{project.currentMigration}}</div>
   <div class="">Migrations:</div>
 
   <div class="migrationView">
@@ -16,7 +16,7 @@
       <tr>
         <td style="width:50%;">
           <div class="migrationContentLeft">
-            <template repeat="{{migration in migrations}}"> 
+            <template repeat="{{migration in project.migrations}}"> 
             <template if="{{migration['state'] == 'current'}}"> <br />
             <div id="{{migration['version']}}" class="currentMigration" on-click="{{setActive}}" index="{{migration['index']}}">
               <div class="text">{{migration['version']}} --

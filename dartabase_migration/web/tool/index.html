@@ -10,8 +10,9 @@
   <link href="packages/paper_elements/core_animated_pages.html" rel="import">
   <link href="packages/paper_elements/paper_button.html" rel="import">
   <link href="packages/paper_elements/paper_input.html" rel="import">
+  <link href="packages/paper_elements/paper_icon_button.html" rel="import">
+  
 
-  <link rel="import" href="../poly/projectLabel.html">
   <link rel="import" href="../poly/createProject.html">
   <link rel="import" href="../poly/projectView.html">
     
@@ -30,13 +31,13 @@
       background: #f1f1f1;
     }
 
-    .green {
+    #green {
       position: absolute;
       top: 0;
       right: 0;
       left: 0;
       height: 350px;
-      background: #70c26f;
+      
     }
   </style>
 </head>
@@ -44,7 +45,7 @@
 <div id="warning">Dart is not running</div>
 
 <custom-create-project></custom-create-project>
-  <div class="green"></div>
+  <div id="green"></div>
 <div id="content"></div>
   
 </body>
