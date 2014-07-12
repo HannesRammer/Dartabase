@@ -2,7 +2,7 @@ library dartabaseCore;
 
 import "dart:io";
 import "dart:convert";
-import "package:dev_string_converter/dev_string_converter.dart";
+import "package:dev_string_converter/dev_string_converter.dart" as DSC;
 
 class DBCore {
   static String rootPath;
@@ -167,18 +167,18 @@ class DBCore {
   }
 
   static String toTableName(String text) {
-    return DevStringConverter.toTableName(text);
+    return DSC.toTableName(text);
   }
 
   static String toPolyName(String text) {
-    return DevStringConverter.toPolyName(text);
+    return DSC.toPolyName(text);
   }
 
   static String toVarName(String text) {
-    return DevStringConverter.toVarName(text);
+    return DSC.toVarName(text);
   }
 
   static String toClassName(String text) {
-    return DevStringConverter.toClassName(text);
+    return DSC.toClassName(text);
   }
 }
