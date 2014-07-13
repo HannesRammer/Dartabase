@@ -8,12 +8,12 @@
 
       <section>
         <div class="chip-container" hero-p on-tap="{{transition}}" >
-            <div class="chip" hero-id="add-project" hero?="{{name == name}}" title="{{path}}">
-              <div class="chip-top" style="border:solid 1px {{backgroundColor}};" hero-id="new-project-art" hero?="{{name == name}}"></div>
-              <div class="chip-bottom" style="background:{{backgroundColor}};color:{{color}};">
-                <div class="chip-album-title">{{name}}</div>
-                <!--div class="chip-name">{{path}}</div-->
-              </div>
+            <div hero-id="add-project" hero?="{{name == name}}" title="{{path}}">
+              
+                <paper-button label="Initiate Project" floatinglabel="true" on-tap="{{initiateMigration}}" 
+                              style="border:1px solid {{backgroundColor}};color:{{backgroundColor}};background:{{color}}" 
+                              hero-id="new-project-art" hero?="{{name == name}}"></paper-button>
+              
             </div>
         </div>
       </section>
@@ -23,10 +23,10 @@
           <div class="card-left" style="background:{{backgroundColor}};" hero-id="new-project-art" hero></div>
           <div class="card-right" flex>
             <div layout horizontal center>
-              <paper-icon-button class="Card-icon" icon="close" label="X" value="{{name}}" floatinglabel="true" on-tap="{{transition}}" style="background:{{backgroundColor}};"></paper-icon-button>
+              <paper-icon-button class="Card-icon" icon="close" label="X" on-tap="{{transition}}" style="background:{{backgroundColor}};"></paper-icon-button>
               <div flex>
                 <paper-input label="Project Name" value="{{name}}" floatinglabel="true"></paper-input>
-                <paper-input label="Project Path" value="{{path}}" floatinglabel="true"></paper-input>
+                <paper-input label="Project Path" inputValue="{{path}}" floatinglabel="true"></paper-input>
                 <paper-button label="Enhance Project '{{name}}' at path '{{path}}'" floatinglabel="true" on-tap="{{initiateMigration}}" style="border:1px solid {{backgroundColor}};"></paper-button>
               </div>
             </div>
@@ -38,3 +38,5 @@
 
 </template> </polymer-element>
 <script type="application/dart" src="../poly/createProject.dart"></script>
+
+

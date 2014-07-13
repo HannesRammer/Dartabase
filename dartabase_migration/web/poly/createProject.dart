@@ -23,7 +23,7 @@ class CreateProject extends PolymerElement {
   }
 
   initiateMigration() {
-    var url = "http://127.0.0.1:8079/initiateMigration?name=${name}&path=${path}";
+    var url = "http://127.0.0.1:8079/initiateMigration?name=${name}&projectRootPath=${path}";
     var request = HttpRequest.getString(url).then(initiationCompleted);
   }
 

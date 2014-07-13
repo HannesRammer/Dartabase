@@ -73,7 +73,7 @@ void handleGet(HttpRequest req) {
   } else if (path.indexOf("/migrations") >= 0) {
     loadMigrations(res);
   } else if (path.indexOf("/initiateMigration") >= 0) {
-    DM.initiateDartabase(params["path"].replaceAll('%5C','\\'), params["name"]);
+    DM.initiateDartabase(params["projectRootPath"].replaceAll('%5C','\\'), params["name"]);
   } else if (path.indexOf("/runMigration") >= 0) {
       runMigration(res);
   }
@@ -82,8 +82,7 @@ void handleGet(HttpRequest req) {
   }else {
     //@dartabaseScaffoldGet
     var err = "Could not find path: $path";
-    res.write(err);
-    res.close();
+    closeResWith(res,err);
   }
 }
 
@@ -131,7 +130,10 @@ void defaultHandler(HttpRequest req) {
   HttpResponse res = req.response;
   addCorsHeaders(res);
   res.statusCode = HttpStatus.NOT_FOUND;
-  res.write("Not found: ${req.method}, ${req.uri.path}");
+  closeResWith(res,"Not found: ${req.method}, ${req.uri.path}");
+}
+closeResWith(HttpResponse res,String object){
+  res.write(object);
   res.close();
 }
 
@@ -153,34 +155,33 @@ initiateGUI(HttpResponse res) {
 }
 
 loadProjectMapping(HttpResponse res) {
+  String text;
   DM.projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
-
   if (!DM.projectMapping.isEmpty) {
     print("found ${DM.projectMapping.length} userAccounts");
-    res.write(JSON.encode(DM.projectMapping));
-    res.close();
+    text=JSON.encode(DM.projectMapping);
   } else {
     print(JSON.encode({"no projects found":""}));
-    res.write("no projects found");
-    res.close();
+    text="no projects found";
   }
+  closeResWith(res,text);
 }
 
 loadCurrentMigrationVersion(HttpResponse res) {
-
+  String text;
   Map schemaV = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/schemaVersion.json");
   if (!schemaV.isEmpty && !schemaV['schemaVersion'].isEmpty) {
-    print("found current schema version");
-    res.write(schemaV['schemaVersion']);
-    res.close();
+    print("found current schema version ${schemaV['schemaVersion']}");
+    text = schemaV['schemaVersion'];
   } else {
     print("no current schema version found");
-    res.write("no current schema version found");
-    res.close();
+    text = "no current schema version found";
   }
+  closeResWith(res,text);
 }
 
 loadMigrations(HttpResponse res) {
+  String text;
   Map rootSchema = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/schemaVersion.json");
   
   var state;
@@ -211,28 +212,27 @@ loadMigrations(HttpResponse res) {
       }
       
     }
-    res.write(JSON.encode(list));
-    res.close();
+    text = JSON.encode(list);
   }else {
     print("no migrations found");
-    res.write(JSON.encode(list));
-    res.close();
+    text = JSON.encode(list);
   }
+  closeResWith(res,text);
 }
 
 runMigration(HttpResponse res){
   DM.lastMigrationNumber = num.parse(params['index']);
-  DBCore.rootPath = params["path"].replaceAll('%5C','\\');
-  DM.run(params["direction"]);
-  res.write("done");
-  res.close();
+  DBCore.rootPath = params["projectRootPath"].replaceAll('%5C','\\');
+  DM.run(params["direction"]).then((_){
+    closeResWith(res,"finished migration");  
+  });
 }
 
 loadMigration(HttpResponse res){
   List createTables=[];
   List createColumns=[];
   
-  Map migration = DBCore.jsonFilePathToMap("${params["path"].replaceAll('%5C','\\')}/db/migrations/${params['migrationVersion']}");
+  Map migration = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/migrations/${params['migrationVersion']}");
   Map up = migration["UP"];
   Map createTable;
   Map createColumn;

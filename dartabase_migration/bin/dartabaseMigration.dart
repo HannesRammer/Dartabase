@@ -62,7 +62,7 @@ void initiateDartabase(String path,String projectName) {
     print("creating $path/db/schemaVersion.json");
     Map schemaVersion = {"schemaVersion":""};
     DBCore.mapToJsonFilePath(schemaVersion, "$path/db/schemaVersion.json");
-    exit(0);
+//    exit(0);
 
   });
 }
@@ -73,8 +73,8 @@ void initiateDartabase(String path,String projectName) {
 * in ascending order which have not been migrated to the database. 
 **/
 
-void run(String migrationDirection) {
-  
+Future run(String migrationDirection) {
+  Completer completer = new Completer();
   direction = migrationDirection;
   schema = DBCore.loadSchemaToMap();
   DBCore.loadConfigFile();
@@ -87,7 +87,9 @@ void run(String migrationDirection) {
     pool.start().then((_) {
       print('Min connections established.');
       pool.connect().then((conn) {
-        migrate(conn);
+        migrate(conn).then((_){
+          completer.complete("done");
+        });
       });
     });
 
@@ -99,8 +101,11 @@ void run(String migrationDirection) {
       pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
     }
     
-    migrate(pool);
+    migrate(pool).then((_){
+      completer.complete("done");
+    });
   }
+  return completer.future;
 }
 //TODO move to helper
 
@@ -494,12 +499,12 @@ void removeTable(conn) {
           doFile(conn);
         }else{
           print("goal migration reached");
-          exit(0);
+          //exit(0);
         }
         
       }else{
         print("goal migration reached");
-        exit(0);
+        //exit(0);
       }
       
     } else if (direction == "DOWN") {
@@ -512,12 +517,12 @@ void removeTable(conn) {
           schemaVersion = filePath.split("migrations")[1].replaceAll("\\","");
           DBCore.mapToJsonFilePath({"schemaVersion":schemaVersion},'${DBCore.rootPath}/db/schemaVersion.json');
           print("goal migration reached");
-          exit(0);
+          //exit(0);
         }
       }else{
         DBCore.mapToJsonFilePath({"schemaVersion":""},'${DBCore.rootPath}/db/schemaVersion.json');
         print("goal migration reached");
-        exit(0);
+        //exit(0);
       }
     }
 

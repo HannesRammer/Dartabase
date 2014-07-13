@@ -37,7 +37,7 @@ class ProjectView extends PolymerElement {
     loadMigrationView();
   }
   runMigration(){
-    var url = "http://127.0.0.1:8079/runMigration?path=${project.path}&direction=${migrationDirection}";
+    var url = "http://127.0.0.1:8079/runMigration?projectRootPath=${project.path}&direction=${migrationDirection}";
     if(migrationDirection == "UP"){
       url+="&index=${selectedIndex-1}";
             
@@ -48,11 +48,14 @@ class ProjectView extends PolymerElement {
   }
   
   updateView(responseText){
-    querySelector("#alert").appendText(responseText);
+    project.requestMigrations();
+    project.requestCurrentMigrationVersion();
+    querySelector("#toast").text = responseText + project.currentMigration;
+    querySelector("#toast").show();
   }
   
   loadMigrationView(){
-    var url = "http://127.0.0.1:8079/loadMigration?path=${project.path}&migrationVersion=${selectedMigration}";
+    var url = "http://127.0.0.1:8079/loadMigration?projectRootPath=${project.path}&migrationVersion=${selectedMigration}";
     var request = HttpRequest.getString(url).then(updateMigrationView);
   }
   updateMigrationView(responseText){

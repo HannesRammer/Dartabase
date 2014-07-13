@@ -33,20 +33,14 @@
             </div>
             </template> </template>
             <template if="{{migrationDirection == ''}}">
-            <!--button on-click="{{createMigration}}">create new
-              migration</button-->
-            <paper-button disabled="disabled">migrate</paper-button>
+            <paper-button disabled="disabled" style="border:1px solid {{project.colorPalette[0]}};">migrate</paper-button>
             </template>
             <template if="{{migrationDirection == 'DOWN'}}">
-            <!--button on-click="{{createMigration}}">create new
-              migration</button-->
-            <paper-button on-click="{{runMigration}}">migrate to
+            <paper-button on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette[0]}};">migrate to
               older version</paper-button>
             </template>
             <template if="{{migrationDirection == 'UP'}}">
-            <!--button on-click="{{createMigration}}">create new
-              migration</button-->
-            <paper-button on-click="{{runMigration}}">migrate to
+            <paper-button on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette[0]}};">migrate to
               newer version</paper-button>
             </template>
           </div>
