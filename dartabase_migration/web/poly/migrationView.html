@@ -3,17 +3,64 @@
 <polymer-element name="custom-migration-view">
 <link rel="stylesheet" href="../poly/migrationView.css">
 <template>
-  <div>{{name}}</div>
+  <div>{{migration.version}}</div>
   UP:{
   <br />
+  <template if="{{migration.actions['UP']['createTable'] != null}}">
+    
   create table:<br />
-    <template repeat="{{table in tables | enumerate}}">
-      <custom-migration-create-table table="{{table.value}}"> </custom-migration-create-table> 
+    <template repeat="{{tableName in migration.actions['UP']['createTable'].keys}}">
+      <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['UP']['createTable'][tableName]}}"> </custom-migration-create-table> 
     </template> 
-    <br />
+    </template> 
+    <template if="{{migration.actions['UP']['createColumn'] != null}}">
+    create column:<br />
+    <template repeat="{{tableName in migration.actions['UP']['createColumn'].keys}}">
+      <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['UP']['createColumn'][tableName]}}"> </custom-migration-create-column> 
+    </template> 
+    </template>
+    <template if="{{migration.actions['UP']['removeColumn'] != null}}">
+    remove column:<br />
+    <template repeat="{{tableName in migration.actions['UP']['removeColumn'].keys}}">
+      <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['UP']['removeColumn'][tableName]}}"> </custom-migration-remove-column> 
+    </template> 
+    </template> 
+     
+    <template if="{{migration.actions['UP']['removeTable'] != null}}">
+  remove table:<br />
+    <template repeat="{{table in migration.actions['UP']['removeTable']}}">
+      <custom-migration-remove-table colorPalette="{{migration.colorPalette}}" table="{{table}}"> </custom-migration-remove-table> 
+    </template> 
+    </template> 
   } <br />
-  DOWN:{ <br />
-  <br />
+  DOWN:{ 
+<br />
+<template if="{{migration.actions['DOWN']['createTable'] != null}}">
+  create table:<br />
+    <template repeat="{{tableName in migration.actions['DOWN']['createTable'].keys}}">
+      <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['DOWN']['createTable'][tableName]}}"> </custom-migration-create-table> 
+    </template> 
+    </template> 
+    <template if="{{migration.actions['DOWN']['createColumn'] != null}}">
+    create column:<br />
+    <template repeat="{{tableName in migration.actions['DOWN']['createColumn'].keys}}">
+      <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['DOWN']['createColumn'][tableName]}}"> </custom-migration-create-column> 
+    </template> 
+    </template> 
+  <template if="{{migration.actions['DOWN']['removeColumn'] != null}}">
+    remove column:<br />
+    <template repeat="{{tableName in migration.actions['DOWN']['removeColumn'].keys}}">
+      <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['DOWN']['removeColumn'][tableName]}}"> </custom-migration-remove-column> 
+    </template> 
+    </template> 
+     
+    
+    <template if="{{migration.actions['DOWN']['removeTable'] != null}}">
+  remove table:<br />
+    <template repeat="{{table in migration.actions['DOWN']['removeTable']}}">
+      <custom-migration-remove-table colorPalette="{{migration.colorPalette}}" table="{{table}}"> </custom-migration-remove-table> 
+    </template> 
+    </template> 
   } 
 </template>
 <br />

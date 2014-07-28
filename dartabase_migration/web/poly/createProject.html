@@ -25,7 +25,7 @@
             <div layout horizontal center>
               <paper-icon-button class="Card-icon" icon="close" label="X" on-tap="{{transition}}" style="background:{{backgroundColor}};"></paper-icon-button>
               <div flex>
-                <paper-input label="Project Name" value="{{name}}" floatinglabel="true"></paper-input>
+                <paper-input label="Project Name" inputValue="{{name}}" floatinglabel="true"></paper-input>
                 <paper-input label="Project Path" inputValue="{{path}}" floatinglabel="true"></paper-input>
                 <paper-button label="Enhance Project '{{name}}' at path '{{path}}'" floatinglabel="true" on-tap="{{initiateMigration}}" style="border:1px solid {{backgroundColor}};"></paper-button>
               </div>

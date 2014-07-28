@@ -58,6 +58,10 @@
   width: 60px;
   height: 60px;
   margin-right: 16px;
+  
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
 }
 
 .card-album-title {

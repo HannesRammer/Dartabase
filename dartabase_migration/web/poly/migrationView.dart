@@ -1,14 +1,13 @@
 import 'package:polymer/polymer.dart';
-import 'dart:html';
+import '../poly/project.dart';
+import '../poly/migration.dart';
 
 @CustomTag('custom-migration-view')
 class MigrationView extends PolymerElement {
-  @observable String name = "name";
-  @observable String path = "path";
-  @observable List tables = toObservable([]);
-  @observable Map migration = toObservable({});
-    
-    
+  @published Migration migration;
+  @observable Project project;
+
+
   MigrationView.created() : super.created();
-  
+
 }

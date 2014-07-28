@@ -76,9 +76,6 @@ void handleGet(HttpRequest req) {
     DM.initiateDartabase(params["projectRootPath"].replaceAll('%5C','\\'), params["name"]);
   } else if (path.indexOf("/runMigration") >= 0) {
       runMigration(res);
-  }
-  else if (path.indexOf("/loadMigration") >= 0) {
-    loadMigration(res);
   }else {
     //@dartabaseScaffoldGet
     var err = "Could not find path: $path";
@@ -188,26 +185,27 @@ loadMigrations(HttpResponse res) {
   List<Map> list;
   if(rootSchema['schemaVersion'] == ""){
     state = "newer";
-    list = [{"index":"0","version":"no_migration","state":"current"}];
+    list = [{"index":0,"version":"no_migration","state":"current","actions":{}}];
   }else{
     state = "older";
-    list = [{"index":"0","version":"no_migration","state":"older"}];
+    list = [{"index":0,"version":"no_migration","state":"older","actions":{}}];
   }
   
     
   Directory directory = new Directory("${params["projectRootPath"].replaceAll('%5C','\\')}/db/migrations");
-  List files = directory.listSync();
+  List<FileSystemEntity> files = directory.listSync();
   if (files.length > 0) {
     print("Migration number : Name");
     
     for (int i = 0; i < files.length; i++) {
-      String version = files[i].path.split("migrations")[1].replaceAll("\\", "");
+      File file = new File(files[i].path);
+      String version = file.path.split("migrations")[1].replaceAll("\\", "");
       if (rootSchema['schemaVersion'] == version) {
-        list.add({"index":i+1,"version":version,"state":"current"});
+        list.add({"index":i+1,"version":version,"state":"current","actions":DBCore.jsonFilePathToMap(file.path)});
         print("${i+1} : $version <--- current version");
         state = "newer";
       } else {
-        list.add({"index":i+1,"version":version,"state":state});
+        list.add({"index":i+1,"version":version,"state":state,"actions":DBCore.jsonFilePathToMap(file.path)});
         print("${i+1} : $version");
       }
       
@@ -228,54 +226,3 @@ runMigration(HttpResponse res){
   });
 }
 
-loadMigration(HttpResponse res){
-  List createTables=[];
-  List createColumns=[];
-  
-  Map migration = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/migrations/${params['migrationVersion']}");
-  Map up = migration["UP"];
-  Map createTable;
-  Map createColumn;
-  Map removeColumn;
-  Map removeTable;
-  if(up != null){
-  createTable = up["createTable"];
-  createColumn = up["createColumn"];
-  removeColumn = up["removeColumn"];
-  removeTable = up["removeTable"];
-  }
-  
-  if(createTable != null){
-    createTable.forEach((String tableName, Map tableColumns){
-      List columns = [];
-      tableColumns.forEach((String columnName, var columnOptions){
-        if(columnOptions.runtimeType.toString()=="String"){
-          columns.add({"name":columnName,"type":columnOptions,"hash":false});
-        }else{
-          columns.add({"name":columnName,"type":columnOptions['type'],"default":columnOptions['default'],"hash":true});
-        }
-      });
-      Map table = {"name":tableName,"columns":columns};
-      createTables.add(table);  
-    });
-  }
-
-  if(createColumn != null){
-    createColumn.forEach((String tableName, Map tableColumns){
-      List columns = [];
-      tableColumns.forEach((String columnName, var columnOptions){
-        if(columnOptions.runtimeType.toString()=="String"){
-          columns.add({"name":columnName,"type":columnOptions,"hash":false});
-        }else{
-          columns.add({"name":columnName,"type":columnOptions['type'],"default":columnOptions['default'],"hash":true});
-        }
-      });
-      Map table = {"name":tableName,"columns":columns};
-      createColumns.add(table);  
-    });
-  }
-
-  res.write(JSON.encode({"createTables":createTables,"createColumns":createColumns}));
-  res.close();
-  
-}

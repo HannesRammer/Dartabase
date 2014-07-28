@@ -28,10 +28,10 @@ void displayProjects(responseText) {
   var counter=0;
   userProjects.forEach((k,v){
     counter++;
-    Project project = new Project(name:k,path:v,colorPalette:getRandomColorT("500"));
+    Project project = new Project(name:k,path:v,colorPalette:getRandomColorPaletteT());
     projects.add(project);
     project.requestMigrations();
-    project.requestCurrentMigrationVersion();
+    
   });
   polyItem.projects = projects;
   querySelector("#content").append(polyItem);

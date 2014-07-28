@@ -3,71 +3,36 @@ import 'package:polymer/polymer.dart';
 import "dart:html";
 import "dart:convert" show JSON;
 import "../poly/project.dart";
+import "../poly/migration.dart";
 
 @CustomTag('custom-project-view')
 class ProjectView extends PolymerElement {
   @published Project project = null;
-  
-  @observable Map schema= {};
-  
-  @observable String selectedMigration = "none" ;
-  @observable num selectedIndex = 0;
-  @observable String migrationDirection = "" ;
-    
-  
+
+  @observable Map schema = {};
+
   ProjectView.created() : super.created();
-  
-    
-  
-  setActive(Event e, var detail, DivElement target){
-    if(this.shadowRoot.querySelectorAll(".currentSelection").isNotEmpty){
-      DivElement selectedDiv = this.shadowRoot.querySelectorAll(".currentSelection")[0];
-      selectedDiv.classes.remove("currentSelection");    
-    }
-    if(target.classes.contains("olderMigration")){
-      migrationDirection = "DOWN";
-    }else if(target.classes.contains("newerMigration")){
-      migrationDirection = "UP";
-    }else if(target.classes.contains("currentMigration")){
-      migrationDirection = "";
-    }
-    selectedMigration = target.id;
-    selectedIndex = num.parse(target.getAttribute("index"));
-    target.classes.add("currentSelection");
-    loadMigrationView();
+
+  setActive(Event e, var detail, DivElement target) {
+    project.setSelectedMigrationByIndex(num.parse(target.getAttribute('index')));
   }
-  runMigration(){
-    var url = "http://127.0.0.1:8079/runMigration?projectRootPath=${project.path}&direction=${migrationDirection}";
-    if(migrationDirection == "UP"){
-      url+="&index=${selectedIndex-1}";
-            
-    }else if(migrationDirection == "DOWN"){
-      url+="&index=${selectedIndex}";    
+  runMigration() {
+    var url = "http://127.0.0.1:8079/runMigration?projectRootPath=${project.path}&direction=${project.migrationDirection}";
+    if (project.migrationDirection == "UP") {
+      url += "&index=${project.selectedMigration.index - 1}";
+
+    } else if (project.migrationDirection == "DOWN") {
+      url += "&index=${project.selectedMigration.index}";
     }
     var request = HttpRequest.getString(url).then(updateView);
   }
-  
-  updateView(responseText){
+
+  updateView(responseText) {
     project.requestMigrations();
-    project.requestCurrentMigrationVersion();
-    querySelector("#toast").text = responseText + project.currentMigration;
+    querySelector("#toast").text = responseText + project.currentMigration.toString();
     querySelector("#toast").show();
   }
-  
-  loadMigrationView(){
-    var url = "http://127.0.0.1:8079/loadMigration?projectRootPath=${project.path}&migrationVersion=${selectedMigration}";
-    var request = HttpRequest.getString(url).then(updateMigrationView);
-  }
-  updateMigrationView(responseText){
-    Map migration = JSON.decode(responseText);
-    
-    var container = this.shadowRoot.querySelectorAll(".migrationContentRight")[0];
-    Element migrationView = new Element.tag("custom-migration-view");
-    migrationView.migration = migration;
-    migrationView.tables = migration['createTables'];
-    migrationView.name = selectedMigration; 
-    container.innerHtml ="";
-    container.append(migrationView);
-    }
-  
+
+
+
 }

@@ -9,8 +9,8 @@
         <div class="chip-container" hero-p on-tap="{{transition}}" >
           <template repeat="{{project in projects}}">
             <div class="chip" hero-id="{{project.name}}" hero?="{{selectedProject == project }}" title="{{project.path}}">
-              <div class="chip-top" style="border:solid 1px {{project.colorPalette[0]}};" hero-id="{{project.name}}-art" hero?="{{selectedProject == project}}"></div>
-              <div class="chip-bottom" style="background:{{project.colorPalette[0]}};color:{{project.colorPalette[1]}};">
+              <div class="chip-top" style="border:solid 1px {{project.colorPalette['500'][0]}};" hero-id="{{project.name}}-art" hero?="{{selectedProject == project}}"></div>
+              <div class="chip-bottom" style="background:{{project.colorPalette['500'][0]}};color:{{project.colorPalette['500'][1]}};">
                 <div class="chip-album-title">{{project.name}}</div>
                 <!--div class="chip-name">{{project.path}}</div-->
               </div>
@@ -21,15 +21,13 @@
 
       <section id="details">
         <div class="card" layout horizontal hero-id="{{selectedProject.name}}" hero>
-          <div class="card-left" style="background:{{selectedProject.colorPalette[0]}};" hero-id="{{selectedProject.name}}-art" hero></div>
+          <div class="card-left" style="background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" hero-id="{{selectedProject.name}}-art" hero></div>
           <div class="card-right" flex>
             <div layout horizontal center>
               <div>
-                <div class="card-icon" style="background:{{selectedProject.colorPalette[0]}};" on-tap="{{transition}}"></div>
+                <div class="card-icon" style="background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" on-tap="{{transition}}">X</div>
               </div>
               <div flex>
-              <div class="card-album-title">{{selectedProject.name}}</div>
-                <div class="card-album-name">{{selectedProject.path}}</div>
               <custom-project-view project="{{selectedProject}}"></custom-project-view>
                 
               </div>

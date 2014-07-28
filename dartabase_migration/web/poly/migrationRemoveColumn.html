@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <link rel="import" href="packages/polymer/polymer.html">
-<polymer-element name="custom-migration-create-table">
-  <link rel="stylesheet" href="../poly/migrationCreateTable.css">
-    <template>
-      <div class="migrationCreateTable" style="border:1px solid {{colorPalette['700'][0]}};">
+<polymer-element name="custom-migration-remove-column">
+  <link rel="stylesheet" href="../poly/migrationRemoveColumn.css">
+  
+     <template>
+      <div class="migrationRemoveColumn" style="border:1px solid {{colorPalette['700'][0]}};">
        <div style="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">{{tableName}}</div>
-       <template repeat="{{column in columns.keys}}">
+       <template repeat="{{column in columns}}">
        <div style="clear:both;">
        <div class="col" style="background: {{colorPalette['100'][0]}};color:{{colorPalette['100'][1]}};">
-       {{column}} : {{columns[column].toString()}}
+       {{column}}
        
        </div>
        </div>
@@ -16,4 +17,4 @@
       </div>
     </template>
 </polymer-element>
-<script type="application/dart" src="../poly/migrationCreateTable.dart"></script>
+<script type="application/dart" src="../poly/migrationRemoveColumn.dart"></script>

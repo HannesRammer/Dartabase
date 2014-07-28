@@ -1,16 +1,9 @@
 import 'package:polymer/polymer.dart';
-import 'dart:html';
 
 @CustomTag('custom-migration-create-table')
 class MigrationCreateTable extends PolymerElement {
-  @observable String name = "name";
-  @observable String path = "path";
-  @published Map table = toObservable({});
-    
-    
+  @published String tableName = "";
+  @published Map columns = toObservable({});
+  @published Map colorPalette = toObservable({});
   MigrationCreateTable.created() : super.created();
-  
-  
-  
-  
 }
