@@ -15,5 +15,6 @@ environment:
   sdk: ">=0.8.10+6 <2.0.0" 
 transformers:
 - polymer:
-    entry_points: web/tool/index.html
+    entry_points: 
+    - web/tool/index.html
   

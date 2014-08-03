@@ -3,11 +3,12 @@
 <polymer-element name="custom-migration-view">
 <link rel="stylesheet" href="../poly/migrationView.css">
 <template>
-  <div>{{migration.version}}</div>
-  UP:{
-  <br />
-  <template if="{{migration.actions['UP']['createTable'] != null}}">
-    
+<div>{{migration.version}}</div>
+  
+<template if="{{migration.actions['UP'].length > 0}}">
+  UP:{ 
+<br />
+<template if="{{migration.actions['UP']['createTable'] != null}}">
   create table:<br />
     <template repeat="{{tableName in migration.actions['UP']['createTable'].keys}}">
       <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['UP']['createTable'][tableName]}}"> </custom-migration-create-table> 
@@ -18,21 +19,43 @@
     <template repeat="{{tableName in migration.actions['UP']['createColumn'].keys}}">
       <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['UP']['createColumn'][tableName]}}"> </custom-migration-create-column> 
     </template> 
-    </template>
-    <template if="{{migration.actions['UP']['removeColumn'] != null}}">
+    </template> 
+  <template if="{{migration.actions['UP']['removeColumn'] != null}}">
     remove column:<br />
     <template repeat="{{tableName in migration.actions['UP']['removeColumn'].keys}}">
       <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['UP']['removeColumn'][tableName]}}"> </custom-migration-remove-column> 
     </template> 
+    </template>
+  <template if="{{migration.actions['UP']['createRelation'] != null}}">
+      create relation:<br />
+      <template if="{{migration.actions['UP']['createRelation'].runtimeType.toString() == 'List'}} || {{migration.actions['UP']['createRelation'].runtimeType.toString() == 'JSArray'}}">
+          <template repeat="{{relations in migration.actions['UP']['createRelation']}}">
+             <div class="migrationRemoveRelation" style="border:1px solid {{migration.colorPalette['700'][0]}};">
+                 <div style="background: {{migration.colorPalette['500'][0]}};color:{{migration.colorPalette['500'][1]}};">
+                    {{relations.toString()}}
+                 </div>
+              </div>
+          </template> 
+      </template>
+  </template>    
+  <template if="{{migration.actions['UP']['removeRelation'] != null}}">
+    remove relation:<br />
+    <template repeat="{{relations in migration.actions['UP']['removeRelation']}}">
+      <custom-migration-remove-relation colorPalette="{{migration.colorPalette}}" relations="{{relations}}"> </custom-migration-remove-relation>
     </template> 
-     
+    </template>    
+    
     <template if="{{migration.actions['UP']['removeTable'] != null}}">
   remove table:<br />
     <template repeat="{{table in migration.actions['UP']['removeTable']}}">
       <custom-migration-remove-table colorPalette="{{migration.colorPalette}}" table="{{table}}"> </custom-migration-remove-table> 
     </template> 
     </template> 
-  } <br />
+  } 
+  </template> 
+  
+  
+  <template if="{{migration.actions['DOWN'].length > 0}}">
   DOWN:{ 
 <br />
 <template if="{{migration.actions['DOWN']['createTable'] != null}}">
@@ -52,8 +75,28 @@
     <template repeat="{{tableName in migration.actions['DOWN']['removeColumn'].keys}}">
       <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}" columns="{{migration.actions['DOWN']['removeColumn'][tableName]}}"> </custom-migration-remove-column> 
     </template> 
+    </template>
+
+    
+  <template if="{{migration.actions['DOWN']['createRelation'] != null}}">
+      create relation:<br />
+      <template if="{{migration.actions['DOWN']['createRelation'].runtimeType.toString() == 'List'}} || {{migration.actions['DOWN']['createRelation'].runtimeType.toString() == 'JSArray'}}">
+          <template repeat="{{relations in migration.actions['DOWN']['createRelation']}}">
+             <div class="migrationRemoveRelation" style="border:1px solid {{migration.colorPalette['700'][0]}};">
+                 <div style="background: {{migration.colorPalette['500'][0]}};color:{{migration.colorPalette['500'][1]}};">
+                    {{relations.toString()}}
+                 </div>
+              </div>
+          </template> 
+      </template>
+  </template>    
+  
+  <template if="{{migration.actions['DOWN']['removeRelation'] != null}}">
+    remove relation:<br />
+    <template repeat="{{relations in migration.actions['DOWN']['removeRelation']}}">
+      <custom-migration-remove-relation colorPalette="{{migration.colorPalette}}" relations="{{relations}}"> </custom-migration-remove-relation>
     </template> 
-     
+    </template>    
     
     <template if="{{migration.actions['DOWN']['removeTable'] != null}}">
   remove table:<br />
@@ -62,7 +105,9 @@
     </template> 
     </template> 
   } 
+  </template> 
+  
+  
 </template>
-<br />
 </polymer-element>
 <script type="application/dart" src="../poly/migrationView.dart"></script>
