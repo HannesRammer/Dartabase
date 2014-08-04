@@ -68,8 +68,8 @@ void handleGet(HttpRequest req) {
   /*START SCAFFOLD INPUT*/
   if (path == "/projectMapping") {
     loadProjectMapping(res);
-  } else if (path.indexOf("/currentMigrationVersion") >= 0) {
-    loadCurrentMigrationVersion(res);
+  } else if (path.indexOf("/config") >= 0) {
+    loadConfig(res);
   } else if (path.indexOf("/migrations") >= 0) {
     loadMigrations(res);
   } else if (path.indexOf("/initiateMigration") >= 0) {
@@ -164,17 +164,9 @@ loadProjectMapping(HttpResponse res) {
   closeResWith(res,text);
 }
 
-loadCurrentMigrationVersion(HttpResponse res) {
-  String text;
-  Map schemaV = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/schemaVersion.json");
-  if (!schemaV.isEmpty && !schemaV['schemaVersion'].isEmpty) {
-    print("found current schema version ${schemaV['schemaVersion']}");
-    text = schemaV['schemaVersion'];
-  } else {
-    print("no current schema version found");
-    text = "no current schema version found";
-  }
-  closeResWith(res,text);
+loadConfig(HttpResponse res) {
+  Map config = DBCore.jsonFilePathToMap("${params["projectRootPath"].replaceAll('%5C','\\')}/db/config.json");
+  closeResWith(res,JSON.encode(config));
 }
 
 loadMigrations(HttpResponse res) {

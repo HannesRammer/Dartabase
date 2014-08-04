@@ -9,6 +9,7 @@ class Project extends Observable {
   final String name;
   final String path;
   final Map colorPalette;
+  @published Map config;
   @observable List<Migration> migrations;
 
   @observable String migrationDirection = "";
@@ -17,6 +18,16 @@ class Project extends Observable {
 
   Project({this.name, this.path, this.colorPalette, this.migrations});
 
+  requestConfig() {
+      var url = "http://127.0.0.1:8079/config?projectRootPath=${path}";
+      var request = HttpRequest.getString(url).then(updateConfig);
+  }
+
+  updateConfig(String responseText) {
+    config = new Map();
+    config = JSON.decode(responseText);
+  }
+  
   requestMigrations() {
     var url = "http://127.0.0.1:8079/migrations?projectRootPath=${path}";
     var request = HttpRequest.getString(url).then(updateMigrations);

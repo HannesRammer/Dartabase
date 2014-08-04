@@ -30,7 +30,9 @@ void displayProjects(responseText) {
     counter++;
     Project project = new Project(name:k,path:v,colorPalette:getRandomColorPaletteT());
     projects.add(project);
+    project.requestConfig();
     project.requestMigrations();
+    
     
   });
   polyItem.projects = projects;

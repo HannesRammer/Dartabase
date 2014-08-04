@@ -28,9 +28,9 @@
     </template>
   <template if="{{migration.actions['UP']['createRelation'] != null}}">
       create relation:<br />
-      <template if="{{migration.actions['UP']['createRelation'].runtimeType.toString() == 'List'}} || {{migration.actions['UP']['createRelation'].runtimeType.toString() == 'JSArray'}}">
+      <template if="{{migration.actions['UP']['createRelation'].runtimeType is List}}">
           <template repeat="{{relations in migration.actions['UP']['createRelation']}}">
-             <div class="migrationRemoveRelation" style="border:1px solid {{migration.colorPalette['700'][0]}};">
+             <div class="migrationCreateRelation" style="border:1px solid {{migration.colorPalette['700'][0]}};">
                  <div style="background: {{migration.colorPalette['500'][0]}};color:{{migration.colorPalette['500'][1]}};">
                     {{relations.toString()}}
                  </div>
@@ -56,7 +56,7 @@
   
   
   <template if="{{migration.actions['DOWN'].length > 0}}">
-  DOWN:{ 
+<br />  DOWN:{ 
 <br />
 <template if="{{migration.actions['DOWN']['createTable'] != null}}">
   create table:<br />
@@ -80,7 +80,7 @@
     
   <template if="{{migration.actions['DOWN']['createRelation'] != null}}">
       create relation:<br />
-      <template if="{{migration.actions['DOWN']['createRelation'].runtimeType.toString() == 'List'}} || {{migration.actions['DOWN']['createRelation'].runtimeType.toString() == 'JSArray'}}">
+      <template if="{{migration.actions['DOWN']['createRelation'].runtimeType is List">
           <template repeat="{{relations in migration.actions['DOWN']['createRelation']}}">
              <div class="migrationRemoveRelation" style="border:1px solid {{migration.colorPalette['700'][0]}};">
                  <div style="background: {{migration.colorPalette['500'][0]}};color:{{migration.colorPalette['500'][1]}};">

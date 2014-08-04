@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="custom-config-view">
+<template>
+<link rel="stylesheet" href="../poly/configView.css">
+
+<div class="">Config:</div>
+<!--paper-input label="adapter" inputValue="{{config['adapter']}}" floatinglabel="true"></paper-input>
+<paper-input label="database" inputValue="{{config['database']}}" floatinglabel="true"></paper-input>
+<paper-input label="username" inputValue="{{config['username']}}" floatinglabel="true"></paper-input>
+<paper-input label="password" inputValue="{{config['password']}}" floatinglabel="true"></paper-input>
+<paper-input label="host" inputValue="{{config['host']}}" floatinglabel="true"></paper-input>
+<paper-input label="port" inputValue="{{config['port']}}" floatinglabel="true"></paper-input>
+<div horizontal layout>
+  <paper-checkbox label="ssl" ></paper-checkbox>
+</div-->
+
+adapter :{{config['adapter']}} | 
+database :{{config['database']}} <br/>  
+username :{{config['username']}} | 
+password :{{config['password']}} <br/> 
+host :{{config['host']}} | 
+port :{{config['port']}} <br/> 
+ssl :{{config['ssl']}}             
+</template> 
+</polymer-element>
+<script type="application/dart" src="../poly/configView.dart"></script>

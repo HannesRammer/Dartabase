@@ -1,0 +1,19 @@
+.configView{
+  width:800px;
+  height:500px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+paper-input{
+  width: 25%;  
+  height: 45px;
+}
+
+.text{
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+ 

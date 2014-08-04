@@ -7,9 +7,10 @@
   <span class="card-album-name"> {{project.path}}</span>
               
 <div class="projectView" style="border: 1px solid {{project.colorPalette['A200'][0]}};">
-  <div class="">Current Migration: {{project.currentMigration.version}} + migrationDirection : {{project.migrationDirection}}</div>
-
-  
+  <!--div class="">Current Migration: {{project.currentMigration.version}} + migrationDirection : {{project.migrationDirection}}</div-->
+<div class="configView" style="border: 1px solid {{project.colorPalette['A200'][0]}};">
+  <custom-config-view config="{{project.config}}"></custom-config-view>
+  </div>
   <div class="migrationView" style="border: 1px solid {{project.colorPalette['A100'][0]}};">
 <div class="">Migrations:</div>
     <table style="width:100%;">
@@ -75,10 +76,7 @@
         </td>
         <td style="width:50%;">
           <div class="migrationContentRight">
-          
-          <custom-migration-view migration="{{project.selectedMigration}}"></custom-migration-view>
-          
-          
+            <custom-migration-view migration="{{project.selectedMigration}}"></custom-migration-view>
           </div>
         </td>
       </tr>
