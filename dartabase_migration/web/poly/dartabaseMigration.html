@@ -21,12 +21,13 @@
 
       <section id="details">
         <div class="card" layout horizontal hero-id="{{selectedProject.name}}" hero>
-          <div class="card-left" style="background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" hero-id="{{selectedProject.name}}-art" hero></div>
+          <div class="card-left" style="background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" hero-id="{{selectedProject.name}}-art" hero>
+            <div>
+              <div class="card-icon" style="border:solid 1px {{selectedProject.colorPalette['500'][1]}};background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" on-tap="{{transition}}">X</div>
+            </div>
+          </div>
           <div class="card-right" flex>
             <div layout horizontal center>
-              <div>
-                <div class="card-icon" style="background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" on-tap="{{transition}}">X</div>
-              </div>
               <div flex>
               <custom-project-view project="{{selectedProject}}"></custom-project-view>
                 
