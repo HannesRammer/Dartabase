@@ -43,7 +43,7 @@ class DBCore {
 
   }
 
-  static Map loadSchemaToMap() {
+  static Map loadSchemaToMap(String rootPath) {
     var schema = new File('$rootPath/db/schema.json');
     schema.writeAsStringSync("", encoding: ASCII, mode: FileMode.APPEND);
     String fileText = schema.readAsStringSync(encoding: ASCII);
@@ -144,7 +144,7 @@ class DBCore {
     }
   }
 
-  static void loadConfigFile() {
+  static void loadConfigFile(String rootPath) {
     //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configPGSQL.json');
     //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configMYSQL.json');
     parsedMap = jsonFilePathToMap('$rootPath/db/config.json');
