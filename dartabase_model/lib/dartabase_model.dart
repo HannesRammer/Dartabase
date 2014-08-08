@@ -19,7 +19,7 @@ class Model {
   num get id => _id;
   static void initiate(String rootPath){
     DBCore.rootPath = rootPath; 
-    DBCore.loadConfigFile();
+    DBCore.loadConfigFile(rootPath);
     print(rootPath);
     if (DBCore.adapter == DBCore.PGSQL) {
       uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
@@ -56,7 +56,7 @@ class Model {
     
     String tableName = DBCore.toTableName("${this.runtimeType}");
     
-    Map schema = DBCore.loadSchemaToMap();
+    Map schema = DBCore.loadSchemaToMap(DBCore.rootPath);
     Future<Map> usedObjectDataFuture = getObjectScemaAttributes(this);
     InstanceMirror instanceMirror = reflect(this);
     
@@ -64,7 +64,7 @@ class Model {
       //*loop through schema attributes and create sql 
       var object = instanceMirror.reflectee;
       object.id = usedObjectData["objectId"];
-        DBCore.loadConfigFile();
+        DBCore.loadConfigFile(DBCore.rootPath);
       if (DBCore.adapter == DBCore.PGSQL) {
         
         print(usedObjectData["insertValues"].toString());
@@ -126,7 +126,7 @@ class Model {
     //print(this.runtimeType);
     
     //*loop through schema attributes and fill object via reflections and mirrors
-    DBCore.loadConfigFile();
+    DBCore.loadConfigFile(DBCore.rootPath);
     if (DBCore.adapter == DBCore.PGSQL) {
       
       Pool pool = DBPOOL;
@@ -357,7 +357,7 @@ class Model {
      
     String sql="INSERT INTO $tableName (${initiatedObject}_id, ${relatedObject}_id) VALUES ('${this.id}', '${object.id}')";
     
-    DBCore.loadConfigFile();
+    DBCore.loadConfigFile(DBCore.rootPath);
     if (DBCore.adapter == DBCore.PGSQL) {
       print(sql);   
       Pool pool = DBPOOL;
@@ -571,7 +571,7 @@ class Model {
   {
     Completer completer = new Completer();
     getNewId().then((id){
-      Map schema = DBCore.loadSchemaToMap();
+      Map schema = DBCore.loadSchemaToMap(DBCore.rootPath);
       
       String tableName= DBCore.toTableName("${object.runtimeType}");
           
@@ -674,7 +674,7 @@ class Model {
   
   setObjectScemaAttributes(object, row)
   {
-    Map schema = DBCore.loadSchemaToMap();
+    Map schema = DBCore.loadSchemaToMap(DBCore.rootPath);
     String tableName = DBCore.toTableName("${object.runtimeType}");
               
     Map objectSchemaMap = schema["${tableName}"];
@@ -714,7 +714,7 @@ class Model {
     Completer completer = new Completer();
 
     
-    DBCore.loadConfigFile();
+    DBCore.loadConfigFile(DBCore.rootPath);
     if (DBCore.adapter == DBCore.PGSQL) {
       Pool pool = DBPOOL;
       pool.start().then((_) {
@@ -765,7 +765,7 @@ class Model {
   }
   Future removeDependentRelations(){
     Completer completer = new Completer();
-    Map schema = DBCore.loadSchemaToMap();
+    Map schema = DBCore.loadSchemaToMap(DBCore.rootPath);
     print(schema);
     
     //TODO 1.find relations

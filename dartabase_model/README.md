@@ -1,4 +1,4 @@
-Dartabase Model 0.6.3
+Dartabase Model 0.7.0
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -10,15 +10,16 @@ Dartabase Model 0.6.3
     
 	Tested on 
 
-    Dart Editor version 1.4.0.dev_06_03 (DEV)
-    Dart SDK version 1.4.0-dev.6.3
-    
+    Dart Editor version 1.6.0.dev_07_00 (DEV)
+    Dart SDK version 1.6.0-dev.7.0
+
 	Compatibility
 		depending on the migration version you are using 
 		you have to use a differend model version in your app
 	    
 	    migration  			model
 	    -------------------------
+	    0.7.0 <-requires->  0.7.0 (using core 0.3.x)
 	    0.6.x <-requires->  0.6.x
       0.5.x <-requires->  0.5.x
 	    
