@@ -12,6 +12,7 @@ class Project extends Observable {
   @published Map config;
   @observable List<Migration> migrations;
 
+  @observable String serverStatus;
   @observable String migrationDirection = "";
   @observable Migration currentMigration;
   @observable Migration selectedMigration;
@@ -44,6 +45,16 @@ class Project extends Observable {
       }
     });
   }
+
+  requestServerStatus() {
+    var url = "http://127.0.0.1:8079/serverStatus?projectRootPath=${path}";
+    var request = HttpRequest.getString(url).then(updateServerStatus);
+  }
+
+  updateServerStatus(String responseText) {
+    serverStatus = responseText;
+  }
+
 
   Migration getMigrationByIndex(num index) {
     Migration mig;

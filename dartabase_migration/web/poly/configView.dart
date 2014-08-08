@@ -8,6 +8,7 @@ import "../poly/migration.dart";
 @CustomTag('custom-config-view')
 class ConfigView extends PolymerElement {
   @published Map config;
+  @published String status;
 
   ConfigView.created() : super.created();
 

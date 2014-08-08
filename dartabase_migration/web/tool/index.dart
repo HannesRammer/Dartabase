@@ -1,10 +1,12 @@
-import 'package:polymer/polymer.dart';
 import 'dart:html';
 import 'dart:convert' show JSON;
+
+import 'package:polymer/polymer.dart';
 import 'package:params/client.dart';
+import 'package:material_paper_colors/material_paper_colors.dart';
+
 import '../poly/dartabaseMigration.dart';
 import '../poly/project.dart';
-import 'package:material_paper_colors/material_paper_colors.dart';
 
 List<Project> projects = [];
 void main() {
@@ -29,6 +31,8 @@ void displayProjects(responseText) {
   userProjects.forEach((k,v){
     counter++;
     Project project = new Project(name:k,path:v,colorPalette:getRandomColorPaletteT());
+    project.requestServerStatus();
+
     projects.add(project);
     project.requestConfig();
     project.requestMigrations();

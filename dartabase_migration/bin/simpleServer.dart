@@ -68,6 +68,8 @@ void handleGet(HttpRequest req) {
   /*START SCAFFOLD INPUT*/
   if (path == "/projectMapping") {
     loadProjectMapping(res);
+  } else if (path.indexOf("/serverStatus") >= 0) {
+    serverStatus(res);
   } else if (path.indexOf("/config") >= 0) {
     loadConfig(res);
   } else if (path.indexOf("/migrations") >= 0) {
@@ -215,6 +217,12 @@ runMigration(HttpResponse res){
   DBCore.rootPath = params["projectRootPath"].replaceAll('%5C','\\');
   DM.run(params["direction"]).then((_){
     closeResWith(res,"finished migration");  
+  });
+}
+
+serverStatus(HttpResponse res){
+  DM.serverStatus(params["projectRootPath"].replaceAll('%5C','\\')).then((result){
+    closeResWith(res,result);  
   });
 }
 

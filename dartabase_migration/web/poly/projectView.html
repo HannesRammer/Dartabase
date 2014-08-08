@@ -9,7 +9,7 @@
 <div class="projectView" style="border: 1px solid {{project.colorPalette['A200'][0]}};">
   <!--div class="">Current Migration: {{project.currentMigration.version}} + migrationDirection : {{project.migrationDirection}}</div-->
 <div class="configView" style="border: 1px solid {{project.colorPalette['A200'][0]}};">
-  <custom-config-view config="{{project.config}}"></custom-config-view>
+  <custom-config-view config="{{project.config}}" status="{{project.serverStatus}}"></custom-config-view>
   </div>
   <div class="migrationView" style="border: 1px solid {{project.colorPalette['A100'][0]}};">
 <div class="">Migrations:</div>
