@@ -6,7 +6,6 @@ import "dart:async";
 
 import 'package:dartabase_core/dartabase_core.dart';
 
-import 'package:postgresql/postgresql.dart';
 import 'package:postgresql/postgresql_pool.dart';
 
 import 'package:sqljocky/sqljocky.dart';
@@ -26,7 +25,7 @@ String direction;
 Map projectMapping;
 int lastMigrationNumber;
 
-void initiateDartabase(String path, String projectName) {
+void initiateDartabase(path, projectName) {
   print("add project mapping ${projectName}:${path}");
   File file = new File("projectsMapping.json");
   if (file.existsSync()) {

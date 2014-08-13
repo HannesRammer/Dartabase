@@ -10,7 +10,7 @@
           <template repeat="{{project in projects}}">
             <div class="chip" hero-id="{{project.name}}" hero?="{{selectedProject == project }}" title="{{project.path}}">
               <div class="chip-top" style="border:solid 1px {{project.colorPalette['500'][0]}};" hero-id="{{project.name}}-art" hero?="{{selectedProject == project}}">
-                <custom-server-status status="{{project.status}}"></custom-server-status>
+                <custom-server-status status="{{project.serverStatus}}"></custom-server-status>
               </div>
               <div class="chip-bottom" style="background:{{project.colorPalette['500'][0]}};color:{{project.colorPalette['500'][1]}};">
                 <div class="chip-album-title">{{project.name}}</div>
