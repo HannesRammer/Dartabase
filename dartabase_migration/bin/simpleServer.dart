@@ -23,7 +23,7 @@ final num PORT = 8079;
 
 void main() {
   HttpServer.bind(HOST, PORT).then((server) {
-    var router = initRouter("C:\\Projects\\Dart\\dartabase\\dartabase_migration",server,serverRoutes);
+    var router = initRouter(server,serverRoutes);
     print("Listening for GET and POST on http://$HOST:$PORT");
   }, onError: printError);
 }

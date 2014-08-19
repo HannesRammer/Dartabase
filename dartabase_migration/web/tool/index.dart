@@ -19,7 +19,14 @@ void main() {
 
       print("Request List");
       var url = "http://127.0.0.1:8079/projectMapping";
-      var request = HttpRequest.getString(url).then(displayProjects);
+      //if(params["project"] == null){
+        var request = HttpRequest.getString(url).then(displayProjects);      
+      /*}else{
+        var request = HttpRequest.getString(url).then((responseText){
+          displayProject(responseText,params["project"]);
+        });
+      }*/
+      
     });
   });
 }
@@ -42,3 +49,4 @@ void displayProjects(responseText) {
   polyItem.projects = projects;
   querySelector("#content").append(polyItem);
 }
+

@@ -76,6 +76,10 @@ initiateDartabase(Map params, HttpResponse res){
 }
 
 saveConfig(Map params, HttpResponse res){
- print(params.toString()); 
+ print(params.toString());
+ String cleanConfig = params['config'].replaceAll('%5C','\\').replaceAll('%7B','{').replaceAll('%22','"').replaceAll('%7D','}');
+     
+ DBCore.stringToFilePath( cleanConfig , "${params['projectRootPath'].replaceAll('%5C','\\')}/db/config.json");
+ closeResWith(res,"done");
 }
 

@@ -139,10 +139,18 @@ Future serverStatus(String rootPath) {
       } else {
         pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 1);
       }
+      var query = pool.ping();
+      query.then((result){
+        print(result);
+        completer.complete("running");
+      }).catchError((e){
+        print(e);
+        completer.complete("down=> ${e}");
+      });
 
-      completer.complete("running");
+
     } catch (e) {
-      completer.complete("down or incorrect config");
+      completer.complete("down or incorrect config ${e}");
     }
   }
 

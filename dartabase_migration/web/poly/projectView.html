@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<link rel="import" href="packages/polymer/polymer.html">
+<link rel="import" href="../../packages/polymer/polymer.html">
+<link rel="import" href="../poly/configView.html">
+<link rel="import" href="../poly/migrationView.html">
+<link href="../../packages/paper_elements/paper_button.html" rel="import">
 <polymer-element name="custom-project-view">
 <template>
 <link rel="stylesheet" href="../poly/projectView.css">
@@ -8,8 +11,8 @@
               
 <div class="projectView" style="border: 1px solid {{project.colorPalette['A200'][0]}};">
   <!--div class="">Current Migration: {{project.currentMigration.version}} + migrationDirection : {{project.migrationDirection}}</div-->
-<div class="configView" style="border: 1px solid {{project.colorPalette['A200'][0]}};">
-  <custom-config-view config="{{project.config}}" status="{{project.serverStatus}}"></custom-config-view>
+<div class="configView" style="border: 1px solid {{project.colorPalette['A200'][0]}};height:80px;">
+  <custom-config-view project="{{project}}" status="{{project.serverStatus}}"></custom-config-view>
   </div>
   <div class="migrationView" style="border: 1px solid {{project.colorPalette['A100'][0]}};">
 <div class="">Migrations:</div>
@@ -19,7 +22,7 @@
           <div class="migrationContentLeft">
             <template repeat="{{migration in project.migrations}}"> 
               
-              <template if="{{migration != project.selectedMigration}}">
+              <template if="{{migration != project.selectedMigration}}"> 
                 
                 <template if="{{migration.state == 'current'}}">
                 <div id="{{migration.version}}" class="currentMigration" on-click="{{setActive}}" index="{{migration.index}}">
@@ -62,15 +65,15 @@
             </template>
             <br/>
             <template if="{{project.selectedMigration.state == 'current'}}">
-            <paper-button label="migrate" disabled="disabled" style="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
+            <paper-button label="migrate" disabled="disabled" style="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
             </template>
             <template if="{{project.selectedMigration.state == 'older'}}">
             <paper-button label="migrate to
-              older version" on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
+              older version" on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
             </template>
             <template if="{{project.selectedMigration.state == 'newer'}}">
             <paper-button label="migrate to
-              newer version" on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
+              newer version" on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
             </template>
           </div>
         </td>

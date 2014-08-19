@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<link rel="import" href="packages/polymer/polymer.html">
+<link rel="import" href="../../packages/polymer/polymer.html">
+<link rel="import" href="../poly/projectView.html">
+<link rel="import" href="../poly/serverStatus.html">
+<link href="../../packages/core_elements/core_animated_pages.html" rel="import">
   <polymer-element name="dartabase-migration">
   <template>
   <link rel="stylesheet" href="../poly/dartabaseMigration.css">
@@ -10,7 +13,7 @@
           <template repeat="{{project in projects}}">
             <div class="chip" hero-id="{{project.name}}" hero?="{{selectedProject == project }}" title="{{project.path}}">
               <div class="chip-top" style="border:solid 1px {{project.colorPalette['500'][0]}};" hero-id="{{project.name}}-art" hero?="{{selectedProject == project}}">
-                <custom-server-status status="{{project.serverStatus}}"></custom-server-status>
+                <custom-server-status status="{{project.serverStatus}}" adapter="{{project.config['adapter']}}"></custom-server-status>
               </div>
               <div class="chip-bottom" style="background:{{project.colorPalette['500'][0]}};color:{{project.colorPalette['500'][1]}};">
                 <div class="chip-album-title">{{project.name}}</div>
@@ -24,7 +27,7 @@
       <section id="details">
         <div class="card" layout horizontal hero-id="{{selectedProject.name}}" hero>
           <div class="card-left" style="background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" hero-id="{{selectedProject.name}}-art" hero>
-            <div>
+            <div style="margin: auto;width: 60px;">
               <div class="card-icon" style="border:solid 1px {{selectedProject.colorPalette['500'][1]}};background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};" on-tap="{{transition}}">X</div>
             </div>
           </div>
@@ -45,3 +48,4 @@
   </template>
    </polymer-element>
    <script type="application/dart" src="../poly/dartabaseMigration.dart"></script>
+   

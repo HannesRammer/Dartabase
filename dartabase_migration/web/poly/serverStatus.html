@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<link rel="import" href="packages/polymer/polymer.html">
+<link rel="import" href="../../packages/polymer/polymer.html">
 <polymer-element name="custom-server-status">
 <template>
 <link rel="stylesheet" href="../poly/serverStatus.css">
   <template if="{{status != 'running'}}">
-    <span style="background:red;">
-      DBServer :{{status}}
+    <span style="background:white;color:red">
+      <template if="{{adapter != null}}">
+        {{adapter}}
+      </template>
+      Server :{{status}}
     </span>
   </template> 
   <template if="{{status == 'running'}}">
-    <span style="background:green;color:white;">
-      DBServer :{{status}}
+    <span style="background:white;color:green;">
+      <template if="{{adapter != null}}">
+        {{adapter}}
+      </template>
+      Server :{{status}}
     </span>
   </template>
 </template> 
 </polymer-element>
-<script type="application/dart" src="../poly/serverStatus.dart"></script>
+<script type="application/dart" src="../poly/serverStatus.dart"></script> 

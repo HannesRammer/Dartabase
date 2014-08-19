@@ -9,10 +9,10 @@ dependencies:
   dartabase_core: '0.3.0' 
   params: '0.0.2'
   polymer: ">=0.12.0 <0.13.0"
-  paper_elements: ">=0.1.0+2 <0.2.0"
+  paper_elements: ">=0.1.0+3 <0.2.0"
   material_paper_colors: '0.2.0'
-  routes: '0.0.1'
   route: '>=0.4.6 <0.5.0'
+  routes: ">=0.1.0 <0.2.0"
 environment: 
   sdk: ">=0.8.10+6 <2.0.0" 
 transformers:

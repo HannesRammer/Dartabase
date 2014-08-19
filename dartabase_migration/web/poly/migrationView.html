@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<link rel="import" href="packages/polymer/polymer.html">
+<link rel="import" href="../../packages/polymer/polymer.html">
+  <link rel="import" href="../poly/migrationCreateTable.html">
+  <link rel="import" href="../poly/migrationCreateColumn.html">
+  <link rel="import" href="../poly/migrationRemoveColumn.html">
+  <link rel="import" href="../poly/migrationCreateRelation.html">
+  <link rel="import" href="../poly/migrationRemoveRelation.html">
+  <link rel="import" href="../poly/migrationRemoveTable.html"> 
+  
 <polymer-element name="custom-migration-view">
 <link rel="stylesheet" href="../poly/migrationView.css">
 <template>
@@ -34,7 +41,7 @@
                  <div style="background: {{migration.colorPalette['500'][0]}};color:{{migration.colorPalette['500'][1]}};">
                     {{relations.toString()}}
                  </div>
-              </div>
+              </div> 
           </template> 
       </template>
   </template>    
