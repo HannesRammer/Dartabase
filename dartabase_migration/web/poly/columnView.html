@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<link rel="import" href="../../packages/polymer/polymer.html">
+<link href="../../packages/paper_elements/paper_input.html" rel="import">
+<polymer-element name="custom-column-view">
+<template>
+<link rel="stylesheet" href="../poly/columnView.css">
+  <div>    
+    <paper-input class="size" label="Column Name" inputValue="{{name}}" floatinglabel="true"></paper-input>
+    <paper-input class="size" label="Column type" inputValue="{{type}}" floatinglabel="true"></paper-input>
+    <paper-input class="size" label="Default Value" inputValue="{{def}}" floatinglabel="true"></paper-input>
+    <template if="{{nil == false}}">
+      <paper-checkbox label="Not Null" ></paper-checkbox>
+    </template> 
+    <template if="{{!nil == true}}">
+      <paper-checkbox label="Not Null" checked></paper-checkbox>
+    </template>
+    
+  </div> 
+</template>
+</polymer-element>
+<script type="application/dart" src="../poly/columnView.dart"></script>

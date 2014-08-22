@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<link rel="import" href="../../packages/polymer/polymer.html">
+<link href="../../packages/paper_elements/paper_input.html" rel="import">
+<link href="../../packages/paper_elements/paper_button.html" rel="import">
+
+<link rel="import" href="../poly/columnView.html">
+
+<polymer-element name="custom-create-migration-table">
+    <template>
+    <br/>
+      <paper-input label="Table Name" inputValue="{{table.name}}" floatinglabel="true"></paper-input>
+      <!--table.columns.length: {{table.columns.length}}
+      <br/>
+      columns.length: {{columns.length}}-->
+      <br/>
+      <template repeat="{{column in table.columns | enumerate}}">
+        <custom-column-view column="{{column.value}}"></custom-column-view>
+      </template>
+      <br/>
+       <template repeat="{{column in columns | enumerate}}">
+        <custom-column-view column="{{column.value}}"></custom-column-view>
+      </template>
+     <paper-button label="Add Column" on-tap="{{addColumn}}"> </paper-button>
+    
+    </template>
+</polymer-element>
+<script type="application/dart" src="../poly/createMigrationTable.dart"></script>

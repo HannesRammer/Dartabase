@@ -5,7 +5,7 @@ import 'package:polymer/polymer.dart';
 import 'package:params/client.dart';
 import 'package:material_paper_colors/material_paper_colors.dart';
 
-import '../poly/dartabaseMigration.dart';
+import '../poly/dartabaseMigration.dart'; 
 import '../poly/project.dart';
 
 List<Project> projects = [];
@@ -16,7 +16,7 @@ void main() {
       initParams();
       querySelector("#green").style.backgroundColor =Green["500"];
       querySelector("#green").style.color =GreenT["500"][1];
-
+      
       print("Request List");
       var url = "http://127.0.0.1:8079/projectMapping";
       //if(params["project"] == null){
@@ -38,13 +38,8 @@ void displayProjects(responseText) {
   userProjects.forEach((k,v){
     counter++;
     Project project = new Project(name:k,path:v,colorPalette:getRandomColorPaletteT());
-    project.requestServerStatus();
-
+    project.prepare();
     projects.add(project);
-    project.requestConfig();
-    project.requestMigrations();
-    
-    
   });
   polyItem.projects = projects;
   querySelector("#content").append(polyItem);

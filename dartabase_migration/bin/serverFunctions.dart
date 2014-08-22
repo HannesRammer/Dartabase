@@ -83,3 +83,8 @@ saveConfig(Map params, HttpResponse res){
  closeResWith(res,"done");
 }
 
+loadSchema(Map params, HttpResponse res){
+  Map schema = DBCore.loadSchemaToMap(params["projectRootPath"].replaceAll('%5C','\\'));
+  closeResWith(res,JSON.encode(schema));
+}
+

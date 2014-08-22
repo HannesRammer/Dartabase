@@ -8,19 +8,28 @@ import '../poly/migration.dart';
 class Project extends Observable {
   final String name;
   final String path;
-  final Map colorPalette;
-  @published Map config;
-  @observable List<Migration> migrations;
+  @observable Map colorPalette = toObservable({});
+  @observable Map config = toObservable({});
+  @observable List<Migration> migrations  = toObservable([]);
+  @observable Map tables = toObservable({});
+  @observable Map dependencyRelations = toObservable({});
 
   @observable String serverStatus;
   @observable String migrationDirection = "";
-  @observable Migration currentMigration;
-  @observable Migration selectedMigration;
+  @observable Migration currentMigration=toObservable(new Migration());
+  @observable Migration selectedMigration =toObservable(new Migration());
 
   Project({this.name, this.path, this.colorPalette, this.migrations});
 
+  void prepare(){
+    requestServerStatus();
+    requestConfig();
+    requestSchema(); 
+    requestMigrations();
+  }
+  
   requestConfig() {
-      var url = "http://127.0.0.1:8079/config?projectRootPath=${path}";
+      var url = "http://127.0.0.1:8079/requestConfig?projectRootPath=${path}";
       var request = HttpRequest.getString(url).then(updateConfig);
   }
 
@@ -30,7 +39,7 @@ class Project extends Observable {
   }
   
   requestMigrations() {
-    var url = "http://127.0.0.1:8079/migrations?projectRootPath=${path}";
+    var url = "http://127.0.0.1:8079/requestMigrations?projectRootPath=${path}";
     var request = HttpRequest.getString(url).then(updateMigrations);
   }
 
@@ -47,14 +56,13 @@ class Project extends Observable {
   }
 
   requestServerStatus() {
-    var url = "http://127.0.0.1:8079/serverStatus?projectRootPath=${path}";
+    var url = "http://127.0.0.1:8079/requestServerStatus?projectRootPath=${path}";
     var request = HttpRequest.getString(url).then(updateServerStatus);
   }
 
   updateServerStatus(String responseText) {
     serverStatus = responseText;
   }
-
 
   Migration getMigrationByIndex(num index) {
     Migration mig;
@@ -85,5 +93,23 @@ class Project extends Observable {
       }
     });
     return mig;
+  }
+  
+  requestSchema(){
+    var url = "http://127.0.0.1:8079/requestSchema?projectRootPath=${path}";
+    var request = HttpRequest.getString(url).then(updateSchema);
+  }
+  
+  updateSchema(String responseText) {
+    var schema = JSON.decode(responseText);
+    dependencyRelations = new Map();
+    tables = new Map();
+    schema.forEach((String tableName,value){
+      if(tableName != "dependencyRelations"){
+        tables[tableName] = value;
+      }else{
+        dependencyRelations = value;
+      }
+    });
   }
 }

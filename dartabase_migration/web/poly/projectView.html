@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<link rel="import" href="../../packages/polymer/polymer.html">
-<link rel="import" href="../poly/configView.html">
-<link rel="import" href="../poly/migrationView.html">
 <link href="../../packages/paper_elements/paper_button.html" rel="import">
+<link href="../../packages/polymer/polymer.html" rel="import">
+
+<link href="../poly/configView.html" rel="import">
+<link href="../poly/migrationView.html" rel="import">
+<link href="../poly/createMigration.html" rel="import">
+
 <polymer-element name="custom-project-view">
 <template>
 <link rel="stylesheet" href="../poly/projectView.css">
@@ -20,6 +23,7 @@
       <tr>
         <td style="width:50%;">
           <div class="migrationContentLeft">
+           
             <template repeat="{{migration in project.migrations}}"> 
               
               <template if="{{migration != project.selectedMigration}}"> 
@@ -75,6 +79,7 @@
             <paper-button label="migrate to
               newer version" on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
             </template>
+            <custom-create-migration project="{{project}}"></custom-create-migration>
           </div>
         </td>
         <td style="width:50%;">
@@ -84,6 +89,7 @@
         </td>
       </tr>
     </table>
+    
   </div>
 
 </div>

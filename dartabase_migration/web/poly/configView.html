@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="../poly/configView.css">
 
 <core-animated-pages selected="{{editMode}}" transitions="hero-transition">
-      <section style="height:120px; position:relative;">
+      <section>
         <div class="chip-container" hero-p>
       
             <div class="chip" hero-id="{{project.config['database']}}" hero?="{{project.config['database'] == project.config['database']}}">
@@ -37,7 +37,7 @@
               <custom-server-status status="{{status}}" adapter="{{project.config['adapter']}}"></custom-server-status>            
 <br/>
             
-            <paper-button label="edit" on-tap="{{transition}}"> </paper-button>
+            <paper-button label="edit" on-tap="{{transition}}" style="border:1px solid {{project.colorPalette['500'][0]}};"> </paper-button>
             </div>
         </div>
         
@@ -65,8 +65,10 @@
           </template> 
           </div>          
         <br/>
-        <paper-button label="save" on-tap="{{saveTransition}}"> </paper-button>
-        <paper-button label="cancle" on-tap="{{transition}}">  </paper-button>
+
+          
+        <paper-button label="save" on-tap="{{saveTransition}}" style="border:1px solid {{project.colorPalette['500'][0]}};"> </paper-button>
+        <paper-button label="cancle" on-tap="{{transition}}" style="border:1px solid {{project.colorPalette['500'][0]}};">  </paper-button>
         </div>
         
       </section>

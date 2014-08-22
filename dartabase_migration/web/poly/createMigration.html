@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<link rel="import" href="../../packages/polymer/polymer.html">
+<link href="../../packages/paper_elements/paper_shadow.html" rel="import">
+<link href="../../packages/paper_elements/paper_button.html" rel="import">
+<link href="../../packages/paper_elements/paper_input.html" rel="import">
+
+<link href="../../packages/core_elements/core_animated_pages.html" rel="import">
+
+  <link rel="import" href="../poly/createMigrationTable.html">
+  
+<polymer-element name="custom-create-migration">
+<template>
+<link rel="stylesheet" href="../poly/createMigration.css">
+<style>
+    .border {
+      border:1px solid {{project.colorPalette['500'][0]}};
+    }
+    </style>
+<core-animated-pages selected="{{editMode}}" transitions="hero-transition">
+      <section>
+        <div hero-id="createMigration" hero?="{{'' == ''}}">
+          <paper-button label="create Migration" on-tap="{{transition}}"> </paper-button>
+        </div>
+        
+      </section>
+
+      <section id="details">
+        <div class="card" layout hero-id="createMigration" hero>
+          <paper-shadow z="2"></paper-shadow>
+          
+            <paper-input label="Migration Name" inputValue="{{newMigrationName}}" floatinglabel="true"></paper-input>
+      <div id="up">
+      UP:
+          <br/>
+          createTable:
+          <a on-click="{{createTable}}" class="border">
+          + add Table
+          </a>
+          
+          <div id="up_create_table">
+          <template repeat="{{table in upCreateTable}}">
+          <div class="border">
+          <custom-create-migration-table table="{{table}}"></custom-create-migration-table>
+          </div>
+            
+          </template>
+          </div>
+          
+          <div id="up_create_column">
+          createColumn:
+      
+          <br/>
+          <a on-click="{{transition}}" class="border">
+          + add Column
+          </a>
+          </div>
+          
+          <div id="up_remove_column">
+          removeColumn:
+          
+          <br/>
+          <a on-click="{{transition}}" class="border">
+          + remove Column
+          </a>
+          </div>      
+          
+          <div id="up_create_relation">
+          createRelation:
+          
+          <br/>
+          <a on-click="{{transition}}" class="border">
+          + create Relation
+          </a>
+          </div>
+          
+          <div id="up_remove_relation">
+          removeRelation:
+          
+          <br/>
+          <a on-click="{{transition}}" class="border">
+          + remove Relation
+          </a>
+          </div>      
+          
+          <div id="up_remove_table">
+          removeTable:
+          
+          <br/>
+          <a on-click="{{transition}}" class="border">
+          + remove Table
+          </a>
+          </div>
+          </div>
+          <paper-button label="create" on-click="{{transition}}" class="border">
+          </paper-button>
+          <paper-button label="cancel" on-click="{{transition}}" class="border">
+          </paper-button>
+          
+        </div>
+      </section>
+ 
+    </core-animated-pages>
+  </template>
+</polymer-element>
+<script type="application/dart" src="../poly/createMigration.dart"></script>

@@ -37,10 +37,8 @@
 }
 
 .card {
-  height: 600px;
   border-radius: 3px;
   text-align: start;
-  overflow: hidden;
   background: #fff;
   box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

@@ -1,14 +1,11 @@
 library projectView;
 import 'package:polymer/polymer.dart';
 import "dart:html";
-import "dart:convert" show JSON;
 import "../poly/project.dart";
-import "../poly/migration.dart";
 
 @CustomTag('custom-project-view')
 class ProjectView extends PolymerElement {
-  @published Project project = null;
-
+  @published Project project = toObservable(new Project());
   @observable Map schema = {};
 
   ProjectView.created() : super.created();
@@ -32,7 +29,4 @@ class ProjectView extends PolymerElement {
     querySelector("#toast").text = responseText + project.currentMigration.toString();
     querySelector("#toast").show();
   }
-
-
-
 }

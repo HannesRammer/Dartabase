@@ -7,7 +7,7 @@ import "../poly/migration.dart";
 
 @CustomTag('custom-config-view')
 class ConfigView extends PolymerElement {
-  @published Project project;
+  @published Project project=toObservable(new Project());
   
   @published String status;
   @observable int editMode = 0;

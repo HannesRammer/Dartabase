@@ -1,6 +1,4 @@
 .projectView{
-  width:800px;
-  height:500px;
   padding: 5px;
   box-sizing: border-box;
 }
@@ -13,7 +11,7 @@
 }
 
  .currentMigration{
-  width:350px;
+  width:100%;
   background:#00A4E4;
   text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
   color:#ffffff;
@@ -21,7 +19,7 @@
 }
 
 .olderMigration{
-  width:350px;
+  width:100%;
   background:#D6D6D6;
   text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
   color:#A9A9A9;
@@ -30,7 +28,7 @@
 }
 
 .newerMigration{
-  width:350px;
+  width:100%;
   background:#55DDCA;
   color:#000000;
   display: table;
@@ -46,16 +44,13 @@
 
 .migrationView{
   width:100%;
-  height:470px;
   padding: 5px;
   box-sizing: border-box;
   font-size: small;
-  overflow-x:none;
-  overflow-y:auto;
 }
 
 .currentSelection{
-  width:350px;
+  width:100%;
   background:#0081C6;
   text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
   color:#ffffff;
@@ -71,22 +66,16 @@
 
 .migrationContentLeft{
   border-right: 1px solid #1682ba;
-  height:436px;
   padding: 5px;
   box-sizing: border-box;
   font-size: small;
-  overflow-x:none;
-  overflow-y:auto;
 }
 
 .migrationContentRight{
   border-left: 1px solid #1682ba;
-  height:436px;
   padding: 5px;
   box-sizing: border-box;
   font-size: small;
-  overflow-x:none;
-  overflow-y:auto;
 }
 
 

@@ -1,4 +1,6 @@
-.configView{
+.createMigration{
+  width:800px;
+  height:500px;
   padding: 5px;
   box-sizing: border-box;
 }
@@ -16,7 +18,6 @@ paper-input{
 
  
 .card {
-  height: 300px;
   width: 90%;
   padding:15px;
   border-radius: 2px;
