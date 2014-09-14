@@ -26,6 +26,7 @@ class Project extends Observable {
     requestConfig();
     requestSchema(); 
     requestMigrations();
+    
   }
   
   requestConfig() {
@@ -34,7 +35,7 @@ class Project extends Observable {
   }
 
   updateConfig(String responseText) {
-    config = new Map();
+    config = toObservable(new Map());
     config = JSON.decode(responseText);
   }
   
@@ -44,10 +45,10 @@ class Project extends Observable {
   }
 
   updateMigrations(String responseText) {
-    migrations = new List();
+    migrations = toObservable(new List());
     List<Map> migrationsList = JSON.decode(responseText);
     migrationsList.forEach((Map migMap) {
-      Migration mig = new Migration(index: migMap['index'], version: migMap['version'],colorPalette:colorPalette, actions: migMap['actions'], state: migMap['state']);
+      Migration mig = toObservable(new Migration(index: migMap['index'], version: migMap['version'],colorPalette:colorPalette, actions: migMap['actions'], state: migMap['state']));
       migrations.add(mig);
       if (mig.state == "curent") {
         selectedMigration = mig;
@@ -65,7 +66,7 @@ class Project extends Observable {
   }
 
   Migration getMigrationByIndex(num index) {
-    Migration mig;
+    Migration mig = toObservable(new Migration());
     migrations.forEach((Migration m) {
       if (m.index == index) {
         mig = m;
@@ -86,7 +87,7 @@ class Project extends Observable {
   }
 
   Migration getCurrentMigration() {
-    Migration mig;
+    Migration mig = toObservable(new Migration());
     migrations.forEach((Migration m) {
       if (m.state == "current") {
         mig = m;
@@ -102,8 +103,8 @@ class Project extends Observable {
   
   updateSchema(String responseText) {
     var schema = JSON.decode(responseText);
-    dependencyRelations = new Map();
-    tables = new Map();
+    dependencyRelations = toObservable(new Map());
+    tables = toObservable(new Map());
     schema.forEach((String tableName,value){
       if(tableName != "dependencyRelations"){
         tables[tableName] = value;
@@ -111,5 +112,14 @@ class Project extends Observable {
         dependencyRelations = value;
       }
     });
+  }
+  
+  List getTableNames(){
+    return tables.keys.toList();
+  }
+  
+  
+  List getColumnNamesFor(String tableName){
+    return tables[tableName].keys.toList();
   }
 }

@@ -8,7 +8,7 @@ import 'package:material_paper_colors/material_paper_colors.dart';
 import '../poly/dartabaseMigration.dart'; 
 import '../poly/project.dart';
 
-List<Project> projects = [];
+List<Project> projects = toObservable([]);
 void main() {
   querySelector("#warning").remove();
   initPolymer().run(() {

@@ -4,13 +4,14 @@ author: Hannes Rammer <Hannes.Rammer@gmail.com>
 description: Database Migration stands for version-controlled database structure manipulation for MySQL and PGSQL without having to write SQL. inspired by Ruby on Rails models
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_migration
 dependencies:
-  postgresql: '0.2.13'
-  sqljocky: '0.11.0'
-  dartabase_core: '0.3.0' 
-  params: '0.0.2'
-  polymer: ">=0.12.0 <0.13.0"
-  paper_elements: ">=0.1.0+3 <0.2.0"
-  material_paper_colors: '0.2.0'
+  postgresql: '>=0.2.14 <0.3.0'
+  sqljocky: '>=0.11.0 <0.12.0'
+  dartabase_core: '>=0.3.0 <0.4.0' 
+  params: '>=0.0.2 <0.1.0'
+  polymer: ">=0.13.0+1 <0.14.0"
+  core_elements: ">=0.2.0+1 <0.3.0"
+  paper_elements: ">=0.1.1+2 <0.2.0"
+  material_paper_colors: '>=0.2.0 <0.3.0'
   route: '>=0.4.6 <0.5.0'
   routes: ">=0.1.0 <0.2.0"
 environment: 

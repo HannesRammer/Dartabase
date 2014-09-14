@@ -7,6 +7,9 @@
 <link href="../../packages/core_elements/core_animated_pages.html" rel="import">
 
   <link rel="import" href="../poly/createMigrationTable.html">
+  <link rel="import" href="../poly/createMigrationColumn.html">
+  <link rel="import" href="../poly/removeMigrationColumn.html">
+  <link rel="import" href="../poly/removeMigrationTable.html">
   
 <polymer-element name="custom-create-migration">
 <template>
@@ -28,48 +31,50 @@
         <div class="card" layout hero-id="createMigration" hero>
           <paper-shadow z="2"></paper-shadow>
           
-            <paper-input label="Migration Name" inputValue="{{newMigrationName}}" floatinglabel="true"></paper-input>
+            <paper-input required label="Migration Name" inputValue="{{newMigrationName}}" floatinglabel="true"></paper-input>
       <div id="up">
       UP:
           <br/>
-          createTable:
-          <a on-click="{{createTable}}" class="border">
-          + add Table
-          </a>
+          <custom-create-migration-table></custom-create-migration-table>
           
-          <div id="up_create_table">
-          <template repeat="{{table in upCreateTable}}">
-          <div class="border">
-          <custom-create-migration-table table="{{table}}"></custom-create-migration-table>
-          </div>
-            
-          </template>
-          </div>
+          <br/>
+            createColumn:
+            <a on-click="{{addColumn}}" class="border">
+              + add column to existing table
+            </a>
           
           <div id="up_create_column">
-          createColumn:
-      
-          <br/>
-          <a on-click="{{transition}}" class="border">
-          + add Column
-          </a>
+            <template repeat="{{table in createColumn}}">
+            <div class="border">
+              <custom-create-migration-column existingTableNames="{{existingTableNames}}"></custom-create-migration-column>
+            </div>
+              
+          </template>
+          
           </div>
           
-          <div id="up_remove_column">
-          removeColumn:
-          
           <br/>
-          <a on-click="{{transition}}" class="border">
-          + remove Column
-          </a>
-          </div>      
+            removeColumn:
+            <a on-click="{{addRemoveColumn}}" class="border">
+              + remove column from existing table
+            </a>
+          
+          <div id="up_create_column">
+            <template repeat="{{table in removeColumn}}">
+            <div class="border">
+              <custom-remove-migration-column table="{{table}}" existingTables="{{existingTables}}"></custom-remove-migration-column>
+            </div>
+              
+          </template>
+          
+          </div>    
           
           <div id="up_create_relation">
           createRelation:
           
           <br/>
           <a on-click="{{transition}}" class="border">
-          + create Relation
+          + create Relation between existing tables
           </a>
           </div>
           
@@ -78,20 +83,27 @@
           
           <br/>
           <a on-click="{{transition}}" class="border">
-          + remove Relation
+          + remove existing Relation between tables
           </a>
           </div>      
           
-          <div id="up_remove_table">
-          removeTable:
-          
           <br/>
-          <a on-click="{{transition}}" class="border">
-          + remove Table
-          </a>
+            removeTable:
+            <a on-click="{{addRemoveTable}}" class="border">
+              + remove existing table
+            </a>
+          
+          <div id="up_remove_table">
+            <template repeat="{{table in removeTable}}">
+            <div class="border">
+              <custom-remove-migration-table table="{{table}}" existingTables="{{existingTables}}"></custom-remove-migration-table>
+            </div>
+              
+          </template>
+          
+          </div>    
           </div>
-          </div>
-          <paper-button label="create" on-click="{{transition}}" class="border">
+          <paper-button label="create" on-click="{{}}" class="border">
           </paper-button>
           <paper-button label="cancel" on-click="{{transition}}" class="border">
           </paper-button>

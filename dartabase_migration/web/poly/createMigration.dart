@@ -5,10 +5,16 @@ import "../poly/table.dart";
 
 @CustomTag('custom-create-migration')
 class CreateMigration extends PolymerElement {
-  @published Project project = toObservable(new Project());
+  @published Project project;
   @observable String newMigrationName = "";
-  @observable List<Table> upCreateTable = toObservable([]);
+  @observable List<Table> createColumn = toObservable([]);
+  @observable List<Table> removeColumn = toObservable([]);
+  
+  @observable List<Table> removeTable = toObservable([]);
   @observable int editMode = 0;
+  
+  @observable List existingTableNames = toObservable([]);
+  @observable Map existingTables = toObservable({});
 
   CreateMigration.created() : super.created();
 
@@ -21,10 +27,31 @@ class CreateMigration extends PolymerElement {
     }
   }
   
- createTable(){
-   Table table = new Table();
-   List columns = new List();
-   table.columns = columns;
-   upCreateTable.add(table);
+ 
+ 
+ addColumn(){
+   Table table = toObservable(new Table());
+     createColumn.add(table);
+     existingTableNames = project.getTableNames();
+  }
+  
+ addRemoveColumn(){
+    Table table = toObservable(new Table());
+       List columns = toObservable(new List());
+            table.columns = columns;
+      removeColumn.add(table);
+      existingTables = project.tables;  
+   }
+ 
+ addRemoveTable(){
+    Table table = toObservable(new Table());
+      removeTable.add(table);
+      existingTableNames = project.getTableNames(); 
+   }
+  
+ createMigration(){
+   Map up = {"UP":{}};
+   Map down = {"DOWN":{}};
  }
+ 
 }

@@ -5,8 +5,8 @@ import "../poly/project.dart";
 
 @CustomTag('custom-project-view')
 class ProjectView extends PolymerElement {
-  @published Project project = toObservable(new Project());
-  @observable Map schema = {};
+  @published Project project;
+  @observable Map schema = toObservable({});
 
   ProjectView.created() : super.created();
 

@@ -4,7 +4,7 @@ import '../poly/migration.dart';
 
 @CustomTag('custom-migration-view')
 class MigrationView extends PolymerElement {
-  @published Migration migration =toObservable(new Migration());
+  @published Migration migration;
   @observable Project project=toObservable(new Project());
 
 
