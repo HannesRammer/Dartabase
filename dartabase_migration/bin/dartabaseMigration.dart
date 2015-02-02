@@ -63,7 +63,7 @@ void initiateDartabase(path, projectName) {
       "schemaVersion": ""
     };
     DBCore.mapToJsonFilePath(schemaVersion, "$path/db/schemaVersion.json");
-//    exit(0);
+    exit(0);
 
   });
 }
