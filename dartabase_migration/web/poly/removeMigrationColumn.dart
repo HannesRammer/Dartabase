@@ -1,25 +1,41 @@
-import 'package:polymer/polymer.dart';
+@HtmlImport('removeMigrationColumn.html')
+library dartabase.poly.removeMigrationColumn;
+// Import the paper element from Polymer.
+import 'package:polymer_elements/paper_dropdown_menu.dart';
+import 'package:polymer_elements/paper_listbox.dart';
+import "package:polymer_elements/paper_item.dart";
+import "package:polymer_elements/paper_button.dart";
 import "../poly/table.dart";
 import "../poly/project.dart";
 
-@CustomTag('custom-remove-migration-column')
+// Import the Polymer and Web Components scripts.
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
+
+@PolymerRegister('custom-remove-migration-column')
 class RemoveMigrationColumn extends PolymerElement {
-   @published Project project;
-   @published Table table;
-   @published Map existingTables= toObservable({});
-   @published Map existingColumns= toObservable({});
-   
-   RemoveMigrationColumn.created() : super.created();
-   
-   void addColumn(){
-      if(table.columns == null){
-        table.columns=toObservable({});  
-      }
-      table.columns.add(toObservable([]));
-      print(2);
+    @Property(notify: true)
+    Project project;
+    @Property(notify: true)
+    Table table;
+    @Property(notify: true)
+    Map existingTables = {};
+    @Property(notify: true)
+    Map existingColumns = {};
+
+    RemoveMigrationColumn.created() : super.created();
+
+    @reflectable
+    void addColumn() {
+        if (table.columns == null) {
+            table.columns = [];
+        }
+        table.columns.add([]);
+        print(2);
     }
-   
-   void updateColumns(event, detail, target){
-     print(2);
-   }
+
+    @reflectable
+    void updateColumns(event, detail, target) {
+        print(2);
+    }
 }

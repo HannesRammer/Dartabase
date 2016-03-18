@@ -1,84 +1,83 @@
-.projectView{
-  padding: 5px;
-  box-sizing: border-box;
+.projectView {
+    padding: 5px;
+    box-sizing: border-box;
 }
 
-
-.text{
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
+.text {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
 }
 
- .currentMigration{
-  width:100%;
-  background:#00A4E4;
-  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
-  color:#ffffff;
-  display: table;
+.currentMigration {
+    width: 100%;
+    background: #00A4E4;
+    text-shadow: rgba(0, 0, 0, 0.34902) 0 1px 1px;
+    color: #ffffff;
+    display: table;
 }
 
-.olderMigration{
-  width:100%;
-  background:#D6D6D6;
-  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
-  color:#A9A9A9;
-  display: table;
-  cursor: pointer;
+.olderMigration {
+    width: 100%;
+    background: #D6D6D6;
+    text-shadow: rgba(0, 0, 0, 0.34902) 0 1px 1px;
+    color: #A9A9A9;
+    display: table;
+    cursor: pointer;
 }
 
-.newerMigration{
-  width:100%;
-  background:#55DDCA;
-  color:#000000;
-  display: table;
-  cursor: pointer;
-} 
-
-.olderMigration:HOVER{
-  background: #00D2B8;
-}
-.newerMigration:HOVER{
-  background: #00D2B8;
+.newerMigration {
+    width: 100%;
+    background: #55DDCA;
+    color: #000000;
+    display: table;
+    cursor: pointer;
 }
 
-.migrationView{
-  width:100%;
-  padding: 5px;
-  box-sizing: border-box;
-  font-size: small;
+.olderMigration:HOVER {
+    background: #00D2B8;
 }
 
-.currentSelection{
-  width:100%;
-  background:#0081C6;
-  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
-  color:#ffffff;
-  display: table;
-  margin-top:10px;
-  margin-bottom:10px;
-  box-shadow:0 2px 5px 0 rgba(0, 0, 0, 0.26),0 2px 10px 0 rgba(0, 0, 0, 0.16);
+.newerMigration:HOVER {
+    background: #00D2B8;
 }
 
-.currentSelection:HOVER{
-  background: #0081C6;
+.migrationView {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: small;
 }
 
-.migrationContentLeft{
-  border-right: 1px solid #1682ba;
-  padding: 5px;
-  box-sizing: border-box;
-  font-size: small;
+.currentSelection {
+    width: 100%;
+    background: #0081C6;
+    text-shadow: rgba(0, 0, 0, 0.34902) 0 1px 1px;
+    color: #ffffff;
+    display: table;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.16);
 }
 
-.migrationContentRight{
-  border-left: 1px solid #1682ba;
-  padding: 5px;
-  box-sizing: border-box;
-  font-size: small;
+.currentSelection:HOVER {
+    background: #0081C6;
 }
 
+.migrationContentLeft {
+    border-right: 1px solid #1682ba;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: small;
+}
+
+.migrationContentRight {
+    border-left: 1px solid #1682ba;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: small;
+}
 
 .card-album-title {
-  font-size: 2em;
+    font-size: 2em;
 }

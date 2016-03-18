@@ -1,79 +1,82 @@
-<!DOCTYPE html>
-<link rel="import" href="../../packages/polymer/polymer.html">
-<link href="../../packages/paper_elements/paper_button.html" rel="import">
-<link href="../../packages/paper_elements/paper_checkbox.html" rel="import">
-<link href="../../packages/paper_elements/paper_input.html" rel="import">
-<link href="../../packages/paper_elements/paper_shadow.html" rel="import">
-<link href="../poly/serverStatus.html" rel="import">
-<link href="../../packages/core_elements/core_animated_pages.html" rel="import">
-<polymer-element name="custom-config-view">
-<template>
-<link rel="stylesheet" href="../poly/configView.css">
+<dom-module id="custom-config-view">
+    <template is="dom-bind">
 
-<core-animated-pages selected="{{editMode}}" transitions="hero-transition">
-      <section>
-        <div class="chip-container" hero-p>
-      
-            <div class="chip" hero-id="{{project.config['database']}}" hero?="{{project.config['database'] == project.config['database']}}">
-            <paper-shadow z="0"></paper-shadow>  
-              adapter :{{project.config['adapter']}} | 
-              database :{{project.config['database']}} |  
-              username :{{project.config['username']}} | 
-              password :{{project.config['password']}} <br/> 
-              host :{{project.config['host']}} | 
-              port :{{project.config['port']}} | 
-                
-              <template if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
+        <link rel="stylesheet" href="../poly/configView.css">
+
+        <iron-pages selected="{{editMode}}">
+            <section>
+                <div class="chip-container">
+
+                    <div class="chip">
+                        <paper-material elevation="0"></paper-material>
+                        adapter :{{project.config['adapter']}} |
+                        database :{{project.config['database']}} |
+                        username :{{project.config['username']}} |
+                        password :{{project.config['password']}} <br/>
+                        host :{{project.config['host']}} |
+                        port :{{project.config['port']}} |
+
+                        <template if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
                 <span style="background:white;color:red;">
                   ssl :{{project.config['ssl']}}
                 </span>
-              </template> 
-              <template if="{{project.config['ssl'] == 'true'}}">
+                        </template>
+                        <template if="{{project.config['ssl'] == 'true'}}">
                 <span style="background:white;color:green;">
                   ssl :{{project.config['ssl']}}
                 </span>
-              </template>
-               | 
-              <custom-server-status status="{{status}}" adapter="{{project.config['adapter']}}"></custom-server-status>            
-<br/>
-            
-            <paper-button label="edit" on-tap="{{transition}}" style="border:1px solid {{project.colorPalette['500'][0]}};"> </paper-button>
-            </div>
-        </div>
-        
-      </section>
+                        </template>
+                        |
+                        <custom-server-status status="{{status}}"
+                                              adapter="{{project.config['adapter']}}"></custom-server-status>
+                        <br/>
 
-      <section id="details">
-      
-        <div class="card" layout hero-id="{{project.config['database']}}" hero>
-      <paper-shadow z="2"></paper-shadow>   
-          <paper-input label="adapter" inputValue="{{project.config['adapter']}}" floatinglabel="true"></paper-input>
-          <paper-input label="database" inputValue="{{project.config['database']}}" floatinglabel="true"></paper-input>
-          <br/> 
-          <paper-input label="username" inputValue="{{project.config['username']}}" floatinglabel="true"></paper-input>
-          <paper-input label="password" inputValue="{{project.config['password']}}" floatinglabel="true"></paper-input>
-          <br/>
-          <paper-input label="host" inputValue="{{project.config['host']}}" floatinglabel="true"></paper-input>
-          <paper-input label="port" inputValue="{{project.config['port']}}" floatinglabel="true"></paper-input>
-          <br/>
-          <div horizontal layout>
-          <template if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
-            <paper-checkbox label="ssl" ></paper-checkbox>
-          </template> 
-          <template if="{{project.config['ssl'] == 'true'}}">
-            <paper-checkbox label="ssl" checked></paper-checkbox>
-          </template> 
-          </div>          
-        <br/>
+                        <paper-button label="edit" on-tap="{{transition}}"
+                                      style$="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
+                    </div>
+                </div>
 
-          
-        <paper-button label="save" on-tap="{{saveTransition}}" style="border:1px solid {{project.colorPalette['500'][0]}};"> </paper-button>
-        <paper-button label="cancle" on-tap="{{transition}}" style="border:1px solid {{project.colorPalette['500'][0]}};">  </paper-button>
-        </div>
-        
-      </section>
- 
-    </core-animated-pages>
-  </template>
-</polymer-element>
-<script type="application/dart" src="../poly/configView.dart"></script>
+            </section>
+
+            <section id="details">
+
+                <div class="card" >
+                    <paper-material elevation="2"></paper-material>
+                    <paper-input label="adapter" inputValue="{{project.config['adapter']}}"
+                                 floatinglabel="true"></paper-input>
+                    <paper-input label="database" inputValue="{{project.config['database']}}"
+                                 floatinglabel="true"></paper-input>
+                    <br/>
+                    <paper-input label="username" inputValue="{{project.config['username']}}"
+                                 floatinglabel="true"></paper-input>
+                    <paper-input label="password" inputValue="{{project.config['password']}}"
+                                 floatinglabel="true"></paper-input>
+                    <br/>
+                    <paper-input label="host" inputValue="{{project.config['host']}}"
+                                 floatinglabel="true"></paper-input>
+                    <paper-input label="port" inputValue="{{project.config['port']}}"
+                                 floatinglabel="true"></paper-input>
+                    <br/>
+                    <div  >
+                        <template if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
+                            <paper-checkbox label="ssl"></paper-checkbox>
+                        </template>
+                        <template if="{{project.config['ssl'] == 'true'}}">
+                            <paper-checkbox label="ssl" checked></paper-checkbox>
+                        </template>
+                    </div>
+                    <br/>
+
+
+                    <paper-button label="save" on-tap="{{saveTransition}}"
+                                  style$="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
+                    <paper-button label="cancel" on-tap="{{transition}}"
+                                  style$="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
+                </div>
+
+            </section>
+
+        </iron-pages>
+    </template>
+
+</dom-module>

@@ -1,27 +1,41 @@
-import 'package:polymer/polymer.dart';
-import "../poly/table.dart";
- 
+@HtmlImport('createMigrationTable.html')
+library dartabase.poly.createMigrationTable;
 
-@CustomTag('custom-create-migration-table')
+// Import the paper element from Polymer.
+import 'package:polymer_elements/iron_pages.dart';
+import 'package:polymer_elements/paper_button.dart';
+import 'package:polymer_elements/paper_material.dart';
+import 'package:polymer_elements/paper_input.dart';
+import "../poly/columnView.dart";
+import "../poly/table.dart";
+
+// Import the Polymer and Web Components scripts.
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
+
+@PolymerRegister('custom-create-migration-table')
 class CreateMigrationTable extends PolymerElement {
-  @observable List<Table> createTables = toObservable([]);
-    
-  CreateMigrationTable.created() : super.created();
-  
-  @observable int editMode = 0;
-  
-  addTable(){
-     Table table = new Table(columns:toObservable([]));
-     table.columns.add(toObservable({}));
-     createTables.add(table);
-   }
-  
-  transition(e) {
-      if (this.editMode == 0) {
-        this.editMode = 1;
-        
-      } else {
-        this.editMode = 0;
-      }
+    @Property(notify: true)
+    List<Table> createTables = [];
+
+    CreateMigrationTable.created() : super.created();
+
+    @Property(notify: true)
+    int editMode = 0;
+
+    @reflectable
+    addTable() {
+        Table table = new Table(columns: []);
+        table.columns.add({});
+        createTables.add(table);
+    }
+
+    @reflectable
+    transition(e) {
+        if (this.editMode == 0) {
+            this.editMode = 1;
+        } else {
+            this.editMode = 0;
+        }
     }
 }

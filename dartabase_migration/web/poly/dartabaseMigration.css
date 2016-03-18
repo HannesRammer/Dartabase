@@ -1,67 +1,8 @@
-.chip-container {
-  position: absolute;
-  top: 275px;
-  right: 0;
-  left: 0;
-  text-align: center;
-}
-
-.chip {
-  display: inline-block;
-  position: relative;
-  border-radius: 3px;
-  margin: 4px;
-  overflow: hidden;
-  text-align: start;
-  background-color: #fff;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16);
-}
-
-.chip-top {
-  width: 200px;
-  height: 200px;
-}
-
-.chip-bottom {
-  padding: 8px;
-  line-height: 1.5;
-}
-
-.chip-album-title {
-  font-weight: bold;
-}
-
 #details {
-  padding: 0px 10% 0;
-  z-index: 2;
+    width :640px;
+    height:480px;
 }
-
-.card {
-  border-radius: 3px;
-  text-align: start;
-  background: #fff;
-  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.card-left {
-  width: 100px;
-}
-
-.card-right {
-  padding: 24px;
-}
-
-.card-icon {
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  margin-right: 16px;
-  
-  text-align: center;
-  vertical-align: middle;
-  display: table-cell;
-}
-
-.card-album-title {
-  font-size: 2em;
+.list_view {
+    width:200px;
+    height:200px;
 }

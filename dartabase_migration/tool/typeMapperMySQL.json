@@ -13,7 +13,6 @@
     "FLOAT": "FLOAT(2)",
     "FLOAT UNSIGNED": "FLOAT(2) UNSIGNED",
     "INT": "INT",
-    "INT": "INT",
     "INT UNSIGNED": "INT UNSIGNED",
     "LBLOB": "LONGBLOB",
     "LTEXT": "LONGTEXT",

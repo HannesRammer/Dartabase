@@ -1,35 +1,55 @@
-import 'package:polymer/polymer.dart';
+@HtmlImport('createProject.html')
+library dartabase.poly.createProject;
+
+// Import the paper element from Polymer.
+import 'package:polymer_elements/iron_pages.dart';
+import 'package:polymer_elements/paper_material.dart';
+import 'package:polymer_elements/paper_button.dart';
+import 'package:polymer_elements/paper_icon_button.dart';
+import 'package:polymer_elements/paper_input.dart';
 import 'dart:html';
+import 'dart:async';
 import 'package:material_paper_colors/material_paper_colors.dart' as MPC;
 
-@CustomTag('custom-create-project')
+// Import the Polymer and Web Components scripts.
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
+
+@PolymerRegister('custom-create-project')
 class CreateProject extends PolymerElement {
-  @observable String name = "";
-  @observable num page = 0;
-  @observable String path = "";
-  @published String backgroundColor = MPC.Red["500"];
-  @published String color = MPC.RedT["500"][1];
+    @Property(notify: true)
+    String name = "";
+    @Property(notify: true)
+    String path = "";
+    @Property(notify: true)
+    String backgroundColor = MPC.Red["500"];
+    @Property(notify: true)
+    String color = MPC.RedT["500"][1];
 
-  CreateProject.created() : super.created();
+    CreateProject.created() : super.created();
 
-  transition(e) {
-    if (page == 0) {
-      //this.selectedProject = nodeBind(e.target).templateInstance
-      // .model['item'];
-      page = 1;
-    } else {
-      page = 0;
+    @reflectable
+    toggleView(event, [_]) {
+        IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
+        ip.selectNext();
+
     }
-  }
 
-  initiateMigration() {
-    var url = "http://127.0.0.1:8079/initiateMigration?name=${name}&projectRootPath=${path}";
-    var request = HttpRequest.getString(url).then(initiationCompleted);
-  }
+    void ready() {
+        print("$runtimeType::ready()");
+    }
 
-  initiationCompleted(responseText) {
-    print(responseText.toString());
-    page = 0;
-  }
+    @reflectable
+    Future initiateMigration(event, [_])  async{
+        var url = "http://127.0.0.1:8079/initiateMigration?name=${name}&projectRootPath=${path}";
+        var responseText = await HttpRequest.getString(url);
+        initiationCompleted(responseText);
+    }
+
+    initiationCompleted(responseText) {
+        print(responseText.toString());
+        IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
+        ip.select("0");
+    }
 
 }

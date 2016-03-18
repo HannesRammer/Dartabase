@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<link rel="import" href="../../packages/polymer/polymer.html">
-<polymer-element name="custom-migration-create-table">
-  <link rel="stylesheet" href="../poly/migrationCreateTable.css">
-    <template>
-      <div class="migrationCreateTable" style="border:1px solid {{colorPalette['700'][0]}};">
-       <div style="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">{{tableName}}</div>
-       <template repeat="{{column in columns.keys}}">
-       <div style="clear:both;">
-       <div class="col" style="background: {{colorPalette['100'][0]}};color:{{colorPalette['100'][1]}};">
-       {{column}} : {{columns[column].toString()}}
-       
-       </div>
-       </div>
-       </template>
-      </div>
+<dom-module id="custom-migration-create-table">
+    <template is="dom-bind">
+        <link rel="stylesheet" href="../poly/migrationCreateTable.css">
+        <div class="migrationCreateTable" style$="border:1px solid {{colorPalette['700'][0]}};">
+            <div style$="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">{{tableName}}</div>
+            <template repeat="{{column in columns.keys}}">
+                <div style="clear:both;">
+                    <div class="col" style$="background: {{colorPalette['100'][0]}};color:{{colorPalette['100'][1]}};">
+                        {{column}} : {{columns[column].toString()}}
+
+                    </div>
+                </div>
+            </template>
+        </div>
     </template>
-</polymer-element>
-<script type="application/dart" src="../poly/migrationCreateTable.dart"></script>
+</dom-module>

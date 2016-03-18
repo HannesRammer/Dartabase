@@ -1,11 +1,17 @@
-library configView;
+@HtmlImport('serverStatus.html')
+library dartabase.poly.serverStatus;
+
+// Import the Polymer and Web Components scripts.
 import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
 
-@CustomTag('custom-server-status')
+@PolymerRegister('custom-server-status')
 class ServerStatus extends PolymerElement {
-  @published String status;
-  @published String adapter = null;
+    @Property(notify: true)
+    String status;
+    @Property(notify: true)
+    String adapter = null;
 
-  ServerStatus.created() : super.created();
+    ServerStatus.created() : super.created();
 
 }

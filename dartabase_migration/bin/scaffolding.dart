@@ -4,109 +4,112 @@ import "dart:async";
 import 'package:dartabase_core/dartabase_core.dart';
 import "dartabaseMigration.dart";
 
-void main() {
-  var state = null;
-  var projectExistsInProjectMapping = false;
-  var projectDoesntExistsInProjectMapping = true;
-  
-  print("|-------------------------|");
-  print("|  Dartabase scaffolding  |");
-  print("|-------------------------|");
-  print("");
-  
-  projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
-  
-  print("\nProject name *:* Path *:* Current schema version");
-  print("------------------------------------------------");
-  Map schemaV;
-  for(var name in projectMapping.keys){
-    schemaV = DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
-    print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
-    
-  }
-  
-  print("Enter the project name and press the ENTER key to proceed");
-    
-  Stream<List<int>> stream = stdin;
-  
-  stream
-    .transform(UTF8.decoder)
-      .transform(new LineSplitter())
-        .listen((String line) { /* Do something with line. */
-    
-    if(state == 0){
-      projectExistsInProjectMapping = projectMapping[line] != null;
-      projectDoesntExistsInProjectMapping = !projectExistsInProjectMapping;
-              
-      if(projectDoesntExistsInProjectMapping){
-        print("Project '$line' unknown to dartabase, maybe you forgot to initiate your project with dbInit.dart ");
-      }else if(projectExistsInProjectMapping){
-        state = 1;
-        
-        String rootPath= projectMapping[line];
-        Map rootSchema = DBCore.jsonFilePathToMap("${rootPath}/db/schemaVersion.json");
-        
-        print("specify a object you want to generate");
-        print("");
-        print("Usage: objectName[column_name:COLUMNTYPE] options");
-        print("Options:");
-        print("-m - generate migration file");
-        print("-c - generate client views");
-        print("-s - generate server object");
-        print("");
-        print("Example:");
-        print("item[done:BOOLEAN, text:VARCHAR] -m -c -s");
-        print("user_account[name:VARCHAR, age:INT] -m");
-        DBCore.rootPath = rootPath;   
-      }
-    }else if(state == 1){
-      if(DBCore.rootPath != null){
-        line = line.replaceAll(" ", "");
-        List split = line.split("[");
-        String objectName = split[0];
-        //transform columns and types into map
-        List columns = split[1].split("]")[0].split(",");
-        Map columnsMap = {};
-        for(num i=0;i< columns.length;i++){
-          List column = columns[i].split(":");
-          columnsMap[column[0]] = column[1];
-        }
-        String options = split[1].split("]")[1];
-                
-        if (options.contains("-m")){
-          createMigration(objectName,columnsMap);  
-        }
-        if (options.contains("-c")){
-          createClientView(objectName,columnsMap);  
-        }        
-        if (options.contains("-s")){
-          createServerModel(objectName,columnsMap);  
-        }        
-      }
-    }
-    if(state == null){
-      state = 0;  
+Future main() async {
+    var state = null;
+    var projectExistsInProjectMapping = false;
+    var projectDoesntExistsInProjectMapping = true;
+
+    print("|-------------------------|");
+    print("|  Dartabase scaffolding  |");
+    print("|-------------------------|");
+    print("");
+
+    projectMapping = DBCore.jsonFilePathToMap("bin/projectsMapping.json");
+
+    print("\nProject name *:* Path *:* Current schema version");
+    print("------------------------------------------------");
+    Map schemaV;
+    for (var name in projectMapping.keys) {
+        schemaV = DBCore.jsonFilePathToMap(
+                "${projectMapping[name]}/db/schemaVersion.json");
+        print(
+                "$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
     }
 
-   
-            
-        
-      },
-      onDone: () { /* No more lines */ 
-        print("Dartabase migration created!");
-      },
-     onError: (e) { /* Error on input. */ 
-       print("Dartabase migration error! $e");
-     });
+    print("Enter the project name and press the ENTER key to proceed");
+
+    Stream<List<int>> stream = stdin;
+
+    stream
+            .transform(UTF8.decoder)
+            .transform(new LineSplitter())
+            .listen((String line) async {
+        /* Do something with line. */
+
+        if (state == 0) {
+            projectExistsInProjectMapping = projectMapping[line] != null;
+            projectDoesntExistsInProjectMapping =
+            !projectExistsInProjectMapping;
+
+            if (projectDoesntExistsInProjectMapping) {
+                print(
+                        "Project '$line' unknown to dartabase, maybe you forgot to initiate your project with dbInit.dart ");
+            } else if (projectExistsInProjectMapping) {
+                state = 1;
+
+                String rootPath = projectMapping[line];
+                Map rootSchema = DBCore.jsonFilePathToMap(
+                        "${rootPath}/db/schemaVersion.json");
+
+                print("specify a object you want to generate");
+                print("");
+                print("Usage: objectName[column_name:COLUMNTYPE] options");
+                print("Options:");
+                print("-m - generate migration file");
+                print("-c - generate client views");
+                print("-s - generate server object");
+                print("");
+                print("Example:");
+                print("item[done:BOOLEAN, text:VARCHAR] -m -c -s");
+                print("user_account[name:VARCHAR, age:INT] -m");
+                DBCore.rootPath = rootPath;
+            }
+        } else if (state == 1) {
+            if (DBCore.rootPath != null) {
+                line = line.replaceAll(" ", "");
+                List split = line.split("[");
+                String objectName = split[0];
+                //transform columns and types into map
+                List columns = split[1].split("]")[0].split(",");
+                Map columnsMap = {};
+                for (num i = 0; i < columns.length; i++) {
+                    List column = columns[i].split(":");
+                    columnsMap[column[0]] = column[1];
+                }
+                String options = split[1].split("]")[1];
+
+                if (options.contains("-m")) {
+                    createMigration(objectName, columnsMap);
+                }
+                if (options.contains("-c")) {
+                    createClientView(objectName, columnsMap);
+                }
+                if (options.contains("-s")) {
+                    createServerModel(objectName, columnsMap);
+                }
+            }
+        }
+        if (state == null) {
+            state = 0;
+        }
+    },
+            onDone: () {
+                /* No more lines */
+                print("Dartabase migration created!");
+            },
+            onError: (e) {
+                /* Error on input. */
+                print("Dartabase migration error! $e");
+            });
 }
 
-createMigration(String tableName, Map columnsMap){
-  List columnsList = [];
-  columnsMap.forEach((key,value){
-    columnsList.add('"${key}" : "${value}"');
-  });
-      
-  String migration =''' 
+createMigration(String tableName, Map columnsMap) {
+    List columnsList = [];
+    columnsMap.forEach((key, value) {
+        columnsList.add('"${key}" : "${value}"');
+    });
+
+    String migration = '''
 {
   "UP": {
       "createTable": {
@@ -120,38 +123,41 @@ createMigration(String tableName, Map columnsMap){
   }
 }
   ''';
-  DateTime dT = new DateTime.now();
-   
-  var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT.month}";
-  var day = "${dT.day}".length == 1 ? "0${dT.day}" : "${dT.day}";
-  var hour = "${dT.hour}".length == 1 ? "0${dT.hour}" : "${dT.hour}";
-  var minute = "${dT.minute}".length == 1 ? "0${dT.minute}" : "${dT.minute}";
-  var second = "${dT.second}".length == 1 ? "0${dT.second}" : "${dT.second}";
-  String dateTime = "${dT.year}$month$day$hour$minute$second";
-  DBCore.stringToFilePath(migration, "${DBCore.rootPath}/db/migrations/${dateTime}_create_$tableName.json");
-  print("migration ${DBCore.rootPath}/db/migrations/${dateTime}_create_$tableName.json created");
+    DateTime dT = new DateTime.now();
+
+    var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT.month}";
+    var day = "${dT.day}".length == 1 ? "0${dT.day}" : "${dT.day}";
+    var hour = "${dT.hour}".length == 1 ? "0${dT.hour}" : "${dT.hour}";
+    var minute = "${dT.minute}".length == 1 ? "0${dT.minute}" : "${dT.minute}";
+    var second = "${dT.second}".length == 1 ? "0${dT.second}" : "${dT.second}";
+    String dateTime = "${dT.year}$month$day$hour$minute$second";
+    DBCore.stringToFilePath(migration, "${DBCore
+            .rootPath}/db/migrations/${dateTime}_create_$tableName.json");
+    print("migration ${DBCore
+            .rootPath}/db/migrations/${dateTime}_create_$tableName.json created");
 }
-createServerModel(String tableName, Map columnsMap){
-  List nameParts = tableName.split("_");
-  String className = "";
-  String varName = "";
-  for(num i=0;i<nameParts.length;i++){
-    String part = nameParts[i];
-    if(i==0){
-      varName += part;
-    }else{
-      varName += part.substring(0,1).toUpperCase() + part.substring(1);
+
+createServerModel(String tableName, Map columnsMap) {
+    List nameParts = tableName.split("_");
+    String className = "";
+    String varName = "";
+    for (num i = 0; i < nameParts.length; i++) {
+        String part = nameParts[i];
+        if (i == 0) {
+            varName += part;
+        } else {
+            varName += part.substring(0, 1).toUpperCase() + part.substring(1);
+        }
+        className += part.substring(0, 1).toUpperCase() + part.substring(1);
     }
-    className += part.substring(0,1).toUpperCase() + part.substring(1);
-  }
-  
-  List toStringParts = [];
-  columnsMap.forEach((key,v){
-    toStringParts.add("${key}=\$${key}");
-  });
-  
-   
-  String file = '''
+
+    List toStringParts = [];
+    columnsMap.forEach((key, v) {
+        toStringParts.add("${key}=\$${key}");
+    });
+
+
+    String file = '''
 part of example.server;
 class ${className} extends Model{
   num id;
@@ -241,7 +247,7 @@ ${generatedynamicFields("serverVars", columnsMap)}
   }
 
   static fill(${className} ${varName},Map dataMap, HttpResponse res){
-${generatedynamicFields("serverFill", columnsMap,varName)};
+${generatedynamicFields("serverFill", columnsMap, varName)};
     ${varName}.save().then((process){
       if(process == "created" || process == "updated"){
         new ${className}().findById(${varName}.id).then((${className} reloaded${className}){
@@ -260,34 +266,31 @@ ${generatedynamicFields("serverFill", columnsMap,varName)};
 }
 
   ''';
-  Directory binDir = new Directory("${DBCore.rootPath}/bin");
-  binDir.create(recursive: true).then((_){
-  
-  
-    DBCore.stringToFilePath(file, "${DBCore.rootPath}/bin/${varName}.dart");
-    print("server model ${DBCore.rootPath}/bin/${varName}.dart created");
-  });
+    Directory binDir = new Directory("${DBCore.rootPath}/bin");
+    binDir.create(recursive: true).then((_) {
+        DBCore.stringToFilePath(file, "${DBCore.rootPath}/bin/${varName}.dart");
+        print("server model ${DBCore.rootPath}/bin/${varName}.dart created");
+    });
 }
 
-createClientView(String tableName, Map columnsMap){
-
-  List nameParts = tableName.split("_");
-  String className = "";
-  String varName = "";
-  for(num i=0;i<nameParts.length;i++){
-    String part = nameParts[i];
-    if(i==0){
-      varName += part;
-    }else{
-      varName += part.substring(0,1).toUpperCase() + part.substring(1);
+createClientView(String tableName, Map columnsMap) {
+    List nameParts = tableName.split("_");
+    String className = "";
+    String varName = "";
+    for (num i = 0; i < nameParts.length; i++) {
+        String part = nameParts[i];
+        if (i == 0) {
+            varName += part;
+        } else {
+            varName += part.substring(0, 1).toUpperCase() + part.substring(1);
+        }
+        className += part.substring(0, 1).toUpperCase() + part.substring(1);
     }
-    className += part.substring(0,1).toUpperCase() + part.substring(1);
-  }
-  String polyName = nameParts.join("-");
+    String polyName = nameParts.join("-");
 
-  var viewPath = "${DBCore.rootPath}/web/${varName}";
-  var polyPath = "${DBCore.rootPath}/web/poly";
-  String createDart = '''
+    var viewPath = "${DBCore.rootPath}/web/${varName}";
+    var polyPath = "${DBCore.rootPath}/web/poly";
+    String createDart = '''
 import 'package:polymer/polymer.dart';
 import 'dart:html';
 import '../../lib/paths.dart';
@@ -311,7 +314,7 @@ void main() {
 }
   ''';
 
-  String createHtml = '''
+    String createHtml = '''
 <!DOCTYPE html>
 <html>
   <head>
@@ -332,7 +335,7 @@ void main() {
 </html>
   ''';
 
-  String editDart = '''
+    String editDart = '''
 import 'package:polymer/polymer.dart';
 import 'dart:html';
 import 'dart:convert' show JSON;
@@ -377,8 +380,8 @@ void displayEdit${className}(String responseText) {
   content.append(polyItem);
 }
   ''';
-  
-  String editHtml = '''
+
+    String editHtml = '''
 <!DOCTYPE html>
 <html>
   <head>
@@ -399,7 +402,7 @@ void displayEdit${className}(String responseText) {
 </html>
   ''';
 
-  String viewDart = '''
+    String viewDart = '''
 import 'package:polymer/polymer.dart';
 import 'dart:html';
 import 'dart:convert' show JSON;
@@ -446,7 +449,7 @@ void display${className}(String responseText) {
 }
   ''';
 
-  String viewHtml = '''
+    String viewHtml = '''
 <!DOCTYPE html>
 <html>
   <head>
@@ -467,7 +470,7 @@ void display${className}(String responseText) {
 </html>
   ''';
 
-  String indexDart = '''
+    String indexDart = '''
 import 'package:polymer/polymer.dart';
 import 'dart:html';
 import 'dart:convert' show JSON;
@@ -548,8 +551,8 @@ void append${className}s(List ${varName}s){
     });
 }
   ''';
-  
-  String indexHtml = '''
+
+    String indexHtml = '''
 <!DOCTYPE html>
 <html>
   <head>
@@ -571,7 +574,7 @@ void append${className}s(List ${varName}s){
 </html>
   ''';
 
-  String polyDart = '''
+    String polyDart = '''
 import 'package:polymer/polymer.dart';
 import 'dart:convert' show JSON;
 import 'dart:html';
@@ -724,44 +727,47 @@ ${generatedynamicFields("create", columnsMap)}
   <script type="application/dart" src="${varName}.dart"></script>
 </polymer-element>
 ''';
-  Directory viewDir = new Directory("${viewPath}");
-  Directory polyDir = new Directory("${polyPath}");
-    
+    Directory viewDir = new Directory("${viewPath}");
+    Directory polyDir = new Directory("${polyPath}");
 
-  viewDir.create(recursive: true).then((_){
-    DBCore.stringToFilePath(createDart, "${viewPath}/create.dart");
-    print("client view ${viewPath}/create.dart created");
-    DBCore.stringToFilePath(createHtml, "${viewPath}/create.html");
-    print("client view ${viewPath}/create.html created");
-    DBCore.stringToFilePath(editDart, "${viewPath}/edit.dart");
-    print("client view ${viewPath}/edit.dart created");
-    DBCore.stringToFilePath(editHtml, "${viewPath}/edit.html");
-    print("client view ${viewPath}/edit.html created");
-    DBCore.stringToFilePath(viewDart, "${viewPath}/view.dart");
-    print("client view ${viewPath}/view.dart created");
-    DBCore.stringToFilePath(viewHtml, "${viewPath}/view.html");
-    print("client view ${viewPath}/view.html created");
-    DBCore.stringToFilePath(indexDart, "${viewPath}/index.dart");
-    print("client view ${viewPath}/index.dart created");
-    DBCore.stringToFilePath(indexHtml, "${viewPath}/index.html");
-    print("client view ${viewPath}/index.html created");
-    polyDir.create(recursive: true).then((_){
-    DBCore.stringToFilePath(polyDart, "${polyPath}/${varName}.dart");
-    print("poly view ${polyPath}/${varName}.dart created");
-    DBCore.stringToFilePath(polyHtml, "${polyPath}/${varName}.html");
-    print("poly view ${polyPath}/${varName}.html created");
-    DBCore.stringToFilePath("", "${polyPath}/${varName}.css");
-    print("poly view ${polyPath}/${varName}.css created");
-    
-    DateTime dT = new DateTime.now();
-    var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT.month}";
-    var day = "${dT.day}".length == 1 ? "0${dT.day}" : "${dT.day}";
-    var hour = "${dT.hour}".length == 1 ? "0${dT.hour}" : "${dT.hour}";
-    var minute = "${dT.minute}".length == 1 ? "0${dT.minute}" : "${dT.minute}";
-    var second = "${dT.second}".length == 1 ? "0${dT.second}" : "${dT.second}";
-    String dateTime = "${dT.year}$month$day$hour$minute$second";
-        
-String pathString = '''  
+
+    viewDir.create(recursive: true).then((_) {
+        DBCore.stringToFilePath(createDart, "${viewPath}/create.dart");
+        print("client view ${viewPath}/create.dart created");
+        DBCore.stringToFilePath(createHtml, "${viewPath}/create.html");
+        print("client view ${viewPath}/create.html created");
+        DBCore.stringToFilePath(editDart, "${viewPath}/edit.dart");
+        print("client view ${viewPath}/edit.dart created");
+        DBCore.stringToFilePath(editHtml, "${viewPath}/edit.html");
+        print("client view ${viewPath}/edit.html created");
+        DBCore.stringToFilePath(viewDart, "${viewPath}/view.dart");
+        print("client view ${viewPath}/view.dart created");
+        DBCore.stringToFilePath(viewHtml, "${viewPath}/view.html");
+        print("client view ${viewPath}/view.html created");
+        DBCore.stringToFilePath(indexDart, "${viewPath}/index.dart");
+        print("client view ${viewPath}/index.dart created");
+        DBCore.stringToFilePath(indexHtml, "${viewPath}/index.html");
+        print("client view ${viewPath}/index.html created");
+        polyDir.create(recursive: true).then((_) {
+            DBCore.stringToFilePath(polyDart, "${polyPath}/${varName}.dart");
+            print("poly view ${polyPath}/${varName}.dart created");
+            DBCore.stringToFilePath(polyHtml, "${polyPath}/${varName}.html");
+            print("poly view ${polyPath}/${varName}.html created");
+            DBCore.stringToFilePath("", "${polyPath}/${varName}.css");
+            print("poly view ${polyPath}/${varName}.css created");
+
+            DateTime dT = new DateTime.now();
+            var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT
+                    .month}";
+            var day = "${dT.day}".length == 1 ? "0${dT.day}" : "${dT.day}";
+            var hour = "${dT.hour}".length == 1 ? "0${dT.hour}" : "${dT.hour}";
+            var minute = "${dT.minute}".length == 1 ? "0${dT.minute}" : "${dT
+                    .minute}";
+            var second = "${dT.second}".length == 1 ? "0${dT.second}" : "${dT
+                    .second}";
+            String dateTime = "${dT.year}$month$day$hour$minute$second";
+
+            String pathString = '''
 /*
 *${className}paths generated ${dateTime} by scaffolding     
 */
@@ -777,93 +783,97 @@ final ${varName}LoadUrl = "load${className}";
 final ${varName}SaveUrl = "save${className}";
 final ${varName}DeleteUrl = "delete${className}";
 ''';
-      var pathPath = "${DBCore.rootPath}/lib/paths.dart";
-      var file = new File(pathPath);
-      
-      Directory libDir = new Directory("${DBCore.rootPath}/lib");
-      libDir.create(recursive: true).then((_){
-      
-        file.writeAsStringSync(pathString, encoding: ASCII, mode:FileMode.APPEND);
-        print("paths for ${className} added to ${pathPath}");
-              
-      });
-       
+            var pathPath = "${DBCore.rootPath}/lib/paths.dart";
+            var file = new File(pathPath);
+
+            Directory libDir = new Directory("${DBCore.rootPath}/lib");
+            libDir.create(recursive: true).then((_) {
+                file.writeAsStringSync(
+                        pathString, encoding: ASCII, mode: FileMode.APPEND);
+                print("paths for ${className} added to ${pathPath}");
+            });
+        });
     });
-  });
-  
-  
 }
 
-generatedynamicFields(String type, Map columnsMap, [String varName]){
-  String s = "";
-  
-  if(type=="header"){
-    columnsMap.forEach((k,v){
-      s+="<span> ${k}:</span>\n";
-    });
-  }
-  
-  if(type=="index"){
-    columnsMap.forEach((k,v){
-      if(v == "BOOLEAN"){
-        s+="<label class=\"deactivated_toggle\" for=\"${k}\"></label>\n";
-        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\" disabled>\n";
-      }else{
-        s += "<span id=\"${k}\">{{object[\"${k}\"]}}</span>\n";
-      }
-    });
-  }
-  if(type=="view"){
-    columnsMap.forEach((k,v){
-      if(v == "BOOLEAN"){
-        s+="<label class=\"deactivated_toggle\" for=\"${k}\">${k}: </label>\n";
-        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\" disabled>\n";
-      }else{
-        s += "<span id=\"${k}\">${k}: {{object[\"${k}\"]}}</span>\n";
-      }
-    });
-  }
-  if(type=="edit"){
-    columnsMap.forEach((k,v){
-      if(v == "BOOLEAN"){
-        s+="<label class=\"toggle\" for=\"${k}\">${k}: </label>\n";
-        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\">\n";
-      }else{
-        s += "${k}: <input id=\"${k}\" type=\"${k}\" value=\"{{object['${k}']}}\">\n";
-      }
-    });  
-  }
-  if(type=="create"){
-    columnsMap.forEach((k,v){
-      if(v == "BOOLEAN"){
-        s+="<label class=\"toggle\" for=\"${k}\">${k}: </label>\n";
-        s+="<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\">\n";
-      }else{
-        s += "${k}: <input id=\"${k}\" type=\"${k}\" value=\"{{object['${k}']}}\">\n";
-      }
-    });  
-  }
-  if(type=="serverVars"){
-    columnsMap.forEach((k,v){
-      s+="${DBCore.dartabaseTypeToDartType(v)} ${k};\n";        
-    });
-  }
+generatedynamicFields(String type, Map columnsMap, [String varName]) {
+    String s = "";
 
-  if(type=="serverFill"){
-    columnsMap.forEach((k,v){
-      if(DBCore.dartabaseTypeToDartType(v) == "num" || DBCore.dartabaseTypeToDartType(v) == "double"){
-        s+="try{\n";  
-        s+="${varName}.${k} = int.parse(dataMap['${k}']);\n";  
-        s+="}catch(e){\n";
-        s+=" print('value of ${varName}.${k} cant be converted to a number!!!!');\n";
-        s+="}\n";
-      }else{
-        s+="${varName}.${k} = dataMap['${k}'];\n";
-      }
-      
-              
-    });
-  }
+    if (type == "header") {
+        columnsMap.forEach((k, v) {
+            s += "<span> ${k}:</span>\n";
+        });
+    }
 
-  return s;
+    if (type == "index") {
+        columnsMap.forEach((k, v) {
+            if (v == "BOOLEAN") {
+                s +=
+                "<label class=\"deactivated_toggle\" for=\"${k}\"></label>\n";
+                s +=
+                "<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\" disabled>\n";
+            } else {
+                s += "<span id=\"${k}\">{{object[\"${k}\"]}}</span>\n";
+            }
+        });
+    }
+    if (type == "view") {
+        columnsMap.forEach((k, v) {
+            if (v == "BOOLEAN") {
+                s +=
+                "<label class=\"deactivated_toggle\" for=\"${k}\">${k}: </label>\n";
+                s +=
+                "<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\" disabled>\n";
+            } else {
+                s += "<span id=\"${k}\">${k}: {{object[\"${k}\"]}}</span>\n";
+            }
+        });
+    }
+    if (type == "edit") {
+        columnsMap.forEach((k, v) {
+            if (v == "BOOLEAN") {
+                s += "<label class=\"toggle\" for=\"${k}\">${k}: </label>\n";
+                s +=
+                "<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\">\n";
+            } else {
+                s +=
+                "${k}: <input id=\"${k}\" type=\"${k}\" value=\"{{object['${k}']}}\">\n";
+            }
+        });
+    }
+    if (type == "create") {
+        columnsMap.forEach((k, v) {
+            if (v == "BOOLEAN") {
+                s += "<label class=\"toggle\" for=\"${k}\">${k}: </label>\n";
+                s +=
+                "<input id=\"${k}\" type=\"checkbox\" checked=\"{{object['${k}']}}\">\n";
+            } else {
+                s +=
+                "${k}: <input id=\"${k}\" type=\"${k}\" value=\"{{object['${k}']}}\">\n";
+            }
+        });
+    }
+    if (type == "serverVars") {
+        columnsMap.forEach((k, v) {
+            s += "${DBCore.dartabaseTypeToDartType(v)} ${k};\n";
+        });
+    }
+
+    if (type == "serverFill") {
+        columnsMap.forEach((k, v) {
+            if (DBCore.dartabaseTypeToDartType(v) == "num" ||
+                    DBCore.dartabaseTypeToDartType(v) == "double") {
+                s += "try{\n";
+                s += "${varName}.${k} = int.parse(dataMap['${k}']);\n";
+                s += "}catch(e){\n";
+                s +=
+                " print('value of ${varName}.${k} cant be converted to a number!!!!');\n";
+                s += "}\n";
+            } else {
+                s += "${varName}.${k} = dataMap['${k}'];\n";
+            }
+        });
+    }
+
+    return s;
 }

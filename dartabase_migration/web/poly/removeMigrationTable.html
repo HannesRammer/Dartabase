@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<link rel="import" href="../../packages/polymer/polymer.html">
-<link rel="import" href="../../packages/core_elements/core_dropdown.html">
-<link rel="import" href="../../packages/core_elements/core_item.html">
-<polymer-element name="custom-remove-migration-table">
+<dom-module id="custom-remove-migration-table">
     <template>
-      <core-dropdown valueattr="label" >
-    <template repeat="{{tableName in existingTableNames}}">
-      <core-item label="{{tableName}}"></core-item>
+        <iron-dropdown valueattr="label">
+            <template repeat="{{tableName in existingTableNames}}">
+                <paper-item >{{tableName}}</paper-item>
+            </template>
+        </iron-dropdown>
     </template>
-  </core-dropdown>
-  
-    </template>
-</polymer-element>
-<script type="application/dart" src="../poly/removeMigrationTable.dart"></script>
+</dom-module>

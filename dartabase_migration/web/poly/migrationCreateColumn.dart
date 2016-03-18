@@ -1,9 +1,19 @@
-import 'package:polymer/polymer.dart';
+@HtmlImport('migrationCreateColumn.html')
+library dartabase.poly.migrationCreateColumn;
 
-@CustomTag('custom-migration-create-column')
+// Import the Polymer and Web Components scripts.
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
+
+
+@PolymerRegister('custom-migration-create-column')
 class MigrationCreateColumn extends PolymerElement {
-  @published String tableName = "";
-  @published Map columns = toObservable({});
-  @published Map colorPalette = toObservable({});
-  MigrationCreateColumn.created() : super.created();
+    @Property(notify: true)
+    String tableName = "";
+    @Property(notify: true)
+    Map columns = {};
+    @Property(notify: true)
+    Map colorPalette = {};
+
+    MigrationCreateColumn.created() : super.created();
 }

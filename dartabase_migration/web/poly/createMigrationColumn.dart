@@ -1,19 +1,36 @@
-import 'package:polymer/polymer.dart';
+@HtmlImport('createMigrationColumn.html')
+library dartabase.poly.createMigrationColumn;
+
+// Import the paper element from Polymer.
+import 'package:polymer_elements/paper_dropdown_menu.dart';
+import 'package:polymer_elements/paper_listbox.dart';
+import 'package:polymer_elements/paper_item.dart';
+import 'package:polymer_elements/paper_button.dart';
+import "../poly/columnView.dart";
 import "../poly/table.dart";
 import "../poly/project.dart";
 
-@CustomTag('custom-create-migration-column')
+// Import the Polymer and Web Components scripts.
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
+
+
+@PolymerRegister('custom-create-migration-column')
 class CreateMigrationColumn extends PolymerElement {
-   @published Project project;
-   @published Table table;
-   @published List existingTableNames;
-   
-   CreateMigrationColumn.created() : super.created();
-   
-   void addColumn(){
-      if(table.columns == null){
-        table.columns=toObservable([]);  
-      }
-      table.columns.add(toObservable([]));
+    @Property(notify: true)
+    Project project;
+    @Property(notify: true)
+    Table table;
+    @Property(notify: true)
+    List existingTableNames;
+
+    CreateMigrationColumn.created() : super.created();
+
+    @reflectable
+    void addColumn() {
+        if (table.columns == null) {
+            table.columns = [];
+        }
+        table.columns.add([]);
     }
 }

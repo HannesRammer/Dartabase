@@ -1,8 +1,16 @@
-import 'package:polymer/polymer.dart';
+@HtmlImport('migrationCreateRelation.html')
+library dartabase.poly.migrationCreateRelation;
 
-@CustomTag('custom-migration-create-relation')
+// Import the Polymer and Web Components scripts.
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
+
+@PolymerRegister('custom-migration-create-relation')
 class MigrationCreateRelation extends PolymerElement {
-  @published List relations = toObservable([]);
-  @published Map colorPalette = toObservable({});
-  MigrationCreateRelation.created() : super.created();
+    @Property(notify: true)
+    List relations = [];
+    @Property(notify: true)
+    Map colorPalette = {};
+
+    MigrationCreateRelation.created() : super.created();
 }

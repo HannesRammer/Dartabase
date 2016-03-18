@@ -1,15 +1,15 @@
-.migrationCreateRelation{
-  border-bottom: 1px solid #1682ba;
-  width:100%;
-  background:#00A4E4;
-  text-shadow: rgba(0, 0, 0, 0.34902) 0px 1px 1px;
-  color:#ffffff;
-  display: table;
-  cursor: pointer;
+.migrationCreateRelation {
+    border-bottom: 1px solid #1682ba;
+    width: 100%;
+    background: #00A4E4;
+    text-shadow: rgba(0, 0, 0, 0.34902) 0 1px 1px;
+    color: #ffffff;
+    display: table;
+    cursor: pointer;
 }
 
-.col{
-  width: 33.3%;
-  text-align: center;
-  float: left;
+.col {
+    width: 33.3%;
+    text-align: center;
+    float: left;
 }

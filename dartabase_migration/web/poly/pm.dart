@@ -1,28 +1,45 @@
-library dartabase.poly.project;
+/**
+class Migration extends JsProxy {
+    @reflectable
+    final num index;
+    @reflectable
+    final String version;
+    @reflectable
+    Map colorPalette;
+    @reflectable
+    Map actions;
+    @reflectable
+    String state;
 
-import 'dart:html';
-import 'dart:async';
-import 'package:polymer/polymer.dart';
-import 'package:observe/observe.dart';
-import 'package:observe/mirrors_used.dart';
+    Migration({this.index, this.version, this.colorPalette, this.actions, this.state});
 
-import 'dart:convert' show JSON;
-import '../poly/migration.dart';
+}
 
-
-class Project extends Observable {
+class Project extends JsProxy {
+    @reflectable
     final String name;
+    @reflectable
     final String path;
-    @observable Map colorPalette = toObservable({});
-    @observable Map config = toObservable({});
-    @observable List<Migration> migrations = toObservable([]);
-    @observable Map tables = toObservable({});
-    @observable Map dependencyRelations = toObservable({});
 
-    @observable String serverStatus;
-    @observable String migrationDirection = "";
-    @observable Migration currentMigration = toObservable(new Migration());
-    @observable Migration selectedMigration = toObservable(new Migration());
+    @reflectable
+    Map colorPalette;
+    @reflectable
+    Map config;
+    @reflectable
+    List<Migration> migrations;
+    @reflectable
+    Map tables;
+    @reflectable
+    Map dependencyRelations;
+
+    @reflectable
+    String serverStatus;
+    @reflectable
+    String migrationDirection = "";
+    @reflectable
+    Migration currentMigration = new Migration();
+    @reflectable
+    Migration selectedMigration = new Migration();
 
     Project({this.name, this.path, this.colorPalette, this.migrations});
 
@@ -40,7 +57,7 @@ class Project extends Observable {
     }
 
     updateConfig(String responseText) {
-        config = toObservable(new Map());
+        config = new Map();
         config = JSON.decode(responseText);
     }
 
@@ -51,21 +68,21 @@ class Project extends Observable {
     }
 
     updateMigrations(String responseText) {
-        migrations = toObservable(new List());
+        migrations = new List();
         List<Map> migrationsList = JSON.decode(responseText);
         /**migrationsList.forEach((Map migMap) {
-            Migration mig = toObservable(new Migration(index: migMap['index'],
-                    version: migMap['version'],
-                    colorPalette: colorPalette,
-                    actions: migMap['actions'],
-                    state: migMap['state']));
-            migrations.add(mig);
-            if (mig.state == "curent") {
+                Migration mig = toObservable(new Migration(index: migMap['index'],
+                version: migMap['version'],
+                colorPalette: colorPalette,
+                actions: migMap['actions'],
+                state: migMap['state']));
+                migrations.add(mig);
+                if (mig.state == "curent") {
                 selectedMigration = mig;
-            }
-        });*/
+                }
+                });*/
         for (Map migMap in migrationsList) {
-            Migration mig = toObservable(new Migration(index: migMap['index'], version: migMap['version'], colorPalette: colorPalette, actions: migMap['actions'], state: migMap['state']));
+            Migration mig = new Migration(index: migMap['index'], version: migMap['version'], colorPalette: colorPalette, actions: migMap['actions'], state: migMap['state']);
             migrations.add(mig);
             if (mig.state == "curent") {
                 selectedMigration = mig;
@@ -84,12 +101,12 @@ class Project extends Observable {
     }
 
     Migration getMigrationByIndex(num index) {
-        Migration mig = toObservable(new Migration());
+        Migration mig = new Migration();
         /**migrations.forEach((Migration m) {
-            if (m.index == index) {
+                if (m.index == index) {
                 mig = m;
-            }
-        });**/
+                }
+                });**/
         for(Migration m in migrations){
             if (m.index == index) {
                 mig = m;
@@ -110,12 +127,12 @@ class Project extends Observable {
     }
 
     Migration getCurrentMigration() {
-        Migration mig = toObservable(new Migration());
+        Migration mig = new Migration();
         /**migrations.forEach((Migration m) {
-            if (m.state == "current") {
+                if (m.state == "current") {
                 mig = m;
-            }
-        });*/
+                }
+                });*/
         for(Migration m in migrations){
             if (m.state == "current") {
                 mig = m;
@@ -132,8 +149,8 @@ class Project extends Observable {
 
     updateSchema(String responseText) {
         var schema = JSON.decode(responseText);
-        dependencyRelations = toObservable(new Map());
-        tables = toObservable(new Map());
+        dependencyRelations = new Map();
+        tables = new Map();
         schema.forEach((String tableName, value) {
             if (tableName != "dependencyRelations") {
                 tables[tableName] = value;
@@ -153,3 +170,4 @@ class Project extends Observable {
         return tables[tableName].keys.toList();
     }
 }
+*/

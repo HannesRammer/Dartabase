@@ -1,48 +1,41 @@
-<!DOCTYPE html>
-<link rel="import" href="../../packages/polymer/polymer.html">
-<link href="../../packages/paper_elements/paper_input.html" rel="import">
-<link href="../../packages/core_elements/core_animated_pages.html" rel="import">
-
-<link rel="import" href="../poly/columnView.html">
-
-<polymer-element name="custom-create-migration-table">
+<dom-module id="custom-create-migration-table">
     <template>
-    <link rel="stylesheet" href="../poly/createMigrationTable.css">
-    
-    <core-animated-pages selected="{{editMode}}" transitions="hero-transition">
-      <section>
-        <div hero-id="createMigrationTable" hero?="{{'' == ''}}">
-          <paper-button label="create new Table" on-tap="{{transition}}"> </paper-button>
-        </div>
-        
-      </section>
+        <link rel="stylesheet" href="../poly/createMigrationTable.css">
 
-      <section id="details">
-        <div class="card" layout hero-id="createMigrationTable" hero>
-          <paper-shadow z="4"></paper-shadow>
-    
-    createTable:
-          <a on-click="{{addTable}}" class="border">
-          + add new table
-          </a>
-          
-          <div id="up_create_table">
-          <template repeat="{{table in createTables}}">
-            <div class="border">
-            <paper-input required  label="Table Name" inputValue="{{table.name}}" floatinglabel="true"></paper-input>
-              <custom-column-view createTable="{{table}}"></custom-column-view>
-             </div>
-          </template>
-          </div>
-             <paper-button label="create" on-click="{{createMigration}}" class="border">
-          </paper-button>
-          <paper-button label="cancel" on-click="{{transition}}" class="border">
-          </paper-button>
-          <br/>
-          </div>
-    </section>
- 
-    </core-animated-pages>
+        <iron-pages selected="{{editMode}}">
+            <section>
+                <div>
+                    <paper-button label="create new Table" on-tap="{{transition}}"></paper-button>
+                </div>
+
+            </section>
+
+            <section id="details">
+                <div class="card" layout>
+                    <paper-material elevation="4"></paper-material>
+
+                    createTable:
+                    <a on-click="{{addTable}}" class="border">
+                        + add new table
+                    </a>
+
+                    <div id="up_create_table">
+                        <template repeat="{{table in createTables}}">
+                            <div class="border">
+                                <paper-input required label="Table Name" inputValue="{{table.name}}"
+                                             floatinglabel="true"></paper-input>
+                                <custom-column-view createTable="{{table}}"></custom-column-view>
+                            </div>
+                        </template>
+                    </div>
+                    <paper-button label="create" on-click="{{createMigration}}" class="border">
+                    </paper-button>
+                    <paper-button label="cancel" on-click="{{transition}}" class="border">
+                    </paper-button>
+                    <br/>
+                </div>
+            </section>
+
+        </iron-pages>
     </template>
-</polymer-element>
-<script type="application/dart" src="../poly/createMigrationTable.dart"></script>
+</dom-module>

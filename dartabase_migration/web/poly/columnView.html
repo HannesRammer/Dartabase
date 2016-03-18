@@ -1,40 +1,38 @@
-<!DOCTYPE html>
-<link rel="import" href="../../packages/polymer/polymer.html">
-<link rel="import" href="../../packages/core_elements/core_dropdown.html">
-<link href="../../packages/paper_elements/paper_button.html" rel="import">
-<link rel="import" href="../../packages/core_elements/core_item.html">
-<link href="../../packages/paper_elements/paper_input.html" rel="import">
-<link href="../../packages/paper_elements/paper_checkbox.html" rel="import">
-<polymer-element name="custom-column-view">
-<template>
-<link rel="stylesheet" href="../poly/columnView.css">
+<dom-module id="custom-column-view">
+    <template is="dom-bind">
+        <link rel="stylesheet" href="../poly/columnView.css">
 
-<br/>
-  <template repeat="{{column in createTable.columns}}">
-           
+        <br/>
+        <template repeat="{{column in createTable.columns}}">
 
-      <div style="border:solid 1px grey;">    
-        <paper-input required  class="size" label="Column Name" inputValue="{{column['name']}}" floatinglabel="true"></paper-input>
-          <core-dropdown selected="VARCHAR" valueattr="label" style="position: relative;top: -25px;">
-            <template repeat="{{typeName in dbTypes}}">
-              <core-item label="{{typeName}}"></core-item>
-            </template> 
-          </core-dropdown>
-        <paper-input class="size" label="Default Value" inputValue="{{column['def']}}" floatinglabel="true"></paper-input>
-        <template if="{{column['nil'] == false || column['nil'] == null}}">
-          <paper-checkbox label="Not Null"  style="position: relative;top: -25px;"></paper-checkbox>
-        </template> 
-        
-        <template if="{{column['nil'] == true}}">
-          <paper-checkbox label="Not Null" checked  style="position: relative;top: -25px;"></paper-checkbox>
+
+            <div style="border:solid 1px grey;">
+                <paper-input required class="size" label="Column Name" inputValue="{{column['name']}}"
+                             floatinglabel="true"></paper-input>
+                <paper-dropdown-menu label="Database Types" style="position: relative;top: -25px;">
+                    <paper-listbox class="dropdown-content">
+                    <template repeat="{{typeName in dbTypes}}">
+                        <paper-item>{{typeName}}</paper-item>
+                    </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                <paper-input class="size" label="Default Value" inputValue="{{column['def']}}"
+                             floatinglabel="true"></paper-input>
+                <template if="{{column['nil'] == false || column['nil'] == null}}">
+                    <paper-checkbox label="Not Null" style="position: relative;top: -25px;"></paper-checkbox>
+                </template>
+
+                <template if="{{column['nil'] == true}}">
+                    <paper-checkbox label="Not Null" checked
+                                    style="position: relative;top: -25px;"></paper-checkbox>
+                </template>
+
+            </div>
+
         </template>
-         
-      </div> 
-  
-   </template>
-   <paper-button label="Add Column" on-tap="{{addColumn}}"> </paper-button>
-           
-  
-</template>
-</polymer-element>
-<script type="application/dart" src="../poly/columnView.dart"></script>
+        <paper-button label="Add Column" on-tap="{{addColumn}}"></paper-button>
+
+
+    </template>
+
+</dom-module>

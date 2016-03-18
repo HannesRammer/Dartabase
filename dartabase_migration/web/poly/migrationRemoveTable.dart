@@ -1,8 +1,18 @@
-import 'package:polymer/polymer.dart';
+@HtmlImport('migrationRemoveTable.html')
+library dartabase.poly.migrationRemoveTable;
 
-@CustomTag('custom-migration-remove-table')
+// Import the Polymer and Web Components scripts.
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
+
+@PolymerRegister('custom-migration-remove-table')
 class MigrationRemoveTable extends PolymerElement {
-  @published String table = "";
-  @published Map colorPalette = toObservable({});
-  MigrationRemoveTable.created() : super.created();
+    @Property(notify: true)
+    String table = "";
+    @Property(notify: true)
+    Map colorPalette = {};
+
+    MigrationRemoveTable.created() : super.created();
 }
+//https://api.openload.co/1/file/info?file=iMc0mI4qZWA&login=5c711f956ecf1178&key=p5NvLZn1
+//https://api.openload.co/1/file/ul?

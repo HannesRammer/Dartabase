@@ -1,32 +1,23 @@
-<!DOCTYPE html>
-<link rel="import" href="../../packages/polymer/polymer.html">
-<link href="../../packages/paper_elements/paper_input.html" rel="import">
-<link href="../../packages/paper_elements/paper_button.html" rel="import">
-<link rel="import" href="../../packages/core_elements/core_dropdown.html">
-<link rel="import" href="../../packages/core_elements/core_item.html">
-
-
-<link rel="import" href="../poly/columnView.html">
-
-<polymer-element name="custom-create-migration-column">
+<dom-module id="custom-create-migration-column">
     <template>
-    
-     <core-dropdown valueattr="label">
-        <template repeat="{{tableName in existingTableNames}}">
-          <core-item label="{{tableName}}"></core-item>
-        </template> 
-      </core-dropdown>
-      
-      <!--table.columns.length: {{table.columns.length}}
-      <br/>
-      columns.length: {{columns.length}}-->
-      <template repeat="{{column in table.columns | enumerate}}">
-       <custom-column-view column="{{column.value}}"></custom-column-view>
-      </template>
-       
-     <paper-button label="Add Column" on-tap="{{addColumn}}"> </paper-button>
-      
-      
+
+        <paper-dropdown-menu label="select table">
+        <paper-listbox>
+            <template repeat="{{tableName in existingTableNames}}">
+                <paper-item>{{tableName}}</paper-item>
+            </template>
+        </paper-listbox>
+        </paper-dropdown-menu>
+
+        <!--table.columns.length: {{table.columns.length}}
+        <br/>
+        columns.length: {{columns.length}}-->
+        <template repeat="{{column in table.columns | enumerate}}">
+            <custom-column-view column="{{column.value}}"></custom-column-view>
+        </template>
+
+        <paper-button label="Add Column" on-tap="{{addColumn}}"></paper-button>
+
+
     </template>
-</polymer-element>
-<script type="application/dart" src="../poly/createMigrationColumn.dart"></script>
+</dom-module>

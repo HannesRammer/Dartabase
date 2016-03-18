@@ -23,7 +23,7 @@ import "dartabaseMigration.dart";
  *   
  * 
  */
-void main() {
+Future main() async{
   var state = 0;
   var projectExistsInProjectMapping = false;
   var projectDoesntExistsInProjectMapping = true;
@@ -34,13 +34,13 @@ void main() {
   print("");
   print("Here a List of all Pojects that can be reverted");
   
-  projectMapping = DBCore.jsonFilePathToMap("projectsMapping.json");
+  projectMapping =  DBCore.jsonFilePathToMap("bin/projectsMapping.json");
   
   print("\nProject name *:* Path *:* Current schema version");
   print("-----------------------------");
   
   for(var name in projectMapping.keys){
-    Map schemaV = DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
+    Map schemaV =  DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
     if(schemaV['schemaVersion'] == "" || schemaV['schemaVersion'] == null){
       //print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
     }else{
@@ -55,7 +55,7 @@ void main() {
   stream
    .transform(UTF8.decoder)
       .transform(new LineSplitter())
-        .listen((String line) { /* Do something with line. */
+        .listen((String line) async{ /* Do something with line. */
         if(state == 0){
           projectExistsInProjectMapping = projectMapping[line] != null;
           projectDoesntExistsInProjectMapping = !projectExistsInProjectMapping;
@@ -65,7 +65,7 @@ void main() {
           }else if(projectExistsInProjectMapping){
             state = 1;
             String rootPath= projectMapping[line];
-            Map rootSchema = DBCore.jsonFilePathToMap("${rootPath}/db/schemaVersion.json");
+            Map rootSchema =  DBCore.jsonFilePathToMap("${rootPath}/db/schemaVersion.json");
             Directory directory = new Directory("${rootPath}/db/migrations");
             List files = directory.listSync();
         

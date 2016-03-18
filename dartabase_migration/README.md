@@ -566,13 +566,13 @@ HOW TO RUN SCAFFOLDING
   Scaffolding is the programmers best friend!
   
   run scaffolding and enter a table name, column names and their DARTABASE type, and scaffolding will generate
-  most of the standart code needed to get startet developing your app
+  most of the standard code needed to get started developing your app
   
   to generate the code we have to
   
   1. run 'dartabase_migration/bin/scaffolding.dart'
   
-  2. Select the project we initiallized with dartabase_migration 
+  2. Select the project we initialized with dartabase_migration
   
   let say we want to extend our (simple todo list)[https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md] example with a user
     
@@ -630,7 +630,7 @@ HOW TO RUN SCAFFOLDING
     -yourProject/lib/paths.dart 
   
     since the client views, have links that connect the pages with each other,
-    it is usefull to handle the paths in a seperate file and use vars instead of strings, 
+    it is useful to handle the paths in a separate file and use vars instead of strings,
     so in case we want to change the path, we only need to change it in one place. 
 
 HOW TO USE SCAFFOLSING  
@@ -681,8 +681,8 @@ HOW TO USE SCAFFOLSING
 TODO
 ----
 
-    *fix async outputtext
-    *workarround for database problems with reserved words 
+    *fix async output text
+    *workaround for database problems with reserved words
      on creation or when switching DBAdapter from PG to MY.
         eg. table name 'user' will break in MySQL
         fix -> add '_' as prefix to all column and table names

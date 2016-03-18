@@ -1,98 +1,100 @@
-<!DOCTYPE html>
-<link href="../../packages/paper_elements/paper_button.html" rel="import">
-<link href="../../packages/polymer/polymer.html" rel="import">
+<dom-module id="custom-project-view">
+    <template is="dom-bind">
+        <link rel="stylesheet" href="../poly/projectView.css">
+        <span class="card-album-title">Project: {{project.name}}</span>
+        <span class="card-album-name"> {{project.path}}</span>
 
-<link href="../poly/configView.html" rel="import">
-<link href="../poly/migrationView.html" rel="import">
-<link href="../poly/createMigration.html" rel="import">
+        <div class="projectView" style$="border: 1px solid {{project.colorPalette['A200'][0]}};">
+            <!--div class="">Current Migration: {{project.currentMigration.version}} + migrationDirection : {{project.migrationDirection}}</div-->
+            <div class="configView" style$="border: 1px solid {{project.colorPalette['A200'][0]}};height:80px;">
+                <custom-config-view project="{{project}}" status="{{project.serverStatus}}"></custom-config-view>
+            </div>
+            <div class="migrationView" style$="border: 1px solid {{project.colorPalette['A100'][0]}};">
+                <div class="">Migrations:</div>
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:50%;">
+                            <div class="migrationContentLeft">
 
-<polymer-element name="custom-project-view">
-<template>
-<link rel="stylesheet" href="../poly/projectView.css">
-  <span class="card-album-title">Project: {{project.name}}</span>
-  <span class="card-album-name"> {{project.path}}</span>
-              
-<div class="projectView" style="border: 1px solid {{project.colorPalette['A200'][0]}};">
-  <!--div class="">Current Migration: {{project.currentMigration.version}} + migrationDirection : {{project.migrationDirection}}</div-->
-<div class="configView" style="border: 1px solid {{project.colorPalette['A200'][0]}};height:80px;">
-  <custom-config-view project="{{project}}" status="{{project.serverStatus}}"></custom-config-view>
-  </div>
-  <div class="migrationView" style="border: 1px solid {{project.colorPalette['A100'][0]}};">
-<div class="">Migrations:</div>
-    <table style="width:100%;">
-      <tr>
-        <td style="width:50%;">
-          <div class="migrationContentLeft">
-           
-            <template repeat="{{migration in project.migrations}}"> 
-              
-              <template if="{{migration != project.selectedMigration}}"> 
-                
-                <template if="{{migration.state == 'current'}}">
-                <div id="{{migration.version}}" class="currentMigration" on-click="{{setActive}}" index="{{migration.index}}">
-                  <div class="text">{{migration.version}} --
-                    current</div>
-                </div>
-                </template> 
-              
-                <template if="{{migration.state != 'current'}}">
-                <div id="{{migration.version}}"
-                  index="{{migration.index}}"
-                  class="{{migration.state}}Migration"
-                  on-click="{{setActive}}">
-                  <div class="text">
-                  {{migration.version}}</div>
-                </div>
-                </template> 
-              </template> 
-              
-              <template if="{{migration == project.selectedMigration}}">
-              
-                <template if="{{migration.state == 'current'}}">
-                <div id="{{migration.version}}" class="currentMigration currentSelection" on-click="{{setActive}}" index="{{migration.index}}">
-                  <div class="text">{{migration.version}} --
-                    current</div>
-                </div>
-                </template> 
-              
-                <template if="{{migration.state != 'current'}}">
-                <div id="{{migration.version}}"
-                  index="{{migration.index}}"
-                  class="{{migration.state}}Migration currentSelection"
-                  on-click="{{setActive}}">
-                  <div class="text">
-                  {{migration.version}}</div>
-                </div>
-                </template> 
-              </template> 
-              
-            </template>
-            <br/>
-            <template if="{{project.selectedMigration.state == 'current'}}">
-            <paper-button label="migrate" disabled="disabled" style="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
-            </template>
-            <template if="{{project.selectedMigration.state == 'older'}}">
-            <paper-button label="migrate to
-              older version" on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
-            </template>
-            <template if="{{project.selectedMigration.state == 'newer'}}">
-            <paper-button label="migrate to
-              newer version" on-click="{{runMigration}}" style="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
-            </template>
-            <custom-create-migration project="{{project}}"></custom-create-migration>
-          </div>
-        </td>
-        <td style="width:50%;">
-          <div class="migrationContentRight">
-            <custom-migration-view migration="{{project.selectedMigration}}"></custom-migration-view>
-          </div>
-        </td>
-      </tr>
-    </table>
-    
-  </div>
+                                <template repeat="{{migration in project.migrations}}">
 
-</div>
-</template> 
-</polymer-element>
-<script type="application/dart" src="../poly/projectView.dart"></script>
+                                    <template if="{{migration != project.selectedMigration}}">
+
+                                        <template if="{{migration.state == 'current'}}">
+                                            <!--suppress XmlDuplicatedId, XmlDuplicatedId -->
+                                            <div id="{{migration.version}}" class="currentMigration"
+                                                 on-click="{{setActive}}" index="{{migration.index}}">
+                                                <div class="text">{{migration.version}} --
+                                                    current
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <template if="{{migration.state != 'current'}}">
+                                            <div id="{{migration.version}}"
+                                                 index="{{migration.index}}"
+                                                 class="{{migration.state}}Migration"
+                                                 on-click="{{setActive}}">
+                                                <div class="text">
+                                                    {{migration.version}}
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+
+                                    <template if="{{migration == project.selectedMigration}}">
+
+                                        <template if="{{migration.state == 'current'}}">
+                                            <div id="{{migration.version}}" class="currentMigration currentSelection"
+                                                 on-click="{{setActive}}" index="{{migration.index}}">
+                                                <div class="text">{{migration.version}} --
+                                                    current
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <template if="{{migration.state != 'current'}}">
+                                            <div id="{{migration.version}}"
+                                                 index="{{migration.index}}"
+                                                 class="{{migration.state}}Migration currentSelection"
+                                                 on-click="{{setActive}}">
+                                                <div class="text">
+                                                    {{migration.version}}
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+
+                                </template>
+                                <br/>
+                                <template if="{{project.selectedMigration.state == 'current'}}">
+                                    <paper-button label="migrate" disabled="disabled"
+                                                  style$="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
+                                </template>
+                                <template if="{{project.selectedMigration.state == 'older'}}">
+                                    <paper-button label="migrate to
+              older version" on-click="{{runMigration}}"
+                                                  style$="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
+                                </template>
+                                <template if="{{project.selectedMigration.state == 'newer'}}">
+                                    <paper-button label="migrate to
+              newer version" on-click="{{runMigration}}"
+                                                  style$="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
+                                </template>
+                                <custom-create-migration project="{{project}}"></custom-create-migration>
+                            </div>
+                        </td>
+                        <td style="width:50%;">
+                            <div class="migrationContentRight">
+                                <custom-migration-view
+                                        migration="{{project.selectedMigration}}"></custom-migration-view>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </div>
+    </template>
+</dom-module>

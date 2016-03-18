@@ -1,8 +1,15 @@
+@HtmlImport('removeMigrationRelation.html')
+library dartabase.poly.removeMigrationRelation;
+// Import the Polymer and Web Components scripts.
 import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
 
-@CustomTag('custom-remove-migration-relation')
+@PolymerRegister('custom-remove-migration-relation')
 class RemoveMigrationRelation extends PolymerElement {
-  @published String table = "";
-  @published Map colorPalette = toObservable({});
-  RemoveMigrationRelation.created() : super.created();
+    @Property(notify: true)
+    String table = "";
+    @Property(notify: true)
+    Map colorPalette = {};
+
+    RemoveMigrationRelation.created() : super.created();
 }
