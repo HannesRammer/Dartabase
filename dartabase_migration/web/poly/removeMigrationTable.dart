@@ -4,7 +4,7 @@ library dartabase.poly.removeMigrationTable;
 import 'package:polymer_elements/paper_dropdown_menu.dart';
 import 'package:polymer_elements/paper_listbox.dart';
 import "package:polymer_elements/paper_item.dart";
-import "package:polymer_elements/paper_button.dart";
+//import "package:polymer_elements/paper_button.dart";
 import "../poly/table.dart";
 
 // Import the Polymer and Web Components scripts.

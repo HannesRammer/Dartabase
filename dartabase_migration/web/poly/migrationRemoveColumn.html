@@ -1,16 +1,24 @@
 <dom-module id="custom-migration-remove-column">
-    <template is="dom-bind">
-    <link rel="stylesheet" href="../poly/migrationRemoveColumn.css">
-        <div class="migrationRemoveColumn" style$="border:1px solid {{colorPalette['700'][0]}};">
-            <div style$="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">{{tableName}}</div>
-            <template repeat="{{column in columns}}">
-                <div style="clear:both;">
-                    <div class="col" style$="background: {{colorPalette['100'][0]}};color:{{colorPalette['100'][1]}};">
-                        {{column}}
+    <template>
+        <style>
+            paper-icon-button {
+                border: 1px solid #d81b60;
+            }
 
-                    </div>
-                </div>
+            paper-button {
+                border: 1px solid #d81b60;
+            }
+
+            paper-material {
+                background: #d81b60;
+            }
+        </style>
+        v
+        <paper-materials elevation="2">
+            {{tableName}}
+            <template is="dom-repeat" items="{{columns}}">
+                {{item}}
             </template>
-        </div>
+        </paper-materials>
     </template>
 </dom-module>

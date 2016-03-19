@@ -1,8 +1,14 @@
 <dom-module id="custom-migration-remove-table">
-    <template >
-        <link rel="stylesheet" href="../poly/migrationRemoveTable.css">
-        <div class="migrationRemoveTable" style$="border:1px solid {{colorPalette['700'][0]}};">
-            <div style$="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">{{table}}</div>
-        </div>
+    <template>
+        <style>
+
+
+            paper-material {
+                background: #d81b60;
+            }
+        </style>
+        <paper-material style$="border:1px solid {{colorPalette['700'][0]}};">
+            {{table}}
+        </paper-material>
     </template>
 </dom-module>

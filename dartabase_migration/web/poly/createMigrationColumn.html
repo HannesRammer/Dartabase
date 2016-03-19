@@ -1,23 +1,17 @@
 <dom-module id="custom-create-migration-column">
     <template>
-
         <paper-dropdown-menu label="select table">
-        <paper-listbox>
-            <template repeat="{{tableName in existingTableNames}}">
-                <paper-item>{{tableName}}</paper-item>
-            </template>
-        </paper-listbox>
+            <paper-listbox>
+                <template is="dom-repeat" items="{{existingTableNames}}">
+                    <paper-item>{{item}}</paper-item>
+                </template>
+            </paper-listbox>
         </paper-dropdown-menu>
-
-        <!--table.columns.length: {{table.columns.length}}
-        <br/>
-        columns.length: {{columns.length}}-->
-        <template repeat="{{column in table.columns | enumerate}}">
-            <custom-column-view column="{{column.value}}"></custom-column-view>
+        <template is="dom-repeat" items="{{table.columns}}">
+            <custom-column-view column="{{item.value}}"></custom-column-view>
         </template>
-
-        <paper-button label="Add Column" on-tap="{{addColumn}}"></paper-button>
-
-
+        <paper-button raised on-tap="addColumn">
+            Add Column
+        </paper-button>
     </template>
 </dom-module>

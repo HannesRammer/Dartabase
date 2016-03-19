@@ -1,80 +1,77 @@
 <dom-module id="custom-config-view">
-    <template is="dom-bind">
+    <template>
+        <style>
+            paper-button {
+                border: 1px solid #d81b60;
+            }
 
-        <link rel="stylesheet" href="../poly/configView.css">
+            .red_text {
+                background: white;
+                color: red;
+            }
 
-        <iron-pages selected="{{editMode}}">
-            <section>
-                <div class="chip-container">
+            .green_text {
+                background: white;
+                color: green;
+            }
+            paper-material {
+                background: rgba(27, 216, 43, 0.48);
+                width: 90%;
+                margin: 10px auto;
+            }
+        </style>
+        <iron-pages selected="0">
+            <paper-material elevation="2">
+                adapter :{{project.config['adapter']}} |
+                database :{{project.config['database']}} |
+                username :{{project.config['username']}} |
+                password :{{project.config['password']}} <br/>
+                host :{{project.config['host']}} |
+                port :{{project.config['port']}} |
+                <template is="dom-if" if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
+                        <span class="red_text">
+                          ssl :{{project.config['ssl']}}
+                        </span>
+                </template>
+                <template is="dom-if" if="{{project.config['ssl'] == 'true'}}">
+                        <span class="green_text">
+                          ssl :{{project.config['ssl']}}
+                        </span>
+                </template>
+                |
+                <custom-server-status status="{{status}}"
+                                      adapter="{{project.config['adapter']}}"></custom-server-status>
 
-                    <div class="chip">
-                        <paper-material elevation="0"></paper-material>
-                        adapter :{{project.config['adapter']}} |
-                        database :{{project.config['database']}} |
-                        username :{{project.config['username']}} |
-                        password :{{project.config['password']}} <br/>
-                        host :{{project.config['host']}} |
-                        port :{{project.config['port']}} |
-
-                        <template if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
-                <span style="background:white;color:red;">
-                  ssl :{{project.config['ssl']}}
-                </span>
-                        </template>
-                        <template if="{{project.config['ssl'] == 'true'}}">
-                <span style="background:white;color:green;">
-                  ssl :{{project.config['ssl']}}
-                </span>
-                        </template>
-                        |
-                        <custom-server-status status="{{status}}"
-                                              adapter="{{project.config['adapter']}}"></custom-server-status>
-                        <br/>
-
-                        <paper-button label="edit" on-tap="{{transition}}"
-                                      style$="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
-                    </div>
-                </div>
-
-            </section>
-
-            <section id="details">
-
-                <div class="card" >
-                    <paper-material elevation="2"></paper-material>
-                    <paper-input label="adapter" inputValue="{{project.config['adapter']}}"
-                                 floatinglabel="true"></paper-input>
-                    <paper-input label="database" inputValue="{{project.config['database']}}"
-                                 floatinglabel="true"></paper-input>
-                    <br/>
-                    <paper-input label="username" inputValue="{{project.config['username']}}"
-                                 floatinglabel="true"></paper-input>
-                    <paper-input label="password" inputValue="{{project.config['password']}}"
-                                 floatinglabel="true"></paper-input>
-                    <br/>
-                    <paper-input label="host" inputValue="{{project.config['host']}}"
-                                 floatinglabel="true"></paper-input>
-                    <paper-input label="port" inputValue="{{project.config['port']}}"
-                                 floatinglabel="true"></paper-input>
-                    <br/>
-                    <div  >
-                        <template if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
-                            <paper-checkbox label="ssl"></paper-checkbox>
-                        </template>
-                        <template if="{{project.config['ssl'] == 'true'}}">
-                            <paper-checkbox label="ssl" checked></paper-checkbox>
-                        </template>
-                    </div>
-                    <br/>
+                <paper-button raised on-tap="transition">
+                    edit
+                </paper-button>
+            </paper-material>
+            <paper-material elevation="2">
+                <paper-input label="adapter" value="{{project.config['adapter']}}"></paper-input>
+                <paper-input label="database" value="{{project.config['database']}}"></paper-input>
+                <paper-input label="username" value="{{project.config['username']}}"></paper-input>
+                <paper-input label="password" value="{{project.config['password']}}"></paper-input>
+                <paper-input label="host" value="{{project.config['host']}}"></paper-input>
+                <paper-input label="port" value="{{project.config['port']}}"></paper-input>
+                <template is="dom-if" if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
+                    <paper-checkbox>
+                        ssl
+                    </paper-checkbox>
+                </template>
+                <template is="dom-if" if="{{project.config['ssl'] == 'true'}}">
+                    <paper-checkbox checked>
+                        ssl
+                    </paper-checkbox>
+                </template>
 
 
-                    <paper-button label="save" on-tap="{{saveTransition}}"
-                                  style$="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
-                    <paper-button label="cancel" on-tap="{{transition}}"
-                                  style$="border:1px solid {{project.colorPalette['500'][0]}};"></paper-button>
-                </div>
-
-            </section>
+                <paper-button raised on-tap="saveTransition">
+                    save
+                </paper-button>
+                <paper-button raised on-tap="transition">
+                    cancel
+                </paper-button>
+            </paper-material>
 
         </iron-pages>
     </template>

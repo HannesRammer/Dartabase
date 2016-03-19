@@ -7,8 +7,9 @@ import "../poly/migrationRemoveColumn.dart";
 import "../poly/migrationCreateRelation.dart";
 import "../poly/migrationRemoveRelation.dart";
 import "../poly/migrationRemoveTable.dart";
-import '../poly/project.dart';
-import '../poly/migration.dart';
+import '../poly/pm.dart';
+//import '../poly/project.dart';
+//import '../poly/migration.dart';
 
 // Import the Polymer and Web Components scripts.
 import 'package:polymer/polymer.dart';

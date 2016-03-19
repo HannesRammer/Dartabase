@@ -1,29 +1,33 @@
 <dom-module id="custom-create-project">
     <template>
-        <link rel="stylesheet" href="../poly/createProject.css">
+        <style>
+            paper-icon-button {
+                background: #d81b60;
+            }
+
+            paper-button {
+                border: 1px solid #d81b60;
+            }
+
+            paper-material {
+                background: #d81b60;
+                width: 90%;
+                margin: 10px auto;
+            }
+        </style>
         <iron-pages selected="0">
-                <paper-button raised on-tap="toggleView"
-                              style$="border:1px solid {{backgroundColor}};color:{{backgroundColor}};background:{{color}}">
-                    add Project
+            <paper-button raised on-tap="toggleView">
+                add Project
+            </paper-button>
+            <paper-material elevation="2">
+                CREATE NEW PROJECT
+                <paper-icon-button icon="close" on-tap="toggleView"></paper-icon-button>
+                <paper-input label="Project Name" value="{{name}}"></paper-input>
+                <paper-input label="Project Path" value="{{path}}"></paper-input>
+                <paper-button raised on-tap="initiateMigration">
+                    Enhance Project '{{name}}' at path '{{path}}'
                 </paper-button>
-                <paper-material elevation="1" style$="background:{{backgroundColor}};">
-                    CREATE NEW PROJECT
-                    <div class="card-content">
-                        <paper-icon-button icon="close" on-tap="toggleView"
-                                           style$="background:{{backgroundColor}};">
-                        </paper-icon-button>
-
-                        <paper-input label="Project Name" value="{{name}}"></paper-input>
-                        <paper-input label="Project Path" value="{{path}}"></paper-input>
-
-                    </div>
-                    <div class="card-actions">
-                        <paper-button raised on-tap="initiateMigration"
-                                      style$="border:1px solid {{backgroundColor}};">
-                            Enhance Project '{{name}}' at path '{{path}}'
-                        </paper-button>
-                    </div>
-                </paper-material>
+            </paper-material>
         </iron-pages>
 
     </template>

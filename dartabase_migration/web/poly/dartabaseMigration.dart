@@ -2,6 +2,9 @@
 library dartabase.poly.dartabaseMigration;
 
 // Import the paper element from Polymer.
+import '../poly/createProject.dart';
+
+
 import 'package:polymer_elements/iron_pages.dart';
 import 'package:polymer_elements/paper_material.dart';
 import 'package:polymer_elements/paper_button.dart';
@@ -11,8 +14,9 @@ import '../poly/projectView.dart';
 import 'dart:html';
 import 'dart:async';
 import 'dart:convert' show JSON;
+import 'dart:convert' show JSON;
 
-import "project.dart";
+import "../poly/pm.dart";
 import 'package:template_binding/template_binding.dart';
 
 // Import the Polymer and Web Components scripts.
@@ -21,10 +25,10 @@ import 'package:web_components/web_components.dart';
 
 @PolymerRegister('dartabase-migration')
 class DartabaseMigration extends PolymerElement {
-    @Property(notify: true)
-    Project selectedProject = new Project();
-
     @property
+    Project selectedProject;
+
+    @Property(notify: true)
     List<Project> projects;
 
     @Property(notify: true)
@@ -34,21 +38,22 @@ class DartabaseMigration extends PolymerElement {
 
     @reflectable
     transition(event, [_]) {
+        //transition(event, [_]) {
         IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
         ip.selectNext();
-        insert('projects', 0, projects[0]);
-        set('projects',projects);
-        set('selectedProject',projects[0]);
+
+        this.set('selectedProject',projects[0]);
+
         if (ip.selected == 0) {
 
 
-            /**        //nodeBind(event.target).templateInstance.model['project'];
+            //nodeBind(event.target).templateInstance.model['project'];
                     selectedProject.migrationDirection = '';
                     selectedProject.currentMigration =
                     selectedProject.getCurrentMigration();
                     selectedProject.selectedMigration =
                     selectedProject.currentMigration;
-             */
+
         } else {
 
         }
@@ -56,6 +61,9 @@ class DartabaseMigration extends PolymerElement {
 
     void ready() {
         print("$runtimeType::ready()");
+        //IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
+        //Project x = new Project();
+
         //set('selectedProject',projects[0]);
         //set('projects',[{"a":"v"}]);
 
@@ -63,7 +71,7 @@ class DartabaseMigration extends PolymerElement {
     }
 
 
-    test() {
+    Map test() {
         Map m = {
             "gamechar": {
                 "id": {
@@ -113,10 +121,12 @@ class DartabaseMigration extends PolymerElement {
                 }
             }
         };
+        return m;
     }
-}
 
+}
 /**
+
 class Migration extends JsProxy {
     @reflectable
     final num index;
@@ -129,7 +139,8 @@ class Migration extends JsProxy {
     @reflectable
     String state;
 
-    Migration({this.index, this.version, this.colorPalette, this.actions, this.state});
+    Migration(
+            {this.index, this.version, this.colorPalette, this.actions, this.state});
 
 }
 
@@ -200,7 +211,11 @@ class Project extends JsProxy {
                 }
                 });*/
         for (Map migMap in migrationsList) {
-            Migration mig = new Migration(index: migMap['index'], version: migMap['version'], colorPalette: colorPalette, actions: migMap['actions'], state: migMap['state']);
+            Migration mig = new Migration(index: migMap['index'],
+                    version: migMap['version'],
+                    colorPalette: colorPalette,
+                    actions: migMap['actions'],
+                    state: migMap['state']);
             migrations.add(mig);
             if (mig.state == "curent") {
                 selectedMigration = mig;
@@ -225,7 +240,7 @@ class Project extends JsProxy {
                 mig = m;
                 }
                 });**/
-        for(Migration m in migrations){
+        for (Migration m in migrations) {
             if (m.index == index) {
                 mig = m;
             }
@@ -251,7 +266,7 @@ class Project extends JsProxy {
                 mig = m;
                 }
                 });*/
-        for(Migration m in migrations){
+        for (Migration m in migrations) {
             if (m.state == "current") {
                 mig = m;
             }
@@ -276,7 +291,6 @@ class Project extends JsProxy {
                 dependencyRelations = value;
             }
         });
-
     }
 
     List getTableNames() {

@@ -10,7 +10,7 @@ import "../poly/createMigrationTable.dart";
 import "../poly/createMigrationColumn.dart";
 import "../poly/removeMigrationColumn.dart";
 import "../poly/removeMigrationTable.dart";
-import "../poly/project.dart";
+import "../poly/pm.dart";
 import "../poly/table.dart";
 
 // Import the Polymer and Web Components scripts.
@@ -22,43 +22,40 @@ class CreateMigration extends PolymerElement {
     @Property(notify: true)
     Project project;
     @Property(notify: true)
-    String newMigrationName = "";
+    String newMigrationName;
     @Property(notify: true)
-    List<Table> createColumn = [];
+    List<Table> createColumn;
     @Property(notify: true)
-    List<Table> removeColumn = [];
+    List<Table> removeColumn;
 
     @Property(notify: true)
-    List<Table> removeTable = [];
+    List<Table> removeTable;
     @Property(notify: true)
     int editMode = 0;
 
     @Property(notify: true)
-    List existingTableNames = [];
+    List existingTableNames;
     @Property(notify: true)
-    Map existingTables = {};
+    Map existingTables;
 
     CreateMigration.created() : super.created();
 
     @reflectable
-    transition(e) {
-        if (this.editMode == 0) {
-            this.editMode = 1;
-        } else {
-            this.editMode = 0;
-        }
+    transition(event, [_]) {
+        IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
+        ip.selectNext();
     }
 
 
     @reflectable
-    addColumn() {
+    addColumn(event, [_]) {
         Table table = new Table();
         createColumn.add(table);
         existingTableNames = project.getTableNames();
     }
 
     @reflectable
-    addRemoveColumn() {
+    addRemoveColumn(event, [_]) {
         Table table = new Table();
         List columns = new List();
         table.columns = columns;
@@ -67,7 +64,7 @@ class CreateMigration extends PolymerElement {
     }
 
     @reflectable
-    addRemoveTable() {
+    addRemoveTable(event, [_]) {
         Table table = new Table();
         removeTable.add(table);
         existingTableNames = project.getTableNames();

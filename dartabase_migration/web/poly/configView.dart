@@ -7,7 +7,7 @@ import "package:polymer_elements/paper_material.dart";
 import "package:polymer_elements/paper_input.dart";
 import "package:polymer_elements/paper_button.dart";
 import "package:polymer_elements/paper_checkbox.dart";
-import "../poly/project.dart";
+
 import "../poly/serverStatus.dart";
 
 // Import the Polymer and Web Components scripts.
@@ -16,7 +16,7 @@ import 'package:web_components/web_components.dart';
 
 import "dart:html";
 import "dart:convert" show JSON;
-
+import "../poly/pm.dart";
 @PolymerRegister('custom-config-view')
 class ConfigView extends PolymerElement {
     @Property(notify: true)
@@ -25,22 +25,16 @@ class ConfigView extends PolymerElement {
     @Property(notify: true)
     String status;
 
-    @Property(notify: true)
-    int editMode = 0;
-
     ConfigView.created() : super.created();
 
     @reflectable
-    transition(e) {
-        if (this.editMode == 0) {
-            this.editMode = 1;
-        } else {
-            this.editMode = 0;
-        }
+    transition(event, [_]) {
+        IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
+        ip.selectNext();
     }
 
     @reflectable
-    saveTransition(e) {
+    saveTransition(event, [_]) {
         HttpRequest request = new HttpRequest(); // create a new XHR
         // add an event handler that is called when the request finishes
         request.onReadyStateChange.listen((_) {

@@ -2,17 +2,15 @@
     <template>
         <br/>
         <paper-dropdown-menu label="select table">
-        <paper-listbox>
-            <template>
-                <paper-item> {{tableName}}</paper-item>
-            </template>
-        </paper-listbox>
+            <paper-listbox>
+                <template>
+                    <paper-item> {{tableName}}</paper-item>
+                </template>
+            </paper-listbox>
         </paper-dropdown-menu>
-        <template repeat="{{column in table.columns}}">
+        <template is="dom-repeat" items="{{table.columns}}">
             x
         </template>
-
-
-        <paper-button label="Add Column" on-tap="{{addColumn}}"></paper-button>
+        <paper-button label="Add Column" on-tap="addColumn"></paper-button>
     </template>
 </dom-module>

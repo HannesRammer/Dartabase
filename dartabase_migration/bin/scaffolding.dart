@@ -680,8 +680,8 @@ ${generatedynamicFields("index", columnsMap)}
         <span id="created_at">{{object['created_at']}}</span>
         <span id="updated_at">{{object['updated_at']}}</span>
         <template if="{{inlineEdit == false}}" > 
-          <span id="view"><button on-click="{{view}}">view</button></span>
-          <span id="edit"><button on-click="{{edit}}">edit</button></span>
+          <span id="view"><button on-tap="{{view}}">view</button></span>
+          <span id="edit"><button on-tap="{{edit}}">edit</button></span>
         </template>
       </div>  
     </template>
@@ -693,11 +693,11 @@ ${generatedynamicFields("view", columnsMap)}
 <span id="created_at">created at: {{object['created_at']}}</span>
         <span id="updated_at">updated at: {{object['updated_at']}}</span>
         <template if="{{inlineEdit == false}}" > 
-          <span id="view"><button on-click="{{view}}">view</button></span>
-          <span id="edit"><button on-click="{{edit}}">edit</button></span>
+          <span id="view"><button on-tap="{{view}}">view</button></span>
+          <span id="edit"><button on-tap="{{edit}}">edit</button></span>
           <template if="{{pagination == true}}" >
-            <span id="next"><button on-click="{{next}}">next</button></span>
-            <span id="prev"><button on-click="{{prev}}">prev</button></span>
+            <span id="next"><button on-tap="{{next}}">next</button></span>
+            <span id="prev"><button on-tap="{{prev}}">prev</button></span>
           </template>
         </template>
       </div>  
@@ -709,8 +709,8 @@ ${generatedynamicFields("view", columnsMap)}
 ${generatedynamicFields("edit", columnsMap)}
         created at: <input type="text" value="{{object['created_at']}}" disabled>
         updated at: <input type="text" value="{{object['updated_at']}}" disabled>
-        <button on-click="{{save}}">save</button>
-        <button on-click="{{delete}}">delete</button>
+        <button on-tap="{{save}}">save</button>
+        <button on-tap="{{delete}}">delete</button>
       </div>
       
     </template>
@@ -718,7 +718,7 @@ ${generatedynamicFields("edit", columnsMap)}
     <template if="{{apperance == 'create'}}">
       <div class="custom-${polyName}" id="${tableName}_{{object['id']}}">
 ${generatedynamicFields("create", columnsMap)}
-        <button on-click="{{save}}">save</button>
+        <button on-tap="{{save}}">save</button>
       </div>
       
     </template>

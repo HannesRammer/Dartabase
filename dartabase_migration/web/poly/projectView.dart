@@ -6,7 +6,7 @@ import "package:polymer_elements/paper_toast.dart";
 import "../poly/configView.dart";
 import "../poly/createMigration.dart";
 import "../poly/migrationView.dart";
-import '../poly/project.dart';
+import '../poly/pm.dart';
 import "dart:html";
 import "dart:async";
 

@@ -1,21 +1,37 @@
 <dom-module id="custom-server-status">
     <template>
-        <link rel="stylesheet" href="../poly/serverStatus.css">
-        <template if="{{status != 'running'}}">
-            <span style="background:white;color:red;">
-                <template if="{{adapter != null}}">
+
+        <style>
+            paper-button {
+                border: 1px solid #d81b60 ;
+            }
+            .red_text{
+                background:white;color:red;
+            }
+            .green_text{
+                background:white;color:green;
+            }
+            paper-material {
+                background: rgba(27, 216, 43, 0.48);
+                width: 90%;
+                margin: 10px auto;
+            }
+        </style>
+        <template is="dom-if" if="{{status != 'running'}}">
+            <paper-material  class="red_text">
+                <template is="dom-if" if="{{adapter != null}}">
                     {{adapter}}
                 </template>
                 Server :{{status}}
-            </span>
+            </paper-material>
         </template>
-        <template if="{{status == 'running'}}">
-            <span style="background:white;color:green;">
-                <template if="{{adapter != null}}">
+        <template is="dom-if" if="{{status == 'running'}}">
+            <paper-material class="green_text">
+                <template is="dom-if" if="{{adapter != null}}">
                     {{adapter}}
                 </template>
                 Server :{{status}}
-            </span>
+            </paper-material>
         </template>
     </template>
 </dom-module>

@@ -56,14 +56,14 @@ class ColumnView extends PolymerElement {
     ];
 
     @Property(notify: true)
-    Map column = {};
+    Map column;
 
     @Property(notify: true)
     Table createTable;
 
 
     @reflectable
-    void addColumn() {
+    void addColumn(event, [_]) {
         if (createTable.columns == null) {
             createTable.columns = [];
             print("columnView.dart COLUMNS NOT INITIALIZES CORRECT");

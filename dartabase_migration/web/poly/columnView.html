@@ -1,38 +1,49 @@
 <dom-module id="custom-column-view">
-    <template is="dom-bind">
-        <link rel="stylesheet" href="../poly/columnView.css">
+    <template>
+        <style>
+            paper-button {
+                border: 1px solid #d81b60;
+            }
 
-        <br/>
-        <template repeat="{{column in createTable.columns}}">
+            .red_text {
+                background: white;
+                color: red;
+            }
 
-
-            <div style="border:solid 1px grey;">
-                <paper-input required class="size" label="Column Name" inputValue="{{column['name']}}"
-                             floatinglabel="true"></paper-input>
-                <paper-dropdown-menu label="Database Types" style="position: relative;top: -25px;">
-                    <paper-listbox class="dropdown-content">
-                    <template repeat="{{typeName in dbTypes}}">
-                        <paper-item>{{typeName}}</paper-item>
-                    </template>
+            .green_text {
+                background: white;
+                color: green;
+            }
+            paper-material {
+                background: rgba(27, 216, 43, 0.48);
+                width: 90%;
+                margin: 10px auto;
+            }
+        </style>
+        <template is="dom-repeat" items="{{createTable.columns}}">
+            <paper-material elevation="2">
+                <paper-input required label="Column Name" value="item['name']"></paper-input>
+                <paper-dropdown-menu label="Database Types">
+                    <paper-listbox>
+                        <template is="dom-repeat" items="{{dbTypes}}">
+                            <paper-item>
+                                {{item}}
+                            </paper-item>
+                        </template>
                     </paper-listbox>
                 </paper-dropdown-menu>
-                <paper-input class="size" label="Default Value" inputValue="{{column['def']}}"
-                             floatinglabel="true"></paper-input>
-                <template if="{{column['nil'] == false || column['nil'] == null}}">
-                    <paper-checkbox label="Not Null" style="position: relative;top: -25px;"></paper-checkbox>
+                <paper-input label="Default Value" value="{{item['def']}}"></paper-input>
+                <template is="dom-if" if="{{item['nil'] == false || item['nil'] == null}}">
+                    <paper-checkbox>Not Null</paper-checkbox>
                 </template>
-
-                <template if="{{column['nil'] == true}}">
-                    <paper-checkbox label="Not Null" checked
-                                    style="position: relative;top: -25px;"></paper-checkbox>
+                <template is="dom-if" if="{{item['nil'] == true}}">
+                    <paper-checkbox checked>Not Null"</paper-checkbox>
                 </template>
-
-            </div>
-
+            </paper-material>
         </template>
-        <paper-button label="Add Column" on-tap="{{addColumn}}"></paper-button>
-
-
+        <paper-button raised on-tap="addColumn">
+            Add Column
+        </paper-button>
     </template>
-
 </dom-module>
+

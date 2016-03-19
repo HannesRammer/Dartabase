@@ -1,9 +1,11 @@
 <dom-module id="custom-remove-migration-table">
     <template>
-        <iron-dropdown valueattr="label">
-            <template repeat="{{tableName in existingTableNames}}">
-                <paper-item >{{tableName}}</paper-item>
-            </template>
-        </iron-dropdown>
+        <paper-dropdown-menu label="Table Name">
+            <paper-listbox class="dropdown-content">
+                <template is="dom-repeat" items="{{existingTableNames}}">
+                    <paper-item>{{item}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu>
     </template>
 </dom-module>

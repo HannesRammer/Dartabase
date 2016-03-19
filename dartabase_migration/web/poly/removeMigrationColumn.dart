@@ -6,7 +6,7 @@ import 'package:polymer_elements/paper_listbox.dart';
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_button.dart";
 import "../poly/table.dart";
-import "../poly/project.dart";
+import "../poly/pm.dart";
 
 // Import the Polymer and Web Components scripts.
 import 'package:polymer/polymer.dart';
@@ -19,14 +19,14 @@ class RemoveMigrationColumn extends PolymerElement {
     @Property(notify: true)
     Table table;
     @Property(notify: true)
-    Map existingTables = {};
+    Map existingTables;
     @Property(notify: true)
-    Map existingColumns = {};
+    Map existingColumns;
 
     RemoveMigrationColumn.created() : super.created();
 
     @reflectable
-    void addColumn() {
+    void addColumn(event, [_]) {
         if (table.columns == null) {
             table.columns = [];
         }

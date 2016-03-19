@@ -68,8 +68,12 @@ Future runMigration(Map params, HttpResponse res)async{
 }
 
 Future requestServerStatus(Map params, HttpResponse res)async{
-var result = await DM.serverStatus(params["projectRootPath"].replaceAll('%5C','\\'));
-closeResWith(res,result);
+  try {
+    var result = await DM.serverStatus(params["projectRootPath"].replaceAll('%5C','\\'));
+    closeResWith(res,"running");
+  } catch(exception, stackTrace) {
+    closeResWith(res,"connection problem");
+  }
 }
 
 initiateDartabase(Map params, HttpResponse res){

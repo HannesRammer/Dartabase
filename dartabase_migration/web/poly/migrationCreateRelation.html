@@ -1,11 +1,12 @@
 <dom-module id="custom-migration-create-relation">
     <template>
-
-        <link rel="stylesheet" href="../poly/migrationCreateRelation.css">
-        <div class="migrationCreateRelation" style$="border:1px solid {{colorPalette['700'][0]}};">
-            <div style$="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">
+        <style>
+            paper-material {
+                background: #d81b60;
+            }
+        </style>
+        <paper-material elevation="2">
                 {{relations}}
-            </div>
-        </div>
+        </paper-material>
     </template>
 </dom-module>

@@ -2,15 +2,17 @@
 library dartabase.poly.createMigrationRelation;
 
 // Import the Polymer and Web Components scripts.
+import 'package:polymer_elements/paper_material.dart';
+
 import 'package:polymer/polymer.dart';
 import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-create-migration-relation')
 class CreateMigrationRelation extends PolymerElement {
     @Property(notify: true)
-    String table = "";
+    String table;
     @Property(notify: true)
-    Map colorPalette = {};
+    Map colorPalette;
 
     CreateMigrationRelation.created() : super.created();
 }

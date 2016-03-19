@@ -1,34 +1,41 @@
 <dom-module id="dartabase-migration">
     <template>
-        <link rel="stylesheet" href="../poly/dartabaseMigration.css">
-        <iron-pages selected="1">
+        <style>
+            paper-material {
+                background: rgba(27, 216, 43, 0.48);
+                width: 90%;
+                margin: 10px auto;
+            }
+            .projects{
+
+
+                vertical-align: middle;
+                text-align: center;
+
+                padding: 10px;
+
+            }
+        </style>
+        <iron-pages selected="0">
             <div>
                 <template is="dom-repeat" items="{{projects}}">
-                    <paper-material class="list_view" elevation="1" on-tap="transition"
-                                    style$="border:solid 1px {{item.colorPalette['500'][0]}};">
-                        {{item.path}}
+                    <paper-material class="projects" elevation="2" on-tap="transition">
+                        <div>Path: {{item.path}}</div>
+                        <div>Name: {{item.name}}</div>
+                        <div>ServerStatus: {{item.serverStatus}}</div>
+                        <div>Adapter: {{item.config['adapter']}}</div>
+
                         <custom-server-status status="{{item.serverStatus}}" adapter="{{item.config['adapter']}}">
                         </custom-server-status>
 
-                        <paper-material elevation="1"
-                                        style$="background:{{item.colorPalette['500'][0]}};color:{{item.colorPalette['500'][1]}};">
-                            {{item.name}}
-                        </paper-material>
                     </paper-material>
                 </template>
             </div>
-            <paper-material id="details" elevation="1"
-                            style$="background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};">
-                <paper-button raised
-                              style$="border:solid 1px {{selectedProject.colorPalette['500'][1]}};background:{{selectedProject.colorPalette['500'][0]}};color:{{selectedProject.colorPalette['500'][1]}};"
-                              on-tap="transition">
-                    X
-                </paper-button>
-
+            <paper-material elevation="2">
+                <paper-icon-button icon="close" on-tap="transition">
+                </paper-icon-button>
                 <custom-project-view project="{{selectedProject}}"></custom-project-view>
             </paper-material>
-
         </iron-pages>
-
     </template>
 </dom-module>

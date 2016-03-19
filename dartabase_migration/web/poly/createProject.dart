@@ -18,9 +18,9 @@ import 'package:web_components/web_components.dart';
 @PolymerRegister('custom-create-project')
 class CreateProject extends PolymerElement {
     @Property(notify: true)
-    String name = "";
+    String name;
     @Property(notify: true)
-    String path = "";
+    String path;
     @Property(notify: true)
     String backgroundColor = MPC.Red["500"];
     @Property(notify: true)

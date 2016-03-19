@@ -7,7 +7,7 @@ import 'package:material_paper_colors/material_paper_colors.dart';
 
 import 'package:polymer_elements/paper_toast.dart';
 import '../poly/dartabaseMigration.dart';
-import '../poly/project.dart';
+import '../poly/pm.dart';
 
 import '../poly/createProject.dart';
 import 'package:polymer/polymer.dart';
@@ -53,8 +53,11 @@ Future main() async {
     }
 
     DartabaseMigration polyItem = new Element.tag("dartabase-migration");
+    polyItem.set('projects',projects);
+  //  polyItem.projects.addAll(projects);
+   // polyItem.projects.setAttribute("projects", projects);
     document.querySelector("#content").append(polyItem);
-    polyItem.projects = projects;
+
 
 }
 

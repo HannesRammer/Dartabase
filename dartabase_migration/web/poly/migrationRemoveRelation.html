@@ -1,10 +1,20 @@
 <dom-module id="custom-migration-remove-relation">
     <template>
-        <link rel="stylesheet" href="../poly/migrationRemoveRelation.css">
-        <div class="migrationRemoveRelation" style$="border:1px solid {{colorPalette['700'][0]}};">
-            <div style$="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">
+        <style>
+            paper-icon-button {
+                border: 1px solid #d81b60;
+            }
+
+            paper-button {
+                border: 1px solid #d81b60;
+            }
+
+            paper-material {
+                background: #d81b60;
+            }
+        </style>
+        <paper-material elevation="2">
                 {{relations}}
-            </div>
-        </div>
+        </paper-material>
     </template>
 </dom-module>

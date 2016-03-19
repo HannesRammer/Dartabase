@@ -1,6 +1,10 @@
 <dom-module id="custom-project-view">
-    <template is="dom-bind">
-        <link rel="stylesheet" href="../poly/projectView.css">
+    <template>
+        <style>
+            paper-button {
+                border: 1px solid #d81b60;
+            }
+        </style>
         <span class="card-album-title">Project: {{project.name}}</span>
         <span class="card-album-name"> {{project.path}}</span>
 
@@ -15,51 +19,51 @@
                     <tr>
                         <td style="width:50%;">
                             <div class="migrationContentLeft">
+                                <template is="dom-repeat" items="{{project.migrations}}">
+                                    <!--template repeat="{{migration in project.migrations}}"-->
 
-                                <template repeat="{{migration in project.migrations}}">
+                                    <template is="dom-if" if="{{item != project.selectedMigration}}">
 
-                                    <template if="{{migration != project.selectedMigration}}">
-
-                                        <template if="{{migration.state == 'current'}}">
+                                        <template is="dom-if" if="{{item.state == 'current'}}">
                                             <!--suppress XmlDuplicatedId, XmlDuplicatedId -->
-                                            <div id="{{migration.version}}" class="currentMigration"
-                                                 on-click="{{setActive}}" index="{{migration.index}}">
-                                                <div class="text">{{migration.version}} --
+                                            <div id="{{item.version}}" class="currentMigration"
+                                                 on-tap="setActive" index="{{item.index}}">
+                                                <div class="text">{{item.version}} --
                                                     current
                                                 </div>
                                             </div>
                                         </template>
 
-                                        <template if="{{migration.state != 'current'}}">
-                                            <div id="{{migration.version}}"
-                                                 index="{{migration.index}}"
-                                                 class="{{migration.state}}Migration"
-                                                 on-click="{{setActive}}">
+                                        <template is="dom-if" if="{{item.state != 'current'}}">
+                                            <div id="{{item.version}}"
+                                                 index="{{item.index}}"
+                                                 class="{{item.state}}Migration"
+                                                 on-tap="setActive">
                                                 <div class="text">
-                                                    {{migration.version}}
+                                                    {{item.version}}
                                                 </div>
                                             </div>
                                         </template>
                                     </template>
 
-                                    <template if="{{migration == project.selectedMigration}}">
+                                    <template is="dom-if" if="{{item == project.selectedMigration}}">
 
-                                        <template if="{{migration.state == 'current'}}">
-                                            <div id="{{migration.version}}" class="currentMigration currentSelection"
-                                                 on-click="{{setActive}}" index="{{migration.index}}">
-                                                <div class="text">{{migration.version}} --
+                                        <template is="dom-if" if="{{item.state == 'current'}}">
+                                            <div id="{{item.version}}" class="currentMigration currentSelection"
+                                                 on-tap="setActive" index="{{item.index}}">
+                                                <div class="text">{{item.version}} --
                                                     current
                                                 </div>
                                             </div>
                                         </template>
 
-                                        <template if="{{migration.state != 'current'}}">
-                                            <div id="{{migration.version}}"
-                                                 index="{{migration.index}}"
-                                                 class="{{migration.state}}Migration currentSelection"
-                                                 on-click="{{setActive}}">
+                                        <template is="dom-if" if="{{item.state != 'current'}}">
+                                            <div id="{{item.version}}"
+                                                 index="{{item.index}}"
+                                                 class="{{item.state}}Migration currentSelection"
+                                                 on-tap="setActive">
                                                 <div class="text">
-                                                    {{migration.version}}
+                                                    {{item.version}}
                                                 </div>
                                             </div>
                                         </template>
@@ -67,19 +71,19 @@
 
                                 </template>
                                 <br/>
-                                <template if="{{project.selectedMigration.state == 'current'}}">
-                                    <paper-button label="migrate" disabled="disabled"
-                                                  style$="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
+                                <template is="dom-if" if="{{project.selectedMigration.state == 'current'}}">
+                                    <paper-button raised disabled="true">migrate
+                                    </paper-button>
                                 </template>
-                                <template if="{{project.selectedMigration.state == 'older'}}">
-                                    <paper-button label="migrate to
-              older version" on-click="{{runMigration}}"
-                                                  style$="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
+                                <template is="dom-if" if="{{project.selectedMigration.state == 'older'}}">
+                                    <paper-button raised on-tap="runMigration">
+                                        migrate to older version
+                                    </paper-button>
                                 </template>
-                                <template if="{{project.selectedMigration.state == 'newer'}}">
-                                    <paper-button label="migrate to
-              newer version" on-click="{{runMigration}}"
-                                                  style$="border:1px solid {{project.colorPalette['500'][0]}};z-index:1;"></paper-button>
+                                <template is="dom-if" if="{{project.selectedMigration.state == 'newer'}}">
+                                    <paper-button raised on-tap="runMigration">
+                                        migrate to newer version
+                                    </paper-button>
                                 </template>
                                 <custom-create-migration project="{{project}}"></custom-create-migration>
                             </div>

@@ -1,78 +1,77 @@
 <dom-module id="custom-migration-view">
-    <template is="dom-bind">
-        <link rel="stylesheet" href="../poly/migrationView.css">
+    <template>
         <div>{{migration.version}}</div>
 
-        <template if="{{migration.actions['UP'].length > 0}}">
+        <template is="dom-if" if="{{migration.actions['UP'].length > 0}}">
             UP:{
             <br/>
-            <template if="{{migration.actions['UP']['createTable'] != null}}">
+            <template is="dom-if" if="{{migration.actions['UP']['createTable'] != null}}">
                 create table:<br/>
-                <template repeat="{{tableName in migration.actions['UP']['createTable'].keys}}">
-                    <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
-                                                   columns="{{migration.actions['UP']['createTable'][tableName]}}"></custom-migration-create-table>
+                <template is="dom-repeat" items="{{migration.actions['UP']['createTable'].keys}}">
+                    <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{item}}"
+                                                   columns="{{migration.actions['UP']['createTable'][item]}}"></custom-migration-create-table>
                 </template>
             </template>
-            <template if="{{migration.actions['UP']['createColumn'] != null}}">
+            <template is="dom-if" if="{{migration.actions['UP']['createColumn'] != null}}">
                 create column:<br/>
-                <template repeat="{{tableName in migration.actions['UP']['createColumn'].keys}}">
-                    <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
-                                                    columns="{{migration.actions['UP']['createColumn'][tableName]}}"></custom-migration-create-column>
+                <template is="dom-repeat" items="{{migration.actions['UP']['createColumn'].keys}}">
+                    <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{item}}"
+                                                    columns="{{migration.actions['UP']['createColumn'][item]}}"></custom-migration-create-column>
                 </template>
             </template>
-            <template if="{{migration.actions['UP']['removeColumn'] != null}}">
+            <template is="dom-if" if="{{migration.actions['UP']['removeColumn'] != null}}">
                 remove column:<br/>
-                <template repeat="{{tableName in migration.actions['UP']['removeColumn'].keys}}">
-                    <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
-                                                    columns="{{migration.actions['UP']['removeColumn'][tableName]}}"></custom-migration-remove-column>
+                <template is="dom-repeat" items="{{migration.actions['UP']['removeColumn'].keys}}">
+                    <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{item}}"
+                                                    columns="{{migration.actions['UP']['removeColumn'][item]}}"></custom-migration-remove-column>
                 </template>
             </template>
-            <template if="{{migration.actions['UP']['createRelation'] != null}}">
+            <template is="dom-if" if="{{migration.actions['UP']['createRelation'] != null}}">
                 create relation:<br/>
-                <template repeat="{{relations in migration.actions['UP']['createRelation']}}">
+                <template is="dom-repeat" items="{{migration.actions['UP']['createRelation']}}">
                     <custom-migration-create-relation colorPalette="{{migration.colorPalette}}"
-                                                      relations="{{relations}}">
+                                                      relations="{{item}}">
                     </custom-migration-create-relation>
                 </template>
             </template>
-            <template if="{{migration.actions['UP']['removeRelation'] != null}}">
+            <template is="dom-if" if="{{migration.actions['UP']['removeRelation'] != null}}">
                 remove relation:<br/>
-                <template repeat="{{relations in migration.actions['UP']['removeRelation']}}">
+                <template is="dom-repeat" items="{{migration.actions['UP']['removeRelation']}}">
                     <custom-migration-remove-relation colorPalette="{{migration.colorPalette}}"
-                                                      relations="{{relations}}">
+                                                      relations="{{item}}">
                     </custom-migration-remove-relation>
                 </template>
             </template>
 
-            <template if="{{migration.actions['UP']['removeTable'] != null}}">
+            <template is="dom-if" if="{{migration.actions['UP']['removeTable'] != null}}">
                 remove table:<br/>
-                <template repeat="{{table in migration.actions['UP']['removeTable']}}">
+                <template is="dom-repeat" items="{{migration.actions['UP']['removeTable']}}">
                     <custom-migration-remove-table colorPalette="{{migration.colorPalette}}"
-                                                   table="{{table}}"></custom-migration-remove-table>
+                                                   table="{{item}}"></custom-migration-remove-table>
                 </template>
             </template>
             }
         </template>
 
 
-        <template if="{{migration.actions['DOWN'].length > 0}}">
+        <template is="dom-if" if="{{migration.actions['DOWN'].length > 0}}">
             <br/> DOWN:{
             <br/>
-            <template if="{{migration.actions['DOWN']['createTable'] != null}}">
+            <template is="dom-if" if="{{migration.actions['DOWN']['createTable'] != null}}">
                 create table:<br/>
                 <template repeat="{{tableName in migration.actions['DOWN']['createTable'].keys}}">
                     <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
                                                    columns="{{migration.actions['DOWN']['createTable'][tableName]}}"></custom-migration-create-table>
                 </template>
             </template>
-            <template if="{{migration.actions['DOWN']['createColumn'] != null}}">
+            <template is="dom-if" if="{{migration.actions['DOWN']['createColumn'] != null}}">
                 create column:<br/>
                 <template repeat="{{tableName in migration.actions['DOWN']['createColumn'].keys}}">
                     <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
                                                     columns="{{migration.actions['DOWN']['createColumn'][tableName]}}"></custom-migration-create-column>
                 </template>
             </template>
-            <template if="{{migration.actions['DOWN']['removeColumn'] != null}}">
+            <template is="dom-if" if="{{migration.actions['DOWN']['removeColumn'] != null}}">
                 remove column:<br/>
                 <template repeat="{{tableName in migration.actions['DOWN']['removeColumn'].keys}}">
                     <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
@@ -83,9 +82,9 @@
             </template>
 
 
-            <template if="{{migration.actions['DOWN']['createRelation'] != null}}">
+            <template is="dom-if" if="{{migration.actions['DOWN']['createRelation'] != null}}">
                 create relation:<br/>
-                <template if="{{migration.actions['DOWN']['createRelation'].runtimeType is List">
+                <template is="dom-if" if="{{migration.actions['DOWN']['createRelation'].runtimeType is List">
                     <template repeat="{{relations in migration.actions['DOWN']['createRelation']}}">
                         <div class="migrationRemoveRelation"
                              style$="border:1px solid {{migration.colorPalette['700'][0]}};">
@@ -97,7 +96,7 @@
                 </template>
             </template>
 
-            <template if="{{migration.actions['DOWN']['removeRelation'] != null}}">
+            <template is="dom-if" if="{{migration.actions['DOWN']['removeRelation'] != null}}">
                 remove relation:<br/>
                 <template repeat="{{relations in migration.actions['DOWN']['removeRelation']}}">
                     <custom-migration-remove-relation colorPalette="{{migration.colorPalette}}"
@@ -105,7 +104,7 @@
                 </template>
             </template>
 
-            <template if="{{migration.actions['DOWN']['removeTable'] != null}}">
+            <template is="dom-if" if="{{migration.actions['DOWN']['removeTable'] != null}}">
                 remove table:<br/>
                 <template repeat="{{table in migration.actions['DOWN']['removeTable']}}">
                     <custom-migration-remove-table colorPalette="{{migration.colorPalette}}"

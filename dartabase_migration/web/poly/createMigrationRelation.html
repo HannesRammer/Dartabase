@@ -1,7 +1,19 @@
 <dom-module id="custom-create-migration-relation">
     <template>
-        <div class="" style$="border:1px solid {{colorPalette['700'][0]}};">
-            <div style$="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">{{table}}</div>
-        </div>
+        <style>
+            paper-material {
+                border: 1px solid #d81b60 ;
+            }
+            .text{
+                background:#d81b60 ;
+                color:black;
+            }
+
+        </style>
+        <paper-material elevation="2">
+            <div class="text">
+                {{table}}
+            </div>
+        </paper-material>
     </template>
 </dom-module>

@@ -1,41 +1,48 @@
 <dom-module id="custom-create-migration-table">
     <template>
-        <link rel="stylesheet" href="../poly/createMigrationTable.css">
+        <style>
+            paper-button {
+                border: 1px solid #d81b60;
+            }
 
-        <iron-pages selected="{{editMode}}">
-            <section>
-                <div>
-                    <paper-button label="create new Table" on-tap="{{transition}}"></paper-button>
-                </div>
+            .red_text {
+                background: white;
+                color: red;
+            }
 
-            </section>
+            .green_text {
+                background: white;
+                color: green;
+            }
+            paper-material {
+                background: rgba(27, 216, 43, 0.48);
+                width: 90%;
+                margin: 10px auto;
+            }
+        </style>
+        <iron-pages selected$="0">
+            <paper-material elevation="2">
+                <paper-button raised on-tap="transition">
+                    create new Table
+                </paper-button>
+            </paper-material>
 
-            <section id="details">
-                <div class="card" layout>
-                    <paper-material elevation="4"></paper-material>
-
-                    createTable:
-                    <a on-click="{{addTable}}" class="border">
-                        + add new table
-                    </a>
-
-                    <div id="up_create_table">
-                        <template repeat="{{table in createTables}}">
-                            <div class="border">
-                                <paper-input required label="Table Name" inputValue="{{table.name}}"
-                                             floatinglabel="true"></paper-input>
-                                <custom-column-view createTable="{{table}}"></custom-column-view>
-                            </div>
-                        </template>
-                    </div>
-                    <paper-button label="create" on-click="{{createMigration}}" class="border">
-                    </paper-button>
-                    <paper-button label="cancel" on-click="{{transition}}" class="border">
-                    </paper-button>
-                    <br/>
-                </div>
-            </section>
-
+            <paper-material elevation="2">
+                createTable:
+                <paper-button raised on-tap="addTable">
+                    + add new table
+                </paper-button>
+                <template is="dom-repeat" items="{{createTables}}">
+                    <paper-input required label="Table Name" value="{{item.name}}"></paper-input>
+                    <custom-column-view createTable="{{item}}"></custom-column-view>
+                </template>
+                <paper-button raised on-tap="createMigration">
+                    create
+                </paper-button>
+                <paper-button raised on-tap="transition">
+                    cancel
+                </paper-button>
+            </paper-material>
         </iron-pages>
     </template>
 </dom-module>

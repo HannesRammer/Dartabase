@@ -1,7 +1,27 @@
 <dom-module id="custom-remove-migration-relation">
     <template>
-        <div class="" style$="border:1px solid {{colorPalette['700'][0]}};">
-            <div style$="background: {{colorPalette['500'][0]}};color:{{colorPalette['500'][1]}};">{{table}}</div>
-        </div>
+        <style>
+            paper-button {
+                border: 1px solid #d81b60;
+            }
+
+            .red_text {
+                background: white;
+                color: red;
+            }
+
+            .green_text {
+                background: white;
+                color: green;
+            }
+            paper-material {
+                background: rgba(27, 216, 43, 0.48);
+                width: 90%;
+                margin: 10px auto;
+            }
+        </style>
+        <paper-material elevation="2" >
+            {{table}}
+        </paper-material>
     </template>
 </dom-module>

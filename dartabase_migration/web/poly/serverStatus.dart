@@ -2,6 +2,8 @@
 library dartabase.poly.serverStatus;
 
 // Import the Polymer and Web Components scripts.
+import 'package:polymer_elements/paper_material.dart';
+
 import 'package:polymer/polymer.dart';
 import 'package:web_components/web_components.dart';
 
