@@ -65,8 +65,9 @@ Future initiateDartabase(path, projectName) async {
     Map schemaVersion = {
             "schemaVersion": ""
     };
-     DBCore.mapToJsonFilePath(schemaVersion, "$path/db/schemaVersion.json");
-//    exit(0);
+
+    DBCore.mapToJsonFilePath(schemaVersion, "$path/db/schemaVersion.json");
+    exit(0);
 
 
 }
