@@ -15,6 +15,11 @@ class MigrationRemoveTable extends PolymerElement {
     Map colorPalette = {};
 
     MigrationRemoveTable.created() : super.created();
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
 }
 //https://api.openload.co/1/file/info?file=iMc0mI4qZWA&login=5c711f956ecf1178&key=p5NvLZn1
 //https://api.openload.co/1/file/ul?

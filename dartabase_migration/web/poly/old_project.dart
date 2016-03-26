@@ -1,4 +1,4 @@
-library dartabase.poly.project;
+/**library dartabase.poly.project;
 
 import 'dart:html';
 import 'dart:async';
@@ -153,3 +153,4 @@ class Project extends Observable {
         return tables[tableName].keys.toList();
     }
 }
+*/

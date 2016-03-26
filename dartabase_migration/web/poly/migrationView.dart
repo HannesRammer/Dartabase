@@ -25,4 +25,9 @@ class MigrationView extends PolymerElement {
 
     MigrationView.created() : super.created();
 
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
 }

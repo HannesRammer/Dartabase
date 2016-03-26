@@ -8,37 +8,35 @@
             <template is="dom-if" if="{{migration.actions['UP']['createTable'] != null}}">
                 create table:<br/>
                 <template is="dom-repeat" items="{{migration.actions['UP']['createTable'].keys}}">
-                    <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{item}}"
+                    <custom-migration-create-table color-palette="{{migration.colorPalette}}" table-name="{{item}}"
                                                    columns="{{migration.actions['UP']['createTable'][item]}}"></custom-migration-create-table>
                 </template>
             </template>
             <template is="dom-if" if="{{migration.actions['UP']['createColumn'] != null}}">
                 create column:<br/>
                 <template is="dom-repeat" items="{{migration.actions['UP']['createColumn'].keys}}">
-                    <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{item}}"
+                    <custom-migration-create-column color-palette="{{migration.colorPalette}}" table-name="{{item}}"
                                                     columns="{{migration.actions['UP']['createColumn'][item]}}"></custom-migration-create-column>
                 </template>
             </template>
             <template is="dom-if" if="{{migration.actions['UP']['removeColumn'] != null}}">
                 remove column:<br/>
                 <template is="dom-repeat" items="{{migration.actions['UP']['removeColumn'].keys}}">
-                    <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{item}}"
+                    <custom-migration-remove-column color-palette="{{migration.colorPalette}}" table-name="{{item}}"
                                                     columns="{{migration.actions['UP']['removeColumn'][item]}}"></custom-migration-remove-column>
                 </template>
             </template>
             <template is="dom-if" if="{{migration.actions['UP']['createRelation'] != null}}">
                 create relation:<br/>
                 <template is="dom-repeat" items="{{migration.actions['UP']['createRelation']}}">
-                    <custom-migration-create-relation colorPalette="{{migration.colorPalette}}"
-                                                      relations="{{item}}">
+                    <custom-migration-create-relation color-palette="{{migration.colorPalette}}" relations="{{item}}">
                     </custom-migration-create-relation>
                 </template>
             </template>
             <template is="dom-if" if="{{migration.actions['UP']['removeRelation'] != null}}">
                 remove relation:<br/>
                 <template is="dom-repeat" items="{{migration.actions['UP']['removeRelation']}}">
-                    <custom-migration-remove-relation colorPalette="{{migration.colorPalette}}"
-                                                      relations="{{item}}">
+                    <custom-migration-remove-relation color-palette="{{migration.colorPalette}}" relations="{{item}}">
                     </custom-migration-remove-relation>
                 </template>
             </template>
@@ -46,8 +44,9 @@
             <template is="dom-if" if="{{migration.actions['UP']['removeTable'] != null}}">
                 remove table:<br/>
                 <template is="dom-repeat" items="{{migration.actions['UP']['removeTable']}}">
-                    <custom-migration-remove-table colorPalette="{{migration.colorPalette}}"
-                                                   table="{{item}}"></custom-migration-remove-table>
+                    <custom-migration-remove-table color-palette="{{migration.colorPalette}}" table="{{item}}">
+
+                    </custom-migration-remove-table>
                 </template>
             </template>
             }
@@ -60,21 +59,21 @@
             <template is="dom-if" if="{{migration.actions['DOWN']['createTable'] != null}}">
                 create table:<br/>
                 <template repeat="{{tableName in migration.actions['DOWN']['createTable'].keys}}">
-                    <custom-migration-create-table colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
+                    <custom-migration-create-table color-palette="{{migration.colorPalette}}" table-name="{{tableName}}"
                                                    columns="{{migration.actions['DOWN']['createTable'][tableName]}}"></custom-migration-create-table>
                 </template>
             </template>
             <template is="dom-if" if="{{migration.actions['DOWN']['createColumn'] != null}}">
                 create column:<br/>
                 <template repeat="{{tableName in migration.actions['DOWN']['createColumn'].keys}}">
-                    <custom-migration-create-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
+                    <custom-migration-create-column color-palette="{{migration.colorPalette}}" table-name="{{tableName}}"
                                                     columns="{{migration.actions['DOWN']['createColumn'][tableName]}}"></custom-migration-create-column>
                 </template>
             </template>
             <template is="dom-if" if="{{migration.actions['DOWN']['removeColumn'] != null}}">
                 remove column:<br/>
                 <template repeat="{{tableName in migration.actions['DOWN']['removeColumn'].keys}}">
-                    <custom-migration-remove-column colorPalette="{{migration.colorPalette}}" tableName="{{tableName}}"
+                    <custom-migration-remove-column color-palette="{{migration.colorPalette}}" table-name="{{tableName}}"
                                                     columns="{{migration.actions['DOWN']['removeColumn'][tableName]}}">
 
                     </custom-migration-remove-column>
@@ -86,9 +85,8 @@
                 create relation:<br/>
                 <template is="dom-if" if="{{migration.actions['DOWN']['createRelation'].runtimeType is List">
                     <template repeat="{{relations in migration.actions['DOWN']['createRelation']}}">
-                        <div class="migrationRemoveRelation"
-                             style$="border:1px solid {{migration.colorPalette['700'][0]}};">
-                            <div style$="background: {{migration.colorPalette['500'][0]}};color:{{migration.colorPalette['500'][1]}};">
+                        <div class="migrationRemoveRelation">
+                            <div style$="background:{{migration.colorPalette['500'][0]}};color:{{migration.colorPalette['500'][1]}};">
                                 {{relations}}
                             </div>
                         </div>
@@ -99,15 +97,16 @@
             <template is="dom-if" if="{{migration.actions['DOWN']['removeRelation'] != null}}">
                 remove relation:<br/>
                 <template repeat="{{relations in migration.actions['DOWN']['removeRelation']}}">
-                    <custom-migration-remove-relation colorPalette="{{migration.colorPalette}}"
-                                                      relations="{{relations}}"></custom-migration-remove-relation>
+                    <custom-migration-remove-relation color-palette="{{migration.colorPalette}}" relations="{{relations}}">
+
+                    </custom-migration-remove-relation>
                 </template>
             </template>
 
             <template is="dom-if" if="{{migration.actions['DOWN']['removeTable'] != null}}">
                 remove table:<br/>
                 <template repeat="{{table in migration.actions['DOWN']['removeTable']}}">
-                    <custom-migration-remove-table colorPalette="{{migration.colorPalette}}"
+                    <custom-migration-remove-table color-palette="{{migration.colorPalette}}"
                                                    table="{{table}}"></custom-migration-remove-table>
                 </template>
             </template>

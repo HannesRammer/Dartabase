@@ -18,4 +18,10 @@ class MigrationCreateColumn extends PolymerElement {
     Map colorPalette;
 
     MigrationCreateColumn.created() : super.created();
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
 }

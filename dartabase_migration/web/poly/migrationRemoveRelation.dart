@@ -15,4 +15,9 @@ class MigrationRemoveRelation extends PolymerElement {
     Map colorPalette;
 
     MigrationRemoveRelation.created() : super.created();
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
 }

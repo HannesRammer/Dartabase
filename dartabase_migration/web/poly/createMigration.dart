@@ -40,6 +40,11 @@ class CreateMigration extends PolymerElement {
 
     CreateMigration.created() : super.created();
 
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
     @reflectable
     transition(event, [_]) {
         IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");

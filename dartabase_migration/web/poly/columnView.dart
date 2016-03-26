@@ -2,6 +2,7 @@
 library dartabase.poly.columnView;
 
 // Import the paper element from Polymer.
+import'package:polymer_elements/paper_material.dart';
 import'package:polymer_elements/paper_input.dart';
 import 'package:polymer_elements/paper_dropdown_menu.dart';
 import 'package:polymer_elements/paper_listbox.dart';
@@ -60,6 +61,10 @@ class ColumnView extends PolymerElement {
 
     @Property(notify: true)
     Table createTable;
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
 
 
     @reflectable

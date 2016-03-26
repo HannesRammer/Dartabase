@@ -6,35 +6,29 @@
                 width: 90%;
                 margin: 10px auto;
             }
-            .projects{
 
-
+            .project {
                 vertical-align: middle;
                 text-align: center;
-
                 padding: 10px;
-
             }
         </style>
         <iron-pages selected="0">
-            <div>
-                <template is="dom-repeat" items="{{projects}}">
-                    <paper-material class="projects" elevation="2" on-tap="transition">
-                        <div>Path: {{item.path}}</div>
-                        <div>Name: {{item.name}}</div>
-                        <div>ServerStatus: {{item.serverStatus}}</div>
-                        <div>Adapter: {{item.config['adapter']}}</div>
-
-                        <custom-server-status status="{{item.serverStatus}}" adapter="{{item.config['adapter']}}">
+            <div id="page_1">
+                <template is="dom-repeat" items="[[ projects ]]">
+                    <paper-material class="project" elevation="2" on-tap="transition">
+                        <div>Path: [[ item.path ]]</div>
+                        <div>Name: [[ item.name ]]</div>
+                        <custom-server-status status="[[ item.serverStatus ]]" adapter="[[ item.config.adapter ]]">
                         </custom-server-status>
 
                     </paper-material>
                 </template>
             </div>
-            <paper-material elevation="2">
+            <paper-material elevation="2" id="page_2">
                 <paper-icon-button icon="close" on-tap="transition">
                 </paper-icon-button>
-                <custom-project-view project="{{selectedProject}}"></custom-project-view>
+                <custom-project-view project="[[ selectedProject ]]"></custom-project-view>
             </paper-material>
         </iron-pages>
     </template>

@@ -1,10 +1,6 @@
 <dom-module id="custom-server-status">
     <template>
-
         <style>
-            paper-button {
-                border: 1px solid #d81b60 ;
-            }
             .red_text{
                 background:white;color:red;
             }
@@ -17,20 +13,16 @@
                 margin: 10px auto;
             }
         </style>
-        <template is="dom-if" if="{{status != 'running'}}">
+        <template is="dom-if" if="[[ !isRunning(status) ]]">
             <paper-material  class="red_text">
-                <template is="dom-if" if="{{adapter != null}}">
-                    {{adapter}}
-                </template>
-                Server :{{status}}
+                    [[adapter]]
+                Server :[[status]]
             </paper-material>
         </template>
-        <template is="dom-if" if="{{status == 'running'}}">
+        <template is="dom-if" if="[[ isRunning(status) ]]">
             <paper-material class="green_text">
-                <template is="dom-if" if="{{adapter != null}}">
-                    {{adapter}}
-                </template>
-                Server :{{status}}
+                    [[adapter]]
+                Server :[[status]]
             </paper-material>
         </template>
     </template>

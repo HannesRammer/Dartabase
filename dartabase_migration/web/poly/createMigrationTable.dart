@@ -32,4 +32,10 @@ class CreateMigrationTable extends PolymerElement {
         IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
         ip.selectNext();
     }
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
 }

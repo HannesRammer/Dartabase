@@ -22,4 +22,10 @@ class RemoveMigrationTable extends PolymerElement {
     List existingTableNames = [];
 
     RemoveMigrationTable.created() : super.created();
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
 }

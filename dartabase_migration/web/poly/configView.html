@@ -2,7 +2,7 @@
     <template>
         <style>
             paper-button {
-                border: 1px solid #d81b60;
+                /**border: 1px solid #d81b60;*/
             }
 
             .red_text {
@@ -14,6 +14,7 @@
                 background: white;
                 color: green;
             }
+
             paper-material {
                 background: rgba(27, 216, 43, 0.48);
                 width: 90%;
@@ -21,50 +22,45 @@
             }
         </style>
         <iron-pages selected="0">
-            <paper-material elevation="2">
-                adapter :{{project.config['adapter']}} |
-                database :{{project.config['database']}} |
-                username :{{project.config['username']}} |
-                password :{{project.config['password']}} <br/>
-                host :{{project.config['host']}} |
-                port :{{project.config['port']}} |
-                <template is="dom-if" if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
+            <paper-material elevation="2" id="page_1">
+                adapter :[[ project.config.adapter ]] |
+                database :[[ project.config.database ]] |
+                username :[[ project.config.username ]] |
+                password :[[ project.config.password ]] <br/>
+                host :[[ project.config.host ]] |
+                port :[[ project.config.port ]] |
+                <template is="dom-if" if="[[ !isSecureConnection(project.config.ssl) ]]">
                         <span class="red_text">
-                          ssl :{{project.config['ssl']}}
+                          ssl :[[ project.config.ssl ]]
                         </span>
                 </template>
-                <template is="dom-if" if="{{project.config['ssl'] == 'true'}}">
+                <template is="dom-if" if="[[ isSecureConnection(project.config.ssl) ]]">
                         <span class="green_text">
-                          ssl :{{project.config['ssl']}}
+                          ssl :[[ project.config.ssl ]]
                         </span>
                 </template>
                 |
-                <custom-server-status status="{{status}}"
-                                      adapter="{{project.config['adapter']}}"></custom-server-status>
-
                 <paper-button raised on-tap="transition">
                     edit
                 </paper-button>
             </paper-material>
-            <paper-material elevation="2">
-                <paper-input label="adapter" value="{{project.config['adapter']}}"></paper-input>
-                <paper-input label="database" value="{{project.config['database']}}"></paper-input>
-                <paper-input label="username" value="{{project.config['username']}}"></paper-input>
-                <paper-input label="password" value="{{project.config['password']}}"></paper-input>
-                <paper-input label="host" value="{{project.config['host']}}"></paper-input>
-                <paper-input label="port" value="{{project.config['port']}}"></paper-input>
-                <template is="dom-if" if="{{project.config['ssl'] == null || project.config['ssl'] == 'false'}}">
+            <paper-material elevation="2" id="page_2">
+                <paper-input label="adapter" value="{{ project.config.adapter }}"></paper-input>
+                <paper-input label="database" value="{{ project.config.database }}"></paper-input>
+                <paper-input label="username" value="{{ project.config.username }}"></paper-input>
+                <paper-input label="password" value="{{ project.config.password }}"></paper-input>
+                <paper-input label="host" value="{{ project.config.host }}"></paper-input>
+                <paper-input label="port" value="{{ project.config.port }}"></paper-input>
+                <template is="dom-if" if="[[ !isSecureConnection(project.config.ssl) ]]">
                     <paper-checkbox>
                         ssl
                     </paper-checkbox>
                 </template>
-                <template is="dom-if" if="{{project.config['ssl'] == 'true'}}">
+                <template is="dom-if" if="[[ isSecureConnection(project.config.ssl) ]]">
                     <paper-checkbox checked>
                         ssl
                     </paper-checkbox>
                 </template>
-
-
                 <paper-button raised on-tap="saveTransition">
                     save
                 </paper-button>
@@ -72,8 +68,6 @@
                     cancel
                 </paper-button>
             </paper-material>
-
         </iron-pages>
     </template>
-
 </dom-module>

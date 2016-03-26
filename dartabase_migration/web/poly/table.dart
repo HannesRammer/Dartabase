@@ -1,9 +1,14 @@
-import 'package:observe/observe.dart';
-import 'package:observe/mirrors_used.dart'; // for smaller code
+import 'dart:html';
+import 'dart:async';
+import 'dart:convert' show JSON;
+import 'package:polymer/polymer.dart';
+import 'package:web_components/web_components.dart';
 
-class Table extends Observable {
-    @observable String name = "";
-    @observable List columns = toObservable([]);
+class Table extends JsProxy {
+    @reflectable
+    String name;
+    @reflectable
+    List columns;
 
     Table({this.name, this.columns});
 

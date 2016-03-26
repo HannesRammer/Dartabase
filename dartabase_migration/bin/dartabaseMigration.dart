@@ -288,9 +288,7 @@ void createTable(conn) {
                     }
                 }
                 schemaTableMap["created_at"] = "TIMESTAMP";
-                schemaTableMap["updated_at"] = {
-                        "type": "TIMESTAMP"
-                };
+                schemaTableMap["updated_at"] = {"type": "TIMESTAMP"};
                 sqlList.add("${DBHelper.dateTimeColumnString(DBCore.adapter)});");
                 //sqlQuery += ", ${DBHelper.dateTimeColumnString(DBCore.adapter)});";
                 sqlQuery = sqlList.join(",");

@@ -112,33 +112,20 @@ class DBHelper {
 
     static String dateTimeColumnString(String adapter) {
         String sql;
-
         if (adapter == DBCore.MySQL) {
-            sql =
-            "created_at ${DBCore.typeMapping("DATETIME")}, updated_at ${DBCore
-                    .typeMapping(
-                    "TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
+            sql = "created_at ${DBCore.typeMapping("DATETIME")}, updated_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
         } else if (adapter == DBCore.PGSQL) {
-            sql = "created_at ${DBCore.typeMapping(
-                    "TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at ${DBCore
-                    .typeMapping(
-                    "TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP";
+            sql = "created_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP";
         }
-
         return sql;
     }
 
     static String pgTriggerForUpdatedAt(String tableName) {
         String sql = "";
-
         //sql += "CREATE OR REPLACE FUNCTION create_timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS \$\$ BEGIN NEW.created_at = CURRENT_TIMESTAMP; RETURN NEW; END; \$\$; ";
         //sql += "CREATE TRIGGER create_trigger BEFORE INSERT ON $tableName FOR EACH ROW EXECUTE PROCEDURE create_timestamp();";
-        sql +=
-        "CREATE OR REPLACE FUNCTION update_timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS \$\$ BEGIN NEW.updated_at = CURRENT_TIMESTAMP; RETURN NEW; END; \$\$; ";
-        sql +=
-        "CREATE TRIGGER update_trigger BEFORE UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE update_timestamp();";
-
-
+        sql += "CREATE OR REPLACE FUNCTION update_timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS \$\$ BEGIN NEW.updated_at = CURRENT_TIMESTAMP; RETURN NEW; END; \$\$; ";
+        sql += "CREATE TRIGGER update_trigger BEFORE UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE update_timestamp();";
         return sql;
     }
 

@@ -2,25 +2,20 @@
 <html>
 <head>
     <title>Dartabase Migration</title>
-
     <link rel="import" href="packages/polymer_elements/roboto.html">
-    <!--link rel="import" href="../poly/dartabaseMigration.html"-->
     <script defer src="packages/web_components/webcomponents-lite.js"></script>
     <script defer src="index.dart" type="application/dart"></script>
     <script defer src="packages/browser/dart.js"></script>
-
     <style>
         body {
             font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin: 0;
             background: #f1f1f1;
         }
-
     </style>
 </head>
 <body>
-<div id="warning">Dart is not running</div>
-
+    <div id="warning">Dart is not running</div>
     <custom-create-project></custom-create-project>
     <div id="content"></div>
     <paper-toast id="toast"></paper-toast>

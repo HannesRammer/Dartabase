@@ -15,4 +15,9 @@ class MigrationCreateRelation extends PolymerElement {
     Map colorPalette ;
 
     MigrationCreateRelation.created() : super.created();
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
 }

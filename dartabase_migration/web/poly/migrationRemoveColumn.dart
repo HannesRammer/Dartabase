@@ -17,4 +17,10 @@ class MigrationRemoveColumn extends PolymerElement {
     Map colorPalette;
 
     MigrationRemoveColumn.created() : super.created();
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
 }

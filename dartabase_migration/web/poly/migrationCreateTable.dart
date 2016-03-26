@@ -17,4 +17,10 @@ class MigrationCreateTable extends PolymerElement {
     Map colorPalette;
 
     MigrationCreateTable.created() : super.created();
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
 }

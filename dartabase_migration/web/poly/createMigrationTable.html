@@ -2,7 +2,7 @@
     <template>
         <style>
             paper-button {
-                border: 1px solid #d81b60;
+                /**border: 1px solid #d81b60;*/
             }
 
             .red_text {
@@ -20,21 +20,21 @@
                 margin: 10px auto;
             }
         </style>
-        <iron-pages selected$="0">
-            <paper-material elevation="2">
+        <iron-pages selected="0">
+            <paper-material elevation="2" id="page_1">
                 <paper-button raised on-tap="transition">
                     create new Table
                 </paper-button>
             </paper-material>
 
-            <paper-material elevation="2">
+            <paper-material elevation="2" id="page_2">
                 createTable:
                 <paper-button raised on-tap="addTable">
                     + add new table
                 </paper-button>
                 <template is="dom-repeat" items="{{createTables}}">
                     <paper-input required label="Table Name" value="{{item.name}}"></paper-input>
-                    <custom-column-view createTable="{{item}}"></custom-column-view>
+                    <custom-column-view create-table="{{item}}"></custom-column-view>
                 </template>
                 <paper-button raised on-tap="createMigration">
                     create

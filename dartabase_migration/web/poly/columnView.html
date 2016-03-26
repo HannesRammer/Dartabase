@@ -2,7 +2,7 @@
     <template>
         <style>
             paper-button {
-                border: 1px solid #d81b60;
+                /**border: 1px solid #d81b60;*/
             }
 
             .red_text {
@@ -14,29 +14,30 @@
                 background: white;
                 color: green;
             }
+
             paper-material {
                 background: rgba(27, 216, 43, 0.48);
                 width: 90%;
                 margin: 10px auto;
             }
         </style>
-        <template is="dom-repeat" items="{{createTable.columns}}">
+        <template is="dom-repeat" items="{{createTable.columns}}" as="column">
             <paper-material elevation="2">
-                <paper-input required label="Column Name" value="item['name']"></paper-input>
+                <paper-input required label="Column Name" value="column['name']"></paper-input>
                 <paper-dropdown-menu label="Database Types">
                     <paper-listbox>
-                        <template is="dom-repeat" items="{{dbTypes}}">
+                        <template is="dom-repeat" items="{{dbTypes}}" as="dbType">
                             <paper-item>
-                                {{item}}
+                                {{dbType}}
                             </paper-item>
                         </template>
                     </paper-listbox>
                 </paper-dropdown-menu>
-                <paper-input label="Default Value" value="{{item['def']}}"></paper-input>
-                <template is="dom-if" if="{{item['nil'] == false || item['nil'] == null}}">
+                <paper-input label="Default Value" value="{{column['def']}}"></paper-input>
+                <template is="dom-if" if="{{column['nil'] == false || colimn['nil'] == null}}">
                     <paper-checkbox>Not Null</paper-checkbox>
                 </template>
-                <template is="dom-if" if="{{item['nil'] == true}}">
+                <template is="dom-if" if="{{column['nil'] == true}}">
                     <paper-checkbox checked>Not Null"</paper-checkbox>
                 </template>
             </paper-material>

@@ -26,7 +26,8 @@ class Migration extends JsProxy {
     @reflectable
     String state;
 
-    Migration({this.index, this.version, this.colorPalette, this.actions, this.state});
+    Migration(
+            {this.index, this.version, this.colorPalette, this.actions, this.state});
 
 }
 
@@ -50,14 +51,15 @@ class Project extends JsProxy {
     @reflectable
     String serverStatus;
     @reflectable
-    String migrationDirection = "";
+    String migrationDirection;
     @reflectable
-    Migration currentMigration = new Migration();
+    Migration currentMigration;
     @reflectable
-    Migration selectedMigration = new Migration();
+    Migration selectedMigration;
 
     Project({this.name, this.path, this.colorPalette, this.migrations});
 
+    @reflectable
     Future prepare() async {
         await requestServerStatus();
         await requestConfig();
@@ -65,39 +67,36 @@ class Project extends JsProxy {
         await requestMigrations();
     }
 
+    @reflectable
     Future requestConfig() async {
         var url = "http://127.0.0.1:8079/requestConfig?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         updateConfig(responseText);
     }
 
+    @reflectable
     updateConfig(String responseText) {
         config = new Map();
         config = JSON.decode(responseText);
     }
 
+    @reflectable
     Future requestMigrations() async {
         var url = "http://127.0.0.1:8079/requestMigrations?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         updateMigrations(responseText);
     }
 
+    @reflectable
     updateMigrations(String responseText) {
         migrations = new List();
         List<Map> migrationsList = JSON.decode(responseText);
-        /**migrationsList.forEach((Map migMap) {
-                Migration mig = toObservable(new Migration(index: migMap['index'],
-                version: migMap['version'],
-                colorPalette: colorPalette,
-                actions: migMap['actions'],
-                state: migMap['state']));
-                migrations.add(mig);
-                if (mig.state == "curent") {
-                selectedMigration = mig;
-                }
-                });*/
         for (Map migMap in migrationsList) {
-            Migration mig = new Migration(index: migMap['index'], version: migMap['version'], colorPalette: colorPalette, actions: migMap['actions'], state: migMap['state']);
+            Migration mig = new Migration(index: migMap['index'],
+                    version: migMap['version'],
+                    colorPalette: colorPalette,
+                    actions: migMap['actions'],
+                    state: migMap['state']);
             migrations.add(mig);
             if (mig.state == "curent") {
                 selectedMigration = mig;
@@ -105,24 +104,22 @@ class Project extends JsProxy {
         }
     }
 
+    @reflectable
     Future requestServerStatus() async {
         var url = "http://127.0.0.1:8079/requestServerStatus?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         updateServerStatus(responseText);
     }
 
+    @reflectable
     updateServerStatus(String responseText) {
         serverStatus = responseText;
     }
 
+    @reflectable
     Migration getMigrationByIndex(num index) {
         Migration mig = new Migration();
-        /**migrations.forEach((Migration m) {
-                if (m.index == index) {
-                mig = m;
-                }
-                });**/
-        for(Migration m in migrations){
+        for (Migration m in migrations) {
             if (m.index == index) {
                 mig = m;
             }
@@ -130,6 +127,7 @@ class Project extends JsProxy {
         return mig;
     }
 
+    @reflectable
     void setSelectedMigrationByIndex(num index) {
         selectedMigration = getMigrationByIndex(index);
         if (selectedMigration.state == "older") {
@@ -141,6 +139,7 @@ class Project extends JsProxy {
         }
     }
 
+    @reflectable
     Migration getCurrentMigration() {
         Migration mig = new Migration();
         /**migrations.forEach((Migration m) {
@@ -148,7 +147,7 @@ class Project extends JsProxy {
                 mig = m;
                 }
                 });*/
-        for(Migration m in migrations){
+        for (Migration m in migrations) {
             if (m.state == "current") {
                 mig = m;
             }
@@ -156,31 +155,34 @@ class Project extends JsProxy {
         return mig;
     }
 
+    @reflectable
     Future requestSchema() async {
         var url = "http://127.0.0.1:8079/requestSchema?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         updateSchema(responseText);
     }
 
+    @reflectable
     updateSchema(String responseText) {
         var schema = JSON.decode(responseText);
         dependencyRelations = new Map();
         tables = new Map();
-        schema.forEach((String tableName, value) {
+        for (String tableName in schema.keys) {
+            var value = schema[tableName];
             if (tableName != "dependencyRelations") {
                 tables[tableName] = value;
             } else {
                 dependencyRelations = value;
             }
-        });
-
+        }
     }
 
+    @reflectable
     List getTableNames() {
         return tables.keys.toList();
     }
 
-
+    @reflectable
     List getColumnNamesFor(String tableName) {
         return tables[tableName].keys.toList();
     }

@@ -1,7 +1,9 @@
 @HtmlImport('projectView.html')
 library dartabase.poly.projectView;
 // Import the paper element from Polymer.
+import "package:polymer_elements/paper_material.dart";
 import "package:polymer_elements/paper_button.dart";
+import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_toast.dart";
 import "../poly/configView.dart";
 import "../poly/createMigration.dart";
@@ -16,17 +18,18 @@ import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-project-view')
 class ProjectView extends PolymerElement {
-    @Property(notify: true)
+    @property
     Project project;
-    @Property(notify: true)
+    @property
     Map schema = {};
 
     ProjectView.created() : super.created();
 
     @reflectable
-    setActive(Event e, var detail, DivElement target) {
-        project.setSelectedMigrationByIndex(
-                num.parse(target.getAttribute('index')));
+    setSelectedMigration(event, [_]) {
+        var model = new DomRepeatModel.fromEvent(event);
+        int index = model.index;
+        project.setSelectedMigrationByIndex(index);
     }
 
     @reflectable
@@ -39,13 +42,29 @@ class ProjectView extends PolymerElement {
             url += "&index=${project.selectedMigration.index}";
         }
         var responseText = await HttpRequest.getString(url);
-        updateView(responseText);
+        await updateView(responseText);
     }
 
-    updateView(responseText) {
+    Future updateView(responseText) async {
         PaperToast test = document.querySelector('#toast');
-        project.requestMigrations();
+        await project.requestMigrations();
         test.text = responseText + project.currentMigration.toString();
         test.show();
+    }
+
+    void ready() {
+        print("$runtimeType::ready()");
+//        ConfigView cv = Polymer.dom(this.root).querySelector("custom-config-view");
+        //this.set('selectedProject',projects[0]);
+    }
+
+    @reflectable
+    bool isSelectedMigration(Migration migration) {
+        return migration == project.selectedMigration;
+    }
+
+    @reflectable
+    bool isCurrentMigration(String state) {
+        return state == "current";
     }
 }

@@ -1,4 +1,4 @@
-library dartabase.poly.migration;
+/**library dartabase.poly.migration;
 
 import 'package:observe/observe.dart';
 import 'package:observe/mirrors_used.dart';
@@ -14,3 +14,4 @@ class Migration extends Observable {
             {this.index, this.version, this.colorPalette, this.actions, this.state});
 
 }
+*/

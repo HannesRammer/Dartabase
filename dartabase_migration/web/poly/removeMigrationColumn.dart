@@ -25,6 +25,11 @@ class RemoveMigrationColumn extends PolymerElement {
 
     RemoveMigrationColumn.created() : super.created();
 
+    void ready() {
+        print("$runtimeType::ready()");
+    }
+
+
     @reflectable
     void addColumn(event, [_]) {
         if (table.columns == null) {

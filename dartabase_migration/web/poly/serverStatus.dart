@@ -9,11 +9,20 @@ import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-server-status')
 class ServerStatus extends PolymerElement {
-    @Property(notify: true)
+    @property
     String status;
-    @Property(notify: true)
-    String adapter = null;
+    @property
+    String adapter;
 
     ServerStatus.created() : super.created();
+
+    @reflectable
+    bool isRunning(status) {
+        return status == "running";
+    }
+
+    void ready() {
+        print("$runtimeType::ready()");
+    }
 
 }
