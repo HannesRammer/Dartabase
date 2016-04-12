@@ -44,7 +44,7 @@ class DartabaseMigration extends PolymerElement {
 /**
         Map test() {
         Map m = {
-        "gamechar": {
+        "game_char": {
         "id": {
         "type": "INT"
         },
@@ -69,7 +69,7 @@ class DartabaseMigration extends PolymerElement {
         "type": "TIMESTAMP"
         },
         "username": "VARCHAR",
-        "charname": {
+        "char_name": {
         "type": "VARCHAR",
         "default": "pLaYeR"
         },

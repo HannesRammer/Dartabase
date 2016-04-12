@@ -3,16 +3,15 @@ library dartabase.poly.migrationRemoveTable;
 
 // Import the Polymer and Web Components scripts.
 import 'package:polymer_elements/paper_material.dart';
+import 'package:polymer_elements/paper_input.dart';
 
 import 'package:polymer/polymer.dart';
 import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-migration-remove-table')
 class MigrationRemoveTable extends PolymerElement {
-    @Property(notify: true)
-    String table = "";
-    @Property(notify: true)
-    Map colorPalette = {};
+    @property
+    String tableName = "";
 
     MigrationRemoveTable.created() : super.created();
 

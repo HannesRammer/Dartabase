@@ -9,20 +9,25 @@
             }
             paper-material {
                 background: rgba(27, 216, 43, 0.48);
-                width: 90%;
-                margin: 10px auto;
+                width: 98%;
+                margin: 5px auto;
+            }
+            .status {
+                vertical-align: middle;
+                text-align: center;
+                padding: 5px;
             }
         </style>
-        <template is="dom-if" if="[[ !isRunning(status) ]]">
-            <paper-material  class="red_text">
-                    [[adapter]]
-                Server :[[status]]
+        <template is="dom-if" if="{{ !isRunning(status) }}">
+            <paper-material  class="status red_text">
+                    {{adapter}}
+                Server :{{status}}
             </paper-material>
         </template>
-        <template is="dom-if" if="[[ isRunning(status) ]]">
-            <paper-material class="green_text">
-                    [[adapter]]
-                Server :[[status]]
+        <template is="dom-if" if="{{ isRunning(status) }}">
+            <paper-material class="status green_text">
+                    {{adapter}}
+                Server :{{status}}
             </paper-material>
         </template>
     </template>

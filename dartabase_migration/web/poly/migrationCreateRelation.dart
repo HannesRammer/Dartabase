@@ -9,10 +9,10 @@ import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-migration-create-relation')
 class MigrationCreateRelation extends PolymerElement {
-    @Property(notify: true)
-    List relations;
-    @Property(notify: true)
-    Map colorPalette ;
+    @property
+    var relations;
+    @property
+    Map colorPalette;
 
     MigrationCreateRelation.created() : super.created();
 
@@ -20,4 +20,8 @@ class MigrationCreateRelation extends PolymerElement {
         print("$runtimeType::ready()");
     }
 
+    @reflectable
+    String getRelations(var relations) {
+        return relations.toString();
+    }
 }

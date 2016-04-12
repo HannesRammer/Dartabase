@@ -1,0 +1,78 @@
+<dom-module id="custom-migration-action-view">
+    <template>
+        <style>
+            .migration {
+                vertical-align: middle;
+                text-align: center;
+                padding: 10px;
+            }
+            paper-tabs{
+                --paper-tabs-selection-bar-color: #FF8D8D;/*rgb(65, 167, 250)*/
+
+            }
+
+        </style>
+        <template is="dom-if" if="{{ directionContainsActions(migration, direction) }}">
+            <template is="dom-if" if="{{ actionExists(migration, direction, 'createTable') }}">
+                <paper-tabs selected="0">
+                    <paper-tab>create table</paper-tab>
+                </paper-tabs>
+
+                <template is="dom-repeat" items="{{ getColumnNames(migration, direction, 'createTable') }}">
+                    <custom-migration-create-table table-name="{{ item }}"
+                                                   columns="{{ getColumns(migration, direction, 'createTable', item) }}">
+                    </custom-migration-create-table>
+                </template>
+            </template>
+            <template is="dom-if" if="{{ actionExists(migration, direction, 'createColumn') }}">
+                <paper-tabs selected="0">
+                    <paper-tab>create column</paper-tab>
+                </paper-tabs>
+                <template is="dom-repeat" items="{{ getColumnNames(migration, direction, 'createColumn') }}">
+                    <custom-migration-create-column table-name="{{ item }}"
+                                                    columns="{{ getColumns(migration, direction, 'createColumn', item) }}">
+                    </custom-migration-create-column>
+                </template>
+            </template>
+            <template is="dom-if" if="{{ actionExists(migration, direction, 'removeColumn') }}">
+                <paper-tabs selected="0">
+                    <paper-tab>remove column</paper-tab>
+                </paper-tabs>
+                <template is="dom-repeat" items="{{ getColumnNames(migration, direction, 'removeColumn') }}">
+                    <custom-migration-remove-column table-name="{{ item }}"
+                                                    columns="{{ getColumns(migration, direction, 'removeColumn', item) }}">
+                    </custom-migration-remove-column>
+                </template>
+            </template>
+            <template is="dom-if" if="{{ actionExists(migration, direction, 'createRelation') }}">
+                <paper-tabs selected="0">
+                    <paper-tab>create relation</paper-tab>
+                </paper-tabs>
+                <template is="dom-repeat" items="{{ getRelatedNames(migration, direction, 'createRelation') }}">
+                    <custom-migration-create-relation relations="{{ item }}">
+                    </custom-migration-create-relation>
+                </template>
+            </template>
+            <template is="dom-if" if="{{ actionExists(migration, direction, 'removeRelation') }}">
+                <paper-tabs selected="0">
+                    <paper-tab>remove relation</paper-tab>
+                </paper-tabs>
+                <template is="dom-repeat" items="{{ getRelatedNames(migration, direction, 'removeRelation') }}">
+                    <custom-migration-remove-relation relations="{{ item }}">
+                    </custom-migration-remove-relation>
+                </template>
+            </template>
+
+            <template is="dom-if" if="{{ actionExists(migration, direction, 'removeTable') }}">
+                <paper-tabs selected="0">
+                    <paper-tab>remove table</paper-tab>
+                </paper-tabs>
+                <template is="dom-repeat" items="{{ getTableNames(migration, direction, 'removeTable') }}">
+                    <custom-migration-remove-table table-name="{{ item }}">
+
+                    </custom-migration-remove-table>
+                </template>
+            </template>
+        </template>
+    </template>
+</dom-module>

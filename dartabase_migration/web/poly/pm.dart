@@ -1,12 +1,3 @@
-//import '../poly/createProject.dart';
-
-
-//import 'package:polymer_elements/iron_pages.dart';
-//import 'package:polymer_elements/paper_material.dart';
-//import 'package:polymer_elements/paper_button.dart';
-
-//import '../poly/serverStatus.dart';
-//import '../poly/projectView.dart';
 import 'dart:html';
 import 'dart:async';
 import 'dart:convert' show JSON;
@@ -25,6 +16,7 @@ class Migration extends JsProxy {
     Map actions;
     @reflectable
     String state;
+    //bool selected = false;
 
     Migration(
             {this.index, this.version, this.colorPalette, this.actions, this.state});
@@ -98,7 +90,7 @@ class Project extends JsProxy {
                     actions: migMap['actions'],
                     state: migMap['state']);
             migrations.add(mig);
-            if (mig.state == "curent") {
+            if (mig.state == "current") {
                 selectedMigration = mig;
             }
         }
@@ -118,7 +110,7 @@ class Project extends JsProxy {
 
     @reflectable
     Migration getMigrationByIndex(num index) {
-        Migration mig = new Migration();
+        Migration mig;
         for (Migration m in migrations) {
             if (m.index == index) {
                 mig = m;
@@ -134,14 +126,14 @@ class Project extends JsProxy {
             migrationDirection = "DOWN";
         } else if (selectedMigration.state == "newer") {
             migrationDirection = "UP";
-        } else if (selectedMigration.state == "curent") {
+        } else if (selectedMigration.state == "current") {
             migrationDirection = "";
         }
     }
 
     @reflectable
     Migration getCurrentMigration() {
-        Migration mig = new Migration();
+        Migration mig;
         /**migrations.forEach((Migration m) {
                 if (m.state == "current") {
                 mig = m;

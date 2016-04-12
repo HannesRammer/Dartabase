@@ -1,14 +1,56 @@
 <dom-module id="custom-migration-create-column">
     <template>
         <style>
-            paper-material {
-                background: #d81b60;
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
             }
+
+            .tableName {
+                text-align: left;
+                clear: both;
+                width: 50%;
+            }
+
+            .columnName {
+                text-align: right;
+                float: left;
+                width: 25%;
+            }
+
         </style>
-        <paper-material elevation="2">
-            {{tableName}}
-            <template is="dom-repeat" items="{{columns.keys}}">
-                {{item}} : {{columns[item]}}
+        <paper-material class="migration" elevation="2">
+
+            <paper-input label="Table" class="tableName" value="{{tableName}}"
+                         disabled></paper-input>
+            <template is="dom-repeat" items="{{ getColumnNames(columns) }}">
+                <paper-input label="Column Name" class="columnName" value="{{ item }}" disabled
+                             style=""></paper-input>
+                <template is="dom-if" if="{{ isString(columns,item) }}">
+                    <paper-input label="Type" class="columnName" value="{{ getColumnType(columns, item, 'string') }} "
+                                 disabled
+                                 style=""></paper-input>
+                </template>
+                <template is="dom-if" if="{{ !isString(columns,item) }}">
+                    <paper-input label="Type" class="columnName" value="{{ getColumnType(columns, item, 'type') }} "
+                                 disabled
+                                 style=""></paper-input>
+                    <paper-input label="Default" class="columnName"
+                                 value="{{ getColumnType(columns, item, 'default') }} "
+                                 disabled
+                                 style=""></paper-input>
+                    <paper-input label="NULL" class="columnName" value="{{ getColumnType(columns, item, 'null') }} "
+                                 disabled
+                                 style=""></paper-input>
+                </template>
+                <br style="clear:both;"/>
             </template>
         </paper-material>
     </template>

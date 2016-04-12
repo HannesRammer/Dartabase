@@ -1,17 +1,42 @@
 <dom-module id="custom-migration-remove-column">
     <template>
         <style>
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
 
-            paper-material {
-                background: #d81b60;
             }
+
+            .tableName {
+                text-align: left;
+                clear: both;
+
+            }
+
+            .columnName {
+                text-align: right;
+                float:left;
+            }
+
         </style>
-        v
-        <paper-materials elevation="2">
-            {{tableName}}
-            <template is="dom-repeat" items="{{columns}}">
-                {{item}}
+        <paper-material class="migration" elevation="2">
+
+            <paper-input label="Table" class="tableName" value="{{tableName}}"
+                         disabled></paper-input>
+            <br/>
+            <template is="dom-repeat" items="{{ columns }}">
+                <paper-input label="Column Name" class="columnName" value="{{ item }}" disabled
+                             style=""></paper-input>
+
+                <br style="clear:both;" />
             </template>
-        </paper-materials>
+        </paper-material>
     </template>
 </dom-module>

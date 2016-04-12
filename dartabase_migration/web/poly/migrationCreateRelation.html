@@ -1,12 +1,14 @@
 <dom-module id="custom-migration-create-relation">
     <template>
         <style>
-            paper-material {
-                background: #d81b60;
+
+
+            .action {
+                vertical-align: middle;
+                text-align: center;
+                padding: 10px;
             }
         </style>
-        <paper-material elevation="2">
-                {{relations}}
-        </paper-material>
+                {{getRelations(relations)}}
     </template>
 </dom-module>

@@ -1,0 +1,61 @@
+<dom-module id="custom-migration-list-view">
+    <template>
+        <style>
+            paper-material {
+                width: 98%;
+                margin: 5px auto;
+            }
+
+            paper-listbox {
+                width: 40%;
+                float: left;
+            }
+
+            custom-migration-view {
+                width: 50%;
+                float: left;
+            }
+
+            .migrations {
+                vertical-align: middle;
+                text-align: center;
+                padding: 10px;
+            }
+        </style>
+        <paper-material class="migrations" elevation="2">
+            Migrations:
+            <paper-listbox>
+                <template is="dom-repeat" items="{{ project.migrations }}">
+                    <template is="dom-if" if="{{ isCurrentMigration(item.state) }}">
+                        <paper-item id="{{ item.version }}" on-tap="setSelectedMigration">
+                            {{ item.version }} -- current
+                        </paper-item>
+                    </template>
+                    <template is="dom-if" if="{{ !isCurrentMigration(item.state) }}">
+                        <paper-item id="{{ item.version }}" on-tap="setSelectedMigration">
+                            {{ item.version }}
+                        </paper-item>
+                    </template>
+                </template>
+            </paper-listbox>
+            <custom-migration-view migration="{{ project.selectedMigration }}">
+            </custom-migration-view>
+            <template is="dom-if" if="{{ isNothingToDo(project.selectedMigration.state) }}">
+                <paper-button raised disabled="true">
+                    migrate
+                </paper-button>
+            </template>
+            <template is="dom-if" if="{{ isOlderMigration(project.selectedMigration.state) }}">
+                <paper-button raised on-tap="runMigration">
+                    migrate to older version
+                </paper-button>
+            </template>
+            <template is="dom-if" if="{{ isNewerMigration(project.selectedMigration.state) }}">
+                <paper-button raised on-tap="runMigration">
+                    migrate to newer version
+                </paper-button>
+            </template>
+
+        </paper-material>
+    </template>
+</dom-module>

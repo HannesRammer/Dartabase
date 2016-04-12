@@ -377,7 +377,7 @@ void removeColumn(conn) {
                         print("\nSCHEMA removeColumn FAIL: Column ${columnNames[j]} doesnt exist, column not removed from table ${tableName}");
                     }
                 }
-//print("\nsqlQuery: $sqlQuery");
+//print("\n sqlQuery: $sqlQuery");
                 DBHelper.removeDBColumn(sqlQuery, conn, j, columnNames.length);
             } else {
                 print("\nSCHEMA removeColumn FAIL: Table ${tableName} doesnt exists, columns not removed");

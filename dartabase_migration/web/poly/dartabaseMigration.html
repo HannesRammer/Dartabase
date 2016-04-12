@@ -2,9 +2,8 @@
     <template>
         <style>
             paper-material {
-                background: rgba(27, 216, 43, 0.48);
-                width: 90%;
-                margin: 10px auto;
+                width: 98%;
+                margin: 5px auto;
             }
 
             .project {
@@ -15,11 +14,11 @@
         </style>
         <iron-pages selected="0">
             <div id="page_1">
-                <template is="dom-repeat" items="[[ projects ]]">
+                <template is="dom-repeat" items="{{ projects }}">
                     <paper-material class="project" elevation="2" on-tap="transition">
-                        <div>Path: [[ item.path ]]</div>
-                        <div>Name: [[ item.name ]]</div>
-                        <custom-server-status status="[[ item.serverStatus ]]" adapter="[[ item.config.adapter ]]">
+                        <div>Path: {{ item.path }}</div>
+                        <div>Name: {{ item.name }}</div>
+                        <custom-server-status status="{{ item.serverStatus }}" adapter="{{ item.config.adapter }}">
                         </custom-server-status>
 
                     </paper-material>
@@ -28,7 +27,7 @@
             <paper-material elevation="2" id="page_2">
                 <paper-icon-button icon="close" on-tap="transition">
                 </paper-icon-button>
-                <custom-project-view project="[[ selectedProject ]]"></custom-project-view>
+                <custom-project-view project="{{ selectedProject }}"></custom-project-view>
             </paper-material>
         </iron-pages>
     </template>

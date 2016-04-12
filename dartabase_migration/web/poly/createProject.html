@@ -3,8 +3,8 @@
         <style>
             paper-material {
                 background: #d81b60;
-                width: 90%;
-                margin: 10px auto;
+                width: 98%;
+                margin: 5px auto;
             }
         </style>
         <iron-pages selected="0">
@@ -17,7 +17,7 @@
                 <paper-input label="Project Name" value="{{name}}"></paper-input>
                 <paper-input label="Project Path" value="{{path}}"></paper-input>
                 <paper-button raised on-tap="initiateMigration">
-                    Enhance Project '[[name]]' at path '[[path]]'
+                    Enhance Project '{{name}}' at path '{{path}}'
                 </paper-button>
             </paper-material>
         </iron-pages>

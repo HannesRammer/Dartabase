@@ -1,16 +1,70 @@
 <dom-module id="custom-migration-create-table">
     <template>
         <style>
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
 
-            paper-material {
-                background: #d81b60;
+
             }
+
+            .tableName {
+                text-align: left;
+            }
+
+            .columnName {
+                text-align: right;
+                float:left;
+                width:25%;
+            }
+            .header{
+                margin: 0px;
+                padding: 0px;
+                text-align: center;
+            }
+
         </style>
-        <paper-material elevation="2">
-            {{tableName}}
-            <template is="dom-repeat" items="{{columns.keys}}">
-                {{item}} : {{columns[item].toString()}}
+        <paper-material class="migration" elevation="2">
+
+            <paper-input label="Table" class="tableName" value="{{tableName}}"
+                         disabled></paper-input>
+
+            <paper-input label="Column Name" class="header columnName" disabled no-label-float></paper-input>
+
+            <paper-input label="Type" class="header columnName" disabled no-label-float></paper-input>
+            <paper-input label="Default" class="header columnName" disabled no-label-float></paper-input>
+            <paper-input label="NULL" class="header columnName" disabled no-label-float></paper-input>
+
+            <template is="dom-repeat" items="{{ getColumnNames(columns) }}">
+                <paper-input label="Column Name" class="columnName" value="{{ item }}" disabled
+                             style="" no-label-float></paper-input>
+                <template is="dom-if" if="{{ isString(columns,item) }}">
+                    <paper-input label="Type" class="columnName" value="{{ getColumnType(columns, item, 'string') }} "
+                                 disabled
+                                 style="" no-label-float></paper-input>
+                </template>
+                <template is="dom-if" if="{{ !isString(columns,item) }}">
+                    <paper-input label="Type" class="columnName" value="{{ getColumnType(columns, item, 'type') }} "
+                                 disabled
+                                 style="" no-label-float></paper-input>
+                    <paper-input label="Default" class="columnName"
+                                 value="{{ getColumnType(columns, item, 'default') }} "
+                                 disabled
+                                 style="" no-label-float></paper-input>
+                    <paper-input label="NULL" class="columnName" value="{{ getColumnType(columns, item, 'null') }} "
+                                 disabled
+                                 style="" no-label-float></paper-input>
+                </template>
+                <br style="clear:both;" />
             </template>
+
         </paper-material>
     </template>
 </dom-module>

@@ -17,8 +17,8 @@
 
             paper-material {
                 background: rgba(27, 216, 43, 0.48);
-                width: 90%;
-                margin: 10px auto;
+                width: 98%;
+                margin: 5px auto;
             }
         </style>
         <template is="dom-repeat" items="{{createTable.columns}}" as="column">
@@ -34,7 +34,7 @@
                     </paper-listbox>
                 </paper-dropdown-menu>
                 <paper-input label="Default Value" value="{{column['def']}}"></paper-input>
-                <template is="dom-if" if="{{column['nil'] == false || colimn['nil'] == null}}">
+                <template is="dom-if" if="{{column['nil'] == false || column['nil'] == null}}">
                     <paper-checkbox>Not Null</paper-checkbox>
                 </template>
                 <template is="dom-if" if="{{column['nil'] == true}}">

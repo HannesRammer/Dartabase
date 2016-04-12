@@ -1,14 +1,23 @@
 <dom-module id="custom-migration-remove-table">
     <template>
         <style>
-
-
-            paper-material {
-                /**border: 1px solid #d81b60;*/
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
             }
         </style>
-        <paper-material elevated="2">
-            {{table}}
+        <paper-material class="migration" elevation="2">
+
+            <paper-input label="Table" class="tableName" value="{{tableName}}"
+                         disabled></paper-input>
+
         </paper-material>
     </template>
 </dom-module>

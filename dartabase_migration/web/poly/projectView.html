@@ -1,80 +1,22 @@
 <dom-module id="custom-project-view">
     <template>
         <style>
-            paper-button {
-                border: 1px solid #d81b60;
-            }
+
             .project {
                 vertical-align: middle;
                 text-align: center;
                 padding: 10px;
             }
         </style>
-        <span class="card-album-title">Project: [[ project.name ]]</span>
-        <span class="card-album-name"> [[ project.path ]]</span>
-
-        <paper-material class="project" elevation="2">
-            <custom-server-status status="[[ project.serverStatus ]]"
-                                  adapter="[[ project.config.adapter ]]"></custom-server-status>
-
-            <custom-config-view project="[[ project ]]">
-
-            </custom-config-view>
-            Migrations:
-            <template is="dom-repeat" items="[[ project.migrations ]]">
-
-                <template is="dom-if" if="[[ !isSelectedMigration(item) ]]">
-
-                    <template is="dom-if" if="[[ isCurrentMigration(item.state) ]]">
-                        <paper-item id="[[ item.version ]]">
-                            [[ item.version ]] -- current
-                        </paper-item>
-                    </template>
-                    <template is="dom-if" if="[[ !isCurrentMigration(item.state) ]]">
-                        <paper-item id="[[ item.version ]]">
-                            [[ item.version ]]
-                        </paper-item>
-                    </template>
-                </template>
-                <template is="dom-if" if="[[ isSelectedMigration(item) ]]">
-
-                    <template is="dom-if" if="[[ isCurrentMigration(item.state) ]]">
-                        <paper-item id="[[ item.version ]]" on-tap="setSelectedMigration">
-                            current
-                        </paper-item>
-                    </template>
-                    <template is="dom-if" if="[[ !isCurrentMigration(item.state) ]]">
-                        <paper-item id="[[ item.version ]]" on-tap="setSelectedMigration">
-                            [[ item.version ]]
-                        </paper-item>
-                    </template>
-                </template>
-            </template>
-
-            <template is="dom-if" if="[[ project.selectedMigration.state == 'current' ]]">
-                <paper-button raised disabled="true">
-                    migrate
-                </paper-button>
-            </template>
-            <template is="dom-if" if="[[ project.selectedMigration.state == 'older' ]]">
-                <paper-button raised on-tap="runMigration">
-                    migrate to older version
-                </paper-button>
-            </template>
-            <template is="dom-if" if="[[ project.selectedMigration.state == 'newer' ]]">
-                <paper-button raised on-tap="runMigration">
-                    migrate to newer version
-                </paper-button>
-            </template>
-            <custom-create-migration project="[[ project ]]">
-
-            </custom-create-migration>
-            <div class="migrationContentRight">
-                <custom-migration-view migration="[[ project.selectedMigration ]]">
-
-                </custom-migration-view>
-            </div>
-
-        </paper-material>
+        <span class="card-album-title">Project: {{ project.name }}</span>
+        <span class="card-album-name"> {{ project.path }}</span>
+        <custom-server-status status="{{ project.serverStatus }}" adapter="{{ project.config.adapter }}">
+        </custom-server-status>
+        <custom-config-view project="{{ project }}">
+        </custom-config-view>
+        <custom-migration-list-view project="{{ project }}">
+        </custom-migration-list-view>
+        <custom-create-migration project="{{ project }}">
+        </custom-create-migration>
     </template>
 </dom-module>
