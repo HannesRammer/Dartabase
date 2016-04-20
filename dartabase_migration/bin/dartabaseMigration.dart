@@ -209,20 +209,24 @@ Future migrate(conn) async {
                 if (lastMigrationNumber > fileId - 1) {
                     doFile(conn);
                 } else {
-                    print("goal migration smaller or equal current migration, maybe you wanted to revert migration via dbDown instead");
+                    print("goal migration smaller or equal current migration, maybe you wanted to revert migration via dbDown.dart instead");
+                    exit(0);
                 }
             } else if (direction == "DOWN") {
                 if (lastMigrationNumber <= fileId) {
                     doFile(conn);
                 } else {
-                    print("goal migration higher or equal current migration, maybe you wanted to migrate via dbUp instead");
+                    print("goal migration higher or equal current migration, maybe you wanted to migrate via dbUp.dart instead");
+                    exit(0);
                 }
             }
         } else {
             print("goal migration number out of range. goal migration doesnt exist ");
+            exit(0);
         }
     } else {
         print("\nno migration files in folder ${directory.path}");
+        exit(0);
     }
 }
 
@@ -233,6 +237,7 @@ Future doFile(conn) async {
         createTable(conn);
     } else {
         print("migration direction '$direction' not specified in file ${files[fileId].path}");
+        exit(0);
     }
 //load with next file after this has finished
 }
@@ -548,11 +553,11 @@ Future removeTable(conn) async {
                 doFile(conn);
             } else {
                 print("goal migration reached");
-                //exit(0);
+                exit(0);
             }
         } else {
             print("goal migration reached");
-            //exit(0);
+            exit(0);
         }
     } else if (direction == "DOWN") {
         fileId--;
@@ -566,14 +571,14 @@ Future removeTable(conn) async {
                         "schemaVersion": schemaVersion
                 }, '${DBCore.rootPath}/db/schemaVersion.json');
                 print("goal migration reached");
-                //exit(0);
+                exit(0);
             }
         } else {
              DBCore.mapToJsonFilePath({
                     "schemaVersion": ""
             }, '${DBCore.rootPath}/db/schemaVersion.json');
             print("goal migration reached");
-            //exit(0);
+            exit(0);
         }
     }
 }

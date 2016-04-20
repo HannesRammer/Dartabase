@@ -9,15 +9,37 @@
             .project {
                 vertical-align: middle;
                 text-align: center;
-                padding: 10px;
+                width:300px;
+                height:150px;
+                word-wrap: break-word;
+                float: left;
+                margin: 0 20px;
+                padding: 0 10px;
+            }
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
+
+
             }
         </style>
         <iron-pages selected="0">
             <div id="page_1">
                 <template is="dom-repeat" items="{{ projects }}">
+
                     <paper-material class="project" elevation="2" on-tap="transition">
+                        <paper-input label="Name" class="projectName" value="{{ item.name }}"
+                                     disabled></paper-input>
+
                         <div>Path: {{ item.path }}</div>
-                        <div>Name: {{ item.name }}</div>
+
                         <custom-server-status status="{{ item.serverStatus }}" adapter="{{ item.config.adapter }}">
                         </custom-server-status>
 

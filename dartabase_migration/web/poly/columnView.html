@@ -23,7 +23,7 @@
         </style>
         <template is="dom-repeat" items="{{createTable.columns}}" as="column">
             <paper-material elevation="2">
-                <paper-input required label="Column Name" value="column['name']"></paper-input>
+                <paper-input required label="Column Name" value="{{column.name}}"></paper-input>
                 <paper-dropdown-menu label="Database Types">
                     <paper-listbox>
                         <template is="dom-repeat" items="{{dbTypes}}" as="dbType">
@@ -33,13 +33,8 @@
                         </template>
                     </paper-listbox>
                 </paper-dropdown-menu>
-                <paper-input label="Default Value" value="{{column['def']}}"></paper-input>
-                <template is="dom-if" if="{{column['nil'] == false || column['nil'] == null}}">
-                    <paper-checkbox>Not Null</paper-checkbox>
-                </template>
-                <template is="dom-if" if="{{column['nil'] == true}}">
-                    <paper-checkbox checked>Not Null"</paper-checkbox>
-                </template>
+                <paper-input label="Default Value" value="{{column.def}}"></paper-input>
+                    <paper-checkbox checked="{{column.nil}}">Not Null"</paper-checkbox>
             </paper-material>
         </template>
         <paper-button raised on-tap="addColumn">

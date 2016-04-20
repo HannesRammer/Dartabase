@@ -35,7 +35,7 @@ class MigrationActionView extends PolymerElement {
     @reflectable
     bool directionContainsActions(Migration migration, String direction) {
         bool val = false;
-        if(migration != null && migration.actions[direction] != null){
+        if(migration != null && migration.actions != null && migration.actions[direction] != null){
             val = migration.actions[direction].length > 0;
         }
         return val;
@@ -44,7 +44,7 @@ class MigrationActionView extends PolymerElement {
     @reflectable
     bool actionExists(Migration migration, String direction, String action) {
         bool val = false;
-        if(migration.actions[direction] != null) {
+        if(migration != null && migration.actions != null &&migration.actions[direction] != null) {
             val = migration.actions[direction][action] != null;
         }
         return val;
@@ -53,7 +53,7 @@ class MigrationActionView extends PolymerElement {
     @reflectable
     List getColumnNames(Migration migration, String direction, String action) {
         List names = new List();
-        if(migration.actions[direction] != null && migration.actions[direction][action] != null) {
+        if(migration != null && migration.actions != null && migration.actions[direction] != null && migration.actions[direction][action] != null) {
             names = migration.actions[direction][action].keys.toList();
         }
         return names;
@@ -62,7 +62,7 @@ class MigrationActionView extends PolymerElement {
     @reflectable
      getColumns(Migration migration, String direction, String action, String tableName) {
          var columns ;
-        if(migration.actions[direction] != null && migration.actions[direction][action] != null) {
+        if(migration != null && migration.actions != null && migration.actions[direction] != null && migration.actions[direction][action] != null) {
             columns = migration.actions[direction][action][tableName];
         }
         return columns;
@@ -71,7 +71,7 @@ class MigrationActionView extends PolymerElement {
     @reflectable
     List getTableNames(Migration migration, String direction, String action) {
         List names = new List();
-        if(migration.actions[direction] != null) {
+        if(migration != null && migration.actions != null && migration.actions[direction] != null) {
             names = migration.actions[direction][action];
         }
         return names;
@@ -80,7 +80,7 @@ class MigrationActionView extends PolymerElement {
     @reflectable
     List getRelatedNames(Migration migration, String direction, String action) {
         List names = new List();
-        if(migration.actions[direction] != null) {
+        if(migration != null && migration.actions != null && migration.actions[direction] != null) {
             names = migration.actions[direction][action];
         }
         return names;

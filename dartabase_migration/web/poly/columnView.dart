@@ -20,7 +20,7 @@ class ColumnView extends PolymerElement {
 
     ColumnView.created() : super.created();
 
-    @Property(notify: true)
+    @property
     List dbTypes = ["BINT",
     "BINT UNSIGNED",
     "BINARY",
@@ -56,10 +56,10 @@ class ColumnView extends PolymerElement {
     "VARCHAR"
     ];
 
-    @Property(notify: true)
+    @property
     Map column;
 
-    @Property(notify: true)
+    @property
     Table createTable;
 
     void ready() {

@@ -17,11 +17,11 @@ import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-create-migration-column')
 class CreateMigrationColumn extends PolymerElement {
-    @Property(notify: true)
+    @property
     Project project;
-    @Property(notify: true)
+    @property
     Table table;
-    @Property(notify: true)
+    @property
     List existingTableNames;
 
     CreateMigrationColumn.created() : super.created();

@@ -20,6 +20,9 @@
                 width: 98%;
                 margin: 5px auto;
             }
+            iron-pages{
+                width:50%;
+            }
         </style>
         <iron-pages selected="0">
             <paper-button raised on-tap="transition" id="page_1">
@@ -33,16 +36,14 @@
                     <custom-create-migration-table>
                     </custom-create-migration-table>
                     createColumn:
-                    <paper-button raised on-tap="addColumn}">
+                    <paper-button raised on-tap="addColumn">
                         + add column to existing table
                     </paper-button>
 
-                    <paper-material elevation="2">
                         <template is="dom-repeat" items="{{createColumn}}">
                             <custom-create-migration-column existing-table-names="{{existingTableNames}}">
                             </custom-create-migration-column>
                         </template>
-                    </paper-material>
                     removeColumn:
                     <paper-button raised on-tap="addRemoveColumn">
                         + remove column from existing table

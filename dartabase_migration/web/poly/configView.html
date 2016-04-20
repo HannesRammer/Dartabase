@@ -21,15 +21,34 @@
                 width: 98%;
                 margin: 5px auto;
             }
+
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
+                width: 50%;
+                float: left;
+                text-align: center;
+            }
+            iron-pages{
+                width:50%;
+            }
         </style>
         <iron-pages selected="0">
             <paper-material class="config" elevation="2" id="page_1">
-                adapter :{{ project.config.adapter }} |
-                database :{{ project.config.database }} <br/>
-                username :{{ project.config.username }} |
-                password :{{ project.config.password }} <br/>
-                host :{{ project.config.host }} |
-                port :{{ project.config.port }} |
+                <paper-input label="adapter" value="{{ project.config.adapter }}" disabled></paper-input>
+                <paper-input label="database" value="{{ project.config.database }}" disabled></paper-input> <br/>
+                <paper-input label="username" value="{{ project.config.username }}" disabled></paper-input>
+                <paper-input label="password" value="{{ project.config.password }}" disabled></paper-input><br/>
+                <paper-input label="host" value="{{ project.config.host }}" disabled></paper-input>
+                <paper-input label="port" value="{{ project.config.port }}" disabled></paper-input><br/>
+
                 <template is="dom-if" if="{{ !isSecureConnection(project.config.ssl) }}">
                         <span class="red_text">
                           ssl :{{ project.config.ssl }}
@@ -40,28 +59,22 @@
                           ssl :{{ project.config.ssl }}
                         </span>
                 </template>
-                |
+                <br/>
                 <paper-button raised on-tap="transition">
                     edit
                 </paper-button>
             </paper-material>
             <paper-material elevation="2" id="page_2">
                 <paper-input label="adapter" value="{{ project.config.adapter }}"></paper-input>
-                <paper-input label="database" value="{{ project.config.database }}"></paper-input>
-                <paper-input label="username" value="{{ project.config.username }}"></paper-input>
-                <paper-input label="password" value="{{ project.config.password }}"></paper-input>
-                <paper-input label="host" value="{{ project.config.host }}"></paper-input>
-                <paper-input label="port" value="{{ project.config.port }}"></paper-input>
-                <template is="dom-if" if="{{ !isSecureConnection(project.config.ssl) }}">
-                    <paper-checkbox>
-                        ssl
-                    </paper-checkbox>
-                </template>
-                <template is="dom-if" if="{{ isSecureConnection(project.config.ssl) }}">
-                    <paper-checkbox checked>
-                        ssl
-                    </paper-checkbox>
-                </template>
+                <paper-input label="database" value="{{ project.config.database }}" ></paper-input>
+                <paper-input label="username" value="{{ project.config.username }}" ></paper-input>
+                <paper-input label="password" value="{{ project.config.password }}" ></paper-input>
+                <paper-input label="host" value="{{ project.config.host }}" ></paper-input>
+                <paper-input label="port" value="{{ project.config.port }}" ></paper-input><br/>
+                <paper-checkbox checked?="{{isSecureConnection(project.config.ssl)}}">
+                    ssl
+                </paper-checkbox>
+                <br/>
                 <paper-button raised on-tap="saveTransition">
                     save
                 </paper-button>

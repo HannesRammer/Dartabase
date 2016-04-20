@@ -15,16 +15,19 @@ import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-create-migration-table')
 class CreateMigrationTable extends PolymerElement {
-    @Property(notify: true)
-    List<Table> createTables;
+    @property
+    List createTables;
 
     CreateMigrationTable.created() : super.created();
 
     @reflectable
     addTable(event, [_]) {
-        Table table = new Table(columns: []);
+        createTables = [];
+        //Table table = new Table(columns: []);
+        List table = {"tableName":"columnNam]}
         table.columns.add({});
         createTables.add(table);
+
     }
 
     @reflectable

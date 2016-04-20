@@ -20,12 +20,7 @@
                 margin: 5px auto;
             }
         </style>
-        <iron-pages selected="0">
-            <paper-material elevation="2" id="page_1">
-                <paper-button raised on-tap="transition">
-                    create new Table
-                </paper-button>
-            </paper-material>
+
 
             <paper-material elevation="2" id="page_2">
                 createTable:
@@ -36,13 +31,7 @@
                     <paper-input required label="Table Name" value="{{item.name}}"></paper-input>
                     <custom-column-view create-table="{{item}}"></custom-column-view>
                 </template>
-                <paper-button raised on-tap="createMigration">
-                    create
-                </paper-button>
-                <paper-button raised on-tap="transition">
-                    cancel
-                </paper-button>
             </paper-material>
-        </iron-pages>
+
     </template>
 </dom-module>
