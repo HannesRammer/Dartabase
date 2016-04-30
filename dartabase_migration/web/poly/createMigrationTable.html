@@ -34,7 +34,7 @@
             add new table
         </paper-button>
 
-        <template is="dom-repeat" items="{{createTables}}">
+        <template is="dom-repeat" items="{{project.migrationActions.createTables}}">
             <paper-input required label="Table Name" value="{{item.name}}"></paper-input>
             <a href="#" on-tap="cancelTable">cancel createTables</a>
             <div class="columnBox">

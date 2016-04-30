@@ -35,9 +35,9 @@
 
             <paper-input class="list" required label="Column Name" value="{{column.name}}"></paper-input>
             <paper-dropdown-menu class="list" label="Database Types">
-                <paper-listbox class="dropdown-content">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.type}}">
                     <template is="dom-repeat" items="{{dbTypes}}">
-                        <paper-item>
+                        <paper-item value="{{item}}">
                             {{item}}
                         </paper-item>
                     </template>

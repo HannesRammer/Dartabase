@@ -24,13 +24,11 @@ class RemoveMigrationColumn extends PolymerElement {
     List existingTableNames;
     @property
     Map existingColumns;
+
     @property
     String selectedTable;
     @property
     String selectedColumn;
-
-    @property
-    List<Table> removeColumns = new List();
 
     RemoveMigrationColumn.created() : super.created();
 
@@ -42,14 +40,19 @@ class RemoveMigrationColumn extends PolymerElement {
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-        Table table = new Table(columns: []);
-        add("removeColumns", table);
+        Table table = new Table(columns: [{
+            "name":"",
+            "type":"",
+            "def":"",
+            "nil":true
+        }]);
+        add("project.migrationActions.removeColumns", table);
         set("existingTableNames", await project.getTableNames());
     }
 
     @reflectable
     void cancelTable(event, [_]) {
-        set("removeColumns", new List());
+        set("project.migrationActions.removeColumns", new List());
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
     }
@@ -57,5 +60,6 @@ class RemoveMigrationColumn extends PolymerElement {
     @Observe('selectedTable')
     Future updateColumns(String newSelectedTable) async {
         set("existingColumnNames", await project.getColumnNames(newSelectedTable));
+        set("project.migrationActions.removeColumns.0.name", newSelectedTable);
     }
 }

@@ -22,11 +22,6 @@ class RemoveMigrationTable extends PolymerElement {
 
     @property
     List existingTableNames;
-    @property
-    String selectedTable;
-
-    @property
-    List<Table> removeTables = new List();
 
     RemoveMigrationTable.created() : super.created();
 
@@ -39,7 +34,7 @@ class RemoveMigrationTable extends PolymerElement {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
         Table table = new Table();
-        add("removeTables", table);
+        add("project.migrationActions.removeTables", table);
         List names = await project.getTableNames();
         List filteredNames = new List();
         for(String name in names){
@@ -52,7 +47,7 @@ class RemoveMigrationTable extends PolymerElement {
 
     @reflectable
     void cancelTable(event, [_]) {
-        set("removeTables", new List());
+        set("project.migrationActions.removeTables", new List());
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
     }

@@ -34,11 +34,11 @@
         <paper-button raised on-tap="addTable" id="tableButton">
             add column to existing table
         </paper-button>
-        <template is="dom-repeat" items="{{createColumns}}">
+        <template is="dom-repeat" items="{{project.migrationActions.createColumns}}">
             <paper-dropdown-menu label="select table">
-                <paper-listbox class="dropdown-content">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.name}}">
                     <template is="dom-repeat" items="{{existingTableNames}}">
-                        <paper-item>
+                        <paper-item value="{{item}}">
                             {{item}}
                         </paper-item>
                     </template>

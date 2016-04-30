@@ -22,12 +22,6 @@ class RemoveMigrationRelation extends PolymerElement {
     @property
     List existingRelations;
 
-    @property
-    String selectedRelation;
-
-    @property
-    List<List> removeRelations = new List();
-
     RemoveMigrationRelation.created() : super.created();
 
     void ready() {
@@ -38,8 +32,8 @@ class RemoveMigrationRelation extends PolymerElement {
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-        List relation = new List();
-        add("removeRelations", relation);
+        Map relation = {"selectedRelation":""};
+        add("project.migrationActions.removeRelations", relation);
         List names = await project.getTableNames();
         List filteredNames = new List();
         for(String name in names){
@@ -52,8 +46,7 @@ class RemoveMigrationRelation extends PolymerElement {
 
     @reflectable
     void cancelTable(event, [_]) {
-        set("removeRelations", new List());
-        set("selectedRelation", "");
+        set("project.migrationActions.removeRelations", new List());
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
 

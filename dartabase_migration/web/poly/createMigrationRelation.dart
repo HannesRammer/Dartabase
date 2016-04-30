@@ -22,13 +22,6 @@ class CreateMigrationRelation extends PolymerElement {
     List existingTableNamesOne;
     @property
     List existingTableNamesTwo;
-    @property
-    String selectedTableOne;
-    @property
-    String selectedTableTwo;
-
-    @property
-    List<List<String>> createRelations = new List();
 
     CreateMigrationRelation.created() : super.created();
 
@@ -40,15 +33,15 @@ class CreateMigrationRelation extends PolymerElement {
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-        List relation = new List();
-        add("createRelations", relation);
+        Map relation = {"selectedTableOne":"","selectedTableTwo":""};
+        add("project.migrationActions.createRelations", relation);
         set("existingTableNamesOne", await project.getTableNames());
         set("existingTableNamesTwo", existingTableNamesOne);
     }
 
     @reflectable
     void cancelTable(event, [_]) {
-        set("createRelations", new List());
+        set("project.migrationActions.createRelations", new List());
         set("selectedTableOne", "");
         set("selectedTableTwo", "");
         var tableButton = querySelector("#tableButton");

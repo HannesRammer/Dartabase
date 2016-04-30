@@ -36,9 +36,9 @@
         <paper-button raised on-tap="addTable" id="tableButton">
             remove existing table
         </paper-button>
-        <template is="dom-repeat" items="{{removeTables}}">
+        <template is="dom-repeat" items="{{project.migrationActions.removeTables}}">
             <paper-dropdown-menu label="select table">
-                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedTable}}">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.name}}">
                     <template is="dom-repeat" items="{{existingTableNames}}">
                         <paper-item value="{{item}}">
                             {{item}}

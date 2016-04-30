@@ -36,7 +36,7 @@
         <paper-button raised on-tap="addTable" id="tableButton">
             remove column from existing table
         </paper-button>
-        <template is="dom-repeat" items="{{removeColumns}}">
+        <template is="dom-repeat" items="{{project.migrationActions.removeColumns}}">
             <paper-dropdown-menu label="select table">
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedTable}}">
                     <template is="dom-repeat" items="{{existingTableNames}}">
@@ -48,15 +48,17 @@
 
             </paper-dropdown-menu>
             <!--div class="columnBox"-->
-            <paper-dropdown-menu label="select Column">
-                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedColumn}}">
-                    <template is="dom-repeat" items="{{existingColumnNames}}">
-                        <paper-item value="{{item}}">
-                            {{item}}
-                        </paper-item>
-                    </template>
-                </paper-listbox>
-            </paper-dropdown-menu>
+            <template is="dom-repeat" items="{{item.columns}}" as="column">
+                <paper-dropdown-menu label="select Column">
+                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.name}}">
+                        <template is="dom-repeat" items="{{existingColumnNames}}">
+                            <paper-item value="{{item}}">
+                                {{item}}
+                            </paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </template>
             <!--/div-->
             <a href="#" on-tap="cancelTable">cancel removeColumn</a>
         </template>

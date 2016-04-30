@@ -36,9 +36,9 @@
         <paper-button raised on-tap="addTable" id="tableButton">
             remove existing relation
         </paper-button>
-        <template is="dom-repeat" items="{{removeRelations}}">
+        <template is="dom-repeat" items="{{project.migrationActions.removeRelations}}">
             <paper-dropdown-menu label="select relation">
-                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedRelation}}">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.selectedRelation}}">
                     <template is="dom-repeat" items="{{existingRelations}}">
                         <paper-item value="{{item}}">
                             {{item}}

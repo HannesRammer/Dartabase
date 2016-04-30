@@ -8,6 +8,7 @@ import "package:polymer_elements/paper_button.dart";
 import "package:polymer_elements/paper_input.dart";
 //import "../poly/columnView.dart";
 import "../poly/table.dart";
+import "../poly/pm.dart";
 
 // Import the Polymer and Web Components scripts.
 import "package:polymer/polymer.dart";
@@ -16,7 +17,7 @@ import "package:web_components/web_components.dart";
 @PolymerRegister("custom-create-migration-table")
 class CreateMigrationTable extends PolymerElement {
     @Property(notify: true)
-    List<Table> createTables = new List();
+    Project project;
 
     CreateMigrationTable.created() : super.created();
 
@@ -30,7 +31,7 @@ class CreateMigrationTable extends PolymerElement {
             "def":"",
             "nil":true
         }]);
-        add("createTables", table);
+        add("project.migrationActions.createTables", table);
     }
 
     @reflectable
@@ -47,12 +48,12 @@ class CreateMigrationTable extends PolymerElement {
     @reflectable
     void cancelColumn(event, [_]) {
         var model = new DomRepeatModel.fromEvent(event);
-        removeAt("createTables.0.columns", model.index);
+        removeAt("project.migrationActions.createTables.0.columns", model.index);
     }
 
     @reflectable
     void cancelTable(event, [_]) {
-        set("createTables", new List());
+        set("project.migrationActions.createTables", new List());
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
     }

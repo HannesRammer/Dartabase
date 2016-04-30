@@ -1,6 +1,8 @@
 @HtmlImport('createMigrationColumn.html')
 library dartabase.poly.createMigrationColumn;
+
 import 'dart:async';
+
 // Import the paper element from Polymer.
 import 'package:polymer_elements/paper_dropdown_menu.dart';
 import 'package:polymer_elements/paper_listbox.dart';
@@ -23,9 +25,6 @@ class CreateMigrationColumn extends PolymerElement {
     @property
     List existingTableNames;
 
-    @property
-    List<Table> createColumns = new List();
-
     CreateMigrationColumn.created() : super.created();
 
     void ready() {
@@ -47,27 +46,28 @@ class CreateMigrationColumn extends PolymerElement {
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-        Table table = new Table(name:"",columns: [{
+        Table table = new Table(columns: [{
             "name":"",
             "type":"",
             "def":"",
             "nil":true
-        }]);
-        add("createColumns", table);
+        }
+        ]);
+        add("project.migrationActions.createColumns", table);
         set("existingTableNames", await project.getTableNames());
     }
 
     @reflectable
     void cancelColumn(event, [_]) {
         var model = new DomRepeatModel.fromEvent(event);
-        removeAt("createColumns.0.columns", model.index);
+        removeAt("project.migrationActions.createColumns.0.columns",
+                model.index);
     }
 
     @reflectable
     void cancelTable(event, [_]) {
-        set("createColumns", new List());
+        set("project.migrationActions.createColumns", new List());
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-
     }
 }

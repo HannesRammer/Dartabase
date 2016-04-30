@@ -16,6 +16,7 @@ class Migration extends JsProxy {
     Map actions;
     @reflectable
     String state;
+
     //bool selected = false;
 
     Migration(
@@ -48,6 +49,17 @@ class Project extends JsProxy {
     Migration currentMigration;
     @reflectable
     Migration selectedMigration;
+
+    @reflectable
+    Map migrationActions = {
+        "createTables":[],
+        "createColumns":[],
+        "createRelations":[],
+        "removeTables":[],
+        "removeColumns":[],
+        "removeRelations":[]
+    };
+
 
     Project({this.name, this.path, this.colorPalette, this.migrations});
 
@@ -171,7 +183,7 @@ class Project extends JsProxy {
     }
 
     @reflectable
-    Future getTableNames() async{
+    Future getTableNames() async {
         var schema = await requestSchema();
         List tableNames = new List();
         for (String tableName in schema.keys) {
@@ -187,7 +199,7 @@ class Project extends JsProxy {
     }
 
     @reflectable
-    Future getColumnNames(String searchTableName) async{
+    Future getColumnNames(String searchTableName) async {
         var schema = await requestSchema();
         List columnNames = schema[searchTableName].keys.toList();
         return columnNames;
