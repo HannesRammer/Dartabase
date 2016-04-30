@@ -1,13 +1,64 @@
 <dom-module id="custom-create-migration-relation">
     <template>
         <style>
+            paper-button {
+                float: left;
+                width: 100%;
+            }
+
             paper-material {
                 width: 98%;
                 margin: 5px auto;
+                padding: 10px;
+            }
+
+            br {
+                clear: both;
+            }
+
+            paper-dropdown-menu {
+                width: 25%;
+                float: left;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+
+            .columnBox {
+                width: 25%;
+                float: left;
+            }
+
+            .hidden {
+                display: none;
             }
         </style>
-        <paper-material elevation="2">
-                {{table}}
-        </paper-material>
+
+        <paper-button raised on-tap="addTable" id="tableButton">
+            create relation between existing tables
+        </paper-button>
+        <template is="dom-repeat" items="{{createRelations}}">
+            <paper-dropdown-menu label="select table_one">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedTableOne}}">
+                    <template is="dom-repeat" items="{{existingTableNamesOne}}">
+                        <paper-item value="{{item}}">
+                            {{item}}
+                        </paper-item>
+                    </template>
+                </paper-listbox>
+
+            </paper-dropdown-menu>
+            <!--div class="columnBox"-->
+            <paper-dropdown-menu label="select table_two">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedTableTwo}}">
+                    <template is="dom-repeat" items="{{existingTableNamesTwo}}">
+                        <paper-item value="{{item}}">
+                            {{item}}
+                        </paper-item>
+                    </template>
+                </paper-listbox>
+            </paper-dropdown-menu>
+            <!--/div-->
+            <a href="#" on-tap="cancelTable">cancel createRelation</a>
+        </template>
     </template>
 </dom-module>

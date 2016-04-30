@@ -56,24 +56,11 @@ class ColumnView extends PolymerElement {
     "VARCHAR"
     ];
 
-    @property
+    @Property(notify:true)
     Map column;
-
-    @property
-    Table createTable;
 
     void ready() {
         print("$runtimeType::ready()");
-    }
-
-
-    @reflectable
-    void addColumn(event, [_]) {
-        if (createTable.columns == null) {
-            createTable.columns = [];
-            print("columnView.dart COLUMNS NOT INITIALIZES CORRECT");
-        }
-        createTable.columns.add({});
     }
 }
 

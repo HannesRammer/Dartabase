@@ -1,17 +1,60 @@
 <dom-module id="custom-create-migration-column">
     <template>
-        <paper-dropdown-menu label="select table">
-            <paper-listbox>
-                <template is="dom-repeat" items="{{existingTableNames}}">
-                    <paper-item>{{item}}</paper-item>
-                </template>
-            </paper-listbox>
-        </paper-dropdown-menu>
-        <template is="dom-repeat" items="{{table.columns}}">
-            <custom-column-view column="{{item.value}}"></custom-column-view>
-        </template>
-        <paper-button raised on-tap="addColumn">
-            Add Column
+        <style>
+            paper-button {
+                float: left;
+                width: 100%;
+            }
+
+            paper-material {
+                width: 98%;
+                margin: 5px auto;
+                padding: 10px;
+            }
+
+            br {
+                clear: both;
+            }
+
+            paper-dropdown-menu {
+                width: 25%;
+                float: left;
+            }
+
+            .columnBox {
+                width: 100%;
+                float: left;
+            }
+
+            .hidden {
+                display: none;
+            }
+        </style>
+
+        <paper-button raised on-tap="addTable" id="tableButton">
+            add column to existing table
         </paper-button>
+        <template is="dom-repeat" items="{{createColumns}}">
+            <paper-dropdown-menu label="select table">
+                <paper-listbox class="dropdown-content">
+                    <template is="dom-repeat" items="{{existingTableNames}}">
+                        <paper-item>
+                            {{item}}
+                        </paper-item>
+                    </template>
+                </paper-listbox>
+            </paper-dropdown-menu>
+            <a href="#" on-tap="cancelTable">cancel createColumns</a>
+            <div class="columnBox">
+                <template is="dom-repeat" items="{{item.columns}}" as="column">
+                    <custom-column-view column="{{column}}"></custom-column-view>
+                    <a href="#" on-tap="cancelColumn">cancel Column {{column.name}}</a>
+                    <br/>
+                </template>
+            </div>
+            <paper-button raised on-tap="addColumn">
+                add 1 more column
+            </paper-button>
+        </template>
     </template>
 </dom-module>

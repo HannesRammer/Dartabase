@@ -1,6 +1,6 @@
 
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
+import "package:polymer/polymer.dart";
+import "package:web_components/web_components.dart";
 
 class Table extends JsProxy {
     @reflectable

@@ -151,7 +151,7 @@ class Project extends JsProxy {
     Future requestSchema() async {
         var url = "http://127.0.0.1:8079/requestSchema?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
-        updateSchema(responseText);
+        return updateSchema(responseText);
     }
 
     @reflectable
@@ -167,11 +167,30 @@ class Project extends JsProxy {
                 dependencyRelations = value;
             }
         }
+        return schema;
     }
 
     @reflectable
-    List getTableNames() {
-        return tables.keys.toList();
+    Future getTableNames() async{
+        var schema = await requestSchema();
+        List tableNames = new List();
+        for (String tableName in schema.keys) {
+//            var value = schema[tableName];
+            if (tableName != "dependencyRelations") {
+                tableNames.add(tableName);
+            } //else {
+            //  dependencyRelations = value;
+            //}
+        }
+
+        return tableNames;
+    }
+
+    @reflectable
+    Future getColumnNames(String searchTableName) async{
+        var schema = await requestSchema();
+        List columnNames = schema[searchTableName].keys.toList();
+        return columnNames;
     }
 
     @reflectable

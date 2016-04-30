@@ -1,11 +1,53 @@
 <dom-module id="custom-remove-migration-table">
     <template>
-        <paper-dropdown-menu label="Table Name">
-            <paper-listbox class="dropdown-content">
-                <template is="dom-repeat" items="{{existingTableNames}}">
-                    <paper-item>{{item}}</paper-item>
-                </template>
-            </paper-listbox>
-        </paper-dropdown-menu>
+        <style>
+            paper-button {
+                float: left;
+                width: 100%;
+            }
+
+            paper-material {
+                width: 98%;
+                margin: 5px auto;
+                padding: 10px;
+            }
+
+            br {
+                clear: both;
+            }
+
+            paper-dropdown-menu {
+                width: 25%;
+                float: left;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+
+            .columnBox {
+                width: 25%;
+                float: left;
+            }
+
+            .hidden {
+                display: none;
+            }
+        </style>
+
+        <paper-button raised on-tap="addTable" id="tableButton">
+            remove existing table
+        </paper-button>
+        <template is="dom-repeat" items="{{removeTables}}">
+            <paper-dropdown-menu label="select table">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedTable}}">
+                    <template is="dom-repeat" items="{{existingTableNames}}">
+                        <paper-item value="{{item}}">
+                            {{item}}
+                        </paper-item>
+                    </template>
+                </paper-listbox>
+
+            </paper-dropdown-menu>
+            <a href="#" on-tap="cancelTable">cancel createTable</a>
+        </template>
     </template>
 </dom-module>

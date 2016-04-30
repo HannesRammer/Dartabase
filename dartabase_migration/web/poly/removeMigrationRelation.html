@@ -2,19 +2,52 @@
     <template>
         <style>
             paper-button {
-                /**border: 1px solid #d81b60;*/
+                float: left;
+                width: 100%;
             }
 
-            .red_text {
-                background: white;
-                color: red;
+            paper-material {
+                width: 98%;
+                margin: 5px auto;
+                padding: 10px;
             }
 
-            .green_text {
-                background: white;
-                color: green;
+            br {
+                clear: both;
+            }
+
+            paper-dropdown-menu {
+                width: 25%;
+                float: left;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+
+            .columnBox {
+                width: 25%;
+                float: left;
+            }
+
+            .hidden {
+                display: none;
             }
         </style>
-            {{table}}
+
+        <paper-button raised on-tap="addTable" id="tableButton">
+            remove existing relation
+        </paper-button>
+        <template is="dom-repeat" items="{{removeRelations}}">
+            <paper-dropdown-menu label="select relation">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedRelation}}">
+                    <template is="dom-repeat" items="{{existingRelations}}">
+                        <paper-item value="{{item}}">
+                            {{item}}
+                        </paper-item>
+                    </template>
+                </paper-listbox>
+
+            </paper-dropdown-menu>
+            <a href="#" on-tap="cancelTable">cancel createRelation</a>
+        </template>
     </template>
 </dom-module>

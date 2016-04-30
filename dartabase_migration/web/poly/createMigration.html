@@ -16,12 +16,15 @@
             }
 
             paper-material {
-                background: rgba(27, 216, 43, 0.48);
                 width: 98%;
                 margin: 5px auto;
+                padding: 10px;
+                height: 100%;
+                overflow: auto;
             }
-            iron-pages{
-                width:50%;
+
+            iron-pages {
+                width: 100%;
             }
         </style>
         <iron-pages selected="0">
@@ -32,57 +35,44 @@
             <paper-material elevation="2" id="page_2">
                 <paper-input required label="Migration Name" value="{{newMigrationName}}"></paper-input>
                 <paper-material elevation="2">
-                    UP:
-                    <custom-create-migration-table>
-                    </custom-create-migration-table>
+                    UP:<br/>
+                    createTable:
+                    <paper-material elevation="2">
+
+                        <custom-create-migration-table>
+
+                        </custom-create-migration-table>
+                    </paper-material>
                     createColumn:
-                    <paper-button raised on-tap="addColumn">
-                        + add column to existing table
-                    </paper-button>
-
-                        <template is="dom-repeat" items="{{createColumn}}">
-                            <custom-create-migration-column existing-table-names="{{existingTableNames}}">
-                            </custom-create-migration-column>
-                        </template>
+                    <paper-material elevation="2">
+                        <custom-create-migration-column project="{{project}}">
+                        </custom-create-migration-column>
+                    </paper-material>
                     removeColumn:
-                    <paper-button raised on-tap="addRemoveColumn">
-                        + remove column from existing table
-                    </paper-button>
-
                     <paper-material elevation="2">
-                        <template is="dom-repeat" items="{{removeColumn}}">
-                            <custom-remove-migration-column table="{{item}}" existing-tables="{{existingTables}}">
-                            </custom-remove-migration-column>
-                        </template>
+                        <custom-remove-migration-column project="{{project}}">
+                        </custom-remove-migration-column>
                     </paper-material>
 
+
+                    createRelation:
                     <paper-material elevation="2">
-                        createRelation:
-                        <paper-button raised on-tap="transition">
-                            + create Relation between existing tables
-                        </paper-button>
+                        <custom-create-migration-relation project="{{project}}">
+                        </custom-create-migration-relation>
                     </paper-material>
 
+                    removeRelation:
                     <paper-material elevation="2">
-                        removeRelation: <br/>
-                        <paper-button raised on-tap="transition">
-                            + remove existing Relation between tables
-                        </paper-button>
+                        <custom-remove-migration-relation project="{{project}}">
+                        </custom-remove-migration-relation>
                     </paper-material>
 
+                    removeTable:
                     <paper-material elevation="2">
-                        removeTable:
-                        <paper-button raised on-tap="addRemoveTable">
-                            + remove existing table
-                        </paper-button>
+                        <custom-remove-migration-table project="{{project}}">
+                        </custom-remove-migration-table>
                     </paper-material>
 
-                    <paper-material elevation="2">
-                        <template is="dom-repeat" items="{{removeTable}}">
-                            <custom-remove-migration-table table="{{item}}"
-                                                           existing-tables="{{existingTables}}"></custom-remove-migration-table>
-                        </template>
-                    </paper-material>
                 </paper-material>
                 <paper-button raised>
                     create

@@ -16,30 +16,38 @@
             }
 
             paper-material {
-                background: rgba(27, 216, 43, 0.48);
                 width: 98%;
                 margin: 5px auto;
             }
+
+            .list {
+                float: left;
+                width: 25%;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+
+            br{
+                clear:both;
+            }
         </style>
-        <template is="dom-repeat" items="{{createTable.columns}}" as="column">
-            <paper-material elevation="2">
-                <paper-input required label="Column Name" value="{{column.name}}"></paper-input>
-                <paper-dropdown-menu label="Database Types">
-                    <paper-listbox>
-                        <template is="dom-repeat" items="{{dbTypes}}" as="dbType">
-                            <paper-item>
-                                {{dbType}}
-                            </paper-item>
-                        </template>
-                    </paper-listbox>
-                </paper-dropdown-menu>
-                <paper-input label="Default Value" value="{{column.def}}"></paper-input>
-                    <paper-checkbox checked="{{column.nil}}">Not Null"</paper-checkbox>
-            </paper-material>
-        </template>
-        <paper-button raised on-tap="addColumn">
-            Add Column
-        </paper-button>
+
+
+            <paper-input class="list" required label="Column Name" value="{{column.name}}"></paper-input>
+            <paper-dropdown-menu class="list" label="Database Types">
+                <paper-listbox class="dropdown-content">
+                    <template is="dom-repeat" items="{{dbTypes}}">
+                        <paper-item>
+                            {{item}}
+                        </paper-item>
+                    </template>
+                </paper-listbox>
+            </paper-dropdown-menu>
+
+            <paper-input class="list" label="Default Value" value="{{column.def}}"></paper-input>
+            <paper-checkbox class="list" checked="{{column.nil}}">Null allowed</paper-checkbox>
+
+
     </template>
 </dom-module>
 

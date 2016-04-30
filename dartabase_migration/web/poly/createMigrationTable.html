@@ -2,36 +2,53 @@
     <template>
         <style>
             paper-button {
-                /**border: 1px solid #d81b60;*/
+                float: left;
+                width: 100%;
             }
 
-            .red_text {
-                background: white;
-                color: red;
-            }
-
-            .green_text {
-                background: white;
-                color: green;
-            }
             paper-material {
-                background: rgba(27, 216, 43, 0.48);
                 width: 98%;
                 margin: 5px auto;
+                padding: 10px;
+            }
+
+            br {
+                clear: both;
+            }
+
+            paper-input {
+                width: 25%;
+                float: left;
+            }
+
+            .columnBox {
+                width: 100%;
+                float: left;
+            }
+
+            .hidden {
+                display: none;
             }
         </style>
+        <paper-button raised on-tap="addTable" id="tableButton">
+            add new table
+        </paper-button>
 
-
-            <paper-material elevation="2" id="page_2">
-                createTable:
-                <paper-button raised on-tap="addTable">
-                    + add new table
-                </paper-button>
-                <template is="dom-repeat" items="{{createTables}}">
-                    <paper-input required label="Table Name" value="{{item.name}}"></paper-input>
-                    <custom-column-view create-table="{{item}}"></custom-column-view>
+        <template is="dom-repeat" items="{{createTables}}">
+            <paper-input required label="Table Name" value="{{item.name}}"></paper-input>
+            <a href="#" on-tap="cancelTable">cancel createTables</a>
+            <div class="columnBox">
+                <template is="dom-repeat" items="{{item.columns}}" as="column">
+                    <custom-column-view column="{{column}}"></custom-column-view>
+                    <a href="#" on-tap="cancelColumn">cancel Column {{column.name}}</a>
+                    <br/>
                 </template>
-            </paper-material>
+            </div>
+            <paper-button raised on-tap="addColumn">
+                add 1 more column
+            </paper-button>
+
+        </template>
 
     </template>
 </dom-module>
