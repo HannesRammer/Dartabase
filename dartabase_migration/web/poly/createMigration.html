@@ -31,54 +31,56 @@
             <paper-button raised on-tap="transition" id="page_1">
                 create new Migration
             </paper-button>
-
             <paper-material elevation="2" id="page_2">
-                <paper-input required label="Migration Name" value="{{newMigrationName}}"></paper-input>
-                <paper-material elevation="2">
-                    UP:<br/>
-                    createTable:
+                <form is="iron-form" id="formGet" method="get" action="/" on-iron-form-submit="createMigration">
+                <paper-input required
+                                 label="Migration Name: {{project.path}}\\db\\migrations\\{{doIt(project.migrationActions.migrationName)}}.json"
+                                 value="{{project.migrationActions.migrationName}}"></paper-input>
                     <paper-material elevation="2">
-                        <custom-create-migration-table project="{{project}}">
-                        </custom-create-migration-table>
-                    </paper-material>
-                    createColumn:
-                    <paper-material elevation="2">
-                        <custom-create-migration-column project="{{project}}">
-                        </custom-create-migration-column>
-                    </paper-material>
-                    removeColumn:
-                    <paper-material elevation="2">
-                        <custom-remove-migration-column project="{{project}}">
-                        </custom-remove-migration-column>
-                    </paper-material>
+                        UP:<br/>
+                        createTable:
+                        <paper-material elevation="2">
+                            <custom-create-migration-table project="{{project}}">
+                            </custom-create-migration-table>
+                        </paper-material>
+                        createColumn:
+                        <paper-material elevation="2">
+                            <custom-create-migration-column project="{{project}}">
+                            </custom-create-migration-column>
+                        </paper-material>
+                        removeColumn:
+                        <paper-material elevation="2">
+                            <custom-remove-migration-column project="{{project}}">
+                            </custom-remove-migration-column>
+                        </paper-material>
 
 
-                    createRelation:
-                    <paper-material elevation="2">
-                        <custom-create-migration-relation project="{{project}}">
-                        </custom-create-migration-relation>
+                        createRelation:
+                        <paper-material elevation="2">
+                            <custom-create-migration-relation project="{{project}}">
+                            </custom-create-migration-relation>
+                        </paper-material>
+
+                        removeRelation:
+                        <paper-material elevation="2">
+                            <custom-remove-migration-relation project="{{project}}">
+                            </custom-remove-migration-relation>
+                        </paper-material>
+
+                        removeTable:
+                        <paper-material elevation="2">
+                            <custom-remove-migration-table project="{{project}}">
+                            </custom-remove-migration-table>
+                        </paper-material>
+
                     </paper-material>
-
-                    removeRelation:
-                    <paper-material elevation="2">
-                        <custom-remove-migration-relation project="{{project}}">
-                        </custom-remove-migration-relation>
-                    </paper-material>
-
-                    removeTable:
-                    <paper-material elevation="2">
-                        <custom-remove-migration-table project="{{project}}">
-                        </custom-remove-migration-table>
-                    </paper-material>
-
-                </paper-material>
-                <paper-button raised>
-                    create
-                </paper-button>
-                <paper-button raised>
-                    cancel
-                </paper-button>
-
+                    <paper-button raised on-tap="clickHandler">
+                        create
+                    </paper-button>
+                    <paper-button raised on-tap="cancelActions">
+                        cancel
+                    </paper-button>
+                </form>
             </paper-material>
 
         </iron-pages>

@@ -3,17 +3,15 @@ library dartabase.poly.removeMigrationColumn;
 
 import 'dart:async';
 
-// Import the paper element from Polymer.
+import 'package:web_components/web_components.dart' show HtmlImport;
+import 'package:polymer/polymer.dart';
 import 'package:polymer_elements/paper_dropdown_menu.dart';
 import 'package:polymer_elements/paper_listbox.dart';
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_button.dart";
-import "../poly/table.dart";
+import "package:polymer_elements/paper_checkbox.dart";
 import "../poly/pm.dart";
 
-// Import the Polymer and Web Components scripts.
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-remove-migration-column')
 class RemoveMigrationColumn extends PolymerElement {
@@ -22,13 +20,17 @@ class RemoveMigrationColumn extends PolymerElement {
 
     @property
     List existingTableNames;
-    @property
-    Map existingColumns;
 
     @property
     String selectedTable;
     @property
-    String selectedColumn;
+    Map selectedColumn;
+
+    @property
+    List existingColumnNames;
+
+
+
 
     RemoveMigrationColumn.created() : super.created();
 
@@ -40,12 +42,14 @@ class RemoveMigrationColumn extends PolymerElement {
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-        Table table = new Table(columns: [{
-            "name":"",
-            "type":"",
-            "def":"",
-            "nil":true
-        }]);
+        Map table = {
+            "columns" : [ {
+                "name":"",
+                "type":"",
+                "def":"",
+                "nil":true
+            }
+            ]};
         add("project.migrationActions.removeColumns", table);
         set("existingTableNames", await project.getTableNames());
     }
@@ -59,7 +63,21 @@ class RemoveMigrationColumn extends PolymerElement {
 
     @Observe('selectedTable')
     Future updateColumns(String newSelectedTable) async {
-        set("existingColumnNames", await project.getColumnNames(newSelectedTable));
+        set("existingColumnNames",
+                await project.getColumnNames(newSelectedTable));
         set("project.migrationActions.removeColumns.0.name", newSelectedTable);
     }
+
+    @reflectable
+    Future adaptColumnType(String tableName, String columnName) async {
+        var column = await project.getColumnDetails(tableName, columnName);
+        if (column != null) {
+            set("selectedColumn", column);
+            return "";
+        }else{
+            return "";
+        }
+    }
+
+
 }

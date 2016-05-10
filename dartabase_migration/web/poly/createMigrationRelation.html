@@ -37,7 +37,7 @@
             create relation between existing tables
         </paper-button>
         <template is="dom-repeat" items="{{project.migrationActions.createRelations}}">
-            <paper-dropdown-menu label="select table_one">
+            <paper-dropdown-menu label="select table_one" required>
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.selectedTableOne}}">
                     <template is="dom-repeat" items="{{existingTableNamesOne}}">
                         <paper-item value="{{item}}">
@@ -48,7 +48,7 @@
 
             </paper-dropdown-menu>
             <!--div class="columnBox"-->
-            <paper-dropdown-menu label="select table_two">
+            <paper-dropdown-menu label="select table_two" required>
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.selectedTableTwo}}">
                     <template is="dom-repeat" items="{{existingTableNamesTwo}}">
                         <paper-item value="{{item}}">

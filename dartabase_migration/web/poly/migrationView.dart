@@ -1,6 +1,8 @@
 @HtmlImport('migrationView.html')
 library dartabase.poly.migrationView;
-// Import the paper element from Polymer.
+
+import 'package:web_components/web_components.dart' show HtmlImport;
+import 'package:polymer/polymer.dart';
 import "package:polymer_elements/paper_material.dart";
 import "package:polymer_elements/paper_tabs.dart";
 import "package:polymer_elements/paper_tab.dart";
@@ -9,9 +11,6 @@ import "../poly/migrationActionView.dart";
 
 import '../poly/pm.dart';
 
-// Import the Polymer and Web Components scripts.
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-migration-view')
 class MigrationView extends PolymerElement {

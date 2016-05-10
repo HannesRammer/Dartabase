@@ -1,7 +1,8 @@
 @HtmlImport('columnView.html')
 library dartabase.poly.columnView;
 
-// Import the paper element from Polymer.
+import 'package:web_components/web_components.dart' show HtmlImport;
+import 'package:polymer/polymer.dart';
 import'package:polymer_elements/paper_material.dart';
 import'package:polymer_elements/paper_input.dart';
 import 'package:polymer_elements/paper_dropdown_menu.dart';
@@ -9,11 +10,6 @@ import 'package:polymer_elements/paper_listbox.dart';
 import 'package:polymer_elements/paper_item.dart';
 import 'package:polymer_elements/paper_checkbox.dart';
 import 'package:polymer_elements/paper_button.dart';
-import "../poly/table.dart";
-
-// Import the Polymer and Web Components scripts.
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-column-view')
 class ColumnView extends PolymerElement {

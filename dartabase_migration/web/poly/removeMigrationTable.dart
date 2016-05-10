@@ -2,17 +2,14 @@
 library dartabase.poly.removeMigrationTable;
 import 'dart:async';
 
-// Import the paper element from Polymer.
+import 'package:web_components/web_components.dart' show HtmlImport;
+import 'package:polymer/polymer.dart';
 import 'package:polymer_elements/paper_dropdown_menu.dart';
 import 'package:polymer_elements/paper_listbox.dart';
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_button.dart";
-import "../poly/table.dart";
 import "../poly/pm.dart";
 
-// Import the Polymer and Web Components scripts.
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
 
 
 @PolymerRegister('custom-remove-migration-table')
@@ -33,7 +30,7 @@ class RemoveMigrationTable extends PolymerElement {
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-        Table table = new Table();
+        Map table = new Map();
         add("project.migrationActions.removeTables", table);
         List names = await project.getTableNames();
         List filteredNames = new List();

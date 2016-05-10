@@ -23,8 +23,15 @@
                 box-sizing: border-box;
             }
 
-            .columnBox {
+            paper-input, paper-checkbox {
                 width: 25%;
+                float: left;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+
+            .columnBox {
+                width: 100%;
                 float: left;
             }
 
@@ -37,7 +44,7 @@
             remove column from existing table
         </paper-button>
         <template is="dom-repeat" items="{{project.migrationActions.removeColumns}}">
-            <paper-dropdown-menu label="select table">
+            <paper-dropdown-menu label="select table" required>
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedTable}}">
                     <template is="dom-repeat" items="{{existingTableNames}}">
                         <paper-item value="{{item}}">
@@ -47,19 +54,27 @@
                 </paper-listbox>
 
             </paper-dropdown-menu>
-            <!--div class="columnBox"-->
-            <template is="dom-repeat" items="{{item.columns}}" as="column">
-                <paper-dropdown-menu label="select Column">
-                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.name}}">
-                        <template is="dom-repeat" items="{{existingColumnNames}}">
-                            <paper-item value="{{item}}">
-                                {{item}}
-                            </paper-item>
-                        </template>
-                    </paper-listbox>
-                </paper-dropdown-menu>
-            </template>
-            <!--/div-->
+            <div class="columnBox">
+                <template is="dom-repeat" items="{{item.columns}}" as="column">
+                    <paper-dropdown-menu label="select Column" required>
+                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.name}}">
+                            <template is="dom-repeat" items="{{existingColumnNames}}">
+                                <paper-item value="{{item}}">
+                                    {{item}}
+                                </paper-item>
+                            </template>
+                        </paper-listbox>
+
+                    </paper-dropdown-menu>
+                    <div style="display: none">{{adaptColumnType( selectedTable, column.name)}}</div>
+                    <paper-input class="list" label="Database Types" value="{{selectedColumn.type}}"
+                                 disabled></paper-input>
+                    <paper-input class="list" label="Default Value" value="{{selectedColumn.default}}"
+                                 disabled></paper-input>
+                    <paper-checkbox class="list" checked="{{selectedColumn.null}}" disabled>Null allowed
+                    </paper-checkbox>
+                </template>
+            </div>
             <a href="#" on-tap="cancelTable">cancel removeColumn</a>
         </template>
     </template>

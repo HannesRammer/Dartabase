@@ -1,8 +1,9 @@
+import 'dart:convert' show JSON;
 import 'dart:html';
 import 'dart:async';
-import 'dart:convert' show JSON;
+
+import 'package:web_components/web_components.dart' show HtmlImport;
 import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
 
 
 class Migration extends JsProxy {
@@ -52,12 +53,14 @@ class Project extends JsProxy {
 
     @reflectable
     Map migrationActions = {
-        "createTables":[],
-        "createColumns":[],
-        "createRelations":[],
-        "removeTables":[],
-        "removeColumns":[],
-        "removeRelations":[]
+        "migrationName":"",
+
+        "createTables": new List(),
+        "createColumns":new List(),
+        "createRelations":new List(),
+        "removeTables":new List(),
+        "removeColumns":new List(),
+        "removeRelations":new List()
     };
 
 
@@ -203,6 +206,24 @@ class Project extends JsProxy {
         var schema = await requestSchema();
         List columnNames = schema[searchTableName].keys.toList();
         return columnNames;
+    }
+
+    @reflectable
+    Future getColumnDetails(String tableName, String columnName) async {
+        var schema = await requestSchema();
+        var columnDetails = schema[tableName][columnName];
+        Map columnMap = {
+            "type" :"",
+            "default":"",
+            "null":true
+        };
+        if (columnDetails.runtimeType == String) {
+            columnMap["type"] = columnDetails;
+        } else if (columnDetails.runtimeType.toString() ==
+                "_InternalLinkedHashMap") {
+            columnMap = columnDetails;
+        }
+        return columnMap;
     }
 
     @reflectable

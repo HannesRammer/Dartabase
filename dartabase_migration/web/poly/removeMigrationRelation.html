@@ -37,7 +37,7 @@
             remove existing relation
         </paper-button>
         <template is="dom-repeat" items="{{project.migrationActions.removeRelations}}">
-            <paper-dropdown-menu label="select relation">
+            <paper-dropdown-menu label="select relation" required>
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.selectedRelation}}">
                     <template is="dom-repeat" items="{{existingRelations}}">
                         <paper-item value="{{item}}">
@@ -47,7 +47,7 @@
                 </paper-listbox>
 
             </paper-dropdown-menu>
-            <a href="#" on-tap="cancelTable">cancel createRelation</a>
+            <a href="#" on-tap="cancelTable">cancel removeRelation</a>
         </template>
     </template>
 </dom-module>

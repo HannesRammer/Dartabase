@@ -100,3 +100,12 @@ loadSchema(Map params, HttpResponse res) {
     closeResWith(res, JSON.encode(schema));
 }
 
+createMigration(Map params, HttpResponse res) {
+    print(params.toString());
+    String cleanMigrationActions = params['migrationActions'].replaceAll('%5C', '\\').replaceAll('%7B', '{').replaceAll('%22', '"').replaceAll('%20', ' ').replaceAll('%7D', '}').replaceAll('%5B', '[').replaceAll('%5D', ']');
+    Map cleanMigrationActionsMap = JSON.decode(cleanMigrationActions);
+
+    Map migration  = DM.MigrationGenerator.createMigration(cleanMigrationActionsMap);
+    //DBCore.stringToFilePath(cleanConfig, "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/migrations/${}.json");
+    closeResWith(res, "done");
+}

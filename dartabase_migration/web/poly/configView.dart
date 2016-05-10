@@ -1,7 +1,12 @@
 @HtmlImport('configView.html')
 library dartabase.poly.configView;
 
-// Import the element from Polymer.
+import "dart:convert" show JSON;
+import "dart:html";
+import "dart:async";
+
+import 'package:web_components/web_components.dart' show HtmlImport;
+import 'package:polymer/polymer.dart';
 import "package:polymer_elements/iron_pages.dart";
 import "package:polymer_elements/paper_material.dart";
 import "package:polymer_elements/paper_input.dart";
@@ -9,14 +14,6 @@ import "package:polymer_elements/paper_button.dart";
 import "package:polymer_elements/paper_checkbox.dart";
 
 import "../poly/serverStatus.dart";
-
-// Import the Polymer and Web Components scripts.
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
-
-import "dart:html";
-import "dart:async";
-import "dart:convert" show JSON;
 import "../poly/pm.dart";
 
 @PolymerRegister('custom-config-view')

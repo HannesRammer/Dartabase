@@ -1,19 +1,17 @@
 @HtmlImport('createProject.html')
 library dartabase.poly.createProject;
 
-// Import the paper element from Polymer.
+import 'dart:html';
+import 'dart:async';
+import 'package:material_paper_colors/material_paper_colors.dart' as MPC;
+
+import 'package:web_components/web_components.dart' show HtmlImport;
+import 'package:polymer/polymer.dart';
 import 'package:polymer_elements/iron_pages.dart';
 import 'package:polymer_elements/paper_material.dart';
 import 'package:polymer_elements/paper_button.dart';
 import 'package:polymer_elements/paper_icon_button.dart';
 import 'package:polymer_elements/paper_input.dart';
-import 'dart:html';
-import 'dart:async';
-import 'package:material_paper_colors/material_paper_colors.dart' as MPC;
-
-// Import the Polymer and Web Components scripts.
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
 
 @PolymerRegister('custom-create-project')
 class CreateProject extends PolymerElement {

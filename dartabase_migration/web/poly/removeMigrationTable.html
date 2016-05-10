@@ -37,7 +37,7 @@
             remove existing table
         </paper-button>
         <template is="dom-repeat" items="{{project.migrationActions.removeTables}}">
-            <paper-dropdown-menu label="select table">
+            <paper-dropdown-menu label="select table" required>
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.name}}">
                     <template is="dom-repeat" items="{{existingTableNames}}">
                         <paper-item value="{{item}}">
@@ -47,7 +47,7 @@
                 </paper-listbox>
 
             </paper-dropdown-menu>
-            <a href="#" on-tap="cancelTable">cancel createTable</a>
+            <a href="#" on-tap="cancelTable">cancel removeTable</a>
         </template>
     </template>
 </dom-module>

@@ -1,18 +1,13 @@
 @HtmlImport("createMigrationTable.html")
 library dartabase.poly.createMigrationTable;
 
-// Import the paper element from Polymer.
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
 import "package:polymer_elements/iron_pages.dart";
 import "package:polymer_elements/paper_material.dart";
 import "package:polymer_elements/paper_button.dart";
 import "package:polymer_elements/paper_input.dart";
-//import "../poly/columnView.dart";
-import "../poly/table.dart";
 import "../poly/pm.dart";
-
-// Import the Polymer and Web Components scripts.
-import "package:polymer/polymer.dart";
-import "package:web_components/web_components.dart";
 
 @PolymerRegister("custom-create-migration-table")
 class CreateMigrationTable extends PolymerElement {
@@ -25,12 +20,14 @@ class CreateMigrationTable extends PolymerElement {
     addTable(event, [_]) {
         var tableButton = querySelector("#tableButton");
         tableButton.classes.toggle('hidden');
-        Table table = new Table(columns: [{
-            "name":"",
-            "type":"",
-            "def":"",
-            "nil":true
-        }]);
+        Map table = {
+            "columns" : [ {
+                "name":"",
+                "type":"",
+                "def":"",
+                "nil":true
+            }
+            ]};
         add("project.migrationActions.createTables", table);
     }
 
@@ -48,7 +45,8 @@ class CreateMigrationTable extends PolymerElement {
     @reflectable
     void cancelColumn(event, [_]) {
         var model = new DomRepeatModel.fromEvent(event);
-        removeAt("project.migrationActions.createTables.0.columns", model.index);
+        removeAt(
+                "project.migrationActions.createTables.0.columns", model.index);
     }
 
     @reflectable

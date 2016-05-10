@@ -9,7 +9,9 @@ final Map serverRoutes={
   'loadMigration':{'url':new UrlPattern(r'/requestMigrations'),'method':'GET','action': loadMigrations,'async':true },
   'initiateMigration':{'url':new UrlPattern(r'/initiateMigration'),'method':'GET','action': initiateDartabase },
   'runMigration':{'url':new UrlPattern(r'/runMigration'),'method':'GET','action': runMigration ,'async':true},
-  
+
+  'createMigration':{'url':new UrlPattern(r'/createMigration'),'method':'POST','action': createMigration},
+
   'saveConfig':{'url':new UrlPattern(r'/saveConfig'),'method':'POST','action': saveConfig }
 };
 

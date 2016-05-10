@@ -1,6 +1,6 @@
 library dartabaseMigration;
 
-
+import "dart:convert" show JSON;
 import "dart:io";
 import "dart:async";
 
@@ -12,6 +12,7 @@ import 'package:postgresql/postgresql.dart';
 import 'package:sqljocky/sqljocky.dart';
 
 part '../tool/dbhelper.dart';
+part '../tool/migrationGenerator.dart';
 
 String uri;
 
