@@ -20,6 +20,9 @@ class RemoveMigrationTable extends PolymerElement {
     @property
     List existingTableNames;
 
+    @property
+    String selectedTable;
+
     RemoveMigrationTable.created() : super.created();
 
     void ready() {
@@ -40,6 +43,14 @@ class RemoveMigrationTable extends PolymerElement {
             }
         }
         set("existingTableNames", filteredNames);
+    }
+
+    @Observe('selectedTable')
+    Future updateColumns(String newSelectedTable) async {
+        var columns = await project.getColumns(newSelectedTable);
+        set("project.migrationActions.removeTables.0.columns", await project.getColumns(newSelectedTable));
+        set("project.migrationActions.removeTables.0.name", newSelectedTable);
+
     }
 
     @reflectable

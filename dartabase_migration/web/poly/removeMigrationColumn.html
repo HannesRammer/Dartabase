@@ -67,11 +67,11 @@
 
                     </paper-dropdown-menu>
                     <div style="display: none">{{adaptColumnType( selectedTable, column.name)}}</div>
-                    <paper-input class="list" label="Database Types" value="{{selectedColumn.type}}"
+                    <paper-input class="list" label="Database Types" value="{{column.type}}"
                                  disabled></paper-input>
-                    <paper-input class="list" label="Default Value" value="{{selectedColumn.default}}"
+                    <paper-input class="list" label="Default Value" value="{{column.default}}"
                                  disabled></paper-input>
-                    <paper-checkbox class="list" checked="{{selectedColumn.null}}" disabled>Null allowed
+                    <paper-checkbox class="list" checked="{{column.null}}" disabled>Null allowed
                     </paper-checkbox>
                 </template>
             </div>

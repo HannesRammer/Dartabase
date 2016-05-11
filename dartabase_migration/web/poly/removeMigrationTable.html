@@ -16,20 +16,46 @@
                 clear: both;
             }
 
-            paper-dropdown-menu {
+            paper-dropdown-menu, paper-checkbox {
                 width: 25%;
                 float: left;
                 padding: 5px;
                 box-sizing: border-box;
             }
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
+
+                width: 25%;
+                float: left;
+                padding: 0px;
+                box-sizing: border-box;
+            }
 
             .columnBox {
-                width: 25%;
+                width: 100%;
                 float: left;
             }
 
             .hidden {
                 display: none;
+            }
+            .list {
+                text-align: right;
+                float:left;
+                width:25%;
+            }
+            .header{
+                margin: 0px;
+                padding: 0px;
+                text-align: center;
             }
         </style>
 
@@ -38,7 +64,7 @@
         </paper-button>
         <template is="dom-repeat" items="{{project.migrationActions.removeTables}}">
             <paper-dropdown-menu label="select table" required>
-                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.name}}">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectedTable}}">
                     <template is="dom-repeat" items="{{existingTableNames}}">
                         <paper-item value="{{item}}">
                             {{item}}
@@ -47,6 +73,25 @@
                 </paper-listbox>
 
             </paper-dropdown-menu>
+            <div class="columnBox">
+                <paper-input label="Column Name" class="header columnName" disabled no-label-float></paper-input>
+
+                <paper-input label="Type" class="header list" disabled no-label-float></paper-input>
+                <paper-input label="Default" class="header list" disabled no-label-float></paper-input>
+                <paper-input label="NULL" class="header list" disabled no-label-float></paper-input>
+
+                <template is="dom-repeat" items="{{item.columns}}" as="column">
+                    <paper-input class="list" label="Column Name" value="{{column.name}}"
+                                 disabled no-label-float></paper-input>
+                    <paper-input class="list" label="Database Type" value="{{column.type}}"
+                                 disabled no-label-float></paper-input>
+                    <paper-input class="list" label="Default Value" value="{{column.default}}"
+                                 disabled no-label-float></paper-input>
+                    <paper-checkbox class="list" checked="{{column.null}}" disabled>Null allowed
+                    </paper-checkbox>
+                    <br/>
+                </template>
+            </div>
             <a href="#" on-tap="cancelTable">cancel removeTable</a>
         </template>
     </template>

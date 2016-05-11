@@ -46,8 +46,8 @@ class RemoveMigrationColumn extends PolymerElement {
             "columns" : [ {
                 "name":"",
                 "type":"",
-                "def":"",
-                "nil":true
+                "default":"",
+                "null":true
             }
             ]};
         add("project.migrationActions.removeColumns", table);
@@ -72,6 +72,10 @@ class RemoveMigrationColumn extends PolymerElement {
     Future adaptColumnType(String tableName, String columnName) async {
         var column = await project.getColumnDetails(tableName, columnName);
         if (column != null) {
+            column["name"] = columnName;
+            set("project.migrationActions.removeColumns.0.columns.0.type", column["type"]);
+            set("project.migrationActions.removeColumns.0.columns.0.default", column["default"]);
+            set("project.migrationActions.removeColumns.0.columns.0.null", column["null"]);
             set("selectedColumn", column);
             return "";
         }else{

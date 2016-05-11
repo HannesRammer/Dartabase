@@ -20,86 +20,101 @@ class MigrationGenerator {
         DBCore.mapToJsonFilePath(string,"")
     }
 */
-    static Map map = {};
+    static Map map = {"UP":{}, "DOWN":{}};
 
-    static Map createMigration(Map migrationActionsMap){
-        createTableJson(migrationActionsMap);
-        createColumnJson(migrationActionsMap);
-        removeColumnJson(migrationActionsMap);
-        removeTableJson(migrationActionsMap);
-        createRelationJson(migrationActionsMap);
-        removeRelationJson(migrationActionsMap);
+    static Map createMigration(Map migrationActionsMap) {
+        createTableJson(migrationActionsMap["createTables"], "UP");
+        createColumnJson(migrationActionsMap["createColumns"], "UP");
+        removeColumnJson(migrationActionsMap["removeColumns"], "UP");
+        removeTableJson(migrationActionsMap["removeTables"], "UP");
+        createRelationJson(migrationActionsMap["createRelations"], "UP");
+        removeRelationJson(migrationActionsMap["removeRelations"], "UP");
+
+        createTableJson(migrationActionsMap["removeTables"], "DOWN");
+        createColumnJson(migrationActionsMap["removeColumns"], "DOWN");
+        removeColumnJson(migrationActionsMap["createColumns"], "DOWN");
+        removeTableJson(migrationActionsMap["createTables"], "DOWN");
+        createRelationJson(migrationActionsMap["removeRelations"], "DOWN");
+        removeRelationJson(migrationActionsMap["createRelations"], "DOWN");
+
+
         print("Generated Migration:${map}");
         return map;
     }
 
-    static void createTableJson(Map migrationActionsMap) {
+    static void createTableJson(List migrationActionsMap, String direction) {
         Map tables = {};
-        for (var table in migrationActionsMap["createTables"]) {
+        for (var table in migrationActionsMap) {
+            if(tables["${table["name"]}"] == null){
+                tables["${table["name"]}"] = {};
+            }
             for (var column in table["columns"]) {
-                tables["${table["name"]}"] = {
-                    "${column["name"]}": {
-                        "type":"${column["type"]}",
-                        "default":"${column["def"]}",
-                        "null":"${column["nil"]}"
-                    }
+                if(tables["${table["name"]}"]["${column["name"]}"] == null){
+                    tables["${table["name"]}"]["${column["name"]}"] = {};
+                }
+                tables["${table["name"]}"]["${column["name"]}"] = {
+                    "type":"${column["type"]}",
+                    "default":"${column["default"]}",
+                    "null":"${column["null"]}"
                 };
             }
         }
-        map["createTable"] = tables;
+        map[direction]["createTable"] = tables;
     }
 
-
-    static void createColumnJson(Map migrationActionsMap) {
+    static void createColumnJson(List migrationActionsMap, String direction) {
         Map tables = {};
-        for (var table in migrationActionsMap["createColumns"]) {
+        for (var table in migrationActionsMap) {
+
+            if(tables["${table["name"]}"] == null){
+                tables["${table["name"]}"] = {};
+            }
             for (var column in table["columns"]) {
-                tables["${table['name']}"] = {
-                    "${column['name']}": {
-                        "type":"${column["type"]}",
-                        "default":"${column["def"]}",
-                        "null":"${column["nil"]}"
-                    }
+                if(tables["${table["name"]}"]["${column["name"]}"] == null){
+                    tables["${table["name"]}"]["${column["name"]}"] = {};
+                }
+                tables["${table["name"]}"]["${column["name"]}"] = {
+                    "type":"${column["type"]}",
+                    "default":"${column["default"]}",
+                    "null":"${column["null"]}"
                 };
             }
         }
-        map["createColumn"] = tables;
+        map[direction]["createColumn"] = tables;
     }
 
-    static void removeColumnJson(Map migrationActionsMap) {
+    static void removeColumnJson(List migrationActionsMap, String direction) {
         Map tables = {};
-        for (var table in migrationActionsMap["removeColumns"]) {
+        for (var table in migrationActionsMap) {
             tables["${table['name']}"] = new List();
             for (var column in table["columns"]) {
                 tables["${table['name']}"].add(column["name"]);
             }
         }
-        map["removeColumn"] = tables;
+        map[direction]["removeColumn"] = tables;
     }
-    static void removeTableJson(Map migrationActionsMap) {
+
+    static void removeTableJson(List migrationActionsMap, String direction) {
         List tables = [];
-        for (var table in migrationActionsMap["removeTables"]) {
+        for (var table in migrationActionsMap) {
             tables.add(table["name"]);
         }
-        map["removeTable"] = tables;
+        map[direction]["removeTable"] = tables;
     }
 
-    static void createRelationJson(Map migrationActionsMap) {
+    static void createRelationJson(List migrationActionsMap, String direction) {
         List relations = [];
-        for (var relation in migrationActionsMap["createRelations"]) {
+        for (var relation in migrationActionsMap) {
             relations.add(relation);
         }
-        map["createRelation"] = relations;
+        map[direction]["createRelation"] = relations;
     }
 
-    static void removeRelationJson(Map migrationActionsMap) {
+    static void removeRelationJson(List migrationActionsMap, String direction) {
         List relations = [];
-        for (var relation in migrationActionsMap["removeRelations"]) {
+        for (var relation in migrationActionsMap) {
             relations.add(relation[0].split("_2_"));
-
         }
-        map["removeRelation"] = relations;
+        map[direction]["removeRelation"] = relations;
     }
-
-
 }

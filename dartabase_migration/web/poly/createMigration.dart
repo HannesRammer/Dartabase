@@ -62,6 +62,7 @@ class CreateMigration extends PolymerElement {
         DateTime now = new DateTime.now();
         cleanTime = now.toString().split(".")[0].replaceAll(" ", "").replaceAll(
                 ":", "").replaceAll("-", "");
+        set("project.migrationActions.generatedName", "${cleanTime}_${toTableName(name)}");
         return "${cleanTime}_${toTableName(name)}";
     }
 

@@ -24,8 +24,8 @@ class CreateMigrationTable extends PolymerElement {
             "columns" : [ {
                 "name":"",
                 "type":"",
-                "def":"",
-                "nil":true
+                "default":"",
+                "null":true
             }
             ]};
         add("project.migrationActions.createTables", table);
@@ -37,8 +37,8 @@ class CreateMigrationTable extends PolymerElement {
         model.add("item.columns", {
             "name":"",
             "type":"",
-            "def":"",
-            "nil":true
+            "default":"",
+            "null":true
         });
     }
 

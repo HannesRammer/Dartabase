@@ -209,7 +209,32 @@ class Project extends JsProxy {
     }
 
     @reflectable
-    Future getColumnDetails(String tableName, String columnName) async {
+    Future<List> getColumns(String searchTableName) async {
+        var schema = await requestSchema();
+        Map table =schema[searchTableName];
+        List columnNames = table.keys.toList();
+        List columns = [];
+        for(String columnName in columnNames){
+            var columnDetails = table[columnName];
+            Map columnMap = {
+            "type" :"",
+            "default":"",
+            "null":true
+            };
+            if (columnDetails.runtimeType == String) {
+                columnMap["type"] = columnDetails;
+            } else if (columnDetails.runtimeType.toString() ==
+                    "_InternalLinkedHashMap") {
+                columnMap = columnDetails;
+            }
+            columnMap["name"] = columnName;
+            columns.add(columnMap);
+        }
+        return columns;
+    }
+
+    @reflectable
+    Future<Map> getColumnDetails(String tableName, String columnName) async {
         var schema = await requestSchema();
         var columnDetails = schema[tableName][columnName];
         Map columnMap = {

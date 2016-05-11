@@ -33,8 +33,8 @@ class CreateMigrationColumn extends PolymerElement {
         model.add("item.columns", {
             "name":"",
             "type":"",
-            "def":"",
-            "nil":true
+            "default":"",
+            "null":true
         });
     }
 
@@ -46,8 +46,8 @@ class CreateMigrationColumn extends PolymerElement {
             "columns" : [ {
                 "name":"",
                 "type":"",
-                "def":"",
-                "nil":true
+                "default":"",
+                "null":true
             }
             ]
         };

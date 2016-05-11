@@ -106,6 +106,6 @@ createMigration(Map params, HttpResponse res) {
     Map cleanMigrationActionsMap = JSON.decode(cleanMigrationActions);
 
     Map migration  = DM.MigrationGenerator.createMigration(cleanMigrationActionsMap);
-    //DBCore.stringToFilePath(cleanConfig, "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/migrations/${}.json");
+    DBCore.stringToFilePath(JSON.encode(migration), "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json");
     closeResWith(res, "done");
 }
