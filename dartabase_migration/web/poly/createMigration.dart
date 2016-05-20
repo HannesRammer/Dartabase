@@ -8,6 +8,7 @@ import 'package:web_components/web_components.dart' show HtmlImport;
 import 'package:polymer/polymer.dart';
 import 'package:polymer_elements/iron_pages.dart';
 import 'package:polymer_elements/iron_form.dart';
+import 'package:polymer_elements/paper_toast.dart';
 import 'package:polymer_elements/paper_button.dart';
 import 'package:polymer_elements/paper_material.dart';
 import 'package:polymer_elements/paper_input.dart';
@@ -95,6 +96,9 @@ class CreateMigration extends PolymerElement {
 
 
     updateView(String responseText) {
+        PaperToast pt = Polymer.dom($['toast1']).querySelector("#toast1");
+        pt.text = responseText;
+        pt.show();
         print(responseText);
     }
 }

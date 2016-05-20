@@ -35,7 +35,7 @@
                 <form is="iron-form" id="formGet" method="get" action="/" on-iron-form-submit="createMigration">
                 <paper-input required
                                  label="Migration Name: {{project.path}}\\db\\migrations\\{{doIt(project.migrationActions.migrationName)}}.json"
-                                 value="{{project.migrationActions.migrationName}}"></paper-input>
+                                 value="{{project.migrationActions.migrationName}}" allowed-pattern="[a-zA-Z _0-9]" error-message="only a-zA-Z _0-9"></paper-input>
                     <paper-material elevation="2">
                         UP:<br/>
                         createTable:

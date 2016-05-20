@@ -56,23 +56,7 @@
             </paper-dropdown-menu>
             <div class="columnBox">
                 <template is="dom-repeat" items="{{item.columns}}" as="column">
-                    <paper-dropdown-menu label="select Column" required>
-                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.name}}">
-                            <template is="dom-repeat" items="{{existingColumnNames}}">
-                                <paper-item value="{{item}}">
-                                    {{item}}
-                                </paper-item>
-                            </template>
-                        </paper-listbox>
-
-                    </paper-dropdown-menu>
-                    <div style="display: none">{{adaptColumnType( selectedTable, column.name)}}</div>
-                    <paper-input class="list" label="Database Types" value="{{column.type}}"
-                                 disabled></paper-input>
-                    <paper-input class="list" label="Default Value" value="{{column.default}}"
-                                 disabled></paper-input>
-                    <paper-checkbox class="list" checked="{{column.null}}" disabled>Null allowed
-                    </paper-checkbox>
+                    <custom-column-view column="{{column}}" need="detail"></custom-column-view>
                 </template>
             </div>
             <a href="#" on-tap="cancelTable">cancel removeColumn</a>

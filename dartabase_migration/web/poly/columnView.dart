@@ -17,6 +17,9 @@ class ColumnView extends PolymerElement {
     ColumnView.created() : super.created();
 
     @property
+    String need;
+
+    @property
     List dbTypes = ["BINT",
     "BINT UNSIGNED",
     "BINARY",
@@ -57,6 +60,52 @@ class ColumnView extends PolymerElement {
 
     void ready() {
         print("$runtimeType::ready()");
+    }
+
+    @reflectable
+    isHeader(name) {
+        bool val = false;
+        if (name == "header") {
+            val = true;
+        }
+        return val;
+    }
+    @reflectable
+    isView(name) {
+        bool val = false;
+        if (name == "view") {
+            val = true;
+        }
+        return val;
+    }
+    @reflectable
+    isInput(name) {
+        bool val = false;
+        if (name == "input") {
+            val = true;
+        }
+        return val;
+    }
+    @reflectable
+    isAuto(name) {
+        bool val = false;
+        if (name == "auto") {
+            val = true;
+        }
+        return val;
+    }
+    @reflectable
+    isDetail(name) {
+        bool val = false;
+        if (name == "detail") {
+            val = true;
+        }
+        return val;
+    }
+
+    @reflectable
+    checkType(current,expected) {
+        return current == expected;
     }
 }
 

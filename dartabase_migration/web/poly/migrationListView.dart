@@ -44,7 +44,7 @@ class MigrationListView extends PolymerElement {
     }
 
     Future updateView(responseText) async {
-        PaperToast test = document.querySelector('#toast');
+        PaperToast test = Polymer.dom($['toast1']).querySelector("#toast1");
         await project.requestMigrations();
         test.text = responseText + project.currentMigration.toString();
         test.show();

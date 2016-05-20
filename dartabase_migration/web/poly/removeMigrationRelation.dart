@@ -32,14 +32,8 @@ class RemoveMigrationRelation extends PolymerElement {
         tableButton.classes.toggle('hidden');
         Map relation = {"selectedRelation":""};
         add("project.migrationActions.removeRelations", relation);
-        List names = await project.getTableNames();
-        List filteredNames = new List();
-        for(String name in names){
-            if(name.indexOf("_2_") > -1){
-                filteredNames.add(name);
-            }
-        }
-        set("existingRelations", filteredNames);
+        List names = await project.getRelationTables();
+        set("existingRelations", names);
     }
 
     @reflectable

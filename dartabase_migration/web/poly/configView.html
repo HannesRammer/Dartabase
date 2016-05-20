@@ -36,18 +36,30 @@
                 float: left;
                 text-align: center;
             }
-            iron-pages{
-                width:100%;
+
+            iron-pages {
+                width: 100%;
+            }
+
+            paper-tabs {
+                --paper-tabs-selection-bar-color: #ff444d; /*rgb(65, 167, 250)*/
+
             }
         </style>
+
+        <paper-tabs selected="0">
+            <paper-tab>Config View</paper-tab>
+        </paper-tabs>
         <iron-pages selected="0">
             <paper-material class="config" elevation="2" id="page_1">
                 <paper-input label="adapter" value="{{ project.config.adapter }}" disabled></paper-input>
                 <paper-input label="username" value="{{ project.config.username }}" disabled></paper-input>
-                <paper-input label="host" value="{{ project.config.host }}" disabled></paper-input><br/>
+                <paper-input label="host" value="{{ project.config.host }}" disabled></paper-input>
+                <br/>
                 <paper-input label="database" value="{{ project.config.database }}" disabled></paper-input>
                 <paper-input label="password" value="{{ project.config.password }}" disabled></paper-input>
-                <paper-input label="port" value="{{ project.config.port }}" disabled></paper-input><br/>
+                <paper-input label="port" value="{{ project.config.port }}" disabled></paper-input>
+                <br/>
 
                 <template is="dom-if" if="{{ !isSecureConnection(project.config.ssl) }}">
                         <span class="red_text">
@@ -66,11 +78,12 @@
             </paper-material>
             <paper-material elevation="2" id="page_2">
                 <paper-input label="adapter" value="{{ project.config.adapter }}"></paper-input>
-                <paper-input label="username" value="{{ project.config.username }}" ></paper-input>
-                <paper-input label="host" value="{{ project.config.host }}" ></paper-input>
-                <paper-input label="database" value="{{ project.config.database }}" ></paper-input>
-                <paper-input label="password" value="{{ project.config.password }}" ></paper-input>
-                <paper-input label="port" value="{{ project.config.port }}" ></paper-input><br/>
+                <paper-input label="username" value="{{ project.config.username }}"></paper-input>
+                <paper-input label="host" value="{{ project.config.host }}"></paper-input>
+                <paper-input label="database" value="{{ project.config.database }}"></paper-input>
+                <paper-input label="password" value="{{ project.config.password }}"></paper-input>
+                <paper-input label="port" value="{{ project.config.port }}"></paper-input>
+                <br/>
                 <paper-checkbox checked?="{{isSecureConnection(project.config.ssl)}}">
                     ssl
                 </paper-checkbox>
@@ -83,5 +96,6 @@
                 </paper-button>
             </paper-material>
         </iron-pages>
+
     </template>
 </dom-module>

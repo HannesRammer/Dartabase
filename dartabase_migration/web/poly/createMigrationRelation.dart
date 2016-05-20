@@ -34,7 +34,7 @@ class CreateMigrationRelation extends PolymerElement {
         tableButton.classes.toggle('hidden');
         Map relation = {"selectedTableOne":"","selectedTableTwo":""};
         add("project.migrationActions.createRelations", relation);
-        set("existingTableNamesOne", await project.getTableNames());
+        set("existingTableNamesOne", await project.getTableNamesWithoutRelation());
         set("existingTableNamesTwo", existingTableNamesOne);
     }
 

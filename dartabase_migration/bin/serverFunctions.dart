@@ -71,7 +71,7 @@ Future runMigration(Map params, HttpResponse res) async {
     DM.lastMigrationNumber = num.parse(params['index']);
     DBCore.rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
     await DM.run(params["direction"]);
-    closeResWith(res, "finished migration");
+    closeResWith(res, "finished migrating version ${params['index']} ${params["direction"]}");
 }
 
 Future requestServerStatus(Map params, HttpResponse res) async {
@@ -105,7 +105,8 @@ createMigration(Map params, HttpResponse res) {
     String cleanMigrationActions = params['migrationActions'].replaceAll('%5C', '\\').replaceAll('%7B', '{').replaceAll('%22', '"').replaceAll('%20', ' ').replaceAll('%7D', '}').replaceAll('%5B', '[').replaceAll('%5D', ']');
     Map cleanMigrationActionsMap = JSON.decode(cleanMigrationActions);
 
+    String rootPath = "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json";
     Map migration  = DM.MigrationGenerator.createMigration(cleanMigrationActionsMap);
-    DBCore.stringToFilePath(JSON.encode(migration), "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json");
-    closeResWith(res, "done");
+    DBCore.stringToFilePath(JSON.encode(migration), rootPath);
+    closeResWith(res, "migration created at $rootPath");
 }

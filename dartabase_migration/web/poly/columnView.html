@@ -21,19 +21,65 @@
             }
 
             .list {
+                text-align: center;
                 float: left;
                 width: 25%;
-                padding: 5px;
+            }
+
+            .header {
+                margin: 0px;
+                padding: 0px;
+                text-align: center;
+            }
+
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
+
+                width: 25%;
+                float: left;
+                padding: 0px;
                 box-sizing: border-box;
             }
 
-            br{
-                clear:both;
+            br {
+                clear: both;
+            }
+
+            paper-checkbox {
+                padding-top: 10px;
             }
         </style>
 
+        <template is="dom-if" if="{{ isAuto(need) }}">
 
-            <paper-input class="list" required label="Column Name" value="{{column.name}}" required></paper-input>
+            <paper-input class="list" value="id" disabled no-label-float></paper-input>
+            <paper-input class="list" value="INT" disabled no-label-float></paper-input>
+            <paper-input class="list" value="" disabled no-label-float></paper-input>
+            <paper-checkbox class="list" disabled no-label-float></paper-checkbox>
+            <br/>
+            <paper-input class="list" value="created_at" disabled no-label-float></paper-input>
+            <paper-input class="list" value="TIMESTAMP" disabled no-label-float></paper-input>
+            <paper-input class="list" value="" disabled no-label-float></paper-input>
+            <paper-checkbox class="list" checked="true" disabled no-label-float></paper-checkbox>
+            <br/>
+            <paper-input class="list" value="updated_at" disabled no-label-float></paper-input>
+            <paper-input class="list" value="TIMESTAMP" disabled no-label-float></paper-input>
+            <paper-input class="list" value="" disabled no-label-float></paper-input>
+            <paper-checkbox class="list" disabled no-label-float></paper-checkbox>
+        </template>
+
+        <template is="dom-if" if="{{ isInput(need) }}">
+
+            <paper-input class="list" required label="new_column_name" value="{{column.name}}" required
+                         allowed-pattern="[a-z_0-9]" error-message="only small letters, numbers and underscore"></paper-input>
             <paper-dropdown-menu class="list" label="Database Types" required>
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.type}}">
                     <template is="dom-repeat" items="{{dbTypes}}">
@@ -45,7 +91,43 @@
             </paper-dropdown-menu>
 
             <paper-input class="list" label="Default Value" value="{{column.default}}"></paper-input>
-            <paper-checkbox class="list" checked="{{column.null}}">Null allowed</paper-checkbox>
+            <paper-checkbox class="list" checked="{{column.null}}"></paper-checkbox>
+
+        </template>
+        <template is="dom-if" if="{{ isHeader(need) }}">
+            <paper-input label="Column Name" class="header columnName" disabled no-label-float></paper-input>
+
+            <paper-input label="Type" class="header list" disabled no-label-float></paper-input>
+            <paper-input label="Default" class="header list" disabled no-label-float></paper-input>
+            <paper-input label="NULL Allowed" class="header list" disabled no-label-float></paper-input>
+
+        </template>
+        <template is="dom-if" if="{{ isView(need) }}">
+            <paper-input class="list" value="{{column.name}}" disabled no-label-float></paper-input>
+            <paper-input class="list" value="{{column.type}}" disabled no-label-float></paper-input>
+            <paper-input class="list" value="{{column.default}}" disabled no-label-float></paper-input>
+            <paper-checkbox class="list" checked="{{column.null}}" disabled no-label-float></paper-checkbox>
+        </template>
+
+        <template is="dom-if" if="{{ isDetail(need) }}">
+            <paper-dropdown-menu label="select Column" required>
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.name}}">
+                    <template is="dom-repeat" items="{{existingColumnNames}}">
+                        <paper-item value="{{item}}">
+                            {{item}}
+                        </paper-item>
+                    </template>
+                </paper-listbox>
+
+            </paper-dropdown-menu>
+            <div style="display: none">{{adaptColumnType( selectedTable, column.name)}}</div>
+            <paper-input class="list" label="Database Types" value="{{column.type}}"
+                         disabled></paper-input>
+            <paper-input class="list" label="Default Value" value="{{column.default}}"
+                         disabled></paper-input>
+            <paper-checkbox class="list" checked="{{column.null}}" disabled>Null allowed
+            </paper-checkbox>
+        </template>
 
 
     </template>
