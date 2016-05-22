@@ -11,6 +11,7 @@ class DBCore {
   static Map parsedMapping;
 
   static String adapter;
+
   static String get MySQL => "MySQL";
 
   static String get PGSQL => "PGSQL";
@@ -30,7 +31,8 @@ class DBCore {
   static String schemaVersion;
 
   static Map jsonFilePathToMap(String path) {
-    var file = new File(path);
+
+        File file = new File(path);
     if (file.existsSync()) {
       String fileText = file.readAsStringSync(encoding: ASCII);
       if (fileText == "") {
@@ -40,7 +42,6 @@ class DBCore {
     } else {
       return {};
     }
-
   }
 
   static Map loadSchemaToMap(String rootPath) {
@@ -76,7 +77,7 @@ class DBCore {
     String dartabaseType;
     if (mapOrString.runtimeType == String) {
       return defaultForType(mapOrString);
-    } else if (mapOrString.runtimeType.toString() == "_LinkedHashMap") {
+        } else if (mapOrString.runtimeType.toString() == "_InternalLinkedHashMap") {
       dartabaseType = mapOrString["type"];
       String defaultValue = mapOrString["default"];
       if (defaultValue == null) {
@@ -86,26 +87,42 @@ class DBCore {
       }
     }
   }
+
   static dbType(var mapOrString) {
     String dartabaseType;
     if (mapOrString.runtimeType == String) {
       return mapOrString;
-    } else if (mapOrString.runtimeType.toString() == "_LinkedHashMap") {
+        } else if (mapOrString.runtimeType.toString() == "_InternalLinkedHashMap") {
       dartabaseType = mapOrString["type"];
       return dartabaseType;
     }
   }
 
   static defaultForType(dartabaseType) {
-    if (["BINT", "BINT UNSIGNED", "DOUBLE", "FLOAT", "FLOAT UNSIGNED", "INT", "INT UNSIGNED", "SINT", "SINT UNSIGNED", "TINT", "TINT UNSIGNED"].contains(dartabaseType)) {
+        if ([
+            "BINT",
+            "BINT UNSIGNED",
+            "DOUBLE",
+            "FLOAT",
+            "FLOAT UNSIGNED",
+            "INT",
+            "INT UNSIGNED",
+            "SINT",
+            "SINT UNSIGNED",
+            "TINT",
+            "TINT UNSIGNED"
+        ].contains(dartabaseType)) {
       return 0;
-    } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(dartabaseType)) {
+        } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(
+                dartabaseType)) {
       return 0.0;
     } else if (dartabaseType == "BOOLEAN") {
       return false;
-    } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"].contains(dartabaseType)) {
+        } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"]
+                .contains(dartabaseType)) {
       return "";
-    } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType)) {
+        } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
+                dartabaseType)) {
       return new DateTime.now();
     } else {
       /*
@@ -119,16 +136,32 @@ class DBCore {
        "VARBINARY": "bytea",*/
     }
   }
+
   static dartabaseTypeToDartType(dartabaseType) {
-    if (["BINT", "BINT UNSIGNED", "DOUBLE", "FLOAT", "FLOAT UNSIGNED", "INT", "INT UNSIGNED", "SINT", "SINT UNSIGNED", "TINT", "TINT UNSIGNED"].contains(dartabaseType)) {
+        if ([
+            "BINT",
+            "BINT UNSIGNED",
+            "DOUBLE",
+            "FLOAT",
+            "FLOAT UNSIGNED",
+            "INT",
+            "INT UNSIGNED",
+            "SINT",
+            "SINT UNSIGNED",
+            "TINT",
+            "TINT UNSIGNED"
+        ].contains(dartabaseType)) {
       return "num";
-    } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(dartabaseType)) {
+        } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(
+                dartabaseType)) {
       return "double";
     } else if (dartabaseType == "BOOLEAN") {
       return "bool";
-    } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"].contains(dartabaseType)) {
+        } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"]
+                .contains(dartabaseType)) {
       return "String";
-    } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType)) {
+        } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
+                dartabaseType)) {
       return "DateTime";
     } else {
       return "List";
