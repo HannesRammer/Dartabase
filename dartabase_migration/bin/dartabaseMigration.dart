@@ -12,6 +12,7 @@ import 'package:postgresql/postgresql.dart';
 import 'package:sqljocky/sqljocky.dart';
 
 part '../tool/dbhelper.dart';
+
 part '../tool/migrationGenerator.dart';
 
 String uri;
@@ -32,23 +33,22 @@ Future initiateDartabase(path, projectName) async {
     print("add project mapping ${projectName}:${path}");
     File file = new File(mappingsPath);
     if (file.existsSync()) {
-        projectMapping =  DBCore.jsonFilePathToMap(mappingsPath);
-
+        projectMapping = DBCore.jsonFilePathToMap(mappingsPath);
     } else {
-         DBCore.mapToJsonFilePath({}, mappingsPath);
-        projectMapping =  DBCore.jsonFilePathToMap(mappingsPath);
+        DBCore.mapToJsonFilePath({}, mappingsPath);
+        projectMapping = DBCore.jsonFilePathToMap(mappingsPath);
     }
     projectMapping[projectName] = path;
-     DBCore.mapToJsonFilePath(projectMapping, mappingsPath);
+    DBCore.mapToJsonFilePath(projectMapping, mappingsPath);
     Map config = {
-            "adapter": "PGSQL",
-            "database": "DBName",
-            "username": "DBUsername",
-            "password": "DBPassword",
-            "host": "localhost",
-            "port": "5432",
-            "schemaVersion": "0",
-            "ssl": "false"
+        "adapter": "PGSQL",
+        "database": "DBName",
+        "username": "DBUsername",
+        "password": "DBPassword",
+        "host": "localhost",
+        "port": "5432",
+        "schemaVersion": "0",
+        "ssl": "false"
     };
     Directory directory = new Directory("${path}/db/migrations");
 
@@ -56,21 +56,19 @@ Future initiateDartabase(path, projectName) async {
     print("created directory ${directory.path}");
 
     print("creating $path/db/config.json");
-     DBCore.mapToJsonFilePath(config, "$path/db/config.json");
+    DBCore.mapToJsonFilePath(config, "$path/db/config.json");
 
     print("creating $path/db/schema.json");
-     DBCore.mapToJsonFilePath({
+    DBCore.mapToJsonFilePath({
     }, "$path/db/schema.json");
 
     print("creating $path/db/schemaVersion.json");
     Map schemaVersion = {
-            "schemaVersion": ""
+        "schemaVersion": ""
     };
 
     DBCore.mapToJsonFilePath(schemaVersion, "$path/db/schemaVersion.json");
     exit(0);
-
-
 }
 
 /**Connects to a PG/MY-SQL Database (dependent on the db/config.json file).
@@ -79,14 +77,13 @@ Future initiateDartabase(path, projectName) async {
  * in ascending order which have not been migrated to the database.
  **/
 /**Future<bool> run_new(String migrationDirection) async{
-    direction = migrationDirection;
-    schema = DBCore.loadSchemaToMap(DBCore.rootPath);
- //   var conn = await connectDB(DBCore.rootPath);
-    migrate(conn);
-    return true;
-}**/
-Future connectDB(rootPath) async{
-
+        direction = migrationDirection;
+        schema = DBCore.loadSchemaToMap(DBCore.rootPath);
+        //   var conn = await connectDB(DBCore.rootPath);
+        migrate(conn);
+        return true;
+        }**/
+Future connectDB(rootPath) async {
     DBCore.loadConfigFile(rootPath);
     var conn;
     if (DBCore.adapter == DBCore.PGSQL) {
@@ -106,9 +103,20 @@ Future connectDB(rootPath) async{
     } else if (DBCore.adapter == DBCore.MySQL) {
         ConnectionPool pool;
         if (DBCore.ssl) {
-            pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5, useSSL: true);
+            pool = new ConnectionPool(host: DBCore.host,
+                    port: DBCore.port,
+                    user: DBCore.username,
+                    password: DBCore.password,
+                    db: DBCore.database,
+                    max: 5,
+                    useSSL: true);
         } else {
-            pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+            pool = new ConnectionPool(host: DBCore.host,
+                    port: DBCore.port,
+                    user: DBCore.username,
+                    password: DBCore.password,
+                    db: DBCore.database,
+                    max: 5);
         }
         conn = pool;
         //migrate(pool);
@@ -116,7 +124,7 @@ Future connectDB(rootPath) async{
     return conn;
 }
 
-Future run(String migrationDirection) {
+Future run(String migrationDirection) async {
     Completer completer = new Completer();
     direction = migrationDirection;
     schema = DBCore.loadSchemaToMap(DBCore.rootPath);
@@ -127,36 +135,41 @@ Future run(String migrationDirection) {
             uri += "?sslmode=require";
         }
         Pool pool = new Pool(uri, minConnections: 1, maxConnections: 1);
-        pool.start().then((_) {
-            print('Min connections established.');
-            pool.connect().then((conn) {
-                migrate(conn).then((_) {
-                    completer.complete("done");
-                });
-            });
-        });
-
+        await pool.start();
+        print('Min connections established.');
+        var conn = await pool.connect();
+        await migrate(conn);
+        completer.complete("done");
     } else if (DBCore.adapter == DBCore.MySQL) {
         ConnectionPool pool;
         if (DBCore.ssl) {
-            pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5, useSSL: true);
+            pool = new ConnectionPool(host: DBCore.host,
+                    port: DBCore.port,
+                    user: DBCore.username,
+                    password: DBCore.password,
+                    db: DBCore.database,
+                    max: 5,
+                    useSSL: true);
         } else {
-            pool = new ConnectionPool(host: DBCore.host, port: DBCore.port, user: DBCore.username, password: DBCore.password, db: DBCore.database, max: 5);
+            pool = new ConnectionPool(host: DBCore.host,
+                    port: DBCore.port,
+                    user: DBCore.username,
+                    password: DBCore.password,
+                    db: DBCore.database,
+                    max: 5);
         }
 
-        migrate(pool).then((_) {
-            completer.complete("done");
-        });
+        await migrate(pool);
+        completer.complete("done");
     }
     return completer.future;
 }
 
 
-Future serverStatus(String rootPath) async{
-
-     DBCore.loadConfigFile(rootPath);
-     var conn = await connectDB(rootPath);
-     var query;
+Future serverStatus(String rootPath) async {
+    DBCore.loadConfigFile(rootPath);
+    var conn = await connectDB(rootPath);
+    var query;
     if (DBCore.adapter == DBCore.PGSQL) {
         query = await conn.query("SELECT 1").toList();
     } else if (DBCore.adapter == DBCore.MySQL) {
@@ -171,23 +184,23 @@ Future serverStatus(String rootPath) async{
 
 
 Future migrate(conn) async {
-    DBCore.parsedMapping =  DBCore.jsonFilePathToMap('bin/../tool/typeMapper${DBCore.adapter}.json');
+    DBCore.parsedMapping = DBCore.jsonFilePathToMap('bin/../tool/typeMapper${DBCore.adapter}.json');
     Directory directory = new Directory("${DBCore.rootPath}/db/migrations");
     files = directory.listSync();
     if (files.length > 0) {
         /**
-        files.forEach((file) {
-            if (file.path.split("migrations")[1].replaceAll("\\", "") == DBCore.schemaVersion) {
+                files.forEach((file) {
+                if (file.path.split("migrations")[1].replaceAll("\\", "") == DBCore.schemaVersion) {
                 if (direction == "UP") {
-                    fileId = files.indexOf(file) + 1;
+                fileId = files.indexOf(file) + 1;
                 } else if (direction == "DOWN") {
-                    fileId = files.indexOf(file);
+                fileId = files.indexOf(file);
                 }
-            }
-        });
-        */
+                }
+                });
+         */
 
-        for(var file in files){
+        for (var file in files) {
             if (file.path.split("migrations")[1].replaceAll("\\", "") == DBCore.schemaVersion) {
                 if (direction == "UP") {
                     fileId = files.indexOf(file) + 1;
@@ -233,7 +246,7 @@ Future migrate(conn) async {
 
 Future doFile(conn) async {
     print("\n----------Start migration for file ${files[fileId].path}-------------");
-    DBCore.parsedMap = ( DBCore.jsonFilePathToMap(files[fileId].path))["$direction"];
+    DBCore.parsedMap = (DBCore.jsonFilePathToMap(files[fileId].path))["$direction"];
     if (DBCore.parsedMap != null) {
         createTable(conn);
     } else {
@@ -273,7 +286,7 @@ void createTable(conn) {
                 schema[tableName] = {};
                 Map schemaTableMap = schema[tableName];
                 schemaTableMap["id"] = {
-                        "type": "INT"
+                    "type": "INT"
                 };
                 for (int j = 0; j < columnNames.length; j++) {
                     String columnName = columnNames[j];
@@ -312,7 +325,6 @@ void createTable(conn) {
 //print("\nNothing to add since 'createTable' is not specified in json");
         createColumn(conn);
     }
-
 }
 
 void createColumn(conn) {
@@ -343,7 +355,6 @@ void createColumn(conn) {
                         }
                         print("\nSCHEMA createColumn OK: Column ${columnName} added to table ${tableName}");
                     } else {
-
                         print("\nSCHEMA createColumn Cancle: Column ${columnName} already exists in ${tableName}, columns not added");
                     }
                 }
@@ -399,7 +410,6 @@ void removeColumn(conn) {
 
 void createRelation(conn) {
     if (DBCore.parsedMap["createRelation"] != null) {
-
         List relations = DBCore.parsedMap["createRelation"];
         Map dependencies;
         List masterList = [];
@@ -466,14 +476,14 @@ void createRelation(conn) {
                 schema[relationTable] = {};
                 Map schemaTableMap = schema[relationTable];
                 schemaTableMap["id"] = {
-                        "type": "INT"
+                    "type": "INT"
                 };
                 for (int j = 0; j < columns.length; j++) {
                     String columnName = columns[j];
                     if (schemaTableMap[columnName] == null) {
                         schemaTableMap[columnName] = {
-                                "null": "true",
-                                "type": "INT"
+                            "null": "true",
+                            "type": "INT"
                         };
                         print("\nSCHEMA createRelation OK: Column ${columnName} added to table ${relationTable}");
                     } else {
@@ -527,7 +537,6 @@ Future removeTable(conn) async {
                 print(schema);
                 String sqlQuery = "DROP TABLE IF EXISTS ${tableName} ";
                 DBHelper.removeDBTable(sqlQuery, conn);
-
             } else {
                 print("\nSCHEMA removeTable FAIL: Table ${tableName} doesnt exists, tables not removed");
             }
@@ -545,7 +554,7 @@ Future removeTable(conn) async {
     print("\n-----------------------End migration-----------------------");
     var filePath = files[fileId].path;
     String schemaVersion = filePath.split("migrations")[1].replaceAll("\\", "");
-     DBCore.mapToJsonFilePath({"schemaVersion": schemaVersion},
+    DBCore.mapToJsonFilePath({"schemaVersion": schemaVersion},
             '${DBCore.rootPath}/db/schemaVersion.json');
     if (direction == "UP") {
         fileId++;
@@ -568,15 +577,15 @@ Future removeTable(conn) async {
             } else {
                 var filePath = files[fileId].path;
                 schemaVersion = filePath.split("migrations")[1].replaceAll("\\", "");
-                 DBCore.mapToJsonFilePath({
-                        "schemaVersion": schemaVersion
+                DBCore.mapToJsonFilePath({
+                    "schemaVersion": schemaVersion
                 }, '${DBCore.rootPath}/db/schemaVersion.json');
                 print("goal migration reached");
                 exit(0);
             }
         } else {
-             DBCore.mapToJsonFilePath({
-                    "schemaVersion": ""
+            DBCore.mapToJsonFilePath({
+                "schemaVersion": ""
             }, '${DBCore.rootPath}/db/schemaVersion.json');
             print("goal migration reached");
             exit(0);

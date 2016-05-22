@@ -102,11 +102,14 @@ loadSchema(Map params, HttpResponse res) {
 
 createMigration(Map params, HttpResponse res) {
     print(params.toString());
-    String cleanMigrationActions = params['migrationActions'].replaceAll('%5C', '\\').replaceAll('%7B', '{').replaceAll('%22', '"').replaceAll('%20', ' ').replaceAll('%7D', '}').replaceAll('%5B', '[').replaceAll('%5D', ']');
+    String cleanMigrationActions = params['migrationActions'].replaceAll('%5C', '\\').replaceAll('%7B', '{').replaceAll('%22', '"')
+            .replaceAll('%20', ' ').replaceAll('%7D', '}').replaceAll('%5B', '[')
+            .replaceAll('%5D', ']');
     Map cleanMigrationActionsMap = JSON.decode(cleanMigrationActions);
 
-    String rootPath = "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json";
-    Map migration  = DM.MigrationGenerator.createMigration(cleanMigrationActionsMap);
+    String rootPath = "${params['projectRootPath'].replaceAll(
+            '%5C', '\\')}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json";
+    Map migration = DM.MigrationGenerator.createMigration(cleanMigrationActionsMap);
     DBCore.stringToFilePath(JSON.encode(migration), rootPath);
     closeResWith(res, "migration created at $rootPath");
 }

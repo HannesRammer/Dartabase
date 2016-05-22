@@ -1,4 +1,4 @@
-Dartabase Model 0.7.0
+Dartabase Model 1.0.0rc
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -15,13 +15,14 @@ Dartabase Model 0.7.0
 
 	Compatibility
 		depending on the migration version you are using 
-		you have to use a differend model version in your app
+		you have to use a different model version in your app
 	    
 	    migration  			model
 	    -------------------------
+	    1.0.0 <-requires->  1.0.0 (using core 0.4.x)
 	    0.7.0 <-requires->  0.7.0 (using core 0.3.x)
 	    0.6.x <-requires->  0.6.x
-      0.5.x <-requires->  0.5.x
+        0.5.x <-requires->  0.5.x
 	    
   Uses
   
@@ -34,7 +35,7 @@ Dartabase Model 0.7.0
 HOW TO SETUP
 ------------
 
-After you have sucessfully finished setting up 'Dartabase Migration' 
+After you have successfully finished setting up 'Dartabase Migration' 
 
 1. Install Dartabase Model the usual pubspec way 
     
@@ -110,14 +111,11 @@ SIMPLE MODEL FUNCTIONS
     once future completes
      
     Returns String "created" or "updated"
-    
-    player.save().then((process){
-      if(process == "created" || process == "updated"){
-        //your code
-      }else{
-      }
-    }); 
-   
+     
+    var process = await player.save();
+    if(process == "created" || process == "updated"){
+      //your code
+    }
 **Future findBy(String column,var value)** 
     
     once future completes
@@ -126,13 +124,11 @@ SIMPLE MODEL FUNCTIONS
     else 
     returns null
    
-    player.findBy("name","tim").then((player){
-      if(player != null){
-        //your code
-      }else{
-      }
-    }); 
-    
+    var player = await player.findBy("name","tim");
+    if(player != null){
+      //your code
+    }
+         
 **Future findById(var id)** 
     
     once future completes
@@ -143,12 +139,10 @@ SIMPLE MODEL FUNCTIONS
     else 
     returns null
    
-    player.findById("3").then((player){
-      if(player != null){
-        //your code
-      }else{
-      }
-    }); 
+    var player = await player.findById("3");
+    if(player != null){
+      //your code
+    }
     
 **Future findAllBy(String column, var value)** 
     
@@ -158,12 +152,10 @@ SIMPLE MODEL FUNCTIONS
     else 
     returns empty list
    
-    player.findAllBy("name","tim").then((players){
-      if(!players.isEmpty){
-        //your code
-      }else{
-      }
-    }); 
+    var players = await player.findAllBy("name","tim");
+    if(!players.isEmpty){
+      //your code
+    }
  
 **Future findAll()** 
     
@@ -173,12 +165,10 @@ SIMPLE MODEL FUNCTIONS
     else 
     returns empty list
    
-    player.findAll().then((players){
-      if(!players.isEmpty){
-        //your code
-      }else{
-      }
-    }); 
+    var players = await player.findAll();
+    if(!players.isEmpty){
+      //your code
+    } 
  
 **Future delete()** 
     
@@ -186,7 +176,8 @@ SIMPLE MODEL FUNCTIONS
     
     deletes the object //TODO and all its relations
     
-    player.delete();
+    await player.delete();
+    //your code
     
     
 RELATIONS
@@ -198,9 +189,8 @@ RELATIONS
 	creates relation between the two objects (player and character)
 	...
 	    
-	player.receive(character).then((result){
-	      
-	}); 
+	var result = await player.receive(character);
+    //your code
     
 **Future hasOne(object)** 
    
@@ -210,12 +200,10 @@ RELATIONS
 	else 
 	returns null
 	   
-	player.hasOne(new Character()).then((character){
-	  if(character != null){
-	    //your code
-	  }else{
-	  }
-	};
+	var character = await player.hasOne(new Character());
+	if(character != null){
+	  //your code
+	}
   
 **Future hasMany(object)** 
     
@@ -225,12 +213,10 @@ RELATIONS
     else 
     returns empty list
    
-    player.hasManyWith(new Character()).then((characters){
-      if(!characters.isEmpty){
-        //your code
-      }else{
-      }
-    }); 
+    var characters = await player.hasMany(new Character());
+    if(!characters.isEmpty){
+      //your code
+    }
   
 **Future hasOneWith(object,String column,String value)** 
 	    
@@ -240,13 +226,11 @@ RELATIONS
 	else 
 	returns null
 	 
-	player.hasOneWith(new Character(),'level','3').then((character){
-	  if(character != null){
-	    //your code
-	  }else{
-	  }
-	});
-
+	var character = await player.hasOneWith(new Character(),'level','3');
+	if(character != null){
+	  //your code
+	}
+	
 **Future hasManyWith(object,String column,String value)** 
 	
 	once future completes
@@ -255,12 +239,10 @@ RELATIONS
 	else 
 	Returns empty list
 	   
-	player.hasManyWith(new Character(),'level','3').then((characters){
-	  if(!characters.isEmpty){
-	    //your code
-	  }else{
-	  }
-	}); 
+	var characters = await player.hasManyWith(new Character(),'level','3');
+	if(!characters.isEmpty){
+	  //your code
+	} 
   
 **Future remove(object)** 
 	
@@ -268,9 +250,8 @@ RELATIONS
 	remove relation between the two objects (player and character)
 	...
 	
-	player.remove(character).then((result){
-	  
-	}); 
+	var result = await player.remove(character);
+	//your code
 
 **TEST EXAMPLE**
 say we have a database with table account and table picture 
@@ -285,33 +266,25 @@ say we have a database with table account and table picture
 			part "picture.dart";
 			
 			void main() {
-			  Model.initiate("C:\\darttestproject\\gameServer");
-			  testAll();
+			    Model.initiate("C:\\darttestproject\\gameServer");
+			    testAll();
 			}
 			
-			Future testAll() {
-			  Completer completer = new Completer();
-			  save().then((List objects){
-			    print("save DONE");
-			    find().then((_){
-			      print("find DONE");
-			      receive(objects[0],objects[1]).then((_){
-			        print("receive DONE");
-			        has(objects[0],objects[1]).then((_){
-			          print("has DONE");
-			          remove(objects[0],objects[1]).then((_){
-			            print("remove DONE");
-			            delete(objects[0],objects[1]).then((_){
-			              print("delete DONE");
-			              print("2testAll DONE");
-			            });
-			          });
-			        });
-			      });
-			    });
-			  });
-			  return completer.future;
-			}
+			Future testAll() async {
+                List objects = await save();
+                print("save DONE");
+                await find();
+                print("find DONE");
+                await receive(objects[0], objects[1]);
+                print("receive DONE");
+                await has(objects[0], objects[1]);
+                print("has DONE");
+                await remove(objects[0], objects[1]);
+                print("remove DONE");
+                await delete(objects[0], objects[1]);
+                print("delete DONE");
+                print("2testAll DONE");
+            }
 			
 			/**
 			 * save test data into db
@@ -322,47 +295,39 @@ say we have a database with table account and table picture
 			 * save picture 2
 			 * save picture 3
 			 **/
-			Future save() {
-			  Completer completer = new Completer();
-			  Account account1 = new Account();
-			  
-			  account1.username="testUser1";
-			  account1.name="guest";
-			  account1.id=1; // on empty db should save user.id =1
-			  account1.save().then((_){
-			    print('account1 saved : ${account1.toString()}');
-			    Account account2 = new Account();
-			    account2.username="testUser2";
-			    account2.name="guest";
-			    account2.id=2; // on empty db should save user.id =2
-			    account2.save().then((_){
-			      print('account2 saved : ${account2.toString()}');
-			      Picture picture1 = new Picture();
-			      picture1.filename="profile";
-			      picture1.id=1;
-			      picture1.save().then((_){
-			        print('picture1 saved : ${picture1.toString()}');
-			        Picture picture2 = new Picture();
-			        picture2.id=2;
-			        picture2.filename="profile";
-			        picture2.save().then((_){
-			          print('picture2 saved : ${picture2.toString()}');
-			          Picture picture3 = new Picture();
-			          picture3.id=3;
-			          picture3.filename="profile";
-			          picture3.save().then((_){
-			            print('picture3 saved : ${picture3.toString()}');
-			            print("testdata entered into DB");
-			            print("fillDB() DONE!!!");
-			            completer.complete([[account1,account2],[picture1,picture2,picture3]]);
-			            
-			          });
-			        });
-			      });
-			    });
-			  });
-			  return completer.future;
-			}
+			Future save() async {
+                Account account1 = new Account();
+                account1.username = "testUser1";
+                account1.name = "guest";
+                account1.id = 1; // on empty db should save user.id =1
+                var process = await account1.save();
+                print('account1 saved : ${account1.toString()}');
+                Account account2 = new Account();
+                account2.username = "testUser2";
+                account2.name = "guest";
+                account2.id = 2; // on empty db should save user.id =2
+                account2.save();
+                print('account2 saved : ${account2.toString()}');
+                Picture picture1 = new Picture();
+                picture1.filename = "profile";
+                picture1.id = 1;
+                picture1.save();
+                print('picture1 saved : ${picture1.toString()}');
+                Picture picture2 = new Picture();
+                picture2.id = 2;
+                picture2.filename = "profile";
+                picture2.save();
+                print('picture2 saved : ${picture2.toString()}');
+                Picture picture3 = new Picture();
+                picture3.id = 3;
+                picture3.filename = "profile";
+                picture3.save();
+                print('picture3 saved : ${picture3.toString()}');
+                print("testdata entered into DB");
+                print("fillDB() DONE!!!");
+                return [[account1, account2], [picture1, picture2, picture3]];
+            }
+			 
 			 
 			/**
 			 * find test data from db
@@ -371,28 +336,23 @@ say we have a database with table account and table picture
 			 * account findById 2
 			 * account findAllBy name guest
 			**/
-			Future find() {
-			  Completer completer = new Completer();
-			  Account accountSearch = new Account();
-			  accountSearch.findBy("username", "testUser1").then((account1){
-			    print('accountSearch.findBy("username", "testUser1") done. Result:');
-			    print(account1.toString());
-			    accountSearch.findById(2).then((Account account2){
-			      print('accountSearch.findById(2) done. Result:');
-			      print(account2.toString());
-			      accountSearch.findAllBy("name", "guest").then((List accounts){
-			        print('accountSearch.findAllBy("name", "guest") done. Results:');
-			        for(num i = 0;i<accounts.length;i++){
-			          print(accounts[i].toString());
-			        }
-			        print("find() DONE!!!");
-			        completer.complete(true);
-			      });
-			    });
-			  });
-			  return completer.future;
-			}
-			
+			Future find() async {
+                Completer completer = new Completer();
+                Account accountSearch = new Account();
+                var account1 = await accountSearch.findBy("username", "testUser1");
+                print('accountSearch.findBy("username", "testUser1") done. Result:');
+                print(account1.toString());
+                Account account2 = await accountSearch.findById(2);
+                print('accountSearch.findById(2) done. Result:');
+                print(account2.toString());
+                List accounts = await accountSearch.findAllBy("name", "guest");
+                print('accountSearch.findAllBy("name", "guest") done. Results:');
+                for (num i = 0; i < accounts.length; i++) {
+                    print(accounts[i].toString());
+                }
+                print("find() DONE!!!");
+                return true;
+            }
 			/**
 			 * creates relation between data in db
 			 * 
@@ -400,22 +360,17 @@ say we have a database with table account and table picture
 			 * account 2 receive picture 2
 			 * account 2 receive picture 3
 			**/
-			Future receive(List<Account> accounts,List<Picture> pictures) {
-			  Completer completer = new Completer();
-			  accounts[0].receive(pictures[0]).then((_){
-			    print('account${accounts[0].id} received picture${pictures[0].id}');
-			    accounts[1].receive(pictures[1]).then((_){
-			      print('account${accounts[1].id} received picture${pictures[1].id}');
-			      accounts[1].receive(pictures[2]).then((_){
-			        print('account${accounts[1].id} received picture${pictures[2].id}');
-			        print("receive() DONE!!!");
-			        completer.complete(true);
-			      });
-			    });
-			    
-			  });
-			  return completer.future;
-			}
+			Future receive(List<Account> accounts, List<Picture> pictures) async {
+                Completer completer = new Completer();
+                await accounts[0].receive(pictures[0]);
+                print('account${accounts[0].id} received picture${pictures[0].id}');
+                await accounts[1].receive(pictures[1]);
+                print('account${accounts[1].id} received picture${pictures[1].id}');
+                await accounts[1].receive(pictures[2]);
+                print('account${accounts[1].id} received picture${pictures[2].id}');
+                print("receive() DONE!!!");
+                return completer.future;
+            }
 			
 			/**
 			  * finds relation between data in db
@@ -425,59 +380,49 @@ say we have a database with table account and table picture
 			  * account 2 hasMany picture
 			  * account 2 hasManyWith picture filename profile
 			**/
-			Future has(List<Account> accounts,List<Picture>  pictures) {
-			  Completer completer = new Completer();
-			  accounts[0].hasOne(new Picture()).then((picture){
-			    print('accounts[0].hasOne(new Picture()) done. Result:');
-			    print(picture.toString());
-			    accounts[0].hasOneWith(new Picture(),"filename","profile").then((picture){
-			      print('accounts[0].hasOneWith(new Picture(),"filename","profile")account done. Result:');
-			      print(picture.toString());
-			      accounts[1].hasMany(new Picture()).then((List pictures){
-			        print('accounts[1].hasMany(new Picture()) done. Results:');
-			        for(num i = 0;i<pictures.length;i++){
-			          print(pictures[i].toString());
-			        }
-			        accounts[1].hasManyWith(new Picture(),"filename","profile").then((List pictures){
-			          print('accounts[1].hasManyWith(new Picture(),"filename","profile") done. Results:');
-			          for(num i = 0;i<pictures.length;i++){
-			            print(pictures[i].toString());
-			          }
-			          print("has() DONE!!!");
-			          completer.complete(true);
-			        });
-			      });
-			    });
-			  });
-			  return completer.future;
-			}
+            Future has(List<Account> accounts, List<Picture> pictures) async {
+                Completer completer = new Completer();
+                var picture = await accounts[0].hasOne(new Picture());
+                print('accounts[0].hasOne(new Picture()) done. Result:');
+                print(picture.toString());
+                var picture = await accounts[0].hasOneWith(new Picture(), "filename", "profile");
+                print('accounts[0].hasOneWith(new Picture(),"filename","profile")account done. Result:');
+                print(picture.toString());
+                List pictures = await accounts[1].hasMany(new Picture());
+                print('accounts[1].hasMany(new Picture()) done. Results:');
+                for (num i = 0; i < pictures.length; i++) {
+                    print(pictures[i].toString());
+                }
+                List pictures_2 = await accounts[1].hasManyWith(new Picture(), "filename", "profile");
+                print('accounts[1].hasManyWith(new Picture(),"filename","profile") done. Results:');
+                for (num i = 0; i < pictures_2.length; i++) {
+                    print(pictures_2[i].toString());
+                }
+                print("has() DONE!!!");
+                return true;
+            }
 			
 			/**
 			 * remove picture 2 from account 2 
 			**/
-			Future remove(List<Account> accounts,List<Picture>  pictures) {
-			  Completer completer = new Completer();
-			  accounts[1].remove(pictures[1]).then((_){
-			    print('removed relation from picture.id = 2 and account.id = 2');
-			    print("remove() DONE!!!");
-			    completer.complete(true);
-			  });
-			  return completer.future;
-			}
+            Future remove(List<Account> accounts, List<Picture> pictures) async {
+                await accounts[1].remove(pictures[1]);
+                print('removed relation from picture.id = 2 and account.id = 2');
+                print("remove() DONE!!!");
+                return true;
+            }
 			
 			/**
 			 * delete account 1  
 			**/
-			Future delete(List<Account> accounts,List<Picture>  pictures) {
-			  Completer completer = new Completer();
-			  accounts[0].delete().then((_){
-			    print('removed all relations for account.id = ${accounts[0].id}');
-			    print('removed object account.id = ${accounts[0].id}');
-			    print("delete() DONE!!!");
-			    completer.complete(true);
-			  });
-			  return completer.future;
-			}
+            Future delete(List<Account> accounts, List<Picture> pictures) async {
+                String st = accounts[0].id;
+                await accounts[0].delete();
+                print('removed all relations for account.id = ${st}');
+                print('removed object account.id = ${st}');
+                print("delete() DONE!!!");
+                return true;
+            }
 				
 		-----dataserver.dart--END--
 		  
@@ -489,7 +434,6 @@ say we have a database with table account and table picture
 TODO
 ----
 
-	*wait for 'await' to make this baby sync
 	*test functionality in bigger project
     *add more features like implementing and removing dependencies
     *add examples code to git
