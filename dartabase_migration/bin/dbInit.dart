@@ -34,7 +34,7 @@ void main() {
       .transform(new LineSplitter())
       .listen((String line) { /* Do something with line. */
         if(count>1){
-          initiateDartabase(line,name);  
+          initiateDartabase(line,name,true);
         }
 
         if(count == 1){

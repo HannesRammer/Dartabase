@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 0.6.3
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0-rc.1
 =========================
 
   Serverside Database migration 
@@ -19,18 +19,17 @@
     
     depending on the migration version you are using 
     you have to use a differend model version in your app
-      
-      migration       model
-      -------------------------
-      0.7.0 <-requires->  0.7.0 (using core 0.3.x)
-      0.6.x <-requires->  0.6.x
-      0.5.x <-requires->  0.5.x
-      
+	    
+    migration  			model
+    -------------------------
+    1.0.0 <-requires->  1.0.0 (using core 0.4.x)
+    0.6.x <-requires->  0.6.x
+    0.5.x <-requires->  0.5.x      
   Uses
   
-  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.11.0
+  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.14.1
   
-  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.2.13
+  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.3.3
   
   **TUTORIAL 1** [HOW TO SETUP AND RUN MIGRATION AND MODEL](https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md)
   

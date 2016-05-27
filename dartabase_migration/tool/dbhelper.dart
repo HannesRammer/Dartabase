@@ -3,91 +3,81 @@ part of dartabaseMigration;
 class DBHelper {
 
 
-    static void createDBTable(sql, conn, x, count) {
+    static void createDBTable(sql, conn, x, count, bool exitAfter) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("createDBTable", conn.query(sql).toList(), sql, conn, x,
-                    count);
+            afterQuery("createDBTable", conn.query(sql).toList(), sql, exitAfter, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("createDBTable", conn.query(sql), sql, conn, x, count);
+            afterQuery("createDBTable", conn.query(sql), sql,exitAfter, conn, x, count);
         }
     }
 
-    static void createDBColumn(sql, conn, x, count) {
+    static void createDBColumn(sql, conn, x, count, bool exitAfter) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("createDBColumn", conn.query(sql).toList(), sql, conn, x,
-                    count);
+            afterQuery("createDBColumn", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("createDBColumn", conn.query(sql), sql, conn, x, count);
+            afterQuery("createDBColumn", conn.query(sql), sql,exitAfter, conn, x, count);
         }
     }
 
-    static void removeDBColumn(sql, conn, x, count) {
+    static void removeDBColumn(sql, conn, x, count, bool exitAfter) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("removeDBColumn", conn.query(sql).toList(), sql, conn, x,
-                    count);
+            afterQuery("removeDBColumn", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("removeDBColumn", conn.query(sql), sql, conn, x, count);
+            afterQuery("removeDBColumn", conn.query(sql), sql,exitAfter, conn, x, count);
         }
     }
 
-    static void createDBRelation(sql, conn, x, count) {
+    static void createDBRelation(sql, conn, x, count, bool exitAfter) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery(
-                    "createDBRelation", conn.query(sql).toList(), sql, conn, x,
-                    count);
+            afterQuery("createDBRelation", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery(
-                    "createDBRelation", conn.query(sql), sql, conn, x, count);
+            afterQuery("createDBRelation", conn.query(sql), sql,exitAfter, conn, x, count);
         }
     }
 
-    static void removeDBRelation(sql, conn, x, count) {
+    static void removeDBRelation(sql, conn, x, count, bool exitAfter) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery(
-                    "removeDBRelation", conn.query(sql).toList(), sql, conn, x,
-                    count);
+            afterQuery("removeDBRelation", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery(
-                    "removeDBRelation", conn.query(sql), sql, conn, x, count);
+            afterQuery("removeDBRelation", conn.query(sql), sql,exitAfter, conn, x, count);
         }
     }
 
-    static void removeDBTable(sql, conn) {
+    static void removeDBTable(sql, conn, bool exitAfter) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("removeDBTable", conn.query(sql).toList(), sql, conn);
+            afterQuery("removeDBTable", conn.query(sql).toList(), sql,exitAfter, conn);
         } else if (DBCore.adapter == DBCore.MySQL) {
             conn.query(sql);
             printQueryCompleted("removeDBTable", "table Removed", sql);
         }
     }
 
-    static afterQuery(String actionType, response, String sql,
-            [conn, x, count]) async {
+    static afterQuery(String actionType, response, String sql, bool exitAfter, [conn, x, count]) async {
         var result = await response;
         printQueryCompleted(actionType, result, sql);
         if (actionType == "createDBTable") {
             if (x == count - 1) {
-                createColumn(conn);
+                createColumn(conn,exitAfter);
             }
         }
         if (actionType == "createDBColumn") {
             if (x == count - 1) {
-                removeColumn(conn);
+                removeColumn(conn,exitAfter);
             }
         }
         if (actionType == "removeDBColumn") {
             if (x == count) {
-                createRelation(conn);
+                createRelation(conn,exitAfter);
             }
         }
         if (actionType == "createDBRelation") {
             if (x == count - 1) {
-                removeRelation(conn);
+                removeRelation(conn,exitAfter);
             }
         }
         if (actionType == "removeDBRelation") {
             if (x == count - 1) {
-                removeTable(conn);
+                removeTable(conn,exitAfter);
             }
         }
     }

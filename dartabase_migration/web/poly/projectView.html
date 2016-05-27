@@ -7,17 +7,83 @@
                 text-align: center;
                 padding: 10px;
             }
-        </style>
-        <span class="card-album-title">Project: {{ project.name }}</span>
-        <span class="card-album-name"> {{ project.path }}</span>
-        <custom-server-status status="{{ project.serverStatus }}" adapter="{{ project.config.adapter }}">
-        </custom-server-status>
-        <custom-config-view project="{{ project }}">
-        </custom-config-view>
-        <custom-create-migration project="{{ project }}">
-        </custom-create-migration>
-        <custom-migration-list-view project="{{ project }}">
-        </custom-migration-list-view>
 
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                width: 20%;
+                background-color: #f1f1f1;
+                height: 100%; /* Full height */
+                position: fixed; /* Make it stick, even on scroll */
+                overflow: auto; /* Enable scrolling if the sidenav has too much content */
+            }
+
+            li a {
+                display: block;
+                color: #000;
+                padding: 8px 0 8px 16px;
+                text-decoration: none;
+                opacity: 0.35;
+            }
+
+            .darkG {
+                background-color: #00D2B8;
+                color: black;
+            }
+
+            .lightG {
+                background-color: #55DDCA;
+                color: black;
+            }
+
+            .darkB {
+                background-color: #0081C6;
+                color: black;
+            }
+
+            .lightB {
+                background-color: #00A4E4;
+                color: black;
+            }
+
+            .active {
+                opacity: 1 !important;
+            }
+
+            #project_content {
+                float: right;
+                width: 80%;
+            }
+
+            a:hover {
+                opacity: 0.6 !important;
+            }
+
+            .hidden {
+                display: none;
+            }
+        </style>
+        <nav id="project_menu">
+
+            <ul>
+                <li>
+                    <custom-server-status status="{{ project.serverStatus }}" adapter="{{ project.config.adapter }}">
+                    </custom-server-status>
+                </li>
+                <li><a href="#config" class="darkB" id="config_button" on-tap="toggleConfig">Config</a></li>
+                <li><a href="#doMigration" class="active lightB" id="do_button" on-tap="toggleDoMigration">run Migration</a></li>
+                <li><a href="#createMigration" class="darkG" id="migration_button" on-tap="toggleMigration">create Migration</a></li>
+                <li><a class="active lightG" href="#about">About</a></li>
+            </ul>
+        </nav>
+        <div id="project_content">
+            <custom-config-view project="{{ project }}" class="hidden" color="00D2B8">
+            </custom-config-view>
+            <custom-migration-list-view project="{{ project }}" class=""  color="55DDCA">
+            </custom-migration-list-view>
+            <custom-create-migration project="{{ project }}" class="hidden"  color="0081C6">
+            </custom-create-migration>
+        </div>
     </template>
 </dom-module>

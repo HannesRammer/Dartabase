@@ -27,6 +27,9 @@ class CreateMigration extends PolymerElement {
     Project project;
 
     @Property(notify: true)
+    String color;
+
+    @Property(notify: true)
     String newMigrationName;
 
     @Property(notify: true)

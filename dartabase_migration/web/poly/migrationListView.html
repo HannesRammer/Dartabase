@@ -2,8 +2,18 @@
     <template>
         <style>
             paper-material {
-                width: 98%;
+                --shadow-elevation-4dp: {
+
+                    box-shadow: 0 4px 5px 0 rgba(0, 164, 228, 0.14),
+                    0 1px 10px 0 rgba(0, 164, 228, 0.12),
+                    0 2px 4px -1px rgba(0, 164, 228, 0.4);
+                };
+
+                width: 95%;
                 margin: 5px auto;
+                padding: 10px;
+                height: 100%;
+                overflow: auto;
             }
             paper-item {
                  font-size: 1vw;
@@ -34,12 +44,12 @@
                 <template is="dom-repeat" items="{{ project.migrations }}">
                     <template is="dom-if" if="{{ isCurrentMigration(item.state) }}">
                         <paper-item id="{{ item.version }}" on-tap="setSelectedMigration">
-                            {{ item.version }} -- current
+                            {{item.index}}:{{ item.version }} -- current
                         </paper-item>
                     </template>
                     <template is="dom-if" if="{{ !isCurrentMigration(item.state) }}">
                         <paper-item id="{{ item.version }}" on-tap="setSelectedMigration">
-                            {{ item.version }}
+                            {{item.index}}:{{ item.version }}
                         </paper-item>
                     </template>
                 </template>

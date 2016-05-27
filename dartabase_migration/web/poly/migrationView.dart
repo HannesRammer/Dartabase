@@ -14,7 +14,7 @@ import '../poly/pm.dart';
 
 @PolymerRegister('custom-migration-view')
 class MigrationView extends PolymerElement {
-    @property
+    @Property(notify:true)
     Migration migration;
 
     @property

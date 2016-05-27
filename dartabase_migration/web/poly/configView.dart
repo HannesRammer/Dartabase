@@ -21,8 +21,12 @@ import "../poly/pm.dart";
 
 @PolymerRegister('custom-config-view')
 class ConfigView extends PolymerElement {
-    @property
+    @Property(notify: true)
     Project project;
+
+    @Property(notify: true)
+    String color;
+
 
     ConfigView.created() : super.created();
 

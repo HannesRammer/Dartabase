@@ -56,7 +56,7 @@ class ColumnView extends PolymerElement {
     ];
 
     @Property(notify:true)
-    Map column;
+    var column;
 
     void ready() {
         print("$runtimeType::ready()");

@@ -81,7 +81,7 @@ import "dartabaseMigration.dart";
           if(DBCore.rootPath != null){
             try{
               lastMigrationNumber = (int.parse(line)-1);
-              run("UP");
+              run("UP",true);
             }catch(e){
               print("not a number");
             }

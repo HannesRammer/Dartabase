@@ -88,7 +88,7 @@ Future main() async{
           if(DBCore.rootPath != null){
             try{
               lastMigrationNumber = int.parse(line);
-              run("DOWN");
+              run("DOWN",true);
             }catch(e){
               print("not a number");
             }  

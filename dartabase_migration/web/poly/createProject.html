@@ -2,9 +2,10 @@
     <template>
         <style>
             paper-material {
-                background: #d81b60;
-                width: 98%;
-                margin: 5px auto;
+                background: #ffffff;
+                padding: 10px 10px;
+                margin: 0 auto;
+
             }
         </style>
         <iron-pages selected="0">
@@ -13,12 +14,16 @@
             </paper-button>
             <paper-material elevation="2" id="page_2">
                 CREATE NEW PROJECT
-                <paper-icon-button icon="close" on-tap="toggleView"></paper-icon-button>
-                <paper-input label="Project Name" value="{{name}}"></paper-input>
-                <paper-input label="Project Path" value="{{path}}"></paper-input>
-                <paper-button raised on-tap="initiateMigration">
-                    Enhance Project '{{name}}' at path '{{path}}'
-                </paper-button>
+                <form is="iron-form" id="formGet" method="get" action="/" on-iron-form-submit="initiateMigration">
+                    <paper-input label="Project Name" value="{{name}}" required></paper-input>
+                    <paper-input label="Project Path" value="{{path}}" required></paper-input>
+                    <paper-button raised on-tap="clickHandler">
+                        Enhance Project '{{name}}' at path '{{path}}'
+                    </paper-button>
+                    <paper-button raised on-tap="toggleView">
+                        cancel
+                    </paper-button>
+                </form>
             </paper-material>
         </iron-pages>
     </template>

@@ -28,7 +28,7 @@ String direction;
 Map projectMapping;
 int lastMigrationNumber;
 
-Future initiateDartabase(path, projectName) async {
+Future initiateDartabase(path, projectName, bool exitAfter) async {
     String mappingsPath = "bin/projectsMapping.json";
     print("add project mapping ${projectName}:${path}");
     File file = new File(mappingsPath);
@@ -68,7 +68,7 @@ Future initiateDartabase(path, projectName) async {
     };
 
     DBCore.mapToJsonFilePath(schemaVersion, "$path/db/schemaVersion.json");
-    exit(0);
+    doExit(exitAfter);
 }
 
 /**Connects to a PG/MY-SQL Database (dependent on the db/config.json file).
@@ -84,48 +84,53 @@ Future initiateDartabase(path, projectName) async {
         return true;
         }**/
 Future connectDB(rootPath) async {
-    DBCore.loadConfigFile(rootPath);
-    var conn;
-    if (DBCore.adapter == DBCore.PGSQL) {
-        uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
-        if (DBCore.ssl) {
-            uri += "?sslmode=require";
+    try{
+        DBCore.loadConfigFile(rootPath);
+        var conn;
+        if (DBCore.adapter == DBCore.PGSQL) {
+            uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
+            if (DBCore.ssl) {
+                uri += "?sslmode=require";
+            }
+            Pool pool = new Pool(uri, minConnections: 1, maxConnections: 5);
+            pool.messages.listen(print);
+            await pool.start();
+            print('Min connections established.');
+            conn = await pool.connect();
+
+            //migrate(conn);
+
+
+        } else if (DBCore.adapter == DBCore.MySQL) {
+            ConnectionPool pool;
+            if (DBCore.ssl) {
+                pool = new ConnectionPool(host: DBCore.host,
+                        port: DBCore.port,
+                        user: DBCore.username,
+                        password: DBCore.password,
+                        db: DBCore.database,
+                        max: 5,
+                        useSSL: true);
+            } else {
+                pool = new ConnectionPool(host: DBCore.host,
+                        port: DBCore.port,
+                        user: DBCore.username,
+                        password: DBCore.password,
+                        db: DBCore.database,
+                        max: 5);
+            }
+            conn = pool;
+            //migrate(pool);
         }
-        Pool pool = new Pool(uri, minConnections: 1, maxConnections: 5);
-        pool.messages.listen(print);
-        await pool.start();
-        print('Min connections established.');
-        conn = await pool.connect();
+        return conn;
+    }catch(e){
 
-        //migrate(conn);
-
-
-    } else if (DBCore.adapter == DBCore.MySQL) {
-        ConnectionPool pool;
-        if (DBCore.ssl) {
-            pool = new ConnectionPool(host: DBCore.host,
-                    port: DBCore.port,
-                    user: DBCore.username,
-                    password: DBCore.password,
-                    db: DBCore.database,
-                    max: 5,
-                    useSSL: true);
-        } else {
-            pool = new ConnectionPool(host: DBCore.host,
-                    port: DBCore.port,
-                    user: DBCore.username,
-                    password: DBCore.password,
-                    db: DBCore.database,
-                    max: 5);
-        }
-        conn = pool;
-        //migrate(pool);
     }
-    return conn;
+
 }
 
-Future run(String migrationDirection) async {
-    Completer completer = new Completer();
+Future run(String migrationDirection, bool exitAfter) async {
+    var result;
     direction = migrationDirection;
     schema = DBCore.loadSchemaToMap(DBCore.rootPath);
     DBCore.loadConfigFile(DBCore.rootPath);
@@ -138,8 +143,8 @@ Future run(String migrationDirection) async {
         await pool.start();
         print('Min connections established.');
         var conn = await pool.connect();
-        await migrate(conn);
-        completer.complete("done");
+        await migrate(conn, exitAfter);
+        result = "done";
     } else if (DBCore.adapter == DBCore.MySQL) {
         ConnectionPool pool;
         if (DBCore.ssl) {
@@ -159,31 +164,37 @@ Future run(String migrationDirection) async {
                     max: 5);
         }
 
-        await migrate(pool);
-        completer.complete("done");
+        await migrate(pool, exitAfter);
+        result = "done";
     }
-    return completer.future;
+    return result;
 }
 
 
 Future serverStatus(String rootPath) async {
-    DBCore.loadConfigFile(rootPath);
-    var conn = await connectDB(rootPath);
-    var query;
-    if (DBCore.adapter == DBCore.PGSQL) {
-        query = await conn.query("SELECT 1").toList();
-    } else if (DBCore.adapter == DBCore.MySQL) {
-        //conn = await pool.ping();
-        //conn = await conn.ping();
-        query = await conn.query("SELECT 1");
+    try{
+        DBCore.loadConfigFile(rootPath);
+        var conn = await connectDB(rootPath);
+        var query;
+        if (DBCore.adapter == DBCore.PGSQL) {
+            query = await conn.query("SELECT 1").toList();
+        } else if (DBCore.adapter == DBCore.MySQL) {
+            //conn = await pool.ping();
+            query = await conn.ping();
+            query = await conn.query("SELECT 1");
+        }
+
+        return query;
+    }catch(e){
+        print(e.toString());
     }
 
-    return query;
 }
 //TODO move to helper
 
 
-Future migrate(conn) async {
+Future migrate(conn, bool exitAfter) async {
+    var result;
     DBCore.parsedMapping = DBCore.jsonFilePathToMap('bin/../tool/typeMapper${DBCore.adapter}.json');
     Directory directory = new Directory("${DBCore.rootPath}/db/migrations");
     files = directory.listSync();
@@ -221,37 +232,43 @@ Future migrate(conn) async {
             //print("fileId$fileId");
             if (direction == "UP") {
                 if (lastMigrationNumber > fileId - 1) {
-                    doFile(conn);
+                    doFile(conn, exitAfter);
                 } else {
                     print("goal migration smaller or equal current migration, maybe you wanted to revert migration via dbDown.dart instead");
-                    exit(0);
+                    doExit(exitAfter);
                 }
             } else if (direction == "DOWN") {
                 if (lastMigrationNumber <= fileId) {
-                    doFile(conn);
+                    doFile(conn, exitAfter);
                 } else {
                     print("goal migration higher or equal current migration, maybe you wanted to migrate via dbUp.dart instead");
-                    exit(0);
+                    doExit(exitAfter);
                 }
             }
         } else {
             print("goal migration number out of range. goal migration doesnt exist ");
-            exit(0);
+            doExit(exitAfter);
         }
     } else {
         print("\nno migration files in folder ${directory.path}");
+        doExit(exitAfter);
+    }
+}
+
+void doExit(bool exitAfter) {
+    if (exitAfter) {
         exit(0);
     }
 }
 
-Future doFile(conn) async {
+Future doFile(conn, bool exitAfter) async {
     print("\n----------Start migration for file ${files[fileId].path}-------------");
     DBCore.parsedMap = (DBCore.jsonFilePathToMap(files[fileId].path))["$direction"];
     if (DBCore.parsedMap != null) {
-        createTable(conn);
+        await createTable(conn, exitAfter);
     } else {
         print("migration direction '$direction' not specified in file ${files[fileId].path}");
-        exit(0);
+        doExit(exitAfter);
     }
 //load with next file after this has finished
 }
@@ -272,7 +289,7 @@ String defaultValue(String dv) {
     }
 }
 
-void createTable(conn) {
+Future createTable(conn, bool exitAfter) async {
     if (DBCore.parsedMap["createTable"] != null) {
         Map ct = DBCore.parsedMap["createTable"];
         List tableNames = ct.keys.toList();
@@ -315,19 +332,19 @@ void createTable(conn) {
                     sqlQuery += DBHelper.pgTriggerForUpdatedAt(tableName);
                 }
                 print("\n+++++sqlQuery: $sqlQuery");
-                DBHelper.createDBTable(sqlQuery, conn, i, tableNames.length);
+                DBHelper.createDBTable(sqlQuery, conn, i, tableNames.length, exitAfter);
             } else {
                 print("\nSCHEMA createTable Cancle: Table ${tableName} already exists in schema, table and columns not added");
-                createColumn(conn);
+                await createColumn(conn, exitAfter);
             }
         }
     } else {
 //print("\nNothing to add since 'createTable' is not specified in json");
-        createColumn(conn);
+        await createColumn(conn, exitAfter);
     }
 }
 
-void createColumn(conn) {
+Future createColumn(conn, bool exitAfter) async {
     if (DBCore.parsedMap["createColumn"] != null) {
         Map ct = DBCore.parsedMap["createColumn"];
         List tableNames = ct.keys.toList();
@@ -360,19 +377,19 @@ void createColumn(conn) {
                 }
                 sqlQuery += sqlList.join(",");
                 print("\n+++++sqlQuery: $sqlQuery");
-                DBHelper.createDBColumn(sqlQuery, conn, i, tableNames.length);
+                DBHelper.createDBColumn(sqlQuery, conn, i, tableNames.length, exitAfter);
             } else {
                 print("\nSCHEMA createColumn FAIL: Table ${tableName} doesnt exists, columns not added");
-                removeColumn(conn);
+                await removeColumn(conn, exitAfter);
             }
         }
     } else {
 //print("\nNothing to add since 'createColumn' is not specified in json");
-        removeColumn(conn);
+        await removeColumn(conn, exitAfter);
     }
 }
 
-void removeColumn(conn) {
+Future removeColumn(conn, bool exitAfter) async {
     if (DBCore.parsedMap["removeColumn"] != null) {
         Map ct = DBCore.parsedMap["removeColumn"];
         List tableNames = ct.keys.toList();
@@ -395,20 +412,20 @@ void removeColumn(conn) {
                     }
                 }
 //print("\n sqlQuery: $sqlQuery");
-                DBHelper.removeDBColumn(sqlQuery, conn, j, columnNames.length);
+                DBHelper.removeDBColumn(sqlQuery, conn, j, columnNames.length, exitAfter);
             } else {
                 print("\nSCHEMA removeColumn FAIL: Table ${tableName} doesnt exists, columns not removed");
-                createRelation(conn);
+                await createRelation(conn, exitAfter);
             }
         }
     } else {
 //print("\nNothing to remove since 'removeColumn' is not specified in json");
-        createRelation(conn);
+        await createRelation(conn, exitAfter);
     }
 }
 
 
-void createRelation(conn) {
+Future createRelation(conn, bool exitAfter) async {
     if (DBCore.parsedMap["createRelation"] != null) {
         List relations = DBCore.parsedMap["createRelation"];
         Map dependencies;
@@ -491,20 +508,20 @@ void createRelation(conn) {
                     }
                 }
                 print("\n+++++sqlQuery: $sqlQuery");
-                DBHelper.createDBRelation(sqlQuery, conn, i, relations.length);
+                DBHelper.createDBRelation(sqlQuery, conn, i, relations.length, exitAfter);
             } else {
                 print("\nSCHEMA createRelation Cancle: Table ${relationTable} already exists in schema, relations not added");
-                removeRelation(conn);
+                await removeRelation(conn, exitAfter);
             }
             print("\nSCHEMA createRelation Finish: Table $relationTable");
         }
     } else {
 //print("\nNothing to relate since 'createRelation' is not specified in json");
-        removeRelation(conn);
+        await removeRelation(conn, exitAfter);
     }
 }
 
-void removeRelation(conn) {
+Future removeRelation(conn, bool exitAfter) async {
     if (DBCore.parsedMap["removeRelation"] != null) {
         List relations = DBCore.parsedMap["removeRelation"];
         for (int i = 0; i < relations.length; i++) {
@@ -515,19 +532,19 @@ void removeRelation(conn) {
                 schema.remove(relationTable);
                 print(schema);
                 String sqlQuery = "DROP TABLE IF EXISTS ${relationTable} ";
-                DBHelper.removeDBRelation(sqlQuery, conn, i, relations.length);
+                DBHelper.removeDBRelation(sqlQuery, conn, i, relations.length, exitAfter);
             } else {
                 print("\nSCHEMA removeRelation FAIL: Table ${relationTable} doesnt exists, relation not removed");
-                removeTable(conn);
+                await removeTable(conn, exitAfter);
             }
         }
     } else {
         //print("\nNothing to remove since 'removeRelation' is not specified in json");
-        removeTable(conn);
+        await removeTable(conn, exitAfter);
     }
 }
 
-Future removeTable(conn) async {
+Future removeTable(conn, bool exitAfter) async {
     if (DBCore.parsedMap["removeTable"] != null) {
         List tableNames = DBCore.parsedMap["removeTable"];
         for (int i = 0; i < tableNames.length; i++) {
@@ -536,7 +553,7 @@ Future removeTable(conn) async {
                 schema.remove(tableName);
                 print(schema);
                 String sqlQuery = "DROP TABLE IF EXISTS ${tableName} ";
-                DBHelper.removeDBTable(sqlQuery, conn);
+                DBHelper.removeDBTable(sqlQuery, conn, exitAfter);
             } else {
                 print("\nSCHEMA removeTable FAIL: Table ${tableName} doesnt exists, tables not removed");
             }
@@ -560,20 +577,20 @@ Future removeTable(conn) async {
         fileId++;
         if (fileId < files.length) {
             if (fileId <= lastMigrationNumber) {
-                doFile(conn);
+                doFile(conn, exitAfter);
             } else {
                 print("goal migration reached");
-                exit(0);
+                doExit(exitAfter);
             }
         } else {
             print("goal migration reached");
-            exit(0);
+            doExit(exitAfter);
         }
     } else if (direction == "DOWN") {
         fileId--;
         if (fileId >= 0) {
             if (fileId >= lastMigrationNumber) {
-                doFile(conn);
+                doFile(conn, exitAfter);
             } else {
                 var filePath = files[fileId].path;
                 schemaVersion = filePath.split("migrations")[1].replaceAll("\\", "");
@@ -581,14 +598,14 @@ Future removeTable(conn) async {
                     "schemaVersion": schemaVersion
                 }, '${DBCore.rootPath}/db/schemaVersion.json');
                 print("goal migration reached");
-                exit(0);
+                doExit(exitAfter);
             }
         } else {
             DBCore.mapToJsonFilePath({
                 "schemaVersion": ""
             }, '${DBCore.rootPath}/db/schemaVersion.json');
             print("goal migration reached");
-            exit(0);
+            doExit(exitAfter);
         }
     }
 }

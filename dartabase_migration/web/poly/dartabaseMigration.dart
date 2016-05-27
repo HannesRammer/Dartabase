@@ -15,7 +15,7 @@ import "../poly/pm.dart";
 class DartabaseMigration extends PolymerElement {
     @property
     Project selectedProject;
-    @property
+    @Property(notify:true)
     List<Project> projects;
 
     DartabaseMigration.created() : super.created();

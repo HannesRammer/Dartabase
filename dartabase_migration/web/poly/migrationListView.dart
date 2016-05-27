@@ -15,7 +15,7 @@ import '../poly/pm.dart';
 
 @PolymerRegister('custom-migration-list-view')
 class MigrationListView extends PolymerElement {
-    @property
+    @Property(notify:true)
     Project project;
     @property
     Map schema = {};
@@ -31,7 +31,7 @@ class MigrationListView extends PolymerElement {
     }
 
     @reflectable
-    Future runMigration() async{
+    Future runMigration(event, [_]) async{
         var url = "http://127.0.0.1:8079/runMigration?projectRootPath=${project
                 .path}&direction=${project.migrationDirection}";
         if (project.migrationDirection == "UP") {
@@ -46,7 +46,8 @@ class MigrationListView extends PolymerElement {
     Future updateView(responseText) async {
         PaperToast test = Polymer.dom($['toast1']).querySelector("#toast1");
         await project.requestMigrations();
-        test.text = responseText + project.currentMigration.toString();
+        this.set('project', project);
+        test.text = responseText + project.selectedMigration.toString();
         test.show();
     }
 

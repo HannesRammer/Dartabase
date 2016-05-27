@@ -70,7 +70,7 @@ Future loadMigrations(Map params, HttpResponse res) async {
 Future runMigration(Map params, HttpResponse res) async {
     DM.lastMigrationNumber = num.parse(params['index']);
     DBCore.rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
-    await DM.run(params["direction"]);
+    await DM.run(params["direction"],false);
     closeResWith(res, "finished migrating version ${params['index']} ${params["direction"]}");
 }
 
@@ -84,7 +84,7 @@ Future requestServerStatus(Map params, HttpResponse res) async {
 }
 
 initiateDartabase(Map params, HttpResponse res) {
-    DM.initiateDartabase(params["projectRootPath"].replaceAll('%5C', '\\'), params['name']);
+    DM.initiateDartabase(params["projectRootPath"].replaceAll('%5C', '\\'), params['name'],false);
 }
 
 saveConfig(Map params, HttpResponse res) {

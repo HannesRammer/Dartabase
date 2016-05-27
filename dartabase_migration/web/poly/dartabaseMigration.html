@@ -48,6 +48,9 @@
             <paper-material elevation="2" id="page_2">
                 <paper-icon-button icon="close" on-tap="transition">
                 </paper-icon-button>
+                <span class="card-album-title">Project: {{ selectedProject.name }}</span>
+                <span class="card-album-name"> {{ selectedProject.path }}</span>
+
                 <custom-project-view project="{{ selectedProject }}"></custom-project-view>
             </paper-material>
         </iron-pages>
