@@ -12,6 +12,8 @@ import 'package:polymer_elements/paper_toast.dart';
 import 'package:polymer_elements/paper_button.dart';
 import 'package:polymer_elements/paper_material.dart';
 import 'package:polymer_elements/paper_input.dart';
+import "package:polymer_elements/paper_tabs.dart";
+import "package:polymer_elements/paper_tab.dart";
 import 'package:dev_string_converter/dev_string_converter.dart';
 import "../poly/createMigrationTable.dart";
 import "../poly/createMigrationColumn.dart";
@@ -19,6 +21,7 @@ import "../poly/createMigrationRelation.dart";
 import "../poly/removeMigrationRelation.dart";
 import "../poly/removeMigrationColumn.dart";
 import "../poly/removeMigrationTable.dart";
+
 import "../poly/pm.dart";
 
 @PolymerRegister('custom-create-migration')

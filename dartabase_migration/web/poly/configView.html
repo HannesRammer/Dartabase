@@ -41,17 +41,12 @@
                 width: 100%;
             }
 
-            paper-tabs {
-                --paper-tabs-selection-bar-color: #ff444d; /*rgb(65, 167, 250)*/
-
-            }
-
             paper-material {
                 --shadow-elevation-4dp: {
 
-                    box-shadow: 0 4px 5px 0 rgba(0, 129, 198, 0.14),
-                    0 1px 10px 0 rgba(0, 129, 198, 0.12),
-                    0 2px 4px -1px rgba(0, 129, 198, 0.4);
+                    box-shadow: 0px 4px 5px 0 rgba(0, 129, 198, 0.14),
+                    0px 1px 10px 0 rgba(0, 129, 198, 0.12),
+                    -19px 2px 4px -1px rgba(0, 129, 198, 0.6);
                 };
                 width: 95%;
                 margin: 5px auto;
@@ -59,10 +54,15 @@
                 height: 100%;
                 overflow: auto;
             }
+            paper-tabs{
+                --paper-tabs-selection-bar-color: rgba(0, 129, 198, 1);/*rgb(65, 167, 250)*/
 
+            }
         </style>
-
-        <iron-pages selected="0">
+        <paper-tabs selected="0">
+            <paper-tab>CONFIG</paper-tab>
+        </paper-tabs>
+        <iron-pages selected=0>
             <paper-material class="config" elevation="2" id="page_1">
                 <paper-input label="adapter" value="{{ project.config.adapter }}" disabled></paper-input>
                 <paper-input label="username" value="{{ project.config.username }}" disabled></paper-input>

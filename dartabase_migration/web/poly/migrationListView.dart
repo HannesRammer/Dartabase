@@ -10,6 +10,9 @@ import "package:polymer_elements/paper_button.dart";
 import "package:polymer_elements/paper_listbox.dart";
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_toast.dart";
+import "package:polymer_elements/paper_tabs.dart";
+import "package:polymer_elements/paper_tab.dart";
+
 import "../poly/migrationView.dart";
 import '../poly/pm.dart';
 

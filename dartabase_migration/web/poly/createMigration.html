@@ -17,24 +17,32 @@
 
             #page_2{
                 --shadow-elevation-4dp: {
-
-                    box-shadow: 0 4px 5px 0 rgba(0, 210, 184, 0.14),
-                    0 1px 10px 0 rgba(0, 210, 184, 0.12),
-                    0 2px 4px -1px rgba(0, 210, 184, 0.4);
+                    box-shadow: 0px 4px 5px 0 rgba(0, 164, 228, 0.14),
+                    0px 1px 10px 0 rgba(0, 164, 228, 0.12),
+                    -19px 2px 4px -1px rgba(0, 164, 228, 0.6);
                 };
             }
             paper-material {
                 width: 95%;
                 margin: 5px auto;
                 padding: 10px;
-                height: 100%;
+
                 overflow: auto;
             }
 
             iron-pages {
                 width: 100%;
             }
+            paper-tabs, paper-tab{
+                --paper-tabs-selection-bar-color: rgba(0, 164, 228, 1);
+
+            }
+
         </style>
+        <!--div>{{ migration.version }}</div-->
+        <paper-tabs selected="0">
+            <paper-tab>MIGRATION CREATION</paper-tab>
+        </paper-tabs>
         <paper-material elevation="2" id="page_2">
             <form is="iron-form" id="formGet" method="get" action="/" on-iron-form-submit="createMigration">
                 <paper-input required
