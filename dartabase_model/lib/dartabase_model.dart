@@ -162,10 +162,10 @@ class Model {
             List row;
             var results = await pool.query(sql);
             List data = new List();
-            results.listen((row) async {
+            await results.forEach((row) async {
                 var object = await setObjectSchemaAttributes(this, row);
                 data.add(object);
-            }).asFuture();
+            });
             if (resultAsList == true) {
                 //pool.close();
                 result = data;
@@ -191,14 +191,6 @@ class Model {
      * else
      * returns null
      *
-     * old
-     * player.findBy("name","tim").then((player){
-     *   if(player != null){
-     *     //your code
-     *   }
-     * });
-     *
-     * new
      * var player = await player.findBy("name","tim");
      * if(player != null){
      *   //your code
@@ -211,7 +203,7 @@ class Model {
 
         String query = "SELECT * FROM $tableName WHERE $column = '$value' LIMIT 1";
         print(query);
-        return await find(query, false);
+        return (await find(query, false));
     }
 
     /**
@@ -222,22 +214,13 @@ class Model {
      * returns an (player) object if one exists
      * else
      * returns null
-     *
-     * old
-     * player.findById("3").then((player){
-     *   if(player != null){
-     *     //your code
-     *   }
-     * });
-     *
-     * new
      * var player = await player.findById("3");
      * if(player != null){
      *   //your code
      * }
      **/
     Future findById(var id) async {
-        return await findBy("id", id);
+        return (await findBy("id", id));
     }
 
     /**
@@ -249,14 +232,6 @@ class Model {
      * else
      * returns empty list
      *
-     * old
-     * player.findAllBy("name","tim").then((players){
-     *   if(!players.isEmpty){
-     *     //your code
-     *   }
-     * });
-     *
-     * new
      * var players = await player.findAllBy("name","tim");
      * if(!players.isEmpty){
      *   //your code
@@ -268,7 +243,7 @@ class Model {
 
         String query = "SELECT * FROM $tableName WHERE $column = '$value'";
         print(query);
-        return await find(query, true);
+        return (await find(query, true));
     }
 
     /**
@@ -280,14 +255,6 @@ class Model {
      * else
      * returns empty list
      *
-     * old
-     * player.findAll().then((players){
-     *   if(!players.isEmpty){
-     *     //your code
-     *   }
-     * });
-     *
-     * new
      * var players = await player.findAll();
      * if(!players.isEmpty){
      *   //your code
@@ -299,7 +266,7 @@ class Model {
 
         String query = "SELECT * FROM $tableName";
         print(query);
-        return await find(query, true);
+        return (await find(query, true));
     }
 
     /**
@@ -309,12 +276,6 @@ class Model {
      *
      * deletes the object //TODO and all its relations
      *
-     * old
-     * player.delete().then((){
-     *  //your code
-     * });
-     *
-     * new
      * await player.delete();
      * //your code
      *
@@ -350,12 +311,6 @@ class Model {
      * creates relation between the two objects (player and character)
      * ...
      *
-     * old
-     * player.receive(character).then((result){
-     *   //your code
-     * });
-     *
-     * new
      * var result = await player.receive(character);
      * //your code
      *
@@ -413,7 +368,7 @@ class Model {
         }
         query += ";";
         //print(query);
-        return await object.find(query, listOrValue);
+        return (await object.find(query, listOrValue));
     }
 
     /**
@@ -425,14 +380,6 @@ class Model {
      * else
      * returns null
      *
-     * old
-     * player.hasOne(new Character()).then((character){
-     *   if(character != null){
-     *     //your code
-     *   }
-     * };
-     *
-     * new
      * var character = await player.hasOne(new Character());
      * if(character != null){
      *   //your code
@@ -440,7 +387,7 @@ class Model {
      *
      **/
     Future hasOne(object) async {
-        return await has(object, false);
+        return (await has(object, false));
     }
 
     /**
@@ -452,14 +399,6 @@ class Model {
      * else
      * returns empty list
      *
-     * old
-     * player.hasMany(new Character()).then((characters){
-     *   if(!characters.isEmpty){
-     *     //your code
-     *   }
-     * });
-     *
-     * new
      * var characters = await player.hasMany(new Character());
      * if(!characters.isEmpty){
      *   //your code
@@ -467,7 +406,7 @@ class Model {
      *
      **/
     Future hasMany(object) async {
-        return await has(object, true);
+        return (await has(object, true));
     }
 
     /**
@@ -494,7 +433,7 @@ class Model {
      *
      **/
     Future hasOneWith(object, String column, String value) async {
-        return await has(object, false, column, value);
+        return (await has(object, false, column, value));
     }
 
     /**
@@ -522,7 +461,7 @@ class Model {
      *
      **/
     Future hasManyWith(object, String column, String value) async {
-        return await has(object, true, column, value);
+        return (await has(object, true, column, value));
     }
 
 
@@ -623,6 +562,8 @@ class Model {
                     listValues.add(id);
                     objectId = id;
                 } else {
+                    //TODO  check if object with id=value exists
+                    //what to do when object is updated after deletion
                     createOrUpdate = "update";
                     updateWhere = "id=$value";
                     listValues.add(value);
@@ -751,7 +692,7 @@ class Model {
 
             var results = await pool.query("SELECT MAX(ID) FROM ${tableName}");
             List data = new List();
-            results.listen((row) {
+            await results.forEach((row) async {
                 num value;
 
                 if (row[0] == null) {
@@ -779,7 +720,7 @@ class Model {
         List relationNames = [];
         List objectNames = [];
         List delRelations = [];
-        m.keys.forEach((String tableName) {
+        await m.keys.forEach((String tableName) {
             relationNames.add(tableName);
             String relatedObject;
             if (tableName.contains("${initiatedObject}_2_")) {
@@ -818,12 +759,12 @@ class Model {
         return result;
     }
 
-    Map toJson() {
+    Future<Map> toJson() async {
         Map map = new Map();
         InstanceMirror im = reflect(this);
         ClassMirror cm = im.type;
         var decls = cm.declarations.values.where((dm) => dm is VariableMirror);
-        decls.forEach((dm) {
+        await decls.forEach((dm) {
             var key = MirrorSystem.getName(dm.simpleName);
             var val = im
                     .getField(dm.simpleName)

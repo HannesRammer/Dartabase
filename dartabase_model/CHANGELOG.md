@@ -1,6 +1,11 @@
 VERSION
 -------
-    0.7.0 -updated to work with dartabase core <= 0.3.0 
+    1.0.0 -cleaner code using await and async
+          -set min dart sdk to 1.8.0
+          -updated to work with dartabase core 0.4.0
+          -updated postgresql to 0.3.3 
+          -updated sqlJocky to 0.14.1
+    0.7.0 -updated to work with dartabase core 0.3.0 
     0.6.3 -added ssl support! see Migration readme ->config file
           -improved speed via single connection instead of multi pools
           -updated postgresql to 0.2.13 
