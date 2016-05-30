@@ -110,17 +110,6 @@
         </template>
 
         <template is="dom-if" if="{{ isDetail(need) }}">
-            <paper-dropdown-menu label="select Column" required>
-                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.name}}">
-                    <template is="dom-repeat" items="{{existingColumnNames}}">
-                        <paper-item value="{{item}}">
-                            {{item}}
-                        </paper-item>
-                    </template>
-                </paper-listbox>
-
-            </paper-dropdown-menu>
-            <div style="display: none">{{adaptColumnType( selectedTable, column.name)}}</div>
             <paper-input class="list" label="Database Types" value="{{column.type}}"
                          disabled></paper-input>
             <paper-input class="list" label="Default Value" value="{{column.default}}"

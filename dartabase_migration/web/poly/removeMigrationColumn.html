@@ -56,6 +56,18 @@
             </paper-dropdown-menu>
             <div class="columnBox">
                 <template is="dom-repeat" items="{{item.columns}}" as="column">
+                    <paper-dropdown-menu label="select Column" required>
+                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{column.name}}">
+                            <template is="dom-repeat" items="{{existingColumnNames}}">
+                                <paper-item value="{{item}}">
+                                    {{item}}
+                                </paper-item>
+                            </template>
+                        </paper-listbox>
+
+                    </paper-dropdown-menu>
+                    <div style="display: none">{{adaptColumnType( selectedTable, column.name)}}</div>
+
                     <custom-column-view column="{{column}}" need="detail"></custom-column-view>
                 </template>
             </div>
