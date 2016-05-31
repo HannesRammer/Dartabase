@@ -11,27 +11,37 @@
                 text-align: center;
                 padding: 10px;
             }
-            paper-tabs{
-                --paper-tabs-selection-bar-color: #ff444d;/*rgb(65, 167, 250)*/
+
+            paper-tabs {
+                --paper-tabs-selection-bar-color: #ff444d; /*rgb(65, 167, 250)*/
 
             }
 
+            #border {
+                --shadow-elevation-4dp: {
+                    box-shadow: 0px 4px 5px 0 rgba(0, 164, 228, 1),
+                    0px 1px 10px 0 rgba(0, 164, 228, 1),
+                    -19px 2px 4px -1px rgba(0, 164, 228, 1);
+                };
+                background-color: #f1f1f1;
+            }
         </style>
-            <!--div>{{ migration.version }}</div-->
-        <paper-tabs selected="{{selected}}">
-            <paper-tab>UP</paper-tab>
-            <paper-tab>DOWN</paper-tab>
+        <!--div>{{ migration.version }}</div-->
+        <paper-material id="border" elevation="2">
+            <paper-tabs selected="{{selected}}">
+                <paper-tab>UP</paper-tab>
+                <paper-tab>DOWN</paper-tab>
 
-        </paper-tabs>
-        <iron-pages selected="{{selected}}">
-            <custom-migration-action-view migration="{{ migration }}" direction="UP">
+            </paper-tabs>
+            <iron-pages selected="{{selected}}">
+                <custom-migration-action-view migration="{{ migration }}" direction="UP">
 
-            </custom-migration-action-view>
-            <custom-migration-action-view migration="{{ migration }}" direction="DOWN">
+                </custom-migration-action-view>
+                <custom-migration-action-view migration="{{ migration }}" direction="DOWN">
 
-            </custom-migration-action-view>
-        </iron-pages>
+                </custom-migration-action-view>
+            </iron-pages>
 
-
+        </paper-material>
     </template>
 </dom-module>

@@ -70,7 +70,7 @@ Future loadMigrations(Map params, HttpResponse res) async {
 Future runMigration(Map params, HttpResponse res) async {
     DM.lastMigrationNumber = num.parse(params['index']);
     DBCore.rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
-    await DM.run(params["direction"],false);
+    await DM.run(params["direction"],false,null);
     closeResWith(res, "finished migrating version ${params['index']} ${params["direction"]}");
 }
 

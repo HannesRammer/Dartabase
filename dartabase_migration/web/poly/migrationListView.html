@@ -4,7 +4,6 @@
             paper-material {
                 --shadow-elevation-4dp: {
 
-
                     box-shadow: 0px 4px 5px 0 rgba(0, 210, 184, 0.14),
                     0px 1px 10px 0 rgba(0, 210, 184, 0.12),
                     -19px 2px 4px -1px rgba(0, 210, 184, 0.6);
@@ -17,19 +16,21 @@
                 overflow: auto;
             }
 
-            paper-listbox {
+            ul {
                 width: 40%;
                 float: left;
             }
 
             custom-migration-view {
-                width: 58%;
+                width: 60%;
                 float: left;
-                margin-left: 10px;
+                margin-left: -4px;
             }
+
             paper-item {
                 font-size: 1.25vw;
             }
+
             .migrations {
                 vertical-align: middle;
                 text-align: center;
@@ -42,26 +43,85 @@
                 --paper-tabs-selection-bar-color: rgba(0, 210, 184, 1); /*rgb(65, 167, 250)*/
 
             }
+
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                background-color: #f1f1f1;
+                height: 100%; /* Full height */
+
+            }
+
+            li a {
+                display: block;
+                color: #000;
+                padding: 8px 0 8px 16px;
+                text-decoration: none;
+                opacity: 0.35;
+            }
+
+            a:hover {
+                opacity: 0.6 !important;
+            }
+
+            .current {
+                background-color: #00D2B8;
+                background: linear-gradient(to right, #00D2B8, #00D2B8, rgba(0, 0, 0, 0));
+                color: black;
+            }
+
+            .done {
+                background-color: #55DDCA;
+                background: linear-gradient(to right, #55DDCA, #55DDCA, rgba(0, 0, 0, 0));
+                color: black;
+            }
+
+            .tobe {
+                background-color: #0081C6;
+                background: linear-gradient(to right, #0081C6, #0081C6, rgba(0, 0, 0, 0));
+                color: black;
+            }
+
+            .selected {
+                background-color: #00A4E4;
+                /*background: #00A4E4;*/
+                color: black;
+                opacity: 1 !important;
+            }
+
+            .newer {
+                opacity: 1 !important;
+            }
         </style>
         <paper-tabs selected="0">
             <paper-tab>MIGRATIONS</paper-tab>
         </paper-tabs>
         <paper-material class="migrations" elevation="2">
+            <ul>
 
-            <paper-listbox>
                 <template is="dom-repeat" items="{{ project.migrations }}">
-                    <template is="dom-if" if="{{ isCurrentMigration(item.state) }}">
-                        <paper-item id="{{ item.version }}" on-tap="setSelectedMigration">
-                            {{item.index}}:{{ item.version }} -- current
-                        </paper-item>
-                    </template>
-                    <template is="dom-if" if="{{ !isCurrentMigration(item.state) }}">
-                        <paper-item id="{{ item.version }}" on-tap="setSelectedMigration">
-                            {{item.index}}:{{ item.version }}
-                        </paper-item>
-                    </template>
+                    <li>
+                        <template is="dom-if" if="{{ isOlderMigration(item.state) }}">
+                            <a href="#selectedMigration" class="mig_button done" on-tap="setSelectedMigration">
+                                {{item.index}}:{{ item.version }}
+                            </a>
+                        </template>
+                        <template is="dom-if" if="{{ isCurrentMigration(item.state) }}">
+                            <a href="#selectedMigration" class="selected mig_button current newer" on-tap="setSelectedMigration">
+                                {{item.index}}:{{ item.version }} -- current
+                            </a>
+                        </template>
+                        <template is="dom-if" if="{{ isNewerMigration(item.state) }}">
+                            <a href="#selectedMigration" class="mig_button tobe newer" on-tap="setSelectedMigration">
+                                {{item.index}}:{{ item.version }}
+                            </a>
+                        </template>
+                    </li>
                 </template>
-            </paper-listbox>
+
+            </ul>
+
             <custom-migration-view migration="{{ project.selectedMigration }}">
             </custom-migration-view>
             <template is="dom-if" if="{{ isNothingToDo(project.selectedMigration.state) }}">

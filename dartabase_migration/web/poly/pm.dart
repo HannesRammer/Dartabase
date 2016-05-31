@@ -50,6 +50,8 @@ class Project extends JsProxy {
     Migration currentMigration;
     @reflectable
     Migration selectedMigration;
+    @reflectable
+    Map schema;
 
     @reflectable
     Map migrationActions = {
@@ -70,8 +72,8 @@ class Project extends JsProxy {
     Future prepare() async {
         await requestServerStatus();
         await requestConfig();
-        await requestSchema();
-        await requestMigrations();
+        schema = await requestSchema();
+        migrations = await requestMigrations();
     }
 
     @reflectable
@@ -91,12 +93,12 @@ class Project extends JsProxy {
     Future requestMigrations() async {
         var url = "http://127.0.0.1:8079/requestMigrations?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
-        updateMigrations(responseText);
+        return updateMigrations(responseText);
     }
 
     @reflectable
-    updateMigrations(String responseText) {
-        migrations = new List();
+    List updateMigrations(String responseText) {
+        List migrations = new List();
         List<Map> migrationsList = JSON.decode(responseText);
         for (Map migMap in migrationsList) {
             Migration mig = new Migration(index: migMap['index'],
@@ -109,6 +111,7 @@ class Project extends JsProxy {
                 selectedMigration = mig;
             }
         }
+        return migrations;
     }
 
     @reflectable
@@ -187,7 +190,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future getTableNames() async {
-        var schema = await requestSchema();
+        schema = await requestSchema();
         List tableNames = new List();
         for (String tableName in schema.keys) {
             if (tableName != "dependencyRelations") {
@@ -223,7 +226,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future getColumnNames(String searchTableName) async {
-        var schema = await requestSchema();
+        schema = await requestSchema();
         List columnNames = schema[searchTableName].keys.toList();
         return columnNames;
     }
@@ -244,7 +247,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future<List> getColumns(String searchTableName) async {
-        var schema = await requestSchema();
+        schema = await requestSchema();
         Map table = schema[searchTableName];
         List columnNames = table.keys.toList();
         List columns = [];
@@ -269,7 +272,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future<Map> getColumnDetails(String tableName, String columnName) async {
-        var schema = await requestSchema();
+        schema = await requestSchema();
         var columnDetails = schema[tableName][columnName];
         Map columnMap = {
             "type" :"",

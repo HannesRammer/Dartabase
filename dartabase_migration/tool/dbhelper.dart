@@ -3,81 +3,81 @@ part of dartabaseMigration;
 class DBHelper {
 
 
-    static void createDBTable(sql, conn, x, count, bool exitAfter) {
+    static void createDBTable(sql, conn, x, count, bool exitAfter, fileId) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("createDBTable", conn.query(sql).toList(), sql, exitAfter, conn, x, count);
+            afterQuery("createDBTable", conn.query(sql).toList(), sql, exitAfter, fileId, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("createDBTable", conn.query(sql), sql,exitAfter, conn, x, count);
+            afterQuery("createDBTable", conn.query(sql), sql,exitAfter, fileId, conn, x, count);
         }
     }
 
-    static void createDBColumn(sql, conn, x, count, bool exitAfter) {
+    static void createDBColumn(sql, conn, x, count, bool exitAfter, fileId) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("createDBColumn", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
+            afterQuery("createDBColumn", conn.query(sql).toList(), sql,exitAfter, fileId, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("createDBColumn", conn.query(sql), sql,exitAfter, conn, x, count);
+            afterQuery("createDBColumn", conn.query(sql), sql,exitAfter, fileId, conn, x, count);
         }
     }
 
-    static void removeDBColumn(sql, conn, x, count, bool exitAfter) {
+    static void removeDBColumn(sql, conn, x, count, bool exitAfter, fileId) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("removeDBColumn", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
+            afterQuery("removeDBColumn", conn.query(sql).toList(), sql,exitAfter, fileId, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("removeDBColumn", conn.query(sql), sql,exitAfter, conn, x, count);
+            afterQuery("removeDBColumn", conn.query(sql), sql,exitAfter, fileId, conn, x, count);
         }
     }
 
-    static void createDBRelation(sql, conn, x, count, bool exitAfter) {
+    static void createDBRelation(sql, conn, x, count, bool exitAfter, fileId) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("createDBRelation", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
+            afterQuery("createDBRelation", conn.query(sql).toList(), sql,exitAfter, fileId, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("createDBRelation", conn.query(sql), sql,exitAfter, conn, x, count);
+            afterQuery("createDBRelation", conn.query(sql), sql,exitAfter, fileId, conn, x, count);
         }
     }
 
-    static void removeDBRelation(sql, conn, x, count, bool exitAfter) {
+    static void removeDBRelation(sql, conn, x, count, bool exitAfter, fileId) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("removeDBRelation", conn.query(sql).toList(), sql,exitAfter, conn, x, count);
+            afterQuery("removeDBRelation", conn.query(sql).toList(), sql,exitAfter, fileId, conn, x, count);
         } else if (DBCore.adapter == DBCore.MySQL) {
-            afterQuery("removeDBRelation", conn.query(sql), sql,exitAfter, conn, x, count);
+            afterQuery("removeDBRelation", conn.query(sql), sql,exitAfter, fileId, conn, x, count);
         }
     }
 
-    static void removeDBTable(sql, conn, bool exitAfter) {
+    static void removeDBTable(sql, conn, bool exitAfter, fileId) {
         if (DBCore.adapter == DBCore.PGSQL) {
-            afterQuery("removeDBTable", conn.query(sql).toList(), sql,exitAfter, conn);
+            afterQuery("removeDBTable", conn.query(sql).toList(), sql,exitAfter, fileId, conn);
         } else if (DBCore.adapter == DBCore.MySQL) {
             conn.query(sql);
             printQueryCompleted("removeDBTable", "table Removed", sql);
         }
     }
 
-    static afterQuery(String actionType, response, String sql, bool exitAfter, [conn, x, count]) async {
+    static afterQuery(String actionType, response, String sql, bool exitAfter, fileId, [conn, x, count]) async {
         var result = await response;
         printQueryCompleted(actionType, result, sql);
         if (actionType == "createDBTable") {
             if (x == count - 1) {
-                createColumn(conn,exitAfter);
+                createColumn(conn,exitAfter, fileId);
             }
         }
         if (actionType == "createDBColumn") {
             if (x == count - 1) {
-                removeColumn(conn,exitAfter);
+                removeColumn(conn,exitAfter, fileId);
             }
         }
         if (actionType == "removeDBColumn") {
             if (x == count) {
-                createRelation(conn,exitAfter);
+                createRelation(conn,exitAfter, fileId);
             }
         }
         if (actionType == "createDBRelation") {
             if (x == count - 1) {
-                removeRelation(conn,exitAfter);
+                removeRelation(conn,exitAfter, fileId);
             }
         }
         if (actionType == "removeDBRelation") {
             if (x == count - 1) {
-                removeTable(conn,exitAfter);
+                removeTable(conn,exitAfter, fileId);
             }
         }
     }
