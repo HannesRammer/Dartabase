@@ -3,9 +3,20 @@
         <style>
             paper-material {
                 background: #ffffff;
-                padding: 10px 10px;
-                margin: 0 auto;
+                margin: 5px auto;
+                padding: 10px;
 
+            }
+            paper-input{
+                float:left;
+                width:40%;
+                margin :10px;
+            }
+            paper-button{
+                margin: 30px auto;
+                vertical-align: top;
+                width: 200px;
+                display: table;
             }
         </style>
         <iron-pages selected="0">
@@ -18,7 +29,7 @@
                     <paper-input label="Project Name" value="{{name}}" required></paper-input>
                     <paper-input label="Project Path" value="{{path}}" required></paper-input>
                     <paper-button raised on-tap="clickHandler">
-                        Enhance Project '{{name}}' at path '{{path}}'
+                        Enhance or create Project '{{name}}' at path '{{path}}'
                     </paper-button>
                     <paper-button raised on-tap="toggleView">
                         cancel

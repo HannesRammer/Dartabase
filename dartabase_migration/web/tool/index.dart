@@ -19,8 +19,8 @@ Future main() async {
     await initPolymer();
     initParams();
     print("###########################START############################");
-    var div = querySelector("#warning");
-    div.remove();
+    //var div = querySelector("#warning");
+    //div.remove();
     var url = "http://127.0.0.1:8079/projectMapping";
     var responseText = await HttpRequest.getString(url);
     await displayProjects(responseText);
