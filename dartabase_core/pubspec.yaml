@@ -4,6 +4,6 @@ author: Hannes Rammer <Hannes.Rammer@gmail.com>
 description: Dartabase core lib used by Dartabase tools
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_core
 environment:
-  sdk: "^1.12.0"
+  sdk: '>=1.0.0 <2.0.0'
 dependencies:
   dev_string_converter: '>=0.1.0 <1.0.0'
