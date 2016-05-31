@@ -4,6 +4,7 @@ library dartabase.poly.migrationCreateRelation;
 import 'package:web_components/web_components.dart' show HtmlImport;
 import 'package:polymer/polymer.dart';
 import 'package:polymer_elements/paper_material.dart';
+import 'package:polymer_elements/paper_input.dart';
 
 @PolymerRegister('custom-migration-create-relation')
 class MigrationCreateRelation extends PolymerElement {

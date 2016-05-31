@@ -8,7 +8,37 @@
                 text-align: center;
                 padding: 10px;
             }
+
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
+            }
+
+            .tableName {
+                text-align: left;
+
+                width: 40%;
+                float: left;
+            }
+            paper-material{
+                overflow:auto
+            }
         </style>
-                {{getRelations(relations)}}
+        <paper-material class="migration" elevation="2">
+
+            <!--template is="dom-repeat" items="{{ relations }}"-->
+            <paper-input label="Table1" class="tableName" value="{{relations.0}}"
+                         disabled allowed-pattern="[a-z_0-9]"></paper-input>
+            <paper-input label="Table2" class="tableName" value="{{relations.1}}"
+                         disabled allowed-pattern="[a-z_0-9]"></paper-input>
+            <!--/template-->
+        </paper-material>
     </template>
 </dom-module>
