@@ -110,6 +110,8 @@ createMigration(Map params, HttpResponse res) {
     String rootPath = "${params['projectRootPath'].replaceAll(
             '%5C', '\\')}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json";
     Map migration = DM.MigrationGenerator.createMigration(cleanMigrationActionsMap);
-    DBCore.stringToFilePath(JSON.encode(migration), rootPath);
+    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+    String prettyprint = encoder.convert(migration);
+    DBCore.stringToFilePath(prettyprint, rootPath);
     closeResWith(res, "migration created at $rootPath");
 }

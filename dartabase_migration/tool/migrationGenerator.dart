@@ -38,7 +38,10 @@ class MigrationGenerator {
         removeRelationJson(migrationActionsMap["createRelations"], "DOWN");
 
 
-        print("Generated Migration:${map}");
+        JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+        String prettyprint = encoder.convert(map);
+
+        print("Generated Migration:${prettyprint}");
         return map;
     }
 

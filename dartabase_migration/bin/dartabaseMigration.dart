@@ -1,6 +1,6 @@
 library dartabaseMigration;
 
-import "dart:convert" show JSON;
+import "dart:convert";
 import "dart:io";
 import "dart:async";
 
