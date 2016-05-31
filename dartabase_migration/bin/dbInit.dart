@@ -25,6 +25,7 @@ void main() {
   print("|--------------------------|");
   print("");
   print("!!ONLY RUN THIS ONCE FOR EACH PROJECT!!");
+  print("Please type or paste a project name and press the ENTER key");
   print("");
   Stream<List<int>> stream = stdin;
   int count = 0;
@@ -33,21 +34,22 @@ void main() {
       .transform(UTF8.decoder)
       .transform(new LineSplitter())
       .listen((String line) { /* Do something with line. */
-        if(count>1){
+        if(count>0){
           initiateDartabase(line,name,true);
         }
-
+/*
         if(count == 1){
           name = line;
           count++;
-          print("Please enter the absolute path to your project root folder and press the ENTER key to proceed");
-          print("eg. c:\\DartProjects\\myApp");
-          print("take care of capital letters!!");
-        }
+
+        }*/
         if(count == 0){
           name = line; 
           count++;
-          print("Please type or paste a project name and press the ENTER key");
+          print("Please enter the absolute path to your project root folder to create a new or enhance an existing project");
+          print("and press the ENTER key to proceed");
+          print("eg. c:\\DartProjects\\myApp");
+          print("take care of capital letters!!");
         }
         
       },
