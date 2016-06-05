@@ -186,6 +186,7 @@ Future serverStatus(String rootPath) async {
         return query;
     } catch (e) {
         print(e.toString());
+        return e.toString();
     }
 }
 //TODO move to helper

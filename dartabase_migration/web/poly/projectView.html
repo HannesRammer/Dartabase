@@ -17,6 +17,7 @@
                 position: fixed; /* Make it stick, even on scroll */
                 overflow: auto; /* Enable scrolling if the sidenav has too much content */
                 top: 230px;
+                width:160px;
             }
 
             #project_menu {
@@ -79,8 +80,7 @@
 
             <ul>
                 <li>
-                    <custom-server-status status="{{ project.serverStatus }}" adapter="{{ project.config.adapter }}">
-                    </custom-server-status>
+
                 </li>
                 <li><a href="#config" class="darkB" id="config_button" on-tap="toggleConfig">Config</a></li>
                 <li><a href="#doMigration" class="active darkG" id="do_button" on-tap="toggleDoMigration">run Migration</a></li>

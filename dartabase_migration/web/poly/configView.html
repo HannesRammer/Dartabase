@@ -54,8 +54,9 @@
                 height: 100%;
                 overflow: auto;
             }
-            paper-tabs{
-                --paper-tabs-selection-bar-color: rgba(0, 129, 198, 1);/*rgb(65, 167, 250)*/
+
+            paper-tabs {
+                --paper-tabs-selection-bar-color: rgba(0, 129, 198, 1); /*rgb(65, 167, 250)*/
 
             }
         </style>
@@ -89,14 +90,18 @@
                 </paper-button>
             </paper-material>
             <paper-material elevation="2" id="page_2">
-                <paper-input label="adapter" value="{{ project.config.adapter }}"></paper-input>
+
+                <paper-radio-group selected="{{project.config.adapter}}">
+                    <paper-radio-button name="MySQL">MySQL</paper-radio-button>
+                    <paper-radio-button name="PGSQL">PGSQL</paper-radio-button>
+                </paper-radio-group>
                 <paper-input label="username" value="{{ project.config.username }}"></paper-input>
                 <paper-input label="host" value="{{ project.config.host }}"></paper-input>
                 <paper-input label="database" value="{{ project.config.database }}"></paper-input>
                 <paper-input label="password" value="{{ project.config.password }}"></paper-input>
                 <paper-input label="port" value="{{ project.config.port }}"></paper-input>
                 <br/>
-                <paper-checkbox checked?="{{isSecureConnection(project.config.ssl)}}">
+                <paper-checkbox checked="{{project.config.ssl}}">
                     ssl
                 </paper-checkbox>
                 <br/>

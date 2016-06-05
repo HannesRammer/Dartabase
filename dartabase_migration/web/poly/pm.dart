@@ -36,7 +36,7 @@ class Project extends JsProxy {
     @reflectable
     Map config;
     @reflectable
-    List<Migration> migrations;
+    Map migrations;
     @reflectable
     Map tables;
     @reflectable
@@ -97,8 +97,9 @@ class Project extends JsProxy {
     }
 
     @reflectable
-    List updateMigrations(String responseText) {
+    Map updateMigrations(String responseText) {
         List migrations = new List();
+        Map migrationsMap = new Map();
         List<Map> migrationsList = JSON.decode(responseText);
         for (Map migMap in migrationsList) {
             Migration mig = new Migration(index: migMap['index'],
@@ -107,11 +108,13 @@ class Project extends JsProxy {
                     actions: migMap['actions'],
                     state: migMap['state']);
             migrations.add(mig);
+
             if (mig.state == "current") {
                 selectedMigration = mig;
             }
         }
-        return migrations;
+        migrationsMap["mig"] = migrations;
+        return migrationsMap;
     }
 
     @reflectable
@@ -129,7 +132,7 @@ class Project extends JsProxy {
     @reflectable
     Migration getMigrationByIndex(num index) {
         Migration mig;
-        for (Migration m in migrations) {
+        for (Migration m in migrations["mig"]) {
             if (m.index == index) {
                 mig = m;
             }
@@ -157,7 +160,7 @@ class Project extends JsProxy {
                 mig = m;
                 }
                 });*/
-        for (Migration m in migrations) {
+        for (Migration m in migrations["mig"]) {
             if (m.state == "current") {
                 mig = m;
             }

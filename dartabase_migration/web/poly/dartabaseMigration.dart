@@ -13,10 +13,13 @@ import "../poly/pm.dart";
 
 @PolymerRegister('dartabase-migration')
 class DartabaseMigration extends PolymerElement {
-    @property
+    @Property(notify: true)
     Project selectedProject;
-    @Property(notify:true)
+    @Property(notify: true)
     List<Project> projects;
+
+    @Property(notify: true)
+    num index = 0;
 
     DartabaseMigration.created() : super.created();
 
@@ -26,15 +29,15 @@ class DartabaseMigration extends PolymerElement {
 
     @reflectable
     transition(event, [_]) {
-
         IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
         ip.selectNext();
         if (ip.selected == 0) {
             this.set('selectedProject', new Project());
         } else {
             var model = new DomRepeatModel.fromEvent(event);
-             Project p = model.item;
+            Project p = model.item;
             this.set('selectedProject', p);
+            index = model.index;
         }
     }
 }

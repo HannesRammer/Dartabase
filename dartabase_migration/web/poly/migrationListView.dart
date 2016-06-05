@@ -62,8 +62,9 @@ class MigrationListView extends PolymerElement {
     Future updateView(responseText) async {
         PaperToast test = Polymer.dom($['toast1']).querySelector("#toast1");
 
-        List migrations = await project.requestMigrations();
+        Map migrations = await project.requestMigrations();
 
+        //this.set('project.migrations', null);
         this.set('project.migrations', migrations);
         //this.notifyPath('project.migrations', migrations);
         test.text = responseText + project.selectedMigration.toString();
@@ -98,5 +99,12 @@ class MigrationListView extends PolymerElement {
     bool isNewerMigration(String state) {
         return state == "newer";
     }
+
+    @reflectable
+    List getMigrations(var map) {
+        return map["mig"];
+    }
+
+
 
 }

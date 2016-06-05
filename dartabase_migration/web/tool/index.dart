@@ -23,7 +23,9 @@ Future main() async {
     //div.remove();
     var url = "http://127.0.0.1:8079/projectMapping";
     var responseText = await HttpRequest.getString(url);
-    await displayProjects(responseText);
+    if(responseText.indexOf("no projects found") == -1){
+        await displayProjects(responseText);
+    }
 }
 
 Future displayProjects(responseText) async {

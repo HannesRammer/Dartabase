@@ -100,7 +100,7 @@
         <paper-material class="migrations" elevation="2">
             <ul>
 
-                <template is="dom-repeat" items="{{ project.migrations }}">
+                <template is="dom-repeat" items="{{ getMigrations(project.migrations)}}">
                     <li>
                         <template is="dom-if" if="{{ isOlderMigration(item.state) }}">
                             <a href="#selectedMigration" class="mig_button done" on-tap="setSelectedMigration">

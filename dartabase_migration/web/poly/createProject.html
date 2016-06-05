@@ -7,16 +7,28 @@
                 padding: 10px;
 
             }
-            paper-input{
-                float:left;
-                width:40%;
-                margin :10px;
+
+            paper-dropdown-menu {
+                float: left;
+                width: 20%;
+                margin: 10px;
             }
-            paper-button{
+
+            paper-input {
+                float: left;
+                width: 40%;
+                margin: 10px;
+            }
+
+            paper-button {
                 margin: 30px auto;
                 vertical-align: top;
                 width: 200px;
                 display: table;
+            }
+
+            br {
+                clear: both;
             }
         </style>
         <iron-pages selected="0">
@@ -28,6 +40,31 @@
                 <form is="iron-form" id="formGet" method="get" action="/" on-iron-form-submit="initiateMigration">
                     <paper-input label="Project Name" value="{{name}}" required></paper-input>
                     <paper-input label="Project Path" value="{{path}}" required></paper-input>
+
+
+                    <br/>
+                    <paper-tabs selected="0">
+                        <paper-tab name="0">DATABASE CONFIG</paper-tab>
+                    </paper-tabs>
+                    <paper-material elevation="2" id="page_2">
+                        <paper-radio-group selected="{{config.adapter}}" required>
+                            <paper-radio-button name="MySQL">MySQL</paper-radio-button>
+                            <paper-radio-button name="PGSQL">PGSQL</paper-radio-button>
+                        </paper-radio-group>
+                        <paper-checkbox checked="{{ config.ssl }}">
+                            ssl
+                        </paper-checkbox>
+                        <paper-input label="db_name" value="{{ config.database }}" required></paper-input>
+
+                        <br/>
+                        <paper-input label="host" value="{{ config.host }}" required></paper-input>
+                        <paper-input label="port" value="{{ config.port }}" required></paper-input>
+                        <br/>
+                        <paper-input label="username" value="{{ config.username }}" required></paper-input>
+                        <paper-input label="password" value="{{ config.password }}" required></paper-input>
+                        <br/>
+                    </paper-material>
+
                     <paper-button raised on-tap="clickHandler">
                         Enhance or create Project '{{name}}' at path '{{path}}'
                     </paper-button>

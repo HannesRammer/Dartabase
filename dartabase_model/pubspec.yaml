@@ -1,5 +1,5 @@
 name: dartabase_model
-version: 1.0.0-rc.1
+version: 1.0.0
 author: Hannes Rammer <Hannes.Rammer@gmail.com>
 description: "Database Model is for simple dot notation data manipulation for MySQL and PGSQL without having to write SQL. Inspired by Ruby on Rails"
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_model

@@ -70,28 +70,41 @@ Future loadMigrations(Map params, HttpResponse res) async {
 Future runMigration(Map params, HttpResponse res) async {
     DM.lastMigrationNumber = num.parse(params['index']);
     DBCore.rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
-    await DM.run(params["direction"],false,null);
+    await DM.run(params["direction"], false, null);
     closeResWith(res, "finished migrating version ${params['index']} ${params["direction"]}");
 }
 
 Future requestServerStatus(Map params, HttpResponse res) async {
     try {
         var result = await DM.serverStatus(params["projectRootPath"].replaceAll('%5C', '\\'));
-        closeResWith(res, "running");
+        if (result.toString().toLowerCase().contains("error")) {
+            closeResWith(res, result);
+        } else {
+            closeResWith(res, "running");
+        }
     } catch (exception, stackTrace) {
         closeResWith(res, "connection problem");
     }
 }
 
-initiateDartabase(Map params, HttpResponse res) {
-    DM.initiateDartabase(params["projectRootPath"].replaceAll('%5C', '\\'), params['name'],false);
+Future initiateDartabase(Map params, HttpResponse res) async {
+    print(params.toString());
+
+    await DM.initiateDartabase(params["projectRootPath"].replaceAll('%5C', '\\'), params['name'], false);
+    String cleanConfig = writeConfig(params);
+    closeResWith(res, "done");
+}
+
+writeConfig(Map params) {
+    String cleanConfig = params['config'].replaceAll('%5C', '\\').replaceAll('%7B', '{').replaceAll('%22', '"').replaceAll('%7D', '}');
+
+    DBCore.stringToFilePath(cleanConfig, "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/config.json");
+    return cleanConfig;
 }
 
 saveConfig(Map params, HttpResponse res) {
     print(params.toString());
-    String cleanConfig = params['config'].replaceAll('%5C', '\\').replaceAll('%7B', '{').replaceAll('%22', '"').replaceAll('%7D', '}');
-
-    DBCore.stringToFilePath(cleanConfig, "${params['projectRootPath'].replaceAll('%5C', '\\')}/db/config.json");
+    String cleanConfig = writeConfig(params);
     closeResWith(res, "done");
 }
 
