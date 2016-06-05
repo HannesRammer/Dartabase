@@ -10,6 +10,7 @@ import 'package:web_components/web_components.dart' show HtmlImport;
 import 'package:polymer/polymer.dart';
 import 'package:polymer_elements/iron_pages.dart';
 import "package:polymer_elements/paper_listbox.dart";
+import "package:polymer_elements/paper_toast.dart";
 import "package:polymer_elements/paper_dropdown_menu.dart";
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_checkbox.dart";
@@ -66,8 +67,12 @@ class CreateProject extends PolymerElement {
 
     initiationCompleted(responseText) {
         print(responseText.toString());
-        IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
-        ip.select("0");
+        PaperToast pt = Polymer.dom($['toast1']).querySelector("#toast1");
+        pt.text = responseText + "please reload the page if not reloaded automatically";
+
+        pt.show();
+        dom.window.location.reload();
+
     }
 
     @reflectable
