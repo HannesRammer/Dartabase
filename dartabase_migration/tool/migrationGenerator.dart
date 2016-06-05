@@ -23,6 +23,7 @@ class MigrationGenerator {
     static Map map = {"UP":{}, "DOWN":{}};
 
     static Map createMigration(Map migrationActionsMap) {
+        map = {"UP":{}, "DOWN":{}};
         createTableJson(migrationActionsMap["createTables"], "UP");
         createColumnJson(migrationActionsMap["createColumns"], "UP");
         removeColumnJson(migrationActionsMap["removeColumns"], "UP");
@@ -53,9 +54,11 @@ class MigrationGenerator {
         }
     }
 
-    static bool nullValue(bool value) {
-        if (value == null) {
+    static bool nullValue(var value) {
+        if (value == null || value == "true") {
             return true;
+        } else if (value == "false") {
+            return false;
         } else {
             return value;
         }
@@ -84,7 +87,7 @@ class MigrationGenerator {
                 }
             }
         }
-        if(tables.length>0){
+        if (tables.length > 0) {
             map[direction]["createTable"] = tables;
         }
     }
@@ -113,7 +116,7 @@ class MigrationGenerator {
                 }
             }
         }
-        if(tables.length>0){
+        if (tables.length > 0) {
             map[direction]["createColumn"] = tables;
         }
     }
@@ -126,7 +129,7 @@ class MigrationGenerator {
                 tables["${table['name']}"].add(column["name"]);
             }
         }
-        if(tables.length>0){
+        if (tables.length > 0) {
             map[direction]["removeColumn"] = tables;
         }
     }
@@ -136,7 +139,7 @@ class MigrationGenerator {
         for (var table in migrationActionsMap) {
             tables.add(table["name"]);
         }
-        if(tables.length>0){
+        if (tables.length > 0) {
             map[direction]["removeTable"] = tables;
         }
     }
@@ -148,7 +151,7 @@ class MigrationGenerator {
                     [relation["selectedTableOne"], relation["selectedTableTwo"]]
                             .sort());
         }
-        if(relations.length>0){
+        if (relations.length > 0) {
             map[direction]["createRelation"] = relations;
         }
     }
@@ -158,7 +161,7 @@ class MigrationGenerator {
         for (var relation in migrationActionsMap) {
             relations.add(relation["selectedRelation"].split("_2_"));
         }
-        if(relations.length>0){
+        if (relations.length > 0) {
             map[direction]["removeRelation"] = relations;
         }
     }

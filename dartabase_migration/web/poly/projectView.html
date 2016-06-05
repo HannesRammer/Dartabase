@@ -83,17 +83,17 @@
 
                 </li>
                 <li><a href="#config" class="darkB" id="config_button" on-tap="toggleConfig">Config</a></li>
-                <li><a href="#doMigration" class="active darkG" id="do_button" on-tap="toggleDoMigration">run Migration</a></li>
-                <li><a href="#createMigration" class="lightB" id="migration_button" on-tap="toggleMigration">create Migration</a></li>
+                <li><a href="#doMigration" class="darkG" id="do_button" on-tap="toggleDoMigration">run Migration</a></li>
+                <li><a href="#createMigration" class="active lightB" id="migration_button" on-tap="toggleMigration">create Migration</a></li>
                 <li><a class="lightG" href="#schema"></a></li>
             </ul>
         </nav>
         <div id="project_content">
             <custom-config-view project="{{ project }}" class="hidden" color="00D2B8">
             </custom-config-view>
-            <custom-migration-list-view project="{{ project }}" class="" color="55DDCA">
+            <custom-migration-list-view project="{{ project }}" class="hidden" color="55DDCA">
             </custom-migration-list-view>
-            <custom-create-migration project="{{ project }}" class="hidden" color="0081C6">
+            <custom-create-migration project="{{ project }}" class="" color="0081C6">
             </custom-create-migration>
         </div>
     </template>

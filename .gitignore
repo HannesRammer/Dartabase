@@ -13,7 +13,6 @@ pubspec.lock
 .settings/
 .pub/
 
-dartabase_migration/bin/projectsMapping.json
 
 stuff/
 

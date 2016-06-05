@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0-rc.1 GUI GUIDE
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0-rc.1
 =========================
 
   Serverside Database migration 
@@ -8,71 +8,51 @@
   
   !!now supporting scaffolding!! see bottom of the page
     
-  inspired by Ruby on Rails
+  inspired by Ruby on Rails migrations
 
   Tested on 
     
-    Dart SDK version 1.16.0
+    Dart Editor version 1.6.0.dev_07_00 (DEV)
+    Dart SDK version 1.6.0-dev.7.0
 
+  Compatibility
+    
+    depending on the migration version you are using 
+    you have to use a differend model version in your app
+	    
+    migration  			model
+    -------------------------
+    1.0.0 <-requires->  1.0.0 (using core 0.4.x)
+    0.6.x <-requires->  0.6.x
+    0.5.x <-requires->  0.5.x      
   Uses
-  [Polymer](https://github.com/dart-lang/polymer-dart) version "^1.0.0-rc.16"
-  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) "^0.14.1"
   
-  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version "^0.3.3"
-
------------------
-Other Tutorials and readme's
+  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.14.1
+  
+  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.3.3
+  
   **TUTORIAL 1** [HOW TO SETUP AND RUN MIGRATION AND MODEL](https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md)
-
------------------
-
-structure of this file
-1.[How to setup](#how-to-setup)
-2.[How to update existing dartabase migration version](#how-to-update-dartabase-migration)
-3.[How to create migrations](#how-to-create-migrations)
-4.[How to run migrations](#how-to-run-migrations)
-5.[How to revert migrations](#how-to-revert-migrations)
-[About column id](#about-column-id)
-[About create updated at column](#about-create-updated-at-column)
-[About up and down](#about-up-and-down)
-[About order of execution](#about-order-of-execution)
-[About dartabase data types](#about-dartabase-data-types)
-
------------------
-
   
-### 1. HOW TO SETUP <a name="how-to-setup"></a>
+HOW TO SETUP
+------------
 
 USE THIS INSTALL GUIDE AND IGNORE THE INSTALL PAGE!!! 
 This is a stand alone app!
 
 1.Download dartabase_migration somewhere on your drive 
 
-2.run 'Pub Get' on dartabase_migration/pubspec.yaml
+      now run 'Pub Get' on dartabase_migration/pubspec.yaml
 
-3.Execute dartabase_migration/bin/simpleServer.dart 
+2.Execute dartabase_migration/bin/dbInit.dart 
 
-4.Execute dartabase_migration/tool/index.html which will open in chromeium
+      to initiate the dartabase_migration tool for your project.
 
-now you should see page with a button
+3.follow the instructions
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/newProject.PNG)
+      *enter a project name
+      *enter path to project root folder
 
-
-5.click on add project, now you should see
-
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createProject.PNG)
-
-6.fill in the form and click enhance or create
-
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createdProject1.PNG)
-
-7.after reload you should see the created object
-
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/fixedConfig.PNG)
-
-
-8.dartabase_migration will create files and folders below to do its magic
+4.dartabase_migration will create files and folders below to do its magic
 
       dartabase_migration/bin/projectsMapping.json       
         -maps project names to absolute project path
@@ -86,11 +66,8 @@ now you should see page with a button
       yourProject/db/migrations           
         -folder for your database migration files
 
-9.IMPORTANT if your config data is not correct it might be that dartabase will stop running
-
-in this case make sure to insert the correct data into the config.json file created in your project
--yourProject/db/config.json file 
-  so dartabase_migration can connect to your existing database. and rerun simpleServer.dart and index.html
+5.Edit the -yourProject/db/config.json file 
+  so dartabase_migration can connect to your existing database.
 
     eg.
     --------config.json---------
@@ -104,20 +81,30 @@ in this case make sure to insert the correct data into the config.json file crea
         "ssl": "false"
     }
     ----------------------------
-    
-*******************************************************************************************
 
-### 2. HOW TO UPDATE EXISTING DARTABASE MIGRATION VERSION  <a name="how-to-update-dartabase-migration"></a>
+    for postgresql use
+
+    "adapter": "PGSQL"    (all capital)
+    
+    for SSL use 
+    
+    "ssl": "true"
+
+*******************************************************************************************
+HOW TO UPDATE DARTABASE MIGRATION
+---------------------------------
 
 **GENEREL UPDATE**
 
-it is important to keep a backup of 'dartabase_migration/bin/projectsMapping.json' 
+it is important to keep 'dartabase_migration/bin/projectsMapping.json' 
+but since this file will be autogenerated only on initiation of dartabase migration,
+there should not be a problem.
     
     1.download the new version of dartabase migration 
     
-    2a.replace all files from your current running version 
+    2.replace all files from your current running version 
       (but not projectsMapping.json)
-    2b. extract all files into a new folder and paste a copy of bin/projectsMapping.json
+    
   
 **LOST 'projectsMapping.json' DONT PAN!C** 
  
@@ -140,105 +127,211 @@ it is important to keep a backup of 'dartabase_migration/bin/projectsMapping.jso
     Rename the values when moving/renaming one of your projects
       
 now you should be able to find your projects again when running dbUp or dbDown
+      
+UPDATE TO VERSION 0.5.0 (breakting change for some)
+    
+    This applies ONLY 
+    if a "table_name" you specified in your migration files actions
+    starts with a capital letter
+    
+    eg. like this
+    
+    "createTable": {
+      "Account": {
+        "name": "INT"
+      }
+    }
+
+    to fix this
+    
+    1.Change all "table_names" inside your migrations to lower case
+    
+    eg. like this
+    
+    "createTable": {
+      "account": {
+        "name": "INT"
+      }
+    }          
+        
+    and 
+    2.Open schema.json and replace all capital table names to lower case aswell
+    
+    eg from
+    
+    {"Gamechar":{"id":{"type":"INT"}}}
+    
+    to
+    
+    {"gamechar":{"id":{"type":"INT"}}}
+    
+    now Migration and Model should work like a charm again ;)
           
 *******************************************************************************************
-
-### 3. HOW TO CREATE MIGRATIONS <a name="how-to-create-migrations"></a>
+HOW TO CREATE MIGRATIONS
+------------------------
   
+Either
   
-1. select the project you want to create a migration for
+1a.execute dartabase_migration/bin/createMigration.dart and follow the instructions
   
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/fixedConfig.PNG)
+  *enter project name
+  *enter migration name eg. "create_table_user"
+  
+  it will create a dummy migration inside
+  
+  "$yourProject/db/migrations/YYYYMMTTHHMMSS_create_table_user" 
+  
+or
+  
+1b.Create a migration json file "timestamp_action.json" 
 
-2. enter a migration nane and select the action you want to execute
+    inside "$yourProject/db/migrations"
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/openedProject.PNG)
+    eg. "$yourProject/db/migrations/20130709134700_create_table_user.json"
+
+2.inside your migration file you have a fixed structure!
+
+    a JSON object with a key "UP" and a json object value
+
+    to use migrations you can specify the keys/actions below inside the "UP" value
 
 **createTable**
     
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createTable1.PNG)
+    "createTable" key takes a json object as value
 
-enter a migration name, a table name and if you want add additional columns like seen below
+        keys    : non_existent_table_names (lower_case)
+        values  : json object
+                    keys    : non_existent_column_names (lower_case)
+                    values  : DARTABASETYPE
+                          or
+                          json object
+                          keys: column options 
+                          values: column option values 
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createTable2.PNG)
+    type only
+    "createTable": {
+      "new_table_name_one": {
+        "new_column_name": "DATATYPE"
+        }
+      }
+      
+        or with options          
+        "createTable": {           
+            "new_table_name_one": {        
+                "new_column_name": {          
+                  'type':"DATATYPE",      
+                    'default':"1234"    
+                }                
+            }                
+        }
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createdTable.PNG)
- 
 **createColumn**
+    
+    "createColumn" key takes a json object as value
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn1.PNG)
+        keys    : existing_table_names (lower_case)
+        values  : json object
+                    keys    : non_existent_column_names (lower_case)
+                    values  : DARTABASETYPE
+                          or
+                          json object
+                          keys: column options 
+                          values: column option values 
 
-enter a migration name, select an existing table name and add additional columns like seen below
+    type only
+    "createColumn": {
+      "existing_table_name_one": {
+        "new_column_name": "DATATYPE"
+        }
+      }
+        
+        or with options
+        "createColumn": {          
+            "existing_table_name_one": {    
+                "new_column_name": {         
+                  'type':"DATATYPE"      
+                }              
+            }
+        }
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn2.PNG)
 **removeColumn**
     
- 
+    "removeColumn" key takes a json object as value
+
+        keys    : existing_table_names (lower_case)
+        values  : array[existing_column_names] (lower_case)
+
+        eg.
+        "removeColumn": {
+            "existing_table_name_one": ["existing_column_name_one"]
+        }
+
 **removeTable**
+    
+    "removeTable" key takes array of existing_table_names
+
+        eg.
+        "removeTable": ["existing_table_name_one"] (lower_case)
         
 **createRelation**
+    
+    "createRelation" key takes an array of arrays with two existing table names as value
 
+        value  : array[array[existing_table_name_one,existing_table_name_two]] 
+
+        eg.
+        "createRelation": [
+          ["existing_table_name_one","existing_table_name_two"]
+      ]
+        
 **removeRelation**
+    
+    "removeRelation" key takes an array of arrays with two existing table names as value
 
-click on create
+        value  : array[array[existing_table_name_one,existing_table_name_two]] 
 
-it will create a migration inside
-  
-  "$yourProject/db/migrations/YYYYMMTTHHMMSS_create_table_gamechar"
+        eg.
+        "removeRelation": [
+          ["existing_table_name_one","existing_table_name_two"]
+      ]
+      
+A simple migration could look like
 
-if everything works it will show a text mesage inside a toast that asks you to reload the page
+    ----------20130709134700_create_table_user.json--------------
+    {
+        "UP": {
+            "createTable": {
+                "account": {
+                    "name": "VARCHAR"
+                },
+                "picture": {
+                    "file_name": "VARCHAR"
+                }
+            },
+            "createRelation": [
+              ["picture","account"]
+            ]
+        },
+        "DOWN": {
+          "removeRelation": [
+              ["picture","account"]
+            ],
+            "removeTable": ["account","picture"]
+        }
+    }
 
+createTable creates a table named  
+"account" with column "name" and datatype "variable length of characters"
+"picture" with column "name" and datatype "variable length of characters"
+
+createRelation creates a table named
+"account_2_picture" with columns "account_id" and "picture_id"
 
 
 *******************************************************************************************
-
-### 4. HOW TO RUN MIGRATIONS  <a name="how-to-run-migrations"></a>
-
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG)
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration2.PNG)
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration3.PNG)
-1.Execute dartabase_migration/bin/dbUp.dart
-
-2.Follow instructions in console
-    
-        *enter project name
-        *enter goal migration version
-
-dartabase_migration should have executed the actions specified inside the "UP" key
-for all files INCLUDING the goal migration version.
-
-Additionally it will update
-
-    -yourProject/db/schema.json
-    with the current database structure as JSON
-
-    -yourProject/db/schemaVersion.json
-    with the name of latest migrated migration file
-
-### 5. HOW TO REVERT MIGRATIONS
-
-
-1.Execute dartabase_migration/bin/dbDown.dart 
-
-2.Follow instructions in console
-    
-    *enter project name
-    *enter goal migration version 
-
-dartabase_migration should have executed the actions specified inside the "DOWN" key
-for all files EXCLUDING the goal migration version.
-
-Additionally it will update
-
-    -yourProject/db/schema.json
-    with the current database structure as JSON
-
-    -yourProject/db/schemaVersion.json
-    with the name of latest migrated migration file
-
-
-*******************************************************************************************
-### ABOUT COLUMN ID <a name="about-column-id"></a>
+COLUMN ID
+---------
 
 The 'id' column will be generated by 'Dartabase Migration' for every table 
 as primary key. 
@@ -249,8 +342,8 @@ This is to let 'Dartabase Model' decide when to create or update an Object
 on save() - see [Dartabase Model](http://pub.dartlang.org/packages/dartabase_model)     
        
 *******************************************************************************************
-
-### ABOUT CREATED/UPDATED AT COLUMN <a name="about-create-updated-at-column"></a>
+COLUMN CREATED/UPDATED
+----------------------
 
 For each table a created_at and updated_at column will be generated automatically.
     
@@ -265,11 +358,36 @@ For each table a created_at and updated_at column will be generated automaticall
         will be updated when the row has been saved and a value of the row changed 
          
 *******************************************************************************************
+COLUMN OPTIONS
+--------------
+  
+following options are awailable for columns
+  
+  option      values      
+  "type"     ->   "DARTABASETYPE"     <---always needed
+  "default"  ->   "yourDefaultValue"  <---optional 
+  "null"     ->   "true" or "false"   <---optional 
+  
+if options are not set then it should use dbAdapter standart settings  
+  
+example
+  
+  "createColumn": {
+        "player": {
+            "player_name": {
+              'type':"VARCHAR",
+              'null':"false",
+              'default':"unnamed Player"
+            }
+        }
+    }
 
-### ABOUT UP AND DOWN <a name="about-up-and-down"></a>
+*******************************************************************************************
 
+UP AND DOWN
+-----------
 
-Additionally to the "UP" key, migration automatically generates the opposite migration for reverting inside the "DOWN" key
+Additionally to the "UP" key you can specify all actions inside the "DOWN" key
 
     actions inside "UP" are executed during migration
     actions inside "DOWN" are executed when reverting migrations
@@ -281,8 +399,8 @@ we might want to remove it once we want to revert the migration
     before you remove it!!!
 
 *******************************************************************************************
-### ABOUT ORDER OF EXECUTION  <a name="about-order-of-execution"></a>
-
+ORDER OF EXECUTION
+------------------
 
 Once you have more than one action in the migration file
 
@@ -305,20 +423,63 @@ remember that the order of execution inside a migration will be
          ->
          removeTable
 
-its always best to keep migration files as simple as possible and therefore create more migration files
+but I cant think of a feasible example where that might bring up problems.
+
+*******************************************************************************************
+HOW TO RUN MIGRATIONS
+---------------------
+
+1.Execute dartabase_migration/bin/dbUp.dart
+
+2.Follow instructions in console
+    
+        *enter project name
+        *enter goal migration version
+
+dartabase_migration should have executed the actions specified inside the "UP" key
+for all files INCLUDING the goal migration version.
+
+Additionally it will update
+
+    -yourProject/db/schema.json
+    with the current database structure as JSON
+
+    -yourProject/db/schemaVersion.json
+    with the name of latest migrated migration file
+
+HOW TO REVERT MIGRATIONS
+------------------------
+
+1.Execute dartabase_migration/bin/dbDown.dart 
+
+2.Follow instructions in console
+    
+    *enter project name
+    *enter goal migration version 
+
+dartabase_migration should have executed the actions specified inside the "DOWN" key
+for all files EXCLUDING the goal migration version.
+
+Additionally it will update
+
+    -yourProject/db/schema.json
+    with the current database structure as JSON
+
+    -yourProject/db/schemaVersion.json
+    with the name of latest migrated migration file
+
 
 *******************************************************************************************
 
-
-### ABOUT DARTABASE DATA TYPES <a name="about-dartabase-data-types"></a>
-
+DARTABASE DATA TYPES
+--------------------
 dartabase_migration types are Specified in capitals.
 
 on the left hand you see the dartabase_migration data type name
 on the right the data type your database will use
 
-####MYSQL
-
+MYSQL
+-----
     
     {
       "BINT": "BIGINT",
@@ -356,8 +517,8 @@ on the right the data type your database will use
       "VARCHAR": "VARCHAR(255)"
   }
 
-#### PGSQL
-
+PGSQL
+-----
     
     {
       "BINT": "bigint",
@@ -395,7 +556,7 @@ on the right the data type your database will use
   }
 
 *******************************************************************************************
-SCAFFOLDING //IGNORE below
+SCAFFOLDING
 -----------
 
 HOW TO RUN SCAFFOLDING

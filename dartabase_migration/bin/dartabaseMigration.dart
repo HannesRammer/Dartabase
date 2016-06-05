@@ -282,7 +282,7 @@ String notNull(String notNull) {
 }
 
 String defaultValue(String dv) {
-    if (dv != null) {
+    if (dv != null && dv != "") {
         return " DEFAULT '${dv}' ";
     } else {
         return "";
