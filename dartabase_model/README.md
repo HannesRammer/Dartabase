@@ -1,4 +1,4 @@
-Dartabase Model 1.0.0-rc.1
+Dartabase Model 1.0.0
 =====================
 
   Serverside Database Object Models for simple data manipulation
