@@ -1,5 +1,6 @@
 VERSION
 -------
+    1.0.1 -updated core to 0.4.1
     1.0.0 -cleaner code using await and async
           -set min dart sdk to 1.8.0
           -updated to work with dartabase core 0.4.0
