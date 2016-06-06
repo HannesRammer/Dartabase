@@ -147,9 +147,13 @@ class MigrationGenerator {
     static void createRelationJson(List migrationActionsMap, String direction) {
         List relations = [];
         for (var relation in migrationActionsMap) {
-            relations.add(
-                    [relation["selectedTableOne"], relation["selectedTableTwo"]]
-                            .sort());
+            if (relation["selectedTableOne"] != null) {
+                List names = [relation["selectedTableOne"], relation["selectedTableTwo"]];
+                names.sort();
+                relations.add(names);
+            } else {
+                relations.add(relation["selectedRelation"].split("_2_"));
+            }
         }
         if (relations.length > 0) {
             map[direction]["createRelation"] = relations;
@@ -159,7 +163,13 @@ class MigrationGenerator {
     static void removeRelationJson(List migrationActionsMap, String direction) {
         List relations = [];
         for (var relation in migrationActionsMap) {
-            relations.add(relation["selectedRelation"].split("_2_"));
+            if (relation["selectedTableOne"] != null) {
+                List names = [relation["selectedTableOne"], relation["selectedTableTwo"]];
+                names.sort();
+                relations.add(names);
+            } else {
+                relations.add(relation["selectedRelation"].split("_2_"));
+            }
         }
         if (relations.length > 0) {
             map[direction]["removeRelation"] = relations;
