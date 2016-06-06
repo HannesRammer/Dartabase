@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0-rc.2 GUI GUIDE
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0 GUI GUIDE
 =========================
 
   Serverside Database migration 
