@@ -6,8 +6,8 @@ homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_migrat
 dependencies:
   postgresql: "^0.3.3"
   sqljocky: "^0.14.1"
-  dartabase_core: #"^0.4.0"
-    path: "c:/Projects/Dart/dartabase/dartabase_core"
+  dartabase_core: "^0.4.1"
+    #path: "c:/Projects/Dart/dartabase/dartabase_core"
   #dependencies used for web interface
   params: "^0.0.3"
     #path: "c:/Projects/Dart/Params"
@@ -23,9 +23,9 @@ dependencies:
   observe: "^0.13.4"
   material_paper_colors: "^0.2.0"
   template_binding: "^0.14.0+4"
-  analyzer: "<0.27.2"
+  analyzer: ">=0.27.0 <0.27.2"
 environment: 
-  sdk: "^1.12.0"
+  sdk: ">=1.12.0 <2.0.0"
 transformers:
 - polymer:
     entry_points: web/tool/index.html

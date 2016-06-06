@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0 CONSOLE GUIDE
 =========================
 
   Serverside Database migration 
@@ -11,20 +11,9 @@
   inspired by Ruby on Rails migrations
 
   Tested on 
-    
-    Dart Editor version 1.6.0.dev_07_00 (DEV)
-    Dart SDK version 1.6.0-dev.7.0
+     
+     Dart SDK version 1.16.0
 
-  Compatibility
-    
-    depending on the migration version you are using 
-    you have to use a differend model version in your app
-	    
-    migration  			model
-    -------------------------
-    1.0.0 <-requires->  1.0.0 (using core 0.4.x)
-    0.6.x <-requires->  0.6.x
-    0.5.x <-requires->  0.5.x      
   Uses
   
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.14.1
