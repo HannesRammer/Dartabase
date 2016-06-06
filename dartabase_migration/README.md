@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0-rc.1 GUI GUIDE
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0-rc.2 GUI GUIDE
 =========================
 
   Serverside Database migration 
@@ -150,7 +150,7 @@ now you should be able to find your projects again when running dbUp or dbDown
   
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/fixedConfig.PNG)
 
-2. enter a migration nane and select the action you want to execute
+2. open the "create migration" view, enter a migration name and click on the action you want to execute
 
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/openedProject.PNG)
 
@@ -158,51 +158,79 @@ now you should be able to find your projects again when running dbUp or dbDown
     
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createTable1.PNG)
 
-enter a migration name, a table name and if you want add additional columns like seen below
+enter a table name and additional columns if needed like seen below
 
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createTable2.PNG)
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createdTable.PNG)
+
  
 **createColumn**
 
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn1.PNG)
 
-enter a migration name, select an existing table name and add additional columns like seen below
+select an existing table name and add additional columns like seen below
 
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn2.PNG)
 **removeColumn**
     
- 
+ ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/removeColumn1.PNG)
+
+select an existing table and the existing column you want to remove, like below
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/removeColumn2.PNG)
+
 **removeTable**
-        
+  
+  ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/removeTable1.PNG)
+
+select an existing table you want to remove, like below
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/removeTable2.PNG)
+      
 **createRelation**
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createRelation1.PNG)
+
+select two existing tables to create a relation between them like below
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createRelation2.PNG)
 
 **removeRelation**
 
-click on create
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/removeRelation1.PNG)
+
+select two existing tables to create a relation between them like below
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/removeRelation2.PNG)
+
+click on "create migration"
 
 it will create a migration inside
   
-  "$yourProject/db/migrations/YYYYMMTTHHMMSS_create_table_gamechar"
+  "$yourProject/db/migrations/YYYYMMTTHHMMSS_migration_name.json"
 
 if everything works it will show a text mesage inside a toast that asks you to reload the page
 
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createdTable.PNG)
 
 
 *******************************************************************************************
 
 ### 4. HOW TO RUN MIGRATIONS  <a name="how-to-run-migrations"></a>
 
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG)
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration2.PNG)
-![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration3.PNG)
-1.Execute dartabase_migration/bin/dbUp.dart
+1 . open the run migration view 
 
-2.Follow instructions in console
-    
-        *enter project name
-        *enter goal migration version
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG)
+
+
+2 . select the preferred migration that is newer than the one marked as current. in this case version 1
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration2.PNG)
+
+3 . now click on "migrate to newer version".
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration3.PNG)
 
 dartabase_migration should have executed the actions specified inside the "UP" key
 for all files INCLUDING the goal migration version.
@@ -215,15 +243,23 @@ Additionally it will update
     -yourProject/db/schemaVersion.json
     with the name of latest migrated migration file
 
-### 5. HOW TO REVERT MIGRATIONS
+*******************************************************************************************
+
+### 5. HOW TO REVERT MIGRATIONS  <a name="how-to-revert-migrations"></a>
 
 
-1.Execute dartabase_migration/bin/dbDown.dart 
+1 . open the run migration view 
 
-2.Follow instructions in console
-    
-    *enter project name
-    *enter goal migration version 
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/revertMigration1.PNG)
+
+
+2 . select the preferred migration that is older than the one marked as current. in this case version 1
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/revertMigration2.PNG)
+
+3 . now click on "migrate to older version".
+
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/revertMigration3.PNG)
 
 dartabase_migration should have executed the actions specified inside the "DOWN" key
 for all files EXCLUDING the goal migration version.
@@ -238,6 +274,7 @@ Additionally it will update
 
 
 *******************************************************************************************
+
 ### ABOUT COLUMN ID <a name="about-column-id"></a>
 
 The 'id' column will be generated by 'Dartabase Migration' for every table 
@@ -281,6 +318,7 @@ we might want to remove it once we want to revert the migration
     before you remove it!!!
 
 *******************************************************************************************
+
 ### ABOUT ORDER OF EXECUTION  <a name="about-order-of-execution"></a>
 
 
@@ -395,6 +433,7 @@ on the right the data type your database will use
   }
 
 *******************************************************************************************
+
 SCAFFOLDING //IGNORE below
 -----------
 
@@ -516,10 +555,9 @@ HOW TO USE SCAFFOLSING
   
 *******************************************************************************************
 
-TODO
-----
+###TODO
 
-    *fix async output text
+
     *workaround for database problems with reserved words
      on creation or when switching DBAdapter from PG to MY.
         eg. table name 'user' will break in MySQL
@@ -529,7 +567,6 @@ TODO
     *adding option to specify variable length
         currently VARCHAR fix at 255
     *test functionality of all data types
-    *improvements, adapt more functionality from db connectors
     *and much more
 
 Please let me know about bugs you find and or improvements/features you would like to see in future.
