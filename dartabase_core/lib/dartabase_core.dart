@@ -14,6 +14,8 @@ class DBCore {
 
     static String get MySQL => "MySQL";
 
+    static String get SQLite => "SQLite";
+
     static String get PGSQL => "PGSQL";
 
     static String database;
@@ -30,6 +32,7 @@ class DBCore {
 
     static String schemaVersion;
 
+    /// FILE to Map
     static Map jsonFilePathToMap(String path) {
         File file = new File(path);
         if (file.existsSync()) {
@@ -43,6 +46,7 @@ class DBCore {
         }
     }
 
+    /// schema.json to Map
     static Map loadSchemaToMap(String rootPath) {
         var schema = new File('$rootPath/db/schema.json');
         schema.writeAsStringSync("", encoding: ASCII, mode: FileMode.APPEND);
@@ -53,22 +57,37 @@ class DBCore {
         return JSON.decode(fileText);
     }
 
+    /// create backup with timestamp
+    static void backupFile(String filePath,String checkupText) {
+        File file = new File(filePath);
+        if (file.existsSync()) {
+            String fileText = file.readAsStringSync(encoding: ASCII);
+            if(fileText.trim().replaceAll(" ","").replaceAll("\n","") != checkupText.replaceAll(" ","").replaceAll("\n","")){
+                DateTime now = new DateTime.now();
+                var cleanTime = now.toString().split(".")[0].replaceAll(" ", "").replaceAll(":", "").replaceAll("-", "");
+                String backupPath = "${filePath.split(".")[0]}_${cleanTime}.${filePath.split(".")[1]}";
+                File backupFile = new File(backupPath);
+                print("file backup created at ${backupPath}");
+
+                backupFile.writeAsStringSync(fileText, encoding: ASCII, mode: FileMode.APPEND);
+            }
+        }
+    }
+
+    /// Map to FILE
     static void mapToJsonFilePath(Map contentMap, String filePath) {
         JsonEncoder encoder = new JsonEncoder.withIndent('  ');
         String ppContentString = encoder.convert(contentMap);
-
-        print(ppContentString);
-
-        String contentString = JSON.encode(contentMap);
-        var file = new File(filePath);
-
-        file.writeAsStringSync(ppContentString, encoding: ASCII);
+        stringToFilePath(ppContentString, filePath);
     }
 
+    /// String to File
     static void stringToFilePath(String text, String filePath) {
+        backupFile(filePath,text.trim());
         var file = new File(filePath);
-
         file.writeAsStringSync(text, encoding: ASCII);
+        print(text);
+
     }
 
     static String typeMapping(String dartabaseType) {
@@ -141,6 +160,7 @@ class DBCore {
 
     static dartabaseTypeToDartType(dartabaseType) {
         if ([
+            "BIGINT",
             "BINT",
             "BINT UNSIGNED",
             "DOUBLE",
@@ -148,8 +168,10 @@ class DBCore {
             "FLOAT UNSIGNED",
             "INT",
             "INT UNSIGNED",
+            "SMALLINT",
             "SINT",
             "SINT UNSIGNED",
+            "TINYINT",
             "TINT",
             "TINT UNSIGNED"
         ].contains(dartabaseType)) {
@@ -159,7 +181,7 @@ class DBCore {
             return "double";
         } else if (dartabaseType == "BOOLEAN") {
             return "bool";
-        } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"]
+        } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR", "MEDIUMTEXT"]
                 .contains(dartabaseType)) {
             return "String";
         } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
@@ -184,8 +206,8 @@ class DBCore {
         //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configMYSQL.json');
         parsedMap = jsonFilePathToMap('$rootPath/db/config.json');
         adapter = parsedMap["adapter"];
-        if (adapter != MySQL && adapter != PGSQL) {
-            print("\nadapter in config file not correct!!! Should be '$MySQL' or '$PGSQL'!!!");
+        if (adapter != MySQL && adapter != SQLite && adapter != PGSQL) {
+            print("\nadapter in config file not correct!!! Should be '$MySQL' or '$PGSQL' or '$SQLite'!!!");
         }
         database = parsedMap["database"];
         username = parsedMap["username"];
@@ -215,5 +237,16 @@ class DBCore {
 
     static String toClassName(String text) {
         return DSC.toClassName(text);
+    }
+
+    static String getRelationDivider(String rootPath) {
+        Map schema = DBCore.loadSchemaToMap(rootPath);
+        String relationDivider;
+        if (schema["relationDivider"] == null) {
+            relationDivider = "2";
+        } else if (schema["relationDivider"] != null) {
+            relationDivider = schema["relationDivider"];
+        }
+        return relationDivider;
     }
 }
