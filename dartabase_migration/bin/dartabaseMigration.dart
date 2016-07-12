@@ -5,6 +5,7 @@ import "dart:io";
 import "dart:async";
 
 import 'package:dartabase_core/dartabase_core.dart';
+import 'package:dev_string_converter/dev_string_converter.dart' as DSC;
 
 import 'package:postgresql/pool.dart';
 import 'package:postgresql/postgresql.dart';
@@ -14,6 +15,12 @@ import 'package:sqljocky/sqljocky.dart';
 part '../tool/dbhelper.dart';
 
 part '../tool/migrationGenerator.dart';
+
+part '../tool/modelGenerator.dart';
+
+part '../tool/viewGenerator.dart';
+
+part '../tool/serverGenerator.dart';
 
 String uri;
 
@@ -97,10 +104,6 @@ Future connectDB(rootPath) async {
             await pool.start();
             print('Min connections established.');
             conn = await pool.connect();
-
-            //migrate(conn);
-
-
         } else if (DBCore.adapter == DBCore.MySQL) {
             ConnectionPool pool;
             if (DBCore.ssl) {
@@ -120,7 +123,6 @@ Future connectDB(rootPath) async {
                         max: 5);
             }
             conn = pool;
-            //migrate(pool);
         }
         return conn;
     } catch (e) {
@@ -190,26 +192,12 @@ Future serverStatus(String rootPath) async {
     }
 }
 //TODO move to helper
-
-
 Future migrate(conn, bool exitAfter, fileId) async {
     var result;
     DBCore.parsedMapping = DBCore.jsonFilePathToMap('bin/../tool/typeMapper${DBCore.adapter}.json');
     Directory directory = new Directory("${DBCore.rootPath}/db/migrations");
     files = directory.listSync();
     if (files.length > 0) {
-        /**
-                files.forEach((file) {
-                if (file.path.split("migrations")[1].replaceAll("\\", "") == DBCore.schemaVersion) {
-                if (direction == "UP") {
-                fileId = files.indexOf(file) + 1;
-                } else if (direction == "DOWN") {
-                fileId = files.indexOf(file);
-                }
-                }
-                });
-         */
-
         for (var file in files) {
             if (file.path.split("migrations")[1].replaceAll("\\", "") == DBCore.schemaVersion) {
                 if (direction == "UP") {
@@ -429,63 +417,14 @@ Future createRelation(conn, bool exitAfter, fileId) async {
     if (DBCore.parsedMap["createRelation"] != null) {
         List relations = DBCore.parsedMap["createRelation"];
         Map dependencies;
-        List masterList = [];
-        List slaveList = [];
         List tableNames;
-        if (schema["dependencyRelations"] != null) {
-            dependencies = schema["dependencyRelations"];
-            if (dependencies["masterList"] == null) {
-                masterList = [];
-            } else {
-                masterList = dependencies["masterList"];
-            }
-            if (dependencies["slaveList"] == null) {
-                slaveList = [];
-            } else {
-                slaveList = dependencies["slaveList"];
-            }
-        } else {
-            dependencies = {
-            };
-            schema["dependencyRelations"] = dependencies;
-            masterList = [];
-            slaveList = [];
-        }
+
         for (int i = 0; i < relations.length; i++) {
             if (relations[i].runtimeType.toString() == "List") {
                 tableNames = [relations[i][0].toLowerCase(), relations[i][1].toLowerCase()];
-            } else if (relations[i].runtimeType.toString() == "_InternalLinkedHashMap") {
-                String master = relations[i]["master"];
-                String slave = relations[i]["slave"];
-                tableNames = [master, slave];
-                List list;
-                if (dependencies[master] != null) {
-                    list = dependencies[master];
-                } else {
-                    list = [];
-                }
-                if (list.contains(slave)) {
-
-                } else {
-                    list.add(slave);
-                }
-                if (masterList.contains(master)) {
-
-                } else {
-                    masterList.add(master);
-                }
-                if (slaveList.contains(slave)) {
-
-                } else {
-                    slaveList.add(slave);
-                }
-                dependencies[master] = list;
-                dependencies["masterList"] = masterList;
-                dependencies["slaveList"] = slaveList;
-                schema["dependencyRelations"] = dependencies;
             }
             tableNames.sort();
-            String relationTable = "${tableNames[0]}_2_${tableNames[1]}";
+            String relationTable = "${tableNames[0]}_${DBCore.getRelationDivider(DBCore.rootPath)}_${tableNames[1]}";
             String intType = DBCore.typeMapping("INT");
             if (schema[relationTable] == null) {
                 List columns = ["${tableNames[0]}_id", "${tableNames[1]}_id"];
@@ -527,7 +466,7 @@ Future removeRelation(conn, bool exitAfter, fileId) async {
         for (int i = 0; i < relations.length; i++) {
             List tableNames = [relations[i][0].toLowerCase(), relations[i][1].toLowerCase()];
             tableNames.sort();
-            String relationTable = "${tableNames[0]}_2_${tableNames[1]}";
+            String relationTable = "${tableNames[0]}_${DBCore.getRelationDivider(DBCore.rootPath)}_${tableNames[1]}";
             if (schema[relationTable] != null) {
                 schema.remove(relationTable);
                 print(schema);
@@ -607,5 +546,100 @@ Future removeTable(conn, bool exitAfter, fileId) async {
             print("goal migration reached");
             doExit(exitAfter);
         }
+    }
+}
+
+Future extractExistingDatabaseTableNames(String rootPath) async {
+    try {
+        DBCore.loadConfigFile(rootPath);
+        var conn = await connectDB(rootPath);
+        var existingDatabaseTableNames = new List();
+        if (DBCore.adapter == DBCore.PGSQL) {
+            //query = await conn.query("SELECT 1").toList();
+            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='public' AND TABLE_CATALOG='${DBCore.database}';";
+            print(sql);
+            var results = await conn.query(sql).toList();
+
+            await results.forEach((row) {
+                print(row[0]);
+                existingDatabaseTableNames.add(row[0]);
+            });
+        } else if (DBCore.adapter == DBCore.MySQL) {
+            //conn = await pool.ping();
+            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='${DBCore.database}';";
+            print(sql);
+            var results = await conn.query(sql);
+
+            await results.forEach((row) {
+                print(row[0]);
+                existingDatabaseTableNames.add(row[0]);
+            });
+        }
+
+        return existingDatabaseTableNames;
+    } catch (e) {
+        print(e.toString());
+        return e.toString();
+    }
+}
+
+Future extractExistingTableDescription(String tableName, String rootPath) async {
+    try {
+        DBCore.loadConfigFile(rootPath);
+        var conn = await connectDB(rootPath);
+        Map existingDatabaseTableMap = new Map();
+        if (DBCore.adapter == DBCore.PGSQL) {
+            Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/pGSQLToType.json');
+            String sql = "SELECT column_name,data_type,is_nullable,column_default FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='${tableName}' AND TABLE_CATALOG='${DBCore.database}';";
+            print(sql);
+            var results = await conn.query(sql).toList();
+            await results.forEach((row) {
+                print(row.toString());
+                String field = row[0].toString();
+                String dbType = row[1].toString();
+                String isNull = row[2].toString();
+                String defaultValue = row[3].toString();
+                if (defaultValue == "null") {
+                    defaultValue = "";
+                }
+                if (existingDatabaseTableMap[tableName] == null) {
+                    existingDatabaseTableMap[tableName] = {};
+                }
+                existingDatabaseTableMap[tableName][field] = {
+                    "type":sqlToDartabase[dbType.split("(")[0].toLowerCase()],
+                    "default":defaultValue,
+                    "null":isNull
+                };
+            });
+        } else if (DBCore.adapter == DBCore.MySQL) {
+            Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/mySQLToType.json');
+            String sql = "DESC ${DBCore.database}.${tableName};";
+            print(sql);
+            var results = await conn.query(sql);
+            await results.forEach((row) {
+                print(row.toString());
+                String field = row[0].toString();
+                String dbType = row[1].toString();
+                String isNull = row[2].toString();
+                String priKey = row[3];
+                String defaultValue = row[4].toString();
+                if (defaultValue == "null") {
+                    defaultValue = "";
+                }
+                String extra = row[5];
+                if (existingDatabaseTableMap[tableName] == null) {
+                    existingDatabaseTableMap[tableName] = {};
+                }
+                existingDatabaseTableMap[tableName][field] = {
+                    "type":sqlToDartabase[dbType.split("(")[0].toUpperCase()],
+                    "default":defaultValue,
+                    "null":isNull
+                };
+            });
+        }
+        return existingDatabaseTableMap;
+    } catch (e) {
+        print(e.toString());
+        return e.toString();
     }
 }

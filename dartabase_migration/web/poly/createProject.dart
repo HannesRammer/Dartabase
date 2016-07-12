@@ -33,7 +33,7 @@ class CreateProject extends PolymerElement {
     Map config={"adapter":"",
                 "username":"",
                 "host":"",
-        "databse":"",
+        "database":"",
         "password":"",
         "port":"",
         "ssl":""
@@ -60,9 +60,45 @@ class CreateProject extends PolymerElement {
     @reflectable
     Future initiateMigration(dom.Event event, [_])  async{
         //String config = "&adapter=${adapter}&username=${username}&host=${password}&database=${database}&password=${password}&port=${port}&ssl${ssl}";
-        var url = "http://127.0.0.1:8079/initiateMigration?name=${name}&projectRootPath=${path}&config=${JSON.encode(config)}";
+        var url = "http://127.0.0.1:8075/initiateMigration?name=${name}&projectRootPath=${path}&config=${JSON.encode(config)}";
         var responseText = await dom.HttpRequest.getString(url);
+        generateSchema(event);
+        generateModels(event);
         initiationCompleted(responseText);
+    }
+
+    @reflectable
+    generateModels(dom.Event event, [_]) {
+        dom.HttpRequest request = new dom.HttpRequest(); // create a new XHR
+        // add an event handler that is called when the request finishes
+        request.onReadyStateChange.listen((_) {
+            if (request.readyState == dom.HttpRequest.DONE && (request.status == 200 || request.status == 0)) {
+                // data saved OK.
+                print(request.responseText); // output the response from the server
+                //updateView(request.responseText);
+            }
+        });
+        // POST the data to the server
+        var url = "http://127.0.0.1:8075/generateModels?projectRootPath=${path}";
+        request.open("POST", url);
+        request.send(); // perform the async POST
+    }
+
+    @reflectable
+    generateSchema(dom.Event event, [_]) {
+        dom.HttpRequest request = new dom.HttpRequest(); // create a new XHR
+        // add an event handler that is called when the request finishes
+        request.onReadyStateChange.listen((_) {
+            if (request.readyState == dom.HttpRequest.DONE && (request.status == 200 || request.status == 0)) {
+                // data saved OK.
+                print(request.responseText); // output the response from the server
+                //updateView(request.responseText);
+            }
+        });
+        // POST the data to the server
+        var url = "http://127.0.0.1:8075/generateSchema?projectRootPath=${path}";
+        request.open("POST", url);
+        request.send(); // perform the async POST
     }
 
     initiationCompleted(responseText) {

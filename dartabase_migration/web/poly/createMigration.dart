@@ -68,7 +68,7 @@ class CreateMigration extends PolymerElement {
     doIt(name) {
         DateTime now = new DateTime.now();
         cleanTime = now.toString().split(".")[0].replaceAll(" ", "").replaceAll(":", "").replaceAll("-", "");
-        set("project.migrationActions.generatedName","${cleanTime}_${toTableName(name)}");
+        set("project.migrationActions.generatedName", "${cleanTime}_${toTableName(name)}");
         return "${cleanTime}_${toTableName(name)}";
     }
 
@@ -86,7 +86,7 @@ class CreateMigration extends PolymerElement {
         });
 
         // POST the data to the server
-        var url = "http://127.0.0.1:8079/createMigration?migrationActions=${JSON.encode(project.migrationActions).replaceAll('[', '%5B').replaceAll(']', '%5D')}&projectRootPath=${project.path}";
+        var url = "http://127.0.0.1:8075/createMigration?migrationActions=${JSON.encode(project.migrationActions).replaceAll('[', '%5B').replaceAll(']', '%5D')}&projectRootPath=${project.path}";
         request.open("POST", url);
 
         request.send(); // perform the async POST
@@ -96,7 +96,6 @@ class CreateMigration extends PolymerElement {
     void clickHandler(dom.Event event, [_]) {
         (((Polymer.dom(event) as PolymerEvent).localTarget as dom.Element).parent as dom.FormElement).submit();
     }
-
 
     updateView(String responseText) {
         PaperToast pt = Polymer.dom($['toast1']).querySelector("#toast1");

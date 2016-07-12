@@ -9,7 +9,9 @@ import 'package:polymer_elements/paper_icon_button.dart';
 import "package:polymer_elements/paper_input.dart";
 import '../poly/serverStatus.dart';
 import '../poly/projectView.dart';
+import '../poly/text_effect.dart';
 import "../poly/pm.dart";
+import 'dart:html';
 
 @PolymerRegister('dartabase-migration')
 class DartabaseMigration extends PolymerElement {

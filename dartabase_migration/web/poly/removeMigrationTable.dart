@@ -39,7 +39,7 @@ class RemoveMigrationTable extends PolymerElement {
         List names = await project.getTableNamesWithoutRelation();
         List filteredNames = new List();
         for(String name in names){
-            if(name.indexOf("_2_")<0){
+            if(name.indexOf("_2_") == -1 && name.indexOf("_to_") == -1 ){
                 filteredNames.add(name);
             }
         }

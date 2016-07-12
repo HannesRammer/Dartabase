@@ -48,7 +48,7 @@ class MigrationListView extends PolymerElement {
 
     @reflectable
     Future runMigration(event, [_]) async {
-        var url = "http://127.0.0.1:8079/runMigration?projectRootPath=${project
+        var url = "http://127.0.0.1:8075/runMigration?projectRootPath=${project
                 .path}&direction=${project.migrationDirection}";
         if (project.migrationDirection == "UP") {
             url += "&index=${project.selectedMigration.index - 1}";

@@ -21,7 +21,7 @@ Future main() async {
     print("###########################START############################");
     //var div = querySelector("#warning");
     //div.remove();
-    var url = "http://127.0.0.1:8079/projectMapping";
+    var url = "http://127.0.0.1:8075/projectMapping";
     var responseText = await HttpRequest.getString(url);
     if(responseText.indexOf("no projects found") == -1){
         await displayProjects(responseText);

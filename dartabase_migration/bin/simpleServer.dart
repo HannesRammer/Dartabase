@@ -16,12 +16,12 @@ part '../routes.dart';
 part 'serverFunctions.dart';
 
 /* A simple web server that responds to **ALL** GET and **POST** requests
- * Browse to it using http://localhost:8079  
+ * Browse to it using http://localhost:8075
  * Provides CORS headers, so can be accessed from any other page
  */
 final String HOST = "127.0.0.1"; // eg: localhost
 
-final num PORT = 8079;
+final num PORT = 8075;
 
 main() async {
     var server = await HttpServer.bind(HOST, PORT);

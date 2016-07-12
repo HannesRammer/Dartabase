@@ -78,7 +78,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestConfig() async {
-        var url = "http://127.0.0.1:8079/requestConfig?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestConfig?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         updateConfig(responseText);
     }
@@ -91,7 +91,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestMigrations() async {
-        var url = "http://127.0.0.1:8079/requestMigrations?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestMigrations?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         return updateMigrations(responseText);
     }
@@ -119,7 +119,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestServerStatus() async {
-        var url = "http://127.0.0.1:8079/requestServerStatus?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestServerStatus?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         updateServerStatus(responseText);
     }
@@ -155,11 +155,6 @@ class Project extends JsProxy {
     @reflectable
     Migration getCurrentMigration() {
         Migration mig;
-        /**migrations.forEach((Migration m) {
-                if (m.state == "current") {
-                mig = m;
-                }
-                });*/
         for (Migration m in migrations["mig"]) {
             if (m.state == "current") {
                 mig = m;
@@ -170,7 +165,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestSchema() async {
-        var url = "http://127.0.0.1:8079/requestSchema?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestSchema?projectRootPath=${path}";
         String responseText = await HttpRequest.getString(url);
         return updateSchema(responseText);
     }
@@ -207,7 +202,7 @@ class Project extends JsProxy {
         List tableNames = await getTableNames();
         List filteredNames = new List();
         for (String name in tableNames) {
-            if (name.indexOf("_2_") == -1) {
+            if (name.indexOf("_2_") == -1 && name.indexOf("_to_") == -1) {
                 filteredNames.add(name);
             }
         }
@@ -219,7 +214,7 @@ class Project extends JsProxy {
         List tableNames = await getTableNames();
         List filteredNames = new List();
         for (String name in tableNames) {
-            if (name.indexOf("_2_") > -1) {
+            if (name.indexOf("_2_") > -1 || name.indexOf("_to_") > -1) {
                 filteredNames.add(name);
             }
         }

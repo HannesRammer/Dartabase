@@ -44,8 +44,8 @@
             paper-material {
                 --shadow-elevation-4dp: {
 
-                    box-shadow: 0px 4px 5px 0 rgba(0, 129, 198, 0.14),
-                    0px 1px 10px 0 rgba(0, 129, 198, 0.12),
+                    box-shadow: 0 4px 5px 0 rgba(0, 129, 198, 0.14),
+                    0 1px 10px 0 rgba(0, 129, 198, 0.12),
                     -19px 2px 4px -1px rgba(0, 129, 198, 0.6);
                 };
                 width: 95%;
@@ -86,7 +86,19 @@
                 </template>
                 <br/>
                 <paper-button raised on-tap="transition">
-                    edit
+                    edit Config
+                </paper-button>
+                <paper-button raised on-tap="generateSchema">
+                    generate schema.json from existing database
+                </paper-button>
+                <paper-button raised on-tap="generateModels">
+                    generate dart models from existing database
+                </paper-button>
+                <paper-button raised on-tap="generateViews">
+                    generate dart views from existing database
+                </paper-button>
+                <paper-button raised on-tap="generateServer">
+                    generate dart server files
                 </paper-button>
             </paper-material>
             <paper-material elevation="2" id="page_2">

@@ -83,7 +83,7 @@ Future requestServerStatus(Map params, HttpResponse res) async {
             closeResWith(res, "running");
         }
     } catch (exception, stackTrace) {
-        closeResWith(res, "connection problem");
+        closeResWith(res, "connection problem $stackTrace");
     }
 }
 
@@ -122,9 +122,63 @@ createMigration(Map params, HttpResponse res) {
 
     String rootPath = "${params['projectRootPath'].replaceAll(
             '%5C', '\\')}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json";
-    Map migration = DM.MigrationGenerator.createMigration(cleanMigrationActionsMap);
-    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
-    String prettyprint = encoder.convert(migration);
-    DBCore.stringToFilePath(prettyprint, rootPath);
+    DM.MigrationGenerator.createMigration(cleanMigrationActionsMap, rootPath);
+
     closeResWith(res, "migration created at $rootPath");
+}
+
+Future generateSchemaFromExistingDatabase(Map params, HttpResponse res) async {
+    try {
+        print(params.toString());
+        String rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
+        var tableNames = await DM.extractExistingDatabaseTableNames(rootPath);
+        Map m = {};
+
+        for (String tableName in tableNames) {
+            if (tableName.contains("_2_")) {
+                m.addAll({"relationDivider":"2"});
+            } else if (tableName.contains("_to_")) {
+                m.addAll({"relationDivider":"to"});
+            }
+            Map tableDesc = await DM.extractExistingTableDescription(tableName, rootPath);
+            m.addAll(tableDesc);
+        }
+        DBCore.mapToJsonFilePath(m, "${rootPath}/db/schema.json");
+
+        closeResWith(res, "generated SchemaFromExistingDatabase at ${rootPath}/db/schema.dart");
+    } catch (exception, stackTrace) {
+        closeResWith(res, "connection problem $stackTrace");
+    }
+}
+
+Future generateModels(Map params, HttpResponse res) async {
+    try {
+        print(params.toString());
+        String rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
+        var tableNames = await DM.extractExistingDatabaseTableNames(rootPath);
+        Map m = {};
+        for (String tableName in tableNames) {
+            var tableDesc = await DM.extractExistingTableDescription(tableName, rootPath);
+            m.addAll(tableDesc);
+            DM.ModelGenerator.createServerModel(tableName, tableDesc, rootPath);
+        }
+        closeResWith(res, "models created at ${rootPath}/db/models/*.dart");
+    } catch (exception, stackTrace) {
+        closeResWith(res, "connection problem $stackTrace");
+    }
+}
+
+generateViews(Map params, HttpResponse res) {
+    print(params.toString());
+    String rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
+    DM.schema = DBCore.loadSchemaToMap(rootPath);
+    DM.ViewGenerator.run(DM.schema, rootPath);
+    closeResWith(res, "views created at ${rootPath}/web/db/*");
+}
+generateServer(Map params, HttpResponse res) {
+    print(params.toString());
+    String rootPath = params["projectRootPath"].replaceAll('%5C', '\\');
+    DM.schema = DBCore.loadSchemaToMap(rootPath);
+    DM.ServerGenerator.run(DM.schema, rootPath);
+    closeResWith(res, "server created at ${rootPath}/db/server/*");
 }

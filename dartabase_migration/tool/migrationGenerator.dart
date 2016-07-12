@@ -22,7 +22,12 @@ class MigrationGenerator {
 */
     static Map map = {"UP":{}, "DOWN":{}};
 
-    static Map createMigration(Map migrationActionsMap) {
+    static void createMigration(Map migrationActionsMap, String rootPath) {
+        Map migration = generateMigration(migrationActionsMap);
+        DBCore.mapToJsonFilePath(migration, rootPath);
+    }
+
+    static Map generateMigration(Map migrationActionsMap) {
         map = {"UP":{}, "DOWN":{}};
         createTableJson(migrationActionsMap["createTables"], "UP");
         createColumnJson(migrationActionsMap["createColumns"], "UP");
@@ -37,7 +42,6 @@ class MigrationGenerator {
         removeTableJson(migrationActionsMap["createTables"], "DOWN");
         createRelationJson(migrationActionsMap["removeRelations"], "DOWN");
         removeRelationJson(migrationActionsMap["createRelations"], "DOWN");
-
 
         JsonEncoder encoder = new JsonEncoder.withIndent('  ');
         String prettyprint = encoder.convert(map);
@@ -152,7 +156,9 @@ class MigrationGenerator {
                 names.sort();
                 relations.add(names);
             } else {
-                relations.add(relation["selectedRelation"].split("_2_"));
+                if(relation["selectedRelation"].indexOf("_${DBCore.getRelationDivider(DBCore.rootPath)}_") > -1){
+                    relations.add(relation["selectedRelation"].split("_${DBCore.getRelationDivider(DBCore.rootPath)}_"));
+                }
             }
         }
         if (relations.length > 0) {
@@ -168,7 +174,9 @@ class MigrationGenerator {
                 names.sort();
                 relations.add(names);
             } else {
-                relations.add(relation["selectedRelation"].split("_2_"));
+                if(relation["selectedRelation"].indexOf("_${DBCore.getRelationDivider(DBCore.rootPath)}_") > -1){
+                    relations.add(relation["selectedRelation"].split("_${DBCore.getRelationDivider(DBCore.rootPath)}_"));
+                }
             }
         }
         if (relations.length > 0) {
