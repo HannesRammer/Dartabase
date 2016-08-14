@@ -1,6 +1,17 @@
 VERSION
 -------
-    
+    1.1.0 -added CRUD backend scaffolding - generate dart app from existing database with one click - see doc 
+            --generate dbSchema from existing db
+            --generate dart models representing existing db tables and columns
+            --generate CRUD dart views for existing db tables and columns
+            --generate simple dart server + CRUD functionality for all Tables  
+          -update paper toast show call
+          -added automatic backup of generated files
+          -update core to 0.5.1
+    1.0.0 -created polymer 1.0 GUI on top of the console functions
+            --simplified handling of dartabase enhanced projects
+            --fail-safe way to create and manage migrations over multiple projects at once 
+          -update core to 0.4.0
     0.6.3 -added ssl support for Mysql and PGSQL via config file
           -improved speed via single connection instead of multi pools
           -updated postgresql to 0.2.13 

@@ -4,7 +4,7 @@ library dartabase.poly.createProject;
 import "dart:convert" show JSON;
 import "dart:html" as dom;
 import 'dart:async';
-import 'package:material_paper_colors/material_paper_colors.dart' as MPC;
+
 
 import 'package:web_components/web_components.dart' show HtmlImport;
 import 'package:polymer/polymer.dart';
@@ -40,9 +40,9 @@ class CreateProject extends PolymerElement {
     };
 
     @Property(notify: true)
-    String backgroundColor = MPC.Red["500"];
+    String backgroundColor = "";
     @Property(notify: true)
-    String color = MPC.RedT["500"][1];
+    String color = "";
 
     CreateProject.created() : super.created();
 
@@ -68,7 +68,7 @@ class CreateProject extends PolymerElement {
     }
 
     @reflectable
-    generateModels(dom.Event event, [_]) {
+    generateModels(dom.Event event, [_]) async{
         dom.HttpRequest request = new dom.HttpRequest(); // create a new XHR
         // add an event handler that is called when the request finishes
         request.onReadyStateChange.listen((_) {
@@ -82,10 +82,11 @@ class CreateProject extends PolymerElement {
         var url = "http://127.0.0.1:8075/generateModels?projectRootPath=${path}";
         request.open("POST", url);
         request.send(); // perform the async POST
+        await request.onLoadEnd.first;
     }
 
     @reflectable
-    generateSchema(dom.Event event, [_]) {
+    generateSchema(dom.Event event, [_]) async {
         dom.HttpRequest request = new dom.HttpRequest(); // create a new XHR
         // add an event handler that is called when the request finishes
         request.onReadyStateChange.listen((_) {
@@ -99,6 +100,7 @@ class CreateProject extends PolymerElement {
         var url = "http://127.0.0.1:8075/generateSchema?projectRootPath=${path}";
         request.open("POST", url);
         request.send(); // perform the async POST
+        await request.onLoadEnd.first;
     }
 
     initiationCompleted(responseText) {
@@ -106,7 +108,7 @@ class CreateProject extends PolymerElement {
         PaperToast pt = Polymer.dom($['toast1']).querySelector("#toast1");
         pt.text = responseText + "please reload the page if not reloaded automatically";
 
-        pt.show();
+        pt.show(pt.text);
         dom.window.location.reload();
 
     }

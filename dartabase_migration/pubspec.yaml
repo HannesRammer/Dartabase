@@ -1,12 +1,12 @@
 name: dartabase_migration
-version: 1.0.0
+version: 1.1.0
 author: Hannes Rammer <Hannes.Rammer@gmail.com>
 description: Database Migration ia a version-controlled database structure manipulation tool for MySQL and PGSQL without having to write SQL. inspired by Ruby on Rails
 homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_migration
 dependencies:
   postgresql: "^0.3.3"
   sqljocky: "^0.14.1"
-  dartabase_core: "^0.5.0"
+  dartabase_core: "^0.5.1"
     #path: "c:/Projects/Dart/dartabase/dartabase_core"
   #dependencies used for web interface
   params: "^0.0.3"
@@ -21,7 +21,6 @@ dependencies:
   web_components: "^0.12.0"
   reflectable: "^0.5.2"
   observe: "^0.13.4"
-  material_paper_colors: "^0.2.0"
   template_binding: "^0.14.0+4"
   analyzer: ">=0.27.0 <0.27.2"
 environment: 

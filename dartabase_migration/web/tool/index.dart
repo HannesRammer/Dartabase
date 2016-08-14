@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:convert' show JSON;
 
 import 'package:params/client.dart';
-import 'package:material_paper_colors/material_paper_colors.dart';
 
 import 'package:polymer_elements/paper_toast.dart';
 import '../poly/dartabaseMigration.dart';
@@ -31,7 +30,7 @@ Future main() async {
 Future displayProjects(responseText) async {
     Map userProjects = JSON.decode(responseText);
     for (String key in userProjects.keys) {
-        Project project = new Project(name: key, path: userProjects[key], colorPalette: getRandomColorPaletteT());
+        Project project = new Project(name: key, path: userProjects[key], colorPalette: {});
         await project.prepare();
         projects.add(project);
         print(project.serverStatus);

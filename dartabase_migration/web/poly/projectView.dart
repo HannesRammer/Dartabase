@@ -8,6 +8,7 @@ import "package:polymer_elements/paper_material.dart";
 import "../poly/configView.dart";
 import "../poly/migrationListView.dart";
 import "../poly/createMigration.dart";
+import "../poly/scaffoldView.dart";
 import '../poly/pm.dart';
 
 @PolymerRegister('custom-project-view')
@@ -39,6 +40,15 @@ class ProjectView extends PolymerElement {
         migrationButton.classes.toggle('active');
         CreateMigration cm = querySelector("custom-create-migration");
         cm.classes.toggle("hidden");
+    }
+
+
+    @reflectable
+    toggleScaffold(dom.Event event, [_]) {
+        var migrationButton = querySelector("#scaffold_button");
+        migrationButton.classes.toggle('active');
+        ScaffoldView sv = querySelector("custom-scaffold-view");
+        sv.classes.toggle("hidden");
     }
 
 

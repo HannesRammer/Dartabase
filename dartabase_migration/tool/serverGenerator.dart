@@ -7,6 +7,7 @@ class ServerGenerator {
         createSimpleServer(rootPath);
         List tableNames = tables.keys.toList();
         tableNames.remove("relationDivider");
+        tableNames.remove("schema_migrations");
         createServerFunctions(tableNames, rootPath);
         createDynamicServerFunctions(tableNames, tables, rootPath);
         generateRoutes(tableNames, rootPath);
@@ -17,7 +18,7 @@ class ServerGenerator {
      */
     static void createSimpleServer(String rootPath) {
         String simpleServerDART = '''
-library dartabase.simple_server;
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.simple_server;
 
 import "dart:io";
 
@@ -38,7 +39,7 @@ final String HOST = "127.0.0.1"; // eg: localhost
 final num PORT = 8071;
 
 main() async {
-    Model.initiate("C:\\\\darttestproject\\\\sport_port");
+    Model.initiate("${rootPath.replaceAll(new String.fromCharCode(92),new String.fromCharCodes([92,92]))}");
     var server = await HttpServer.bind(HOST, PORT);
     var router = Routes.initRouter(server, serverRoutes);
     print("Listening for GET and POST on http://\$HOST:\$PORT");
@@ -59,7 +60,7 @@ void printError(error) => print(error);
      */
     static void createServerFunctions(List tableNames, String rootPath) {
         String simplefunctionImportDART = '''
-library dartabase.server_function;
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.server_function;
 
 import 'dart:io';
 import 'dart:convert';
@@ -113,7 +114,7 @@ ${partSTRING(tableNames)}
             var tableName = DSC.toTableName(dbTableName);
 
             String dynamicFunctions = '''
-part of dartabase.server_function;
+part of ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.server_function;
 
 list${className}(Map params, HttpResponse res) async {
     String text;
@@ -121,8 +122,9 @@ list${className}(Map params, HttpResponse res) async {
     List <Map> encodable${className} = [];
     if (!${varName}.isEmpty) {
         for (${className} ${varName}_element in ${varName}) {
-            print("found \${await ${varName}_element.toJson()} ${varName}");
-            encodable${className}.add(await ${varName}_element.toJson());
+            Map ${varName}_map = await ${varName}_element.toJson();
+            print("found \${${varName}_map} ${varName}");
+            encodable${className}.add(${varName}_map);
         }
         text = JSON.encode(encodable${className});
     } else {
@@ -136,8 +138,9 @@ load${className}(Map params, HttpResponse res) async {
     String text;
     ${className} ${varName} = await new ${className}().findById(params["${tableName}_id"]);
     if (${varName} != null) {
-        print("found \${await ${varName}.toJson()} ${varName}");
-        text = JSON.encode(await ${varName}.toJson());
+        Map ${varName}_map = await ${varName}.toJson();
+        print("found \${${varName}_map} ${varName}");
+        text = JSON.encode(${varName}_map);
     } else {
         String text = JSON.encode({"no ${varName} found for ${tableName}_id \${params["${tableName}_id"]}":""});
         print(text);
@@ -156,8 +159,9 @@ save${className}(Map params, HttpResponse res) async {
         ${saveString(tableName, varName, tables, rootPath)}
         var response = await ${varName}.save();
         if (response == "created" || response == "updated") {
-            print("found \${await ${varName}.toJson()} ${varName}");
-            text = JSON.encode(await ${varName}.toJson());
+            Map ${varName}_map = await ${varName}.toJson();
+            print("found \${${varName}_map} ${varName}");
+            text = JSON.encode(${varName}_map);
         } else {
             String text = JSON.encode({"no ${varName} found for ${tableName}_id \${cleanJSON["id"]}":""});
             print(text);
@@ -170,9 +174,10 @@ delete${className}(Map params, HttpResponse res) async {
     String text;
     ${className} ${varName} = await new ${className}().findById(params["${tableName}_id"]);
     if (${varName} != null) {
-        print("removing \${await ${varName}.toJson()} ${varName}");
+        Map ${varName}_map = await ${varName}.toJson();
+        print("removing \${${varName}_map} ${varName}");
         await ${varName}.delete();
-        text = JSON.encode(await ${varName}.toJson());
+        text = JSON.encode(${varName}_map);
     } else {
         String text = JSON.encode({"no ${varName} found for ${tableName}_id \${params["${tableName}_id"]}":""});
         print(text);
@@ -205,7 +210,7 @@ delete${className}(Map params, HttpResponse res) async {
      */
     static void generateRoutes(List dbTableNames, String rootPath) {
         String dynamicFunctions = '''
-part of dartabase.simple_server;
+part of ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.simple_server;
 
 final Map serverRoutes={
 

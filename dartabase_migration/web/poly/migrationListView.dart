@@ -39,7 +39,7 @@ class MigrationListView extends PolymerElement {
         this.set('project.selectedMigration', project.selectedMigration);
         this.notifyPath('project.selectedMigration', project.selectedMigration);
         var activeButton = querySelector(".selected");
-        if(activeButton != null){
+        if (activeButton != null) {
             activeButton.classes.toggle("selected");
         }
         var migrationButtons = querySelectorAll(".mig_button")[index];
@@ -68,7 +68,7 @@ class MigrationListView extends PolymerElement {
         this.set('project.migrations', migrations);
         //this.notifyPath('project.migrations', migrations);
         test.text = responseText + project.selectedMigration.toString();
-        test.show();
+        test.show(test.text);
     }
 
     void ready() {
@@ -102,9 +102,10 @@ class MigrationListView extends PolymerElement {
 
     @reflectable
     List getMigrations(var map) {
-        return map["mig"];
+        if (map != null){
+            return map["mig"];
+        }
     }
-
 
 
 }

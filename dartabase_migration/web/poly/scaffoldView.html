@@ -1,0 +1,119 @@
+<dom-module id="custom-scaffold-view">
+    <template>
+        <style>
+            .scaffold {
+                vertical-align: middle;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .red_text {
+                background: white;
+                color: red;
+            }
+
+            .green_text {
+                background: white;
+                color: green;
+            }
+
+            paper-material {
+                width: 98%;
+                margin: 5px auto;
+            }
+
+            paper-input {
+                --paper-input-container-disabled: {
+                    opacity: 0.90;
+                    padding: 5px;
+                    margin: 5px;
+                };
+                --paper-input-container: {
+                    padding: 5px;
+                    margin: 5px;
+                };
+                width: 33%;
+                float: left;
+                text-align: center;
+            }
+
+            iron-pages {
+                width: 100%;
+            }
+
+            paper-material {
+                --shadow-elevation-4dp: {
+
+                    box-shadow: 0 4px 5px 0 rgba(0, 129, 198, 0.14),
+                    0 1px 10px 0 rgba(0, 129, 198, 0.12),
+                    -19px 2px 4px -1px rgba(0, 129, 198, 0.6);
+                };
+                width: 95%;
+                margin: 5px auto;
+                padding: 10px;
+                height: 100%;
+                overflow: auto;
+            }
+
+            paper-tabs {
+                --paper-tabs-selection-bar-color: rgba(0, 129, 198, 1); /*rgb(65, 167, 250)*/
+
+            }
+        </style>
+        <paper-tabs selected="0">
+            <paper-tab>SCAFFOLD</paper-tab>
+        </paper-tabs>
+        <paper-material class="scaffold" elevation="2">
+            <iron-pages selected=0>
+                <paper-button raised on-tap="transition" id="page_1">
+                    open single mode
+                </paper-button>
+                <div id="expert" id="page_2">
+                    <paper-button raised on-tap="transition">
+                        close single mode
+                    </paper-button>
+                    <p>
+                        1.Extract the database structure from an existing database
+                        </br>
+                        <paper-button raised on-tap="generateSchema">
+                            generate schema.json from existing database
+                        </paper-button>
+                    </p>
+                    <p>
+                        2.Generate dart model code from existing database schema file
+                        </br>
+                        <paper-button raised on-tap="generateModels">
+                            generate dart models from existing database
+                        </paper-button>
+                    </p>
+                    <p>
+                        3.Generate polymer backend CRUD views from every database table
+                        </br>
+                        <paper-button raised on-tap="generateViews">
+                            generate dart views from existing database
+                        </paper-button>
+                    </p>
+                    <p>
+                        4.Generate simpleServer, routes, CRUD server part functionality
+                        </br>
+                        <paper-button raised on-tap="generateServer">
+                            generate dart server files
+                        </paper-button>
+                    </p>
+                    -----or----
+                </div>
+
+            </iron-pages>
+            simply generate all files new
+            <paper-button raised on-tap="generateAll">
+                generate all at once
+            </paper-button>
+
+            <p>
+                !!!scaffold will store backups of files that differ from the newly generated code!!!
+
+            </p>
+        </paper-material>
+
+    </template>
+</dom-module>

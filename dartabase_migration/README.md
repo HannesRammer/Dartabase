@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration 1.0.0 GUI GUIDE
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) Dartabase Migration GUI GUIDE
 =========================
 
   Serverside Database migration 
@@ -19,10 +19,6 @@
   MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) "^0.14.1"
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version "^0.3.3"
-
------------------
-Other Tutorials and readme's
-  **TUTORIAL 1** [HOW TO SETUP AND RUN MIGRATION AND MODEL](https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md)
 
 -----------------
 

@@ -5,7 +5,6 @@ import "dart:convert" show JSON;
 import "dart:html" as dom;
 import "dart:math";
 import 'dart:async';
-import 'package:material_paper_colors/material_paper_colors.dart' as MPC;
 
 import 'package:web_components/web_components.dart' show HtmlImport;
 import 'package:polymer/polymer.dart';

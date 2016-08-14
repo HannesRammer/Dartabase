@@ -10,6 +10,7 @@ class ViewGenerator {
 
         List tableNames = tables.keys.toList();
         tableNames.remove("relationDivider");
+        tableNames.remove("schema_migrations");
         createMainPolyDART(tableNames, rootPath);
         await createDynamicPolyHTML(tables, rootPath);
         createDynamicPolyDART(tableNames, rootPath);
@@ -31,7 +32,7 @@ class ViewGenerator {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="scaffolded-by" content="https://github.com/google/stagehand">
-    <title>sport_port</title>
+    <title>${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}</title>
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" sizes="192x192" href="../images/touch/chrome-touch-icon-192x192.png">
@@ -202,7 +203,7 @@ main() async {
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 @HtmlImport('main_app.html')
-library dartabase.poly.main_app;
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.poly.main_app;
 
 import 'dart:html';
 
@@ -224,16 +225,18 @@ class MainApp extends PolymerElement {
     List tableList = ${str};
 
     void ready() {
+        UListElement menu = querySelector("ul");
+''';
         int counter = 0;
-        for (String tableName in tableList) {
-            UListElement menu = querySelector("ul");
-            ${generateLinkAndContentString(dbTableNames)}
+        for (String tableName in dbTableNames) {
+            mainPolyDART += generateLinkAndContentString(tableName,counter);
             if (counter == 3) {
                 counter = 0;
             } else {
                 counter++;
             }
         }
+        mainPolyDART += '''
     }
 
     Element createLink(modelName, container, color) {
@@ -284,7 +287,27 @@ class MainApp extends PolymerElement {
     /**
      *
      */
-    static String generateLinkAndContentString(dbTableNames) {
+    static String generateLinkAndContentString(dbTableName, colorId) {
+        String str = "";
+            var className = DSC.toClassName(dbTableName);
+            var varName = DSC.toVarName(dbTableName);
+            var polyName = "db-${DSC.toPolyName(dbTableName)}";
+            var tableName = "db_${DSC.toTableName(dbTableName)}";
+
+            str += '''
+            ${className} ${varName}Container = new Element.tag("${polyName}");
+            LIElement li${className} = createLink('${dbTableName}', ${varName}Container, colors[${colorId}]);
+            ${className} ${varName} = createContent(${varName}Container, colors[${colorId}]);
+            menu.append(li${className});
+            querySelector("#project_content").append(${varName});\n
+''';
+        return str;
+    }
+
+    /**
+     *
+     */
+    static String generateLinkAndContentStringOLD(dbTableNames) {
         String str = "";
         for (String dbTableName in dbTableNames) {
             var className = DSC.toClassName(dbTableName);
@@ -441,21 +464,21 @@ class MainApp extends PolymerElement {
                     if (column["type"] == "BOOLEAN") {
                         str +=
                         '''
-                        <paper-checkbox label="${columnName}" checked='{{${column}.${columnName}}' disabled></paper-checkbox>\n''';
+                        <paper-checkbox label="${columnName}" checked='{{${DSC.toVarName(tableName)}Map.${columnName}}}' disabled></paper-checkbox>\n''';
                     } else {
                         str +=
                         '''
-                        <paper-input label="${columnName}" disabled></paper-input>\n''';
+                        <paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}' disabled></paper-input>\n''';
                     }
                 } else {
                     if (column["type"] == "BOOLEAN") {
                         str +=
                         '''
-                        <paper-checkbox label="${columnName}" checked='{{${column}.${columnName}}}'></paper-checkbox>\n''';
+                        <paper-checkbox label="${columnName}" checked='{{${DSC.toVarName(tableName)}Map.${columnName}}}'></paper-checkbox>\n''';
                     } else {
                         str +=
                         '''
-                        <paper-input label="${columnName}"></paper-input>\n''';
+                        <paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}'></paper-input>\n''';
                     }
                 }
             });
@@ -477,7 +500,7 @@ class MainApp extends PolymerElement {
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 @HtmlImport('${tableName}.html')
-library sport_port.lib.${tableName};
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.lib.${tableName};
 
 import 'dart:html';
 import 'dart:convert';
@@ -522,17 +545,20 @@ class ${className} extends PolymerElement {
             if (request.readyState == HttpRequest.DONE && (request.status == 200 || request.status == 0)) {
                 print(request.responseText); // output the response from the server
                 List ${varName}List = JSON.decode(request.responseText);
-                for (Map ${varName} in ${varName}List) {
-                    ${className} ${varName}Element = new Element.tag("${polyName}");
-                    ${varName}Element.set("${varName}Map", ${varName});
-                    ${varName}Element.set("state", "show");
-                    querySelector("#${tableName}_list").append(${varName}Element);
+                if(${varName}List != null){
+                  for (Map ${varName} in ${varName}List) {
+                      ${className} ${varName}Element = new Element.tag("${polyName}");
+                      ${varName}Element.set("${varName}Map", ${varName});
+                      ${varName}Element.set("state", "show");
+                      querySelector("#${tableName}_list").append(${varName}Element);
+                  }
                 }
             }
         });
         var url = "http://127.0.0.1:8071/list${className}";
         request.open("POST", url);
         request.send();
+        //await request.onLoadEnd.first;
     }
 
     @reflectable
@@ -554,6 +580,7 @@ class ${className} extends PolymerElement {
         var url = "http://127.0.0.1:8071/load${className}?${tableName}_id=\${${varName}Map["id"]}";
         request.open("POST", url);
         request.send();
+        //await request.onLoadEnd.first;
     }
 
     @reflectable
@@ -589,6 +616,7 @@ class ${className} extends PolymerElement {
 
         request.open("POST", url);
         request.send();
+        //await request.onLoadEnd.first;
     }
 
     @reflectable
@@ -606,6 +634,7 @@ class ${className} extends PolymerElement {
 
         request.open("POST", url);
         request.send();
+        //await request.onLoadEnd.first;
     }
 
 // Optional lifecycle methods - uncomment if needed.

@@ -73,7 +73,7 @@ class CreateMigration extends PolymerElement {
     }
 
     @reflectable
-    createMigration(dom.Event event, [_]) {
+    createMigration(dom.Event event, [_]) async {
         dom.HttpRequest request = new dom.HttpRequest(); // create a new XHR
 
         // add an event handler that is called when the request finishes
@@ -90,6 +90,7 @@ class CreateMigration extends PolymerElement {
         request.open("POST", url);
 
         request.send(); // perform the async POST
+        await request.onLoadEnd.first;
     }
 
     @reflectable
@@ -100,7 +101,7 @@ class CreateMigration extends PolymerElement {
     updateView(String responseText) {
         PaperToast pt = Polymer.dom($['toast1']).querySelector("#toast1");
         pt.text = responseText;
-        pt.show();
+        pt.show(pt.text);
         set("project.migrationActions", {
             "migrationName":"",
 
