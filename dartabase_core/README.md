@@ -3,6 +3,9 @@ Dartabase Core
 
     shared lib used by Dartabase Tools (no need for you to do anything)
     
+    changelog 0.5.1
+     improved console output 
+     adapted database type recognition to enable BLOBs
     changelog 0.5.0
      create backup of generated files if already exists and content changed
      added database types for creating dart files from extracting existing databases

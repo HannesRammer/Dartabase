@@ -68,6 +68,7 @@ class DBCore {
                 String backupPath = "${filePath.split(".")[0]}_${cleanTime}.${filePath.split(".")[1]}";
                 File backupFile = new File(backupPath);
                 print("file backup created at ${backupPath}");
+                print("----------------------------------------------------------");
 
                 backupFile.writeAsStringSync(fileText, encoding: ASCII, mode: FileMode.APPEND);
             }
@@ -87,6 +88,8 @@ class DBCore {
         var file = new File(filePath);
         file.writeAsStringSync(text, encoding: ASCII);
         print(text);
+        print("file created at ${filePath}");
+        print("----------------------------------------------------------");
 
     }
 
@@ -139,7 +142,10 @@ class DBCore {
             return 0.0;
         } else if (dartabaseType == "BOOLEAN") {
             return false;
-        } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR"]
+        } else if (["CHAR", "VARCHAR"]
+                .contains(dartabaseType)) {
+            return "";
+        } else if (["LTEXT", "MTEXT", "TEXT", "TTEXT"]
                 .contains(dartabaseType)) {
             return "";
         } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
@@ -160,7 +166,6 @@ class DBCore {
 
     static dartabaseTypeToDartType(dartabaseType) {
         if ([
-            "BIGINT",
             "BINT",
             "BINT UNSIGNED",
             "DOUBLE",
@@ -168,10 +173,8 @@ class DBCore {
             "FLOAT UNSIGNED",
             "INT",
             "INT UNSIGNED",
-            "SMALLINT",
             "SINT",
             "SINT UNSIGNED",
-            "TINYINT",
             "TINT",
             "TINT UNSIGNED"
         ].contains(dartabaseType)) {
@@ -181,9 +184,55 @@ class DBCore {
             return "double";
         } else if (dartabaseType == "BOOLEAN") {
             return "bool";
-        } else if (["CHAR", "LTEXT", "MTEXT", "TEXT", "TTEXT", "VARCHAR", "MEDIUMTEXT"]
+        } else if (["CHAR", "VARCHAR"]
                 .contains(dartabaseType)) {
             return "String";
+        } else if ([ "LTEXT", "MTEXT", "TEXT", "TTEXT"]
+                .contains(dartabaseType)) {
+            return "var";
+        } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
+                dartabaseType)) {
+            return "DateTime";
+        } else {
+            return "List";
+            /*
+        "BINARY": "bytea",
+        "BIT": "bytea",
+        "BLOB": "bytea",
+        "BYTEARRAY": "bytea",
+        "LBLOB": "bytea",
+        "MBLOB": "bytea",
+        "TBLOB": "bytea",
+        "VARBINARY": "bytea",*/
+        }
+    }
+
+    static sqlTypeToDartabase(dartabaseType) {
+        if ([
+            "BINT",
+            "BINT UNSIGNED",
+            "DOUBLE",
+            "FLOAT",
+            "FLOAT UNSIGNED",
+            "INT",
+            "INT UNSIGNED",
+            "SINT",
+            "SINT UNSIGNED",
+            "TINT",
+            "TINT UNSIGNED"
+        ].contains(dartabaseType)) {
+            return "num";
+        } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(
+                dartabaseType)) {
+            return "double";
+        } else if (dartabaseType == "BOOLEAN") {
+            return "bool";
+        } else if (["CHAR", "VARCHAR"]
+                .contains(dartabaseType)) {
+            return "String";
+        } else if ([ "LTEXT", "MTEXT", "TEXT", "TTEXT"]
+                .contains(dartabaseType)) {
+            return "var";
         } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
                 dartabaseType)) {
             return "DateTime";
