@@ -1,4 +1,4 @@
-Dartabase Model 1.0.1
+Dartabase Model
 =====================
 
   Serverside Database Object Models for simple data manipulation
@@ -18,7 +18,6 @@ Dartabase Model 1.0.1
   
   PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.3.3
   
-**TUTORIAL 1** [HOW TO SETUP AND RUN MIGRATION AND MODEL](https://github.com/HannesRammer/DartabaseTutorials/blob/master/tutorials/TUT1.md)
     	
 HOW TO SETUP MODEL
 ------------

@@ -1,5 +1,8 @@
 VERSION
 -------
+    1.1.0 -updated core to 0.5.1
+          -refactored code to use dynamic relation divider _2_ or _to_ depending on existing database tables
+          -added blob support in toJSON function
     1.0.1 -updated core to 0.4.1
     1.0.0 -cleaner code using await and async
           -set min dart sdk to 1.8.0

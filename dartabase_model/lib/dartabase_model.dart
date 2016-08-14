@@ -46,6 +46,12 @@ class Model {
                         db: DBCore.database,
                         max: 5);
             }
+        }else if (DBCore.adapter == DBCore.SQLite) {
+            uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
+            if (DBCore.ssl) {
+                uri += "?sslmode=require";
+            }
+            DBPOOL = new Pool(uri, minConnections: 1, maxConnections: 10);
         }
     }
 
@@ -321,7 +327,7 @@ class Model {
         String relatedObject = DBCore.toTableName("${object.runtimeType}");
         List tableNames = [initiatedObject, relatedObject];
         tableNames.sort();
-        String tableName = "${tableNames[0]}_2_${tableNames[1]}";
+        String tableName = "${tableNames[0]}_${DBCore.getRelationDivider(DBCore.rootPath)}_${tableNames[1]}";
         //String sql = "INSERT INTO $tableName (${initiatedObject}_id, ${relatedObject}_id); ";
         //String sql ="";
         //String preSql = "INSERT INTO $tableName (${initiatedObject}_id, ${relatedObject}_id); ";
@@ -352,7 +358,7 @@ class Model {
         String relatedObject = DBCore.toTableName("${object.runtimeType}");
         List tableNames = [initiatedObject, relatedObject];
         tableNames.sort();
-        String tableName = "${tableNames[0]}_2_${tableNames[1]}";
+        String tableName = "${tableNames[0]}_${DBCore.getRelationDivider(DBCore.rootPath)}_${tableNames[1]}";
         String intiatiorString = "${initiatedObject}_id = ${this.id}";
         String limit = "";
         if (listOrValue) {
@@ -490,7 +496,7 @@ class Model {
 
         List tableNames = [initiatedObject, relatedObject];
         tableNames.sort();
-        String tableName = "${tableNames[0]}_2_${tableNames[1]}";
+        String tableName = "${tableNames[0]}_${DBCore.getRelationDivider(DBCore.rootPath)}_${tableNames[1]}";
 
         String SQL = "DELETE FROM $tableName WHERE ${initiatedObject}_id = ${this.id} AND ${relatedObject}_id = ${object.id}";
         print(SQL);
@@ -716,20 +722,20 @@ class Model {
         //TODO 1.find relations
         String initiatedObject = DBCore.toTableName("${this.runtimeType}");
 
-        Map m = {"a_2_m":{}, "m_2_z":{}};
+        Map m = {"a_${DBCore.getRelationDivider(DBCore.rootPath)}_m":{}, "m_${DBCore.getRelationDivider(DBCore.rootPath)}_z":{}};
         List relationNames = [];
         List objectNames = [];
         List delRelations = [];
         await m.keys.forEach((String tableName) {
             relationNames.add(tableName);
             String relatedObject;
-            if (tableName.contains("${initiatedObject}_2_")) {
-                relatedObject = tableName.split("${initiatedObject}_2_")[0];
+            if (tableName.contains("${initiatedObject}_${DBCore.getRelationDivider(DBCore.rootPath)}_")) {
+                relatedObject = tableName.split("${initiatedObject}_${DBCore.getRelationDivider(DBCore.rootPath)}_")[0];
                 //tableNames.add(tableName);
                 //objectNames.add(tableName.split("_2_"));
                 //delRelations.add("DELETE t$tableName FROM $tableName as t$tableName WHERE ${initiatedObject}_id = '${this.id}'");
-            } else if (tableName.contains("_2_${initiatedObject}")) {
-                relatedObject = tableName.split("_2_${initiatedObject}")[0];
+            } else if (tableName.contains("_${DBCore.getRelationDivider(DBCore.rootPath)}_${initiatedObject}")) {
+                relatedObject = tableName.split("_${DBCore.getRelationDivider(DBCore.rootPath)}_${initiatedObject}")[0];
                 //tableNames.add(tableName);
                 //objectNames.add(tableName.split("_2_"));
                 //delRelations.add("DELETE t$tableName FROM $tableName as t$tableName WHERE ${initiatedObject}_id = '${this.id}'");
@@ -754,7 +760,7 @@ class Model {
          *
          *List tableNames = [initiatedObject,relatedObject];
          *tableNames.sort();
-         *String tableName = "${tableNames[0]}_2_${tableNames[1]}";
+         *String tableName = "${tableNames[0]}_${DBCore.getRelationDivider(DBCore.rootPath)}_${tableNames[1]}";
          **/
         return result;
     }
@@ -772,8 +778,13 @@ class Model {
             if (val.runtimeType == DateTime) {
                 val = val.millisecondsSinceEpoch;
             }
-            //print("val.runtimeType: ${val.runtimeType}");
-            map[key] = val;
+            print("val.runtimeType: ${val.runtimeType}");
+            if(val.runtimeType == Blob){
+                map[key] = val.toString();
+            }else{
+
+                map[key] = val;
+            }
         });
 
         return map;
