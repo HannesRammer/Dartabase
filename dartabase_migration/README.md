@@ -24,7 +24,7 @@
 
 ###WIKI
 
-1.[How to setup](#how-to-setup)
+1.[How to setup](#how-to-setup) \n
 2.[How to update existing dartabase migration version](#how-to-update-dartabase-migration)
 3.[How to create migrations](#how-to-create-migrations)
 4.[How to run migrations](#how-to-run-migrations)
