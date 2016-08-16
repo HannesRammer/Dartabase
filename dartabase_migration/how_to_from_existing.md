@@ -53,10 +53,15 @@
 
 11. the newest feature of Dartabase is to generate the whole backend/admin webapp 
 red: by us created migrations
+
 orange: database relation models in dart (scaffold)
+
 blue: server files, serverfunctions, rouiting (scaffold)
+
 pink: database config and current schema structure
+
 green: frontend for the backend (scaffold)
+
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/from_existing/created_scaffold.png)
 
 12. add the entry point "web/db/index.html" for the backend/admin app
