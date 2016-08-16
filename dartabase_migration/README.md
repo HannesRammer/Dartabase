@@ -23,26 +23,41 @@
 -----------------
 
 ###WIKI
+
 1.[How to setup](#how-to-setup)
+
 2.[How to update existing dartabase migration version](#how-to-update-dartabase-migration)
+
 3.[How to create migrations](#how-to-create-migrations)
+
 4.[How to run migrations](#how-to-run-migrations)
+
 5.[How to revert migrations](#how-to-revert-migrations)
+
 6.[How to generate backend code from database](#how-to-generate-backend-code-from-db)
+
 7.[How to run generated backend code](#how-to-run-generated-backend-code)
+
 [About column id](#about-column-id)
+
 [About create updated at column](#about-create-updated-at-column)
+
 [About up and down](#about-up-and-down)
+
 [About order of execution](#about-order-of-execution)
+
 [About dartabase data types](#about-dartabase-data-types)
 
 -----------------
+
 ####Dartabase Documentation
+
 1.[Dartabase Migration - How to install and use](https://pub.dartlang.org/packages/dartabase_migration) - current
 
 2.[Dartabase Model - How to how to install and use](https://pub.dartlang.org/packages/dartabase_model)
 
 ####Dartabase Tutorials
+
 1.[How to create a Dartabase supported app from scratch](https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/how_to_from_scratch.md)
 
 2.[How to create a Dartabase supported app for an existing database](https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/how_to_from_existing.md) 
