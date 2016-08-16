@@ -52,6 +52,7 @@
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/from_existing/2_11.png)  
 
 11. the newest feature of Dartabase is to generate the whole backend/admin webapp 
+
 red: by us created migrations
 
 orange: database relation models in dart (scaffold)
