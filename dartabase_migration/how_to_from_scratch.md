@@ -77,11 +77,17 @@ here you see all your generated structure modifications in a version controlled 
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/how_to_from_scratch/16.open_scaffold.png)
   
 17. the newest feature of Dartabase is to generate fa the whole backend/admin webapp 
+
 red: by us created migrations
+
 orange: database relation models in dart (scaffold)
+
 blue: server files, serverfunctions, rouiting (scaffold)
+
 pink: database config and current schema structure
+
 green: frontend for the backend (scaffold)
+
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/how_to_from_scratch/17.created_scaffold_project_overview.png)
 
 18. add the entry point "web/db/index.html" for the backend/admin app
