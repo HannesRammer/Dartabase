@@ -306,7 +306,12 @@ Additionally it will update
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/scaffold_view.png)
 
 2. click "generate all at once"
-the newest feature of Dartabase is to generate fa the whole backend/admin webapp red: by us created migrations orange: database relation models in dart (scaffold) blue: server files, serverfunctions, rouiting (scaffold) pink: database config and current schema structure green: frontend for the backend (scaffold)
+the newest feature of Dartabase is to generate fa the whole backend/admin webapp 
+red: by us created migrations 
+orange: database relation models in dart (scaffold) 
+blue: server files, serverfunctions, rouiting (scaffold) 
+pink: database config and current schema structure 
+green: frontend for the backend (scaffold)
 ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/created_project_overview.png)
 
 
@@ -314,6 +319,20 @@ the newest feature of Dartabase is to generate fa the whole backend/admin webapp
 
 ### 7. HOW TO run generate backend code <a name="how-to-run-generate-backend-code"></a>
 
+1. make sure you add the entry point "web/db/index.html" for the backend/admin app
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/how_to_from_scratch/18.add_entry_point.png)
+
+2. start "dart_demo\db\server\simple_server.dart" followd by "dart_demo\web\db\index.html"
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/run_server_and_client.png)
+  
+3a. the resulting app allows to display edit and delete all database entries
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/created_scaffold.png)
+
+since we have not stored anything in our database yet the boxes are empty
+
+another example with data could look like this
+3b. 
+![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/from_existing/2_12.png)
 *******************************************************************************************
 
 ### ABOUT COLUMN ID <a name="about-column-id"></a>
