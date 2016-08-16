@@ -24,18 +24,28 @@
 
 ###WIKI
 
-1.[How to setup](#how-to-setup) \n
+1.[How to setup](#how-to-setup)
+
 2.[How to update existing dartabase migration version](#how-to-update-dartabase-migration)
+
 3.[How to create migrations](#how-to-create-migrations)
+
 4.[How to run migrations](#how-to-run-migrations)
+
 5.[How to revert migrations](#how-to-revert-migrations)
+
 6.[How to generate backend code from database](#how-to-generate-backend-code-from-db)
+
 7.[How to run generated backend code](#how-to-run-generated-backend-code)
 
 [About column id](#about-column-id)
+
 [About create updated at column](#about-create-updated-at-column)
+
 [About up and down](#about-up-and-down)
+
 [About order of execution](#about-order-of-execution)
+
 [About dartabase data types](#about-dartabase-data-types)
 
 -----------------
