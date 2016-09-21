@@ -46,7 +46,7 @@ class Model {
                         db: DBCore.database,
                         max: 5);
             }
-        }else if (DBCore.adapter == DBCore.SQLite) {
+        } else if (DBCore.adapter == DBCore.SQLite) {
             uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore.host}:${DBCore.port}/${DBCore.database}';
             if (DBCore.ssl) {
                 uri += "?sslmode=require";
@@ -779,9 +779,9 @@ class Model {
                 val = val.millisecondsSinceEpoch;
             }
             print("val.runtimeType: ${val.runtimeType}");
-            if(val.runtimeType == Blob){
+            if (val.runtimeType == Blob) {
                 map[key] = val.toString();
-            }else{
+            } else {
 
                 map[key] = val;
             }

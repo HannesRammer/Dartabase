@@ -1,5 +1,6 @@
 VERSION
 -------
+    1.1.3 -updated core to 0.5.2
     1.1.0 -updated core to 0.5.1
           -refactored code to use dynamic relation divider _2_ or _to_ depending on existing database tables
           -added blob support in toJSON function
