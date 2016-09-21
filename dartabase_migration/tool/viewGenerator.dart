@@ -32,7 +32,7 @@ class ViewGenerator {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="scaffolded-by" content="https://github.com/google/stagehand">
-    <title>${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}</title>
+    <title>${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}</title>
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" sizes="192x192" href="../images/touch/chrome-touch-icon-192x192.png">
@@ -203,7 +203,7 @@ main() async {
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 @HtmlImport('main_app.html')
-library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.poly.main_app;
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.poly.main_app;
 
 import 'dart:html';
 
@@ -239,26 +239,33 @@ class MainApp extends PolymerElement {
         mainPolyDART += '''
     }
 
-    Element createLink(modelName, container, color) {
+    Element createLink(modelName, create, container, color) {
         LIElement li = new LIElement();
         AnchorElement a = new AnchorElement(href: "#\$modelName");
         a.classes.add(color);
+        a.classes.add("active");
         a.classes.add("main-app");
         a.setInnerHtml(modelName);
         a.onClick.listen((MouseEvent event) {
             Element target = event.target;
             target.classes.toggle('active');
             container.classes.add("main-app");
+            create.classes.add("main-app");
             container.classes.toggle("hidden");
+            create.classes.toggle("hidden");
         });
         li.append(a);
         return li;
     }
 
-    Element createContent(container, color) {
-        container.classes.toggle("hidden");
+    Element createContent(create, container, color) {
+        create.classes;
+        container.classes;
+        create.set("state", "create");
         container.set("state", "showAll");
+        create.classes.add("main");
         container.classes.add("main");
+        create.classes.add("main-app");
         container.classes.add("main-app");
         container.set("color", color);
         return container;
@@ -279,7 +286,7 @@ class MainApp extends PolymerElement {
     static String generateImportString(dbTableNames) {
         String str = "";
         for (String dbTableName in dbTableNames) {
-            str += "import 'db_${DSC.toTableName(dbTableName)}.dart';\n";
+            str += "import '${DSC.toTableName(dbTableName)}.dart';\n";
         }
         return str;
     }
@@ -291,14 +298,16 @@ class MainApp extends PolymerElement {
         String str = "";
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = "db-${DSC.toPolyName(dbTableName)}";
-            var tableName = "db_${DSC.toTableName(dbTableName)}";
+            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var tableName = "${DSC.toTableName(dbTableName)}";
 
             str += '''
             ${className} ${varName}Container = new Element.tag("${polyName}");
-            LIElement li${className} = createLink('${dbTableName}', ${varName}Container, colors[${colorId}]);
-            ${className} ${varName} = createContent(${varName}Container, colors[${colorId}]);
+            ${className} ${varName}Create = new Element.tag("${polyName}");
+            LIElement li${className} = createLink('${dbTableName}',${varName}Create, ${varName}Container, colors[${colorId}]);
+            ${className} ${varName} = createContent(${varName}Create, ${varName}Container, colors[${colorId}]);
             menu.append(li${className});
+            querySelector("#project_content").append(${varName}Create);
             querySelector("#project_content").append(${varName});\n
 ''';
         return str;
@@ -312,11 +321,12 @@ class MainApp extends PolymerElement {
         for (String dbTableName in dbTableNames) {
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = "db-${DSC.toPolyName(dbTableName)}";
-            var tableName = "db_${DSC.toTableName(dbTableName)}";
+            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var tableName = "${DSC.toTableName(dbTableName)}";
 
             str += '''
             ${className} ${varName}Container = new Element.tag("${polyName}");
+
             LIElement li${className} = createLink('${dbTableName}', ${varName}Container, colors[counter]);
             ${className} ${varName} = createContent(${varName}Container, colors[counter]);
             menu.append(li${className});
@@ -346,8 +356,8 @@ class MainApp extends PolymerElement {
 
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = "db-${DSC.toPolyName(dbTableName)}";
-            var tableName = "db_${DSC.toTableName(dbTableName)}";
+            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var tableName = "${DSC.toTableName(dbTableName)}";
             String dynamicPolyHTML = '''
 <!--
   Copyright (c) 2016, Hannes.Rammer@gmail.com. All rights reserved. Use of this source code
@@ -413,6 +423,17 @@ class MainApp extends PolymerElement {
     </style>
     <template>
         <div id="${tableName}_content">
+            <template is="dom-if" if="{{ isCreate(state) }}">
+                <div id="${tableName}_create">
+                    <div class="column">
+                        <form is="iron-form" id="formGet" method="get" action="/" on-iron-form-submit="initiateCreate">
+                            ${await createDynamicPolyHTMLString(dbTables, dbTableName, false, rootPath)}
+                            <paper-button type="button" on-tap="clickHandler" raised>create</paper-button>
+                        </form>
+                    </div>
+                </div>
+            </template>
+
             <template is="dom-if" if="{{ isShowAll(state) }}">
                 <paper-material id="${tableName}_container" elevation="2">
                     <div id="${tableName}_list">
@@ -460,7 +481,7 @@ class MainApp extends PolymerElement {
         if (tableName != "relationDivider") {
             Map columns = tables[tableName];
             await columns.forEach((columnName, column) {
-                if (disabled && (columnName != "id" || columnName != "created_at" || columnName != "updated_at")) {
+                if (disabled || (columnName == "id" || columnName == "created_at" || columnName == "updated_at")) {
                     if (column["type"] == "BOOLEAN") {
                         str +=
                         '''
@@ -486,6 +507,8 @@ class MainApp extends PolymerElement {
         return str;
     }
 
+
+
     /**
      *
      */
@@ -493,21 +516,23 @@ class MainApp extends PolymerElement {
         for (String dbTableName in dbTableNames) {
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = "db-${DSC.toPolyName(dbTableName)}";
-            var tableName = "db_${DSC.toTableName(dbTableName)}";
+            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var tableName = "${DSC.toTableName(dbTableName)}";
             String dynamicPolyDART = '''
 // Copyright (c) 2016, Hannes.Rammer@gmail.com. All rights reserved. Use of this source code
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 @HtmlImport('${tableName}.html')
-library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.lib.${tableName};
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.lib.${tableName};
 
 import 'dart:html';
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:polymer_elements/paper_input.dart';
 import 'package:polymer_elements/paper_button.dart';
 import 'package:polymer_elements/paper_checkbox.dart';
+import 'package:polymer_elements/iron_form.dart';
 import 'package:polymer/polymer.dart';
 import 'package:web_components/web_components.dart';
 import '${tableName}.dart';
@@ -574,6 +599,7 @@ class ${className} extends PolymerElement {
         HttpRequest request = new HttpRequest(); // create a new XHR
         request.onReadyStateChange.listen((_) {
             if (request.readyState == HttpRequest.DONE && (request.status == 200 || request.status == 0)) {
+                set("${varName}Map",${varName}Map);
                 print(request.responseText); // output the response from the server
             }
         });
@@ -612,7 +638,7 @@ class ${className} extends PolymerElement {
                 set("state", "show");
             }
         });
-        var url = "http://127.0.0.1:8071/save${className}?${tableName}=\${JSON.encode({"id":${varName}Map["id"], "name":${varName}Map["name"]})}";
+        var url = "http://127.0.0.1:8071/save${className}?${tableName}=\${JSON.encode(${varName}Map)}";
 
         request.open("POST", url);
         request.send();
@@ -625,9 +651,8 @@ class ${className} extends PolymerElement {
         // add an event handler that is called when the request finishes
         request.onReadyStateChange.listen((_) {
             if (request.readyState == HttpRequest.DONE && (request.status == 200 || request.status == 0)) {
-                // data saved OK.
                 print(request.responseText); // output the response from the server
-
+                window.location.reload();
             }
         });
         var url = "http://127.0.0.1:8071/delete${className}?id=\${${varName}Map["id"]}";
@@ -637,6 +662,34 @@ class ${className} extends PolymerElement {
         //await request.onLoadEnd.first;
     }
 
+    @reflectable
+    isCreate(var currentState) {
+        return currentState == "create";
+    }
+
+    @reflectable
+    Future initiateCreate(Event event, [_])  async{
+        HttpRequest request = new HttpRequest(); // create a new XHR
+        // add an event handler that is called when the request finishes
+        request.onReadyStateChange.listen((_) {
+            if (request.readyState == HttpRequest.DONE && (request.status == 200 || request.status == 0)) {
+                print(request.responseText); // output the response from the server
+                Map ${varName} = JSON.decode(request.responseText);
+                window.location.reload();
+            }
+        });
+        var url = "http://127.0.0.1:8071/save${className}?${tableName}=\${JSON.encode(${varName}Map)}";
+
+        request.open("POST", url);
+        request.send();
+        //await request.onLoadEnd.first;
+    }
+
+    @reflectable
+    void clickHandler(Event event, [_]) {
+        (((Polymer.dom(event) as PolymerEvent).localTarget as Element).parent as FormElement).submit();
+    }
+
 // Optional lifecycle methods - uncomment if needed.
 
     /// Called when an instance of main-app is inserted into the DOM.
@@ -644,6 +697,10 @@ class ${className} extends PolymerElement {
         customStyle['--my-toolbar-color'] = color;
         updateStyles();
         super.attached();
+    }
+
+    ready(){
+        set("${varName}Map", {});
     }
 }
 ''';

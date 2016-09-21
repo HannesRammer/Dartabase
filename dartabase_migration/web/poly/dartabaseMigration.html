@@ -14,6 +14,14 @@
                 float: left;
                 margin: 0 20px;
                 padding: 0 10px;
+                cursor: pointer;
+            }
+
+            .close {
+                padding: 5px;
+                cursor: pointer;
+                width: 25px;
+                height: 25px;
             }
 
             paper-input {
@@ -47,8 +55,11 @@
                 </template>
             </div>
             <paper-material elevation="2" id="page_2">
-                <paper-icon-button icon="close" on-tap="transition">
-                </paper-icon-button>
+                <!--paper-icon-button icon="close" on-tap="transition">
+                </paper-icon-button-->
+                <div on-tap="transition" class="close"> X
+                </div>
+                </br>
                 <span class="card-album-title">Project: {{ selectedProject.name }}</span>
                 <span class="card-album-name"> {{ selectedProject.path }}</span>
                 <custom-server-status status="{{ selectedProject.serverStatus }}" adapter="{{ selectedProject.config.adapter }}">

@@ -156,7 +156,7 @@ class MigrationGenerator {
                 names.sort();
                 relations.add(names);
             } else {
-                if(relation["selectedRelation"].indexOf("_${DBCore.getRelationDivider(DBCore.rootPath)}_") > -1){
+                if (relation["selectedRelation"].indexOf("_${DBCore.getRelationDivider(DBCore.rootPath)}_") > -1) {
                     relations.add(relation["selectedRelation"].split("_${DBCore.getRelationDivider(DBCore.rootPath)}_"));
                 }
             }
@@ -174,7 +174,7 @@ class MigrationGenerator {
                 names.sort();
                 relations.add(names);
             } else {
-                if(relation["selectedRelation"].indexOf("_${DBCore.getRelationDivider(DBCore.rootPath)}_") > -1){
+                if (relation["selectedRelation"].indexOf("_${DBCore.getRelationDivider(DBCore.rootPath)}_") > -1) {
                     relations.add(relation["selectedRelation"].split("_${DBCore.getRelationDivider(DBCore.rootPath)}_"));
                 }
             }

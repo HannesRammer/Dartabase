@@ -104,8 +104,10 @@ class DBHelper {
         String sql;
         if (adapter == DBCore.MySQL) {
             sql = "created_at ${DBCore.typeMapping("DATETIME")}, updated_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";
+        //    sql = "created_at ${DBCore.typeMapping("DATETIME")}, updated_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL";
         } else if (adapter == DBCore.PGSQL) {
             sql = "created_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL DEFAULT CURRENT_TIMESTAMP";
+        //    sql = "created_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL, updated_at ${DBCore.typeMapping("TIMESTAMP")} NOT NULL ";
         }
         return sql;
     }

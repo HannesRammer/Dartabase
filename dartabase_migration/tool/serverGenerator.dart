@@ -18,7 +18,7 @@ class ServerGenerator {
      */
     static void createSimpleServer(String rootPath) {
         String simpleServerDART = '''
-library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.simple_server;
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.simple_server;
 
 import "dart:io";
 
@@ -60,7 +60,7 @@ void printError(error) => print(error);
      */
     static void createServerFunctions(List tableNames, String rootPath) {
         String simplefunctionImportDART = '''
-library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.server_function;
+library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.server_function;
 
 import 'dart:io';
 import 'dart:convert';
@@ -110,11 +110,11 @@ ${partSTRING(tableNames)}
         for (String dbTableName in dbTableNames) {
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = DSC.toPolyName(dbTableName);
-            var tableName = DSC.toTableName(dbTableName);
+            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var tableName = "${DSC.toTableName(dbTableName)}";
 
             String dynamicFunctions = '''
-part of ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.server_function;
+part of ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.server_function;
 
 list${className}(Map params, HttpResponse res) async {
     String text;
@@ -153,12 +153,16 @@ save${className}(Map params, HttpResponse res) async {
     var cleanJSON = JSON.decode(params["${tableName}"].replaceAll('%5C', '\\\\').replaceAll('%7B', '{').replaceAll('%22', '"')
             .replaceAll('%20', ' ').replaceAll('%7D', '}').replaceAll('%5B', '[')
             .replaceAll('%5D', ']'));
-    ${className} ${varName} = await new ${className}().findById(cleanJSON["id"]);
-
+    ${className} ${varName} = new ${className}();
+    //${className} ${varName} = await new ${className}().findById(cleanJSON["id"]);
     if (${varName} != null) {
+        if(cleanJSON["id"] != null && cleanJSON["id"] != ""){
+            ${varName}.id = cleanJSON["id"];
+        }
         ${saveString(tableName, varName, tables, rootPath)}
         var response = await ${varName}.save();
         if (response == "created" || response == "updated") {
+            ${varName} = await new ${className}().findById(${varName}.id);
             Map ${varName}_map = await ${varName}.toJson();
             print("found \${${varName}_map} ${varName}");
             text = JSON.encode(${varName}_map);
@@ -172,18 +176,19 @@ save${className}(Map params, HttpResponse res) async {
 
 delete${className}(Map params, HttpResponse res) async {
     String text;
-    ${className} ${varName} = await new ${className}().findById(params["${tableName}_id"]);
+    ${className} ${varName} = await new ${className}().findById(params["id"]);
     if (${varName} != null) {
         Map ${varName}_map = await ${varName}.toJson();
         print("removing \${${varName}_map} ${varName}");
         await ${varName}.delete();
         text = JSON.encode(${varName}_map);
     } else {
-        String text = JSON.encode({"no ${varName} found for ${tableName}_id \${params["${tableName}_id"]}":""});
+        String text = JSON.encode({"no ${varName} found for ${tableName} id \${params["id"]}":""});
         print(text);
     }
     Routes.closeResWith(res, text);
 }
+
 ''';
             Directory dbModels = new Directory("${rootPath}/db/server");
             dbModels.create(recursive: true).then((_) {
@@ -200,7 +205,9 @@ delete${className}(Map params, HttpResponse res) async {
         Map table = tables[tableName];
         List columnNames = table.keys.toList();
         for (String columnName in columnNames) {
-            str += '${varName}.${columnName} = cleanJSON["$columnName"];\n';
+            if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
+                str += '${varName}.${columnName} = cleanJSON["$columnName"];\n';
+            }
         }
         return str;
     }
@@ -210,7 +217,7 @@ delete${className}(Map params, HttpResponse res) async {
      */
     static void generateRoutes(List dbTableNames, String rootPath) {
         String dynamicFunctions = '''
-part of ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last)}.simple_server;
+part of ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.simple_server;
 
 final Map serverRoutes={
 
@@ -233,8 +240,8 @@ final Map serverRoutes={
         for (String dbTableName in tableNames) {
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = DSC.toPolyName(dbTableName);
-            var tableName = DSC.toTableName(dbTableName);
+            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var tableName = "${DSC.toTableName(dbTableName)}";
 
             str =
             ''' 'list${className}':{'url':new UrlPattern(r'/list${className}'),'method':'POST','action': list${className} ,'async':true},

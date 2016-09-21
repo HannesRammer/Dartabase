@@ -47,7 +47,7 @@
             }
 
             .lightG {
-                background-color: #55DDCA;
+                background-color: rgba(85,221,202,1);
                 background: linear-gradient(to right, #55DDCA, #55DDCA, #55DDCA, #55DDCA, #55DDCA, #55DDCA, #55DDCA, #55DDCA, rgba(0, 0, 0, 0));
                 color: black;
             }
@@ -82,17 +82,17 @@
                 </li>
                 <li><a href="#config" class="darkB" id="config_button" on-tap="toggleConfig">Config</a></li>
                 <li><a href="#createMigration" class="active darkG" id="migration_button" on-tap="toggleMigration">create Migration</a></li>
-                <li><a href="#doMigration" class="lightB" id="do_button" on-tap="toggleDoMigration">run Migration</a></li>
-                <li><a href="#schema" class="lightG" id="scaffold_button" on-tap="toggleScaffold">create Scaffold</a></li>
+                <li><a href="#doMigration" class="lightG" id="do_button" on-tap="toggleDoMigration">run Migration</a></li>
+                <li><a href="#schema" class="lightB" id="scaffold_button" on-tap="toggleScaffold">create Scaffold</a></li>
             </ul>
         </nav>
         <div id="project_content">
             <custom-config-view project="{{ project }}" class="hidden" color="00D2B8">
             </custom-config-view>
-            <custom-migration-list-view project="{{ project }}" class="hidden" color="55DDCA">
-            </custom-migration-list-view>
             <custom-create-migration project="{{ project }}" class="" color="0081C6">
             </custom-create-migration>
+            <custom-migration-list-view project="{{ project }}" class="hidden" color="55DDCA">
+            </custom-migration-list-view>
             <custom-scaffold-view project="{{ project }}" class="hidden" color="00A4E4">
             </custom-scaffold-view>
         </div>

@@ -1,5 +1,6 @@
 VERSION
 -------
+    1.1.3 -
     1.1.0 -added CRUD backend scaffolding - generate dart app from existing database with one click - see doc 
             --generate dbSchema from existing db
             --generate dart models representing existing db tables and columns

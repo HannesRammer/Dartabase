@@ -2,7 +2,7 @@
 =========================
 
   Serverside Database migration 
-  for simple version controlled database structure manipulation using MySQL/PGSQL without having to write SQL 
+  for simple version controlled database structure manipulation using MySQL/SQLite/PGSQL without having to write SQL 
     
   combine the power of [Dartabase Model](http://pub.dartlang.org/packages/dartabase_model) and Dartabase Migration
   
