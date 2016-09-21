@@ -58,11 +58,11 @@ class DBCore {
     }
 
     /// create backup with timestamp
-    static void backupFile(String filePath,String checkupText) {
+    static void backupFile(String filePath, String checkupText) {
         File file = new File(filePath);
         if (file.existsSync()) {
             String fileText = file.readAsStringSync(encoding: ASCII);
-            if(fileText.trim().replaceAll(" ","").replaceAll("\n","") != checkupText.replaceAll(" ","").replaceAll("\n","")){
+            if (fileText.trim().replaceAll(" ", "").replaceAll("\n", "") != checkupText.replaceAll(" ", "").replaceAll("\n", "")) {
                 DateTime now = new DateTime.now();
                 var cleanTime = now.toString().split(".")[0].replaceAll(" ", "").replaceAll(":", "").replaceAll("-", "");
                 String backupPath = "${filePath.split(".")[0]}_${cleanTime}.${filePath.split(".")[1]}";
@@ -84,13 +84,12 @@ class DBCore {
 
     /// String to File
     static void stringToFilePath(String text, String filePath) {
-        backupFile(filePath,text.trim());
+        backupFile(filePath, text.trim());
         var file = new File(filePath);
         file.writeAsStringSync(text, encoding: ASCII);
         print(text);
         print("file created at ${filePath}");
         print("----------------------------------------------------------");
-
     }
 
     static String typeMapping(String dartabaseType) {
@@ -107,6 +106,11 @@ class DBCore {
             if (defaultValue == null) {
                 return defaultForType(dartabaseType);
             } else {
+                if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType)) {
+                    if (defaultValue == "" || defaultValue.toUpperCase() == "CURRENT_TIMESTAMP") {
+                        defaultValue = defaultForType(dartabaseType);
+                    }
+                }
                 return defaultValue;
             }
         }
@@ -150,7 +154,7 @@ class DBCore {
             return "";
         } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
                 dartabaseType)) {
-            return new DateTime.now();
+            return new DateTime.now().toString();
         } else {
             /*
        "BINARY": "bytea",
