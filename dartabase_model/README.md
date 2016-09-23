@@ -1,4 +1,4 @@
-Dartabase Model
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/Database-Model-Logo-new-150.png) Dartabase Model
 =====================
 
   Serverside Database Object Models for simple data manipulation
