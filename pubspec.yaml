@@ -1,0 +1,8 @@
+name: dartabase
+version: 1.2.0
+author: Hannes Rammer <Hannes.Rammer@gmail.com>
+description: "Database Model and Migration tool ORM CRUD scaffolding for MySQL and PGSQL without having to know SQL. Inspired by Ruby on Rails"
+homepage: https://github.com/HannesRammer/Dartabase
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+dependencies:

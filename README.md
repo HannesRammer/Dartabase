@@ -3,7 +3,7 @@ Dartabase Tools
 
     Model depends on Migration
     
-![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) 1.0.x
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png) [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) 1.x.x
 --------------------
   Dartabase Migration is for simple version controlled database structure manipulation 
   for MySQL or PGSQL without having to write SQL
@@ -11,13 +11,16 @@ Dartabase Tools
 create migration
   ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn2.PNG)
   
-  migration view
+migration view
   ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG)
   
-  migration view reverting to older version
+migration view reverting to older version
   ![one](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/revertMigration2.PNG)
+  
+scaffolding
+  - generate classes, server and client files from database with a single click 
       
-[Dartabase Model](http://pub.dartlang.org/packages/dartabase_model) 1.0.x
+![logo](https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/Database-Model-Logo-new-150.png) [Dartabase Model](http://pub.dartlang.org/packages/dartabase_model) 1.x.x
 --------------------
   Dartabase Models is for simple data manipulation and builds on Migration 
   for MySQL or PGSQL without having to write SQL
