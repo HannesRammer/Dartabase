@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS</title>
+<title>DARTABASE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <style>
@@ -28,9 +28,17 @@
     <img style="max-height: 90%;max-width:90%;width: auto;height: auto;;"
          src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG"/>
 </div>
+<div onclick="w3_close('modImage1')" class="w3-sidenav w3-white w3-card-2 w3-animate-left" style="display:none;cursor: pointer;" id="modImage1">
+    <img style="max-height: 90%;max-width:90%;width: auto;height: auto;"
+         src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/codeExample1.PNG"/>
+</div>
+<div onclick="w3_close('modImage2')" class="w3-sidenav w3-white w3-card-2 w3-animate-left" style="display:none;cursor: pointer;" id="modImage2">
+    <img style="max-height: 90%;max-width:90%;width: auto;height: auto;;"
+         src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/codeExample2.PNG"/>
+</div>
 <!-- Header -->
 <header class="w3-container w3-theme w3-padding" id="myHeader">
-    <i onclick="w3_open('mySidenav')" class="fa fa-bars w3-xlarge w3-opennav"></i>
+    <!--i onclick="w3_open('mySidenav')" class="fa fa-bars w3-xlarge w3-opennav"></i-->
     <div class="w3-center">
         <h4>DATABASE CONNECTED DART APPS</h4>
         <!--h5>(MySQL and PGSQL supported! SQLite in development)</h5-->
@@ -89,28 +97,35 @@
             <h4>Model</h4><br>
             <img src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/Database-Model-Logo-new-150.png"/>
             <p>Database independent ORM</p>
-            <p>CRUD</p>
+            <p>supports CRUD functions</p>
             <p>No need to write SQL</p>
             <p>
-                <img onclick="w3_open('migImage1')" style="width:45%;cursor: pointer;"
-                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn2.PNG"/>
-                <img onclick="w3_open('migImage2')" style="width:45%;cursor: pointer;"
-                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG"/>
+                <img onclick="w3_open('modImage1')" style="width:45%;cursor: pointer;"
+                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/codeExample1.PNG"/>
+                <img onclick="w3_open('modImage2')" style="width:45%;cursor: pointer;"
+                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/codeExample2.PNG"/>
             </p>
             <p>
                 <a class="w3-btn w3-theme" href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_model/README.md" target="_blank">see in action</a>
             </p>
+            <br>
+
         </div>
     </div>
 
     <div class="w3-third">
         <div class="w3-card-2 w3-padding-top" style="min-height:460px">
             <h4>Scaffold</h4><br>
-            <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
-            <p>Paper like design</p>
-            <p>Bold colors and shadows</p>
-            <p>Equal across platforms</p>
-            <p>Equal across devices</p>
+            <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px;height: 150px;margin-bottom: 0px!important;"></i>
+            <p>Code Generator</p>
+            <p>create client & server with single click</p>
+            <p>Generate schema from existing DB</p>
+            <p>Generate models, views and server (CRUD) from existing schema</p>
+            <p>
+                <a class="w3-btn w3-theme" href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/README.md#how-to-generate-backend-code-from-db"
+                   target="_blank">learn more</a>
+            </p>
+            <br>
         </div>
     </div>
 </div>
