@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<style>
+    p {
+        font-weight: bold;
+    }
+</style>
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-teal.css">
+<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+<body>
+
+<!-- Side Navigation -->
+<nav class="w3-sidenav w3-white w3-card-2 w3-animate-left" style="display:none" id="mySidenav">
+    <a href="javascript:void(0)" onclick="w3_close('mySidenav')" class="w3-closenav w3-xxxlarge w3-text-theme">Close
+        <i class="fa fa-remove"></i>
+    </a>
+    <a href="javascript:void(0)">Link 1</a>
+
+</nav>
+<div onclick="w3_close('migImage1')" class="w3-sidenav w3-white w3-card-2 w3-animate-left" style="display:none;cursor: pointer;" id="migImage1">
+    <img style="max-height: 90%;max-width:90%;width: auto;height: auto;"
+         src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn2.PNG"/>
+</div>
+<div onclick="w3_close('migImage2')" class="w3-sidenav w3-white w3-card-2 w3-animate-left" style="display:none;cursor: pointer;" id="migImage2">
+    <img style="max-height: 90%;max-width:90%;width: auto;height: auto;;"
+         src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG"/>
+</div>
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+    <i onclick="w3_open('mySidenav')" class="fa fa-bars w3-xlarge w3-opennav"></i>
+    <div class="w3-center">
+        <h4>DATABASE CONNECTED DART APPS</h4>
+        <!--h5>(MySQL and PGSQL supported! SQLite in development)</h5-->
+        <h1 class="w3-xxxlarge w3-animate-bottom">DARTABASE</h1>
+        <div class="w3-padding-32">
+            <!-- Place this tag where you want the button to render. -->
+            <a class="github-button" href="https://github.com/HannesRammer/dartabase" data-icon="octicon-star" data-style="mega"
+               data-count-href="/HannesRammer/dartabase/stargazers" data-count-api="/repos/HannesRammer/dartabase#stargazers_count" data-count-aria-label="# stargazers on GitHub"
+               aria-label="Star HannesRammer/dartabase on GitHub">Star</a>
+        </div>
+    </div>
+</header>
+
+<!-- Modal -->
+<div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-8 w3-animate-top">
+        <header class="w3-container w3-theme">
+            <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn">×</span>
+            <h4>Oh snap! We just showed you a modal..</h4>
+            <h5>Because we can <i class="fa fa-smile-o"></i></h5>
+        </header>
+        <div class="w3-padding">
+            <p>Cool huh? Ok, enough teasing around..</p>
+            <p>Go to our <a class="w3-btn" href="/w3css/default.asp">W3.CSS Tutorial</a> to learn more!</p>
+        </div>
+        <footer class="w3-container w3-theme">
+            <p>Modal footer</p>
+        </footer>
+    </div>
+</div>
+
+<div class="w3-row-padding w3-center w3-margin-top">
+    <div class="w3-third">
+        <div class="w3-card-2 w3-padding-top" style="min-height:460px">
+            <h4>Migration</h4><br>
+            <img src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/Database-Migration-Logo-150.png"/>
+
+            <p>Evolve your database in a structured and organized manner</p>
+            <p>No need to write SQL</p>
+            <p>GUI to control migrations and more</p>
+            <p>
+                <img onclick="w3_open('migImage1')" style="width:45%;cursor: pointer;"
+                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn2.PNG"/>
+                <img onclick="w3_open('migImage2')" style="width:45%;cursor: pointer;"
+                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG"/>
+            </p>
+            <p>
+                <a class="w3-btn w3-theme" href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/README.md" target="_blank">get started</a>
+            </p>
+            <br>
+        </div>
+    </div>
+
+    <div class="w3-third">
+        <div class="w3-card-2 w3-padding-top" style="min-height:460px">
+            <h4>Model</h4><br>
+            <img src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_model/Database-Model-Logo-new-150.png"/>
+            <p>Database independent ORM</p>
+            <p>CRUD</p>
+            <p>No need to write SQL</p>
+            <p>
+                <img onclick="w3_open('migImage1')" style="width:45%;cursor: pointer;"
+                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/createColumn2.PNG"/>
+                <img onclick="w3_open('migImage2')" style="width:45%;cursor: pointer;"
+                     src="https://raw.githubusercontent.com/HannesRammer/Dartabase/master/dartabase_migration/doc/runMigration1.PNG"/>
+            </p>
+            <p>
+                <a class="w3-btn w3-theme" href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_model/README.md" target="_blank">see in action</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="w3-third">
+        <div class="w3-card-2 w3-padding-top" style="min-height:460px">
+            <h4>Scaffold</h4><br>
+            <i class="fa fa-diamond w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+            <p>Paper like design</p>
+            <p>Bold colors and shadows</p>
+            <p>Equal across platforms</p>
+            <p>Equal across devices</p>
+        </div>
+    </div>
+</div>
+
+<div class="w3-container">
+
+
+</div>
+<br>
+<!-- Footer -->
+<footer class="w3-container w3-dark-grey w3-padding-32">
+    <div class="w3-row">
+        <div class="w3-container w3-third">
+            <h5 class="w3-bottombar w3-border-green">Doc</h5>
+            <p><a href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/README.md" target="_blank">Use Migration (GUI)</a></p>
+            <p><a href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_model/README.md" target="_blank">Use Model (GUI)</a></p>
+            <p><a href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/how_to_from_scratch.md" target="_blank">Create app from scratch</a></p>
+            <p><a href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/how_to_from_existing.md" target="_blank">Create app from existing DB</a></p>
+            <p><a href="https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/README_CONSOLE.md" target="_blank">Use Migration (CONSOLE) deprecated</a></p>
+
+        </div>
+        <div class="w3-container w3-third">
+            <h5 class="w3-bottombar w3-border-red">System</h5>
+            <p>
+                <a href="https://github.com/HannesRammer/Dartabase/issues" target="_blank">Bugs and feature requests</a>
+            </p>
+            <p><!-- Place this tag where you want the button to render. -->
+            </p>
+
+        </div>
+        <div class="w3-container w3-third">
+            <h5 class="w3-bottombar w3-border-orange">Contact</h5>
+
+            <p><a href="https://de.linkedin.com/pub/hannes-rammer/a/aa8/9a" target="_blank">
+
+
+                <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_profile_bluetxt_80x15_de_DE.png?locale=" width="80" height="15" border="0"
+                     alt="View Hannes Rammer's profile on LinkedIn">
+
+
+            </a></p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Script for Sidenav, Tabs, Accordions, Progress bars and slideshows -->
+<script>
+    // Side navigation
+    function w3_open(name) {
+        var x = document.getElementById(name);
+        x.style.width = "100%";
+        x.style.textAlign = "center";
+        x.style.fontSize = "50px";
+        x.style.paddingTop = "5%";
+        x.style.display = "block";
+    }
+    function w3_close(name) {
+        document.getElementById(name).style.display = "none";
+    }
+
+    // Tabs
+    function openCity(evt, cityName) {
+        var i;
+        var x = document.getElementsByClassName("city");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        var activebtn = document.getElementsByClassName("testbtn");
+        for (i = 0; i < x.length; i++) {
+            activebtn[i].className = activebtn[i].className.replace(" w3-theme-dark", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " w3-theme-dark";
+    }
+
+    var mybtn = document.getElementsByClassName("testbtn")[0];
+    mybtn.click();
+
+    // Accordions
+    function myAccFunc(id) {
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-theme-dark";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+                    x.previousElementSibling.className.replace(" w3-theme-dark", "");
+        }
+    }
+
+    // Slideshows
+    var slideIndex = 1;
+
+    function plusDivs(n) {
+        slideIndex = slideIndex + n;
+        showDivs(slideIndex);
+    }
+
+    function showDivs(n) {
+        var x = document.getElementsByClassName("mySlides");
+        if (n > x.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = x.length
+        }
+        ;
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        x[slideIndex - 1].style.display = "block";
+    }
+
+    showDivs(1);
+
+    // Progress Bars
+    function move() {
+        var elem = document.getElementById("myBar");
+        var width = 1;
+        var id = setInterval(frame, 10);
+
+        function frame() {
+            if (width == 100) {
+                clearInterval(id);
+            } else {
+                width++;
+                elem.style.width = width + '%';
+                document.getElementById("demoprgr").innerHTML = width * 1 + '%';
+            }
+        }
+    }
+</script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>
+
