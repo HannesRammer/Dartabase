@@ -6,6 +6,7 @@ import "package:dev_string_converter/dev_string_converter.dart" as DSC;
 
 class DBCore {
     static String rootPath;
+    static String sqlitePath;
     static Map parsedMap;
 
     static Map parsedMapping;

@@ -3,7 +3,9 @@ Dartabase Core
 
     shared lib used by Dartabase Tools (no need for you to do anything)
     
-    changelog 0.5.2
+    changelog 0.6.0
+     started adding sqlite support
+    changelog 0.5.2    
      fixed issue with default value for Date/Time
     changelog 0.5.1
      improved console output 
