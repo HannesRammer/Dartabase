@@ -10,7 +10,9 @@ import 'package:dev_string_converter/dev_string_converter.dart' as DSC;
 import 'package:postgresql/pool.dart';
 import 'package:postgresql/postgresql.dart';
 
-import 'package:sqljocky/sqljocky.dart';
+import 'package:sqljocky2/sqljocky.dart';
+
+//import 'package:sqlite/sqlite.dart' as sqlite;
 
 part '../tool/dbhelper.dart';
 
@@ -50,6 +52,7 @@ Future initiateDartabase(path, projectName, bool exitAfter) async {
     Map config = {
         "adapter": "PGSQL",
         "database": "DBName",
+        "sqlitePath": "pathToSQLiteFile",
         "username": "DBUsername",
         "password": "DBPassword",
         "host": "localhost",
@@ -123,6 +126,8 @@ Future connectDB(rootPath) async {
                         max: 5);
             }
             conn = pool;
+        } else if (DBCore.adapter == DBCore.SQLite) {
+            conn = new sqlite.Database(DBCore.sqlitePath);
         }
         return conn;
     } catch (e) {
@@ -167,6 +172,10 @@ Future run(String migrationDirection, bool exitAfter, fileId) async {
 
         await migrate(pool, exitAfter, fileId);
         result = "done";
+    } else if (DBCore.adapter == DBCore.SQLite) {
+        var pool = new sqlite.Database(DBCore.sqlitePath);
+        await migrate(pool, exitAfter, fileId);
+        result = "done";
     }
     return result;
 }
@@ -182,6 +191,8 @@ Future serverStatus(String rootPath) async {
         } else if (DBCore.adapter == DBCore.MySQL) {
             //conn = await pool.ping();
             query = await conn.ping();
+            query = await conn.query("SELECT 1");
+        } else if (DBCore.adapter == DBCore.SQLite) {
             query = await conn.query("SELECT 1");
         }
 
@@ -381,26 +392,14 @@ Future removeColumn(conn, bool exitAfter, fileId) async {
     if (DBCore.parsedMap["removeColumn"] != null) {
         Map ct = DBCore.parsedMap["removeColumn"];
         List tableNames = ct.keys.toList();
+
         for (int i = 0; i < tableNames.length; i++) {
             String tableName = tableNames[i];
+            List columnNames = ct["${tableName}"];
             if (schema[tableName] != null) {
-                String sqlQuery = "ALTER TABLE ${tableName} ";
-                List columnNames = ct["${tableName}"];
-                int j;
-                for (j = 0; j < columnNames.length; j++) {
-                    if (schema[tableName][columnNames[j]] != null) {
-                        sqlQuery += "DROP COLUMN ${columnNames[j]} ";
-                        if (j < columnNames.length - 1) {
-                            sqlQuery += ", ";
-                        }
-                        schema[tableName].remove(columnNames[j]);
-                        print("\nSCHEMA removeColumn OK: Column ${columnNames[j]} removed from table ${tableName}");
-                    } else {
-                        print("\nSCHEMA removeColumn FAIL: Column ${columnNames[j]} doesnt exist, column not removed from table ${tableName}");
-                    }
-                }
+                String sqlQuery = await DBHelper.removeColumnHelper(conn, tableName, columnNames, exitAfter, fileId);
+
 //print("\n sqlQuery: $sqlQuery");
-                DBHelper.removeDBColumn(sqlQuery, conn, j, columnNames.length, exitAfter, fileId);
             } else {
                 print("\nSCHEMA removeColumn FAIL: Table ${tableName} doesnt exists, columns not removed");
                 await createRelation(conn, exitAfter, fileId);
@@ -501,12 +500,17 @@ Future removeTable(conn, bool exitAfter, fileId) async {
         //print("\nNothing to remove since 'removeTable' is not specified in json");
     }
     Future query;
+    var result;
+
     if (DBCore.adapter == DBCore.PGSQL) {
         query = conn.query("SELECT 1").toList();
+        result = await query;
     } else if (DBCore.adapter == DBCore.MySQL) {
         query = conn.query("SELECT 1");
+        result = await query;
+    } else if (DBCore.adapter == DBCore.SQLite) {
+        result = await conn.query("SELECT 1");
     }
-    var result = await query;
     print("\n-----------------------End migration-----------------------");
     var filePath = files[fileId].path;
     String schemaVersion = filePath.split("migrations")[1].replaceAll("\\", "");
@@ -567,6 +571,17 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
         } else if (DBCore.adapter == DBCore.MySQL) {
             //conn = await pool.ping();
             String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='${DBCore.database}';";
+            print(sql);
+            var results = await conn.query(sql);
+
+            await results.forEach((row) {
+                print(row[0]);
+                existingDatabaseTableNames.add(row[0]);
+            });
+        } else if (DBCore.adapter == DBCore.SQLite) {
+            //TODO
+            //conn = await pool.ping();
+            String sql = "SELECT name FROM sqlite_master WHERE type='table';";
             print(sql);
             var results = await conn.query(sql);
 
@@ -636,6 +651,44 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
                     "null":isNull
                 };
             });
+        } else if (DBCore.adapter == DBCore.SQLite) {
+            //TODO
+            Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/sQLiteToType.json');
+            String sqlStatement = "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';";
+            List columns = sqlStatement.split("(")[1].split(")")[0].split(",");
+            await columns.forEach((column) {
+                column = column.trim();
+                print(column.toString());
+
+                String field = column.split(" ")[0];
+                String dbType = column.split(" ")[1];
+                String isNull = "1";
+                String defaultValue = "";
+                String priKey = "0";
+                if (column.toLowerCase().contains("primary key")) {
+                    priKey = "1";
+                }
+                if (column.toLowerCase().contains("not null")) {
+                    isNull = "0";
+                }
+
+                if (column.toLowerCase().contains("default")) {
+                    defaultValue = column.toLowerCase().split("default ")[1];
+                }
+                if (defaultValue == "null") {
+                    defaultValue = "";
+                }
+
+                if (existingDatabaseTableMap[tableName] == null) {
+                    existingDatabaseTableMap[tableName] = {};
+                }
+                existingDatabaseTableMap[tableName][field] = {
+                    "type":sqlToDartabase[dbType.split("(")[0].toUpperCase()],
+                    "default":defaultValue,
+                    "null":isNull
+                };
+            });
+            print(sqlStatement);
         }
         return existingDatabaseTableMap;
     } catch (e) {
@@ -643,3 +696,5 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
         return e.toString();
     }
 }
+
+

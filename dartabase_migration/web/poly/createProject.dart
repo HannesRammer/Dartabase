@@ -31,6 +31,7 @@ class CreateProject extends PolymerElement {
 
     @Property(notify: true)
     Map config={"adapter":"",
+        "sqlitePath":"",
                 "username":"",
                 "host":"",
         "database":"",

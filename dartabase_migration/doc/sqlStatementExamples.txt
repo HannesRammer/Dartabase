@@ -1,0 +1,21 @@
+//create_table_gamechar.json-------------
+CREATE TABLE IF NOT EXISTS gamechar ( id INT NOT NULL PRIMARY KEY ,name VARCHAR(255)  NOT NULL   ,created_at DATETIME, updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+//add_columns_to_gamechar.json-------------
+ALTER TABLE gamechar ADD COLUMN file_id INT   ,ADD COLUMN account_id INT;
+//create_table_account.json-------------
+CREATE TABLE IF NOT EXISTS account ( id INT NOT NULL PRIMARY KEY ,created_at DATETIME, updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+//create_table_user.json-------------
+CREATE TABLE IF NOT EXISTS user ( id INT NOT NULL PRIMARY KEY ,created_at DATETIME, updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+//create_relation.json-------------
+CREATE TABLE IF NOT EXISTS account_2_gamechar ( account_id INT NOT NULL, gamechar_id INT NOT NULL) ;
+//remove_relation.json-------------
+DROP TABLE IF EXISTS account_2_gamechar
+//remove_table_gamechar.json-------------
+DROP TABLE IF EXISTS gamechar
+
+///REVERT
+
+//add_table_gamechar.json-------------
+CREATE TABLE IF NOT EXISTS gamechar ( id INT NOT NULL PRIMARY KEY ,name VARCHAR(255)  NOT NULL   ,file_id INT  NOT NULL   ,account_id INT  NOT NULL   ,created_at DATETIME, updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+//remove_columns_to_gamechar.json-------------
+ALTER TABLE gamechar DROP COLUMN file_id , DROP COLUMN account_id

@@ -1,5 +1,7 @@
 VERSION
 -------
+    1.2.0 -started adding sqlite support
+          -switched from sqljocky to sqljocky2
     1.1.3 -fixed CRUD scaffold generator issue
             --create update delete client and server now working 
             --extract correct library name on linux systems 

@@ -66,6 +66,7 @@
         <iron-pages selected=0>
             <paper-material class="config" elevation="2" id="page_1">
                 <paper-input label="adapter" value="{{ project.config.adapter }}" disabled></paper-input>
+                <paper-input label="sqlitePath" value="{{ project.config.sqlitePath }}" disabled></paper-input>
                 <paper-input label="username" value="{{ project.config.username }}" disabled></paper-input>
                 <paper-input label="host" value="{{ project.config.host }}" disabled></paper-input>
                 <br/>
@@ -96,6 +97,7 @@
                     <paper-radio-button name="PGSQL">PGSQL</paper-radio-button>
                     <paper-radio-button name="PGSQL">SQLITE</paper-radio-button>
                 </paper-radio-group>
+                <paper-input label="sqlitePath" value="{{ project.config.sqlitePath }}"></paper-input>
                 <paper-input label="username" value="{{ project.config.username }}"></paper-input>
                 <paper-input label="host" value="{{ project.config.host }}"></paper-input>
                 <paper-input label="database" value="{{ project.config.database }}"></paper-input>

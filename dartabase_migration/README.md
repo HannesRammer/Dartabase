@@ -6,19 +6,21 @@
     
   combine the power of [Dartabase Model](http://pub.dartlang.org/packages/dartabase_model) and Dartabase Migration
   
-  !!now supporting scaffolding!! see bottom of the page
+  !!now supporting scaffolding!! see bottom of the page (6. how to generate backend code)
     
   inspired by Ruby on Rails
 
   Tested on 
+ 
+    Windows 10 - MYSQL & PGSQL
     
-    Dart SDK version 1.16.0
-
-  Uses
-  [Polymer](https://github.com/dart-lang/polymer-dart) version "^1.0.0-rc.16"
-  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) "^0.14.1"
+    Ubuntu 16.04 - MYSQL & PGSQL & SQLITE 
+ 
+  MYSQL via sqljocky2 ^0.14.4-dev
   
-  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version "^0.3.3"
+  PGSQL via postgresql ^0.3.3
+  
+  SQLITE via sqlite version "^0.3.0"
 
 -----------------
 
@@ -61,6 +63,9 @@
 1.[How to create a Dartabase supported app from scratch](https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/how_to_from_scratch.md)
 
 2.[How to create a Dartabase supported app for an existing database](https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/how_to_from_existing.md) 
+
+####HOMEPAGE
+[http://dartabase-app.appspot.com](http://dartabase-app.appspot.com/)
 
 -----------------
 
@@ -121,6 +126,7 @@ in this case make sure to insert the correct data into the config.json file crea
     {
         "adapter": "MySQL",
         "database": "dbName",
+        "sqlitePath": "pathToSqliteFile",
         "username": "dbUsername",
         "password": "dbPassword",
         "host": "localhost",
@@ -308,6 +314,7 @@ Additionally it will update
 2. click "generate all at once"
 the newest feature of Dartabase is to generate fa the whole backend/admin webapp 
 
+below you can see an example with generated files and folders
 red: by us created migrations
 
 orange: database relation models in dart (scaffold)
@@ -458,7 +465,7 @@ on the right the data type your database will use
       "TTEXT": "TINYTEXT",
       "VARBINARY": "VARBINARY(255)",
       "VARCHAR": "VARCHAR(255)"
-  }
+    }
 
 #### PGSQL
 
@@ -496,7 +503,45 @@ on the right the data type your database will use
       "TTEXT": "text",
       "VARBINARY": "bytea",
       "VARCHAR": "varchar(255)"
-  }
+    }
+
+#### SQLite
+
+    
+    {
+      "BINT": "INTEGER",
+      "BINT UNSIGNED": "INTEGER",
+      "BINARY": "NUMERIC",
+      "BIT": "NUMERIC",
+      "BLOB": "BLOB",
+      "BOOLEAN": "NUMERIC",
+      "BYTEARRAY": "NUMERIC",
+      "CHAR": "TEXT",
+      "DATE": "NUMERIC",
+      "DATETIME": "NUMERIC",
+      "DOUBLE": "REAL",
+      "FLOAT": "REAL",
+      "FLOAT UNSIGNED": "REAL",
+      "INT": "INTEGER",
+      "INT UNSIGNED": "INTEGER",
+      "LBLOB": "BLOB",
+      "LTEXT": "TEXT",
+      "MBLOB": "BLOB",
+      "MINT": "INTEGER",
+      "MINT UNSIGNED": "INTEGER",
+      "MTEXT": "TEXT",
+      "SINT": "INTEGER",
+      "SINT UNSIGNED": "INTEGER",
+      "TEXT": "TEXT",
+      "TIME": "NUMERIC",
+      "TIMESTAMP": "NUMERIC",
+      "TBLOB": "BLOB",
+      "TINT": "INTEGER",
+      "TINT UNSIGNED": "INTEGER",
+      "TTEXT": "TEXT",
+      "VARBINARY": "NUMERIC",
+      "VARCHAR": "TEXT"
+    }
 
    
   
