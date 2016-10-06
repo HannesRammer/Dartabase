@@ -265,6 +265,7 @@ class DBCore {
         }
         database = parsedMap["database"];
         username = parsedMap["username"];
+        sqlitePath = parsedMap["sqlitePath"];
         password = parsedMap["password"];
         host = parsedMap["host"];
         port = int.parse(parsedMap["port"]);

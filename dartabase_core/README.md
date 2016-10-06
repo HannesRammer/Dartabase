@@ -4,6 +4,8 @@ Dartabase Core
  
     shared lib used by Dartabase Tools (no need for you to do anything)
     
+    changelog 0.6.1
+     added missing sqlite string on configLoad
     changelog 0.6.0
      started adding sqlite support
     changelog 0.5.2    
