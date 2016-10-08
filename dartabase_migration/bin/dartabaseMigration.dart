@@ -563,11 +563,13 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
             //conn = await pool.ping();
             String sql = "SELECT name FROM sqlite_master WHERE type='table';";
             print(sql);
-            var results = await conn.execution(sql);
+            //var results = await conn.execute(sql);
 
-            await results.forEach((row) {
-                print(row[0]);
+            // Iterating over a result set
+            var count = conn.execute(sql, callback: (row) {
+                print("${row[0]}");
                 existingDatabaseTableNames.add(row[0]);
+
             });
         }
     } catch (e) {
@@ -638,11 +640,19 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
             });
         } else if (DBCore.adapter == DBCore.SQLite) {
             //TODO
-            Map sqlToDartabase = DBCore.jsonFilePathToMap(
-                    'bin/../tool/sQLiteToType.json');
+            Map sqlToDartabase = DBCore.jsonFilePathToMap( 'bin/../tool/sQLiteToType.json');
             String sqlStatement = "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';";
-            var results = await conn.execute(sqlStatement);
-            List columns = results[0].split("(")[1].split(")")[0].split(",");
+
+            String result = "";
+
+            // Iterating over a result set
+            var count = conn.execute(sqlStatement, callback: (row) {
+                print("${row[0]}");
+                result = row[0];
+
+            });
+
+            List columns = result.split("(")[1].split(")")[0].split(",");
             await columns.forEach((column) {
                 column = column.trim();
                 print(column.toString());
@@ -683,3 +693,5 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
     }
     return existingDatabaseTableMap;
 }
+
+
