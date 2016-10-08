@@ -102,10 +102,14 @@ class MigrationListView extends PolymerElement {
 
     @reflectable
     List getMigrations(var map) {
+        List dummy = [];
         if (map != null){
-            return map["mig"];
+            dummy= map["mig"];
         }
+        return dummy;
     }
 
 
 }
+
+

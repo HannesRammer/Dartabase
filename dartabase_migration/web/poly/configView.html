@@ -76,14 +76,14 @@
                 <br/>
 
                 <template is="dom-if" if="{{ !isSecureConnection(project.config.ssl) }}">
-                        <span class="red_text">
-                          ssl :{{ project.config.ssl }}
-                        </span>
+                       <span class="red_text">
+                         ssl :{{ project.config.ssl }}
+                       </span>
                 </template>
                 <template is="dom-if" if="{{ isSecureConnection(project.config.ssl) }}">
-                        <span class="green_text">
-                          ssl :{{ project.config.ssl }}
-                        </span>
+                       <span class="green_text">
+                         ssl :{{ project.config.ssl }}
+                       </span>
                 </template>
                 <br/>
                 <paper-button raised on-tap="transition">
@@ -95,7 +95,7 @@
                 <paper-radio-group selected="{{project.config.adapter}}">
                     <paper-radio-button name="MySQL">MySQL</paper-radio-button>
                     <paper-radio-button name="PGSQL">PGSQL</paper-radio-button>
-                    <paper-radio-button name="PGSQL">SQLITE</paper-radio-button>
+                    <paper-radio-button name="SQLite">SQLite</paper-radio-button>
                 </paper-radio-group>
                 <paper-input label="sqlitePath" value="{{ project.config.sqlitePath }}"></paper-input>
                 <paper-input label="username" value="{{ project.config.username }}"></paper-input>
@@ -119,3 +119,5 @@
 
     </template>
 </dom-module>
+
+

@@ -46,9 +46,13 @@ class MigrationCreateColumn extends PolymerElement {
 
     @reflectable
     bool isString(var dataTypeStringOrMap, item) {
+        bool val = false;
         if (dataTypeStringOrMap != null &&
                 dataTypeStringOrMap[item] != null) {
-            return dataTypeStringOrMap[item].runtimeType == String;
+            val = dataTypeStringOrMap[item].runtimeType == String;
         }
+        return val;
     }
 }
+
+

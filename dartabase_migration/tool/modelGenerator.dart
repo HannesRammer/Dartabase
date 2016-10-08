@@ -5,8 +5,8 @@ class ModelGenerator {
 
     static Future createServerModel(String dbTableName, Map tableDesc, String rootPath) async {
         var className = DSC.toClassName(dbTableName);
-        var varName = DSC.toVarName(dbTableName);
-        var polyName = DSC.toPolyName(dbTableName);
+        //var varName = DSC.toVarName(dbTableName);
+        //var polyName = DSC.toPolyName(dbTableName);
         var tableName = DSC.toTableName(dbTableName);
 
         List toStringParts = [];
@@ -19,12 +19,12 @@ class ModelGenerator {
 import 'package:dartabase_model/dartabase_model.dart';
 class ${className} extends Model{
 
-  ${await generateDynamicFields(columnsMap)}
-  String toString() => "${className} ${toStringParts.join(":")}";
-  //toJSON() is available through the "extends Model"
+ ${await generateDynamicFields(columnsMap)}
+ String toString() => "${className} ${toStringParts.join(":")}";
+ //toJSON() is available through the "extends Model"
 }
 
-        ''';
+       ''';
         Directory dbModels = new Directory("${rootPath}/db/models");
         dbModels.create(recursive: true).then((_) {
             DBCore.stringToFilePath(file, "${rootPath}/db/models/${tableName}.dart");
@@ -42,3 +42,5 @@ class ${className} extends Model{
     }
 
 }
+
+

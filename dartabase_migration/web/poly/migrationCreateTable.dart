@@ -34,7 +34,7 @@ class MigrationCreateTable extends PolymerElement {
         if (columns != null && columns[item] != null) {
             if (columns[item].runtimeType == String) {
                 val = columns[item];
-            }else {
+            } else {
                 if (columns[item][dataType] != null) {
                     val = columns[item][dataType].toString();
                 }
@@ -60,9 +60,13 @@ class MigrationCreateTable extends PolymerElement {
 
     @reflectable
     bool isString(var dataTypeStringOrMap, item) {
-        if(dataTypeStringOrMap != null && dataTypeStringOrMap[item] != null){
-            return dataTypeStringOrMap[item].runtimeType == String;
+        bool val = false;
+        if (dataTypeStringOrMap != null && dataTypeStringOrMap[item] != null) {
+            val = dataTypeStringOrMap[item].runtimeType == String;
         }
+        return val;
     }
 
 }
+
+

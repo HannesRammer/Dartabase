@@ -2,99 +2,64 @@ import "dart:io";
 import "dart:convert";
 import "dart:async";
 
-import 'package:dartabase_core/dartabase_core.dart';
-
 import "dartabaseMigration.dart";
 
-/**
- * 
- * migrate files inside 
- * ##/db/migrations 
- * in the "UP" key with execution order
- *   -createTable
- *   -createColumn
- *   -removeColumn
- *   -createRelation
- *   -removeRelation
- *   -removeTable    
- *  
- * starting with the last migrated version saved in
- * ##/db/schemaVersion.json (if not the first time)
- * 
- */
- Future main() async{
-  
-  var state = 0;
-  var projectExistsInProjectMapping = false;
-  var projectDoesntExistsInProjectMapping = true;
-  
-  print("|--------------------------|");
-  print("|   Dartabase  migration   |");
-  print("|--------------------------|");
-  print("");
-  print("Here a List of all Pojects that have been initialized for migration");
-  
-  projectMapping =  DBCore.jsonFilePathToMap("bin/projectsMapping.json");
-  
-  print("\nProject name *:* Path *:* Current schema version");
-  print("-----------------------------");
-  for(var name in projectMapping.keys){
-    Map schemaV =  DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
-    print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
-  }
-  
-  print("Enter the project name and press the ENTER key to proceed");
+/*
+* Initiates Dartabase requirements:
+*
+* ONLY RUN THIS ONCE FOR EACH PROJECT
+*
+*   creates
+*   ##/db/migrations/         //where migration files are saved and executed
+*   ##/db/config.json         //where database config is saved
+*   ##/db/schema.json         //where database structure is saved
+*   ##/db/schemaVersion.json  //saves latest migrated version number
+*
+*   //adds mapping of project names and project root paths initiated in Dartabase
+*   //for faster migration access in
+*   Dartabase/bin/projectsMapping.json
+*/
+void main() {
+    print("|--------------------------|");
+    print("|   Dartabase initiation   |");
+    print("|--------------------------|");
+    print("");
+    print("!!ONLY RUN THIS ONCE FOR EACH PROJECT!!");
+    print("Please type or paste a project name and press the ENTER key");
+    print("");
+    Stream<List<int>> stream = stdin;
+    int count = 0;
+    String name = "";
+    stream.transform(UTF8.decoder)
+            .transform(new LineSplitter())
+            .listen((String line) async {
+        /* Do something with line. */
+        if (count > 0) {
+            await initiateDartabase(line, name, true);
+        }
+/*
+       if(count == 1){
+         name = line;
+         count++;
 
-  Stream<List<int>> stream = stdin;
-  
-  stream
-    .transform(UTF8.decoder)
-      .transform(new LineSplitter())
-        .listen((String line) async{ /* Do something with line. */
-        if(state == 0){
-          projectExistsInProjectMapping = projectMapping[line] != null;
-          projectDoesntExistsInProjectMapping = !projectExistsInProjectMapping;
-                  
-          if(projectDoesntExistsInProjectMapping){
-            print("Project '$line' unknown to dartabase, maybe you forgot to initiate your project with dbInit.dart ");
-          }else if(projectExistsInProjectMapping){
-            state = 1;
-            String rootPath= projectMapping[line];
-            Map rootSchema =  DBCore.jsonFilePathToMap("${rootPath}/db/schemaVersion.json");
-            Directory directory = new Directory("${rootPath}/db/migrations");
-            List files = directory.listSync();
-            if (files.length > 0) {
-              print("\nMigration number : Name");
-              for(int i=0;i<files.length;i++){ 
-                String version = files[i].path.split("migrations")[1].replaceAll("\\","") ;
-                if(rootSchema['schemaVersion'] == version ){
-                  print("${i+1} : $version <--- current version");
-                }else{
-                  print("${i+1} : $version");
-                }
-              }
-            }
-            print("please enter goal migration number");
-            DBCore.rootPath = rootPath;   
-          }
-        }else if(state == 1){
-          if(DBCore.rootPath != null){
-            try{
-              lastMigrationNumber = (int.parse(line)-1);
-              run("UP",true,null);
-            }catch(e){
-              print("not a number");
-            }
-          }
+       }*/
+        if (count == 0) {
+            name = line;
+            count++;
+            print("Please enter the absolute path to your project root folder to create a new or enhance an existing project");
+            print("and press the ENTER key to proceed");
+            print("eg. c:\\DartProjects\\myApp");
+            print("take care of capital letters!!");
         }
-        if(state == null){
-          state = 0;  
-        }
-      },
-    onDone: () { /* No more lines */ 
-      print("Dartabase migration done!");
     },
-   onError: (e) { /* Error on input. */ 
-     print("Dartabase migration error! $e");
-   });
+            onDone: () {
+                /* No more lines */
+                print("Dartabase initiation done!");
+            },
+            onError: (e) {
+                /* Error on input. */
+                print("Dartabase initiation error! $e");
+            });
 }
+
+
