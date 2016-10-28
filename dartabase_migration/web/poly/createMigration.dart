@@ -120,10 +120,6 @@ class CreateMigration extends PolymerElement {
             }
         }
 
-        IronPages ip = Polymer.dom(this.root).querySelector("iron-pages");
-
-        ip.selectNext();
-
         print(responseText);
     }
 }

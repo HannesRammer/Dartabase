@@ -68,7 +68,7 @@ Future main() async {
                 String rootPath = projectMapping[line];
                 Map rootSchema = DBCore.jsonFilePathToMap("${rootPath}/db/schemaVersion.json");
                 Directory directory = new Directory("${rootPath}/db/migrations");
-                List files = directory.listSync();
+                List files = directory.listSync()..sort((a, b) => a.path.compareTo(b.path));
 
                 if (files.length > 0) {
                     print("\nMigration number : Name");

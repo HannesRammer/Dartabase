@@ -12,7 +12,7 @@ import 'package:postgresql/postgresql.dart';
 
 import 'package:sqljocky2/sqljocky.dart';
 
-import 'package:sqlite/sqlite.dart' as sqlite;
+//import 'package:sqlite/sqlite.dart' as sqlite;
 
 part '../tool/dbhelper.dart';
 
@@ -186,7 +186,7 @@ Future<String> migrate(conn, fileId) async {
     var result;
     DBCore.parsedMapping = DBCore.jsonFilePathToMap('bin/../tool/typeMapper${DBCore.adapter}.json');
     Directory directory = new Directory("${DBCore.rootPath}/db/migrations");
-    files = directory.listSync();
+    files = directory.listSync()..sort((a, b) => a.path.compareTo(b.path));
     if (files.length > 0) {
         for (var file in files) {
             if (file.path.split("migrations")[1].replaceAll("\\", "") == DBCore.schemaVersion) {
@@ -560,17 +560,17 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
             });
         } else if (DBCore.adapter == DBCore.SQLite) {
             //TODO
-            //conn = await pool.ping();
             String sql = "SELECT name FROM sqlite_master WHERE type='table';";
             print(sql);
-            //var results = await conn.execute(sql);
+//var results = await conn.execute(sql);
 
-            // Iterating over a result set
+
+// Iterating over a result set
             var count = conn.execute(sql, callback: (row) {
                 print("${row[0]}");
                 existingDatabaseTableNames.add(row[0]);
-
             });
+
         }
     } catch (e) {
         print(e.toString());
@@ -642,16 +642,12 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
             //TODO
             Map sqlToDartabase = DBCore.jsonFilePathToMap( 'bin/../tool/sQLiteToType.json');
             String sqlStatement = "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';";
-
             String result = "";
-
-            // Iterating over a result set
+// Iterating over a result set
             var count = conn.execute(sqlStatement, callback: (row) {
                 print("${row[0]}");
                 result = row[0];
-
             });
-
             List columns = result.split("(")[1].split(")")[0].split(",");
             await columns.forEach((column) {
                 column = column.trim();

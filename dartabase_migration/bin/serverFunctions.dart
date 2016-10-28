@@ -33,7 +33,8 @@ Future loadMigrations(Map params, HttpResponse res) async {
     }
 
     Directory directory = new Directory("${params["projectRootPath"].replaceAll('%5C', '\\')}/db/migrations");
-    List<FileSystemEntity> files = directory.listSync();
+    List<FileSystemEntity> files = directory.listSync()..sort((a, b) => a.path.compareTo(b.path));
+
     if (files.length > 0) {
         print("Migration number : Name");
 
