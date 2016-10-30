@@ -2,7 +2,6 @@ part of dartabaseMigration;
 //TODO think about making dartabase_core lib that gets imported by dartabase tools
 class DBHelper {
 
-
     static Future createDBTable(sql, conn, x, count, fileId) async {
         if (DBCore.adapter == DBCore.PGSQL) {
             await afterQuery("createDBTable", await conn.query(sql).toList(), sql, fileId, conn, x, count);
@@ -78,7 +77,7 @@ class DBHelper {
             }
         }
         if (actionType == "removeDBColumn") {
-            if (x == count) {
+            if (x == count - 1) {
                 await createRelation(conn, fileId);
             }
         }
@@ -149,38 +148,120 @@ class DBHelper {
         return sql;
     }
 
-    static Future<String> removeColumnHelper(conn, tableName, columnNames, fileId) async {
+    static Future<String> createColumnHelper(conn, tableNames, tableName, ct, fileId, x) async {
         String sqlQuery = "";
-        int i;
 
         if (DBCore.adapter == DBCore.SQLite) {
-            String existingSqlStatement = await conn
-                    .query("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';");
-            List existingColumnNames = schema[tableName].keys;
-            List existingSqlStatementColumns = existingSqlStatement.toLowerCase().split("(")[1].split(")")[0]
-                    .split(",");
-            for (i = 0; i < columnNames.length; i++) {
+            Map columns = ct["${tableName}"];
+            List columnNames = columns.keys.toList();
+
+            for (int j = 0; j < columnNames.length; j++) {
+                sqlQuery = "ALTER TABLE ${tableName} ";
+                List sqlList = [];
+                Map schemaTableMap = schema[tableName];
+                String columnName = columnNames[j];
+                if (schema[tableName][columnName] == null) {
+                    print(columns[columnName].runtimeType);
+                    if (columns[columnName].runtimeType == String) {
+                        String columnType = columns[columnName];
+                        sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ");
+                        schemaTableMap[columnName] = columnType;
+                    } else if (columns[columnName].runtimeType.toString() == "_InternalLinkedHashMap") {
+                        Map columnOptions = columns[columnName];
+                        String columnType = columnOptions["type"];
+                        sqlList.add("ADD COLUMN ${columnName} ${DBCore
+                                .typeMapping(columnType)} ${notNull(columnOptions["notNull"])} ${defaultValue(columnOptions["default"])} ");
+                        schemaTableMap[columnName] = columnOptions;
+                    }
+                    print("\nSCHEMA createColumn OK: Column ${columnName} added to table ${tableName}");
+                } else {
+                    print("\nSCHEMA createColumn Cancle: Column ${columnName} already exists in ${tableName}, columns not added");
+                }
+                sqlQuery += sqlList.join(",");
+                sqlQuery += ";";
+                print("\n+++++sqlQuery: $sqlQuery");
+                await DBHelper.createDBColumn(sqlQuery, conn, x, tableNames.length, fileId);
+            }
+        } else {
+            String sqlQuery = "ALTER TABLE ${tableName} ";
+            List sqlList = [];
+            Map columns = ct["${tableName}"];
+            List columnNames = columns.keys.toList();
+            Map schemaTableMap = schema[tableName];
+            for (int j = 0; j < columnNames.length; j++) {
+                String columnName = columnNames[j];
+                if (schema[tableName][columnName] == null) {
+                    print(columns[columnName].runtimeType);
+                    if (columns[columnName].runtimeType == String) {
+                        String columnType = columns[columnName];
+                        sqlList.add("ADD COLUMN ${columnName} ${DBCore.typeMapping(columnType)} ");
+                        schemaTableMap[columnName] = columnType;
+                    } else if (columns[columnName].runtimeType.toString() == "_InternalLinkedHashMap") {
+                        Map columnOptions = columns[columnName];
+                        String columnType = columnOptions["type"];
+                        sqlList.add("ADD COLUMN ${columnName} ${DBCore
+                                .typeMapping(columnType)} ${notNull(columnOptions["notNull"])} ${defaultValue(columnOptions["default"])} ");
+                        schemaTableMap[columnName] = columnOptions;
+                    }
+                    print("\nSCHEMA createColumn OK: Column ${columnName} added to table ${tableName}");
+                } else {
+                    print("\nSCHEMA createColumn Cancle: Column ${columnName} already exists in ${tableName}, columns not added");
+                }
+            }
+            sqlQuery += sqlList.join(",");
+            print("\n+++++sqlQuery: $sqlQuery");
+            await DBHelper.createDBColumn(sqlQuery, conn, x, tableNames.length, fileId);
+        }
+        return "";
+    }
+
+    static Future<String> removeColumnHelper(conn, tableName, columnNames, fileId, x) async {
+        String sqlQuery = "";
+        print(DBCore.adapter);
+
+        if (DBCore.adapter == DBCore.SQLite) {
+            var existingSqlStatement;
+            var count = await conn
+                    .execute("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';", callback: (row) {
+                existingSqlStatement = row[0].toLowerCase();
+            });
+            String split1 = "";
+            if (existingSqlStatement.indexOf("${tableName} (") > -1) {
+                split1 = existingSqlStatement.split("${tableName} (")[1];
+            } else if (existingSqlStatement.indexOf("${tableName}(") > -1) {
+                split1 = existingSqlStatement.split("${tableName}(")[1];
+            }
+
+            List existingSqlStatementColumns = split1.substring(0, split1.length - 1).split(",");
+            List insertSqlStatementColumns = [];
+            for (int i = 0; i < columnNames.length; i++) {
+                x = i;
                 var columnName = columnNames[i];
                 for (var j = 0; j < existingSqlStatementColumns.length; j++) {
-                    if (existingSqlStatementColumns[j].split(" ")[0].contains(columnNames)) {
+                    String existingSqlStatementColumn = existingSqlStatementColumns[j].trim().split(" ")[0].replaceAll("\"", "");
+                    if (existingSqlStatementColumn == columnName) {
                         existingSqlStatementColumns.removeAt(j);
+                    } else {
+                        if (insertSqlStatementColumns.indexOf(existingSqlStatementColumn) == -1) {
+                            insertSqlStatementColumns.add(existingSqlStatementColumn);
+                        }
                     }
                 }
                 schema[tableName].remove(columnName);
             }
-            String updatedSqlColumnStatement = existingSqlStatementColumns.join(",");
-            sqlQuery = '''BEGIN TRANSACTION;
-CREATE TEMPORARY TABLE ${tableName}_backup(${updatedSqlColumnStatement});
-INSERT INTO ${tableName}_backup SELECT a,b FROM ${tableName};
-DROP TABLE ${tableName};
-CREATE TABLE ${tableName}(${updatedSqlColumnStatement});
-INSERT INTO ${tableName} SELECT a,b FROM ${tableName}_backup;
-DROP TABLE ${tableName}_backup;
-COMMIT;
-                   ''';
+            String createSqlColumnStatement = existingSqlStatementColumns.join(",");
+
+            String insertSqlColumnStatement = insertSqlStatementColumns.join(",");
+            await conn.execute("CREATE TABLE ${tableName}_backup(${createSqlColumnStatement});");
+            await conn.execute("INSERT INTO ${tableName}_backup SELECT ${insertSqlColumnStatement} FROM ${tableName};");
+            await conn.execute("DROP TABLE ${tableName};");
+            await conn.execute("CREATE TABLE ${tableName}(${createSqlColumnStatement});");
+            await conn.execute("INSERT INTO ${tableName} SELECT ${insertSqlColumnStatement} FROM ${tableName}_backup;");
+            await DBHelper.removeDBColumn("DROP TABLE ${tableName}_backup;", conn, x, columnNames.length, fileId);
         } else {
             sqlQuery = "ALTER TABLE ${tableName} ";
-            for (i = 0; i < columnNames.length; i++) {
+            for (int i = 0; i < columnNames.length; i++) {
+                x = i;
                 String columnName = columnNames[i];
                 if (schema[tableName][columnName] != null) {
                     sqlQuery += "DROP COLUMN ${columnName} ";
@@ -193,11 +274,8 @@ COMMIT;
                     print("\nSCHEMA removeColumn FAIL: Column ${columnName} doesnt exist, column not removed from table ${tableName}");
                 }
             }
+            await DBHelper.removeDBColumn(sqlQuery, conn, x, columnNames.length, fileId);
         }
-        await DBHelper.removeDBColumn(sqlQuery, conn, i, columnNames.length, fileId);
         return "";
     }
-
 }
-
-
