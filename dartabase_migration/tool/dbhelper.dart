@@ -18,7 +18,11 @@ class DBHelper {
         } else if (DBCore.adapter == DBCore.MySQL) {
             await afterQuery("createDBColumn", await conn.query(sql), sql, fileId, conn, x, count);
         } else if (DBCore.adapter == DBCore.SQLite) {
-            await afterQuery("createDBColumn", await conn.execute(sql), sql, fileId, conn, x, count);
+            if (sql == "") {
+                await afterQuery("createDBColumn", sql, sql, fileId, conn, x, count);
+            } else {
+                await afterQuery("createDBColumn", await conn.execute(sql), sql, fileId, conn, x, count);
+            }
         }
     }
 
@@ -179,8 +183,12 @@ class DBHelper {
                 }
                 sqlQuery += sqlList.join(",");
                 sqlQuery += ";";
-                print("\n+++++sqlQuery: $sqlQuery");
-                await DBHelper.createDBColumn(sqlQuery, conn, x, tableNames.length, fileId);
+                if (sqlQuery != "ALTER TABLE ${tableName} ;") {
+                    print("\n+++++sqlQuery: $sqlQuery");
+                    await DBHelper.createDBColumn(sqlQuery, conn, x, tableNames.length, fileId);
+                } else {
+                    await DBHelper.createDBColumn("", conn, x, tableNames.length, fileId);
+                }
             }
         } else {
             String sqlQuery = "ALTER TABLE ${tableName} ";
@@ -238,7 +246,8 @@ class DBHelper {
                 x = i;
                 var columnName = columnNames[i];
                 for (var j = 0; j < existingSqlStatementColumns.length; j++) {
-                    String existingSqlStatementColumn = existingSqlStatementColumns[j].trim().split(" ")[0].replaceAll("\"", "");
+                    String existingSqlStatementColumn = existingSqlStatementColumns[j].trim().split(" ")[0]
+                            .replaceAll("\"", "");
                     if (existingSqlStatementColumn == columnName) {
                         existingSqlStatementColumns.removeAt(j);
                     } else {

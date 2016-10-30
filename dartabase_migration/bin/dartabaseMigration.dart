@@ -147,11 +147,16 @@ Future<String> run(String migrationDirection, bool exitAfter, fileId) async {
         direction = migrationDirection;
         schema = DBCore.loadSchemaToMap(DBCore.rootPath);
         conn = await connectDB(DBCore.rootPath);
-
-        result = await migrate(conn, fileId);
+        if (conn != null) {
+            result = await migrate(conn, fileId);
+        } else {
+            print("database connection not found !!!!!!!!!! if you are trying to use sqlite check to uncomment the import package:sqlite.dart else check if your DBserver is running");
+        }
         return result;
     } finally {
-        doClose(conn);
+        if (conn != null) {
+            doClose(conn);
+        }
         doExit(exitAfter);
     }
 }
@@ -162,14 +167,18 @@ Future serverStatus(String rootPath) async {
     try {
         DBCore.loadConfigFile(rootPath);
         conn = await connectDB(rootPath);
-        if (DBCore.adapter == DBCore.PGSQL) {
-            query = await conn.query("SELECT 1").toList();
-        } else if (DBCore.adapter == DBCore.MySQL) {
-            //conn = await pool.ping();
-            query = await conn.ping();
-            query = await conn.query("SELECT 1");
-        } else if (DBCore.adapter == DBCore.SQLite) {
-            query = await conn.execute("SELECT 1");
+        if (conn != null) {
+            if (DBCore.adapter == DBCore.PGSQL) {
+                query = await conn.query("SELECT 1").toList();
+            } else if (DBCore.adapter == DBCore.MySQL) {
+                //conn = await pool.ping();
+                query = await conn.ping();
+                query = await conn.query("SELECT 1");
+            } else if (DBCore.adapter == DBCore.SQLite) {
+                query = await conn.execute("SELECT 1");
+            }
+        } else {
+            print("database connection not found !!!!!!!!!! if you are trying to use sqlite check to uncomment the import package:sqlite.dart else check if your DBserver is running");
         }
         return query;
     } catch (e) {
@@ -530,15 +539,16 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
             });
         } else if (DBCore.adapter == DBCore.SQLite) {
             //TODO
-            String sql = "SELECT name FROM sqlite_master WHERE type='table';";
-            print(sql);
-//var results = await conn.execute(sql);
-
-// Iterating over a result set
-            var count = await conn.execute(sql, callback: (row) {
-                print("${row[0]}");
-                existingDatabaseTableNames.add(row[0]);
-            });
+            if (conn != null) {
+                String sql = "SELECT name FROM sqlite_master WHERE type='table';";
+                print(sql);
+                var count = await conn.execute(sql, callback: (row) {
+                    print("${row[0]}");
+                    existingDatabaseTableNames.add(row[0]);
+                });
+            } else {
+                print("database connection not found !!!!!!!!!! if you are trying to use sqlite check to uncomment the import package:sqlite.dart else check if your DBserver is running");
+            }
         }
     } catch (e) {
         print(e.toString());
@@ -550,12 +560,12 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
 }
 
 Future extractExistingTableDescription(String tableName, String rootPath) async {
+    var result;
     var conn;
     Map existingDatabaseTableMap = new Map();
     try {
         DBCore.loadConfigFile(rootPath);
         conn = await connectDB(rootPath);
-
         if (DBCore.adapter == DBCore.PGSQL) {
             Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/pGSQLToType.json');
             String sql = "SELECT column_name,data_type,is_nullable,column_default FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='${tableName}' AND TABLE_CATALOG='${DBCore
@@ -608,48 +618,52 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
             });
         } else if (DBCore.adapter == DBCore.SQLite) {
             //TODO
-            Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/sQLiteToType.json');
-            String sqlStatement = "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';";
-            String result = "";
+            if (conn != null) {
+                Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/sQLiteToType.json');
+                String sqlStatement = "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';";
+                String result = "";
 // Iterating over a result set
-            var count = await conn.execute(sqlStatement, callback: (row) {
-                print("${row[0]}");
-                result = row[0];
-            });
-            List columns = result.split("(")[1].split(")")[0].split(",");
-            await columns.forEach((column) {
-                column = column.trim();
-                print(column.toString());
+                var count = await conn.execute(sqlStatement, callback: (row) {
+                    print("${row[0]}");
+                    result = row[0];
+                });
+                List columns = result.split("(")[1].split(")")[0].split(",");
+                await columns.forEach((column) {
+                    column = column.trim();
+                    print(column.toString());
 
-                String field = column.split(" ")[0];
-                String dbType = column.split(" ")[1];
-                String isNull = "1";
-                String defaultValue = "";
-                String priKey = "0";
-                if (column.toLowerCase().contains("primary key")) {
-                    priKey = "1";
-                }
-                if (column.toLowerCase().contains("not null")) {
-                    isNull = "0";
-                }
+                    String field = column.split(" ")[0];
+                    String dbType = column.split(" ")[1];
+                    String isNull = "1";
+                    String defaultValue = "";
+                    String priKey = "0";
+                    if (column.toLowerCase().contains("primary key")) {
+                        priKey = "1";
+                    }
+                    if (column.toLowerCase().contains("not null")) {
+                        isNull = "0";
+                    }
 
-                if (column.toLowerCase().contains("default")) {
-                    defaultValue = column.toLowerCase().split("default ")[1];
-                }
-                if (defaultValue == "null") {
-                    defaultValue = "";
-                }
+                    if (column.toLowerCase().contains("default")) {
+                        defaultValue = column.toLowerCase().split("default ")[1];
+                    }
+                    if (defaultValue == "null") {
+                        defaultValue = "";
+                    }
 
-                if (existingDatabaseTableMap[tableName] == null) {
-                    existingDatabaseTableMap[tableName] = {};
-                }
-                existingDatabaseTableMap[tableName][field] = {
-                    "type":sqlToDartabase[dbType.split("(")[0].toUpperCase()],
-                    "default":defaultValue,
-                    "null":isNull
-                };
-            });
-            print(sqlStatement);
+                    if (existingDatabaseTableMap[tableName] == null) {
+                        existingDatabaseTableMap[tableName] = {};
+                    }
+                    existingDatabaseTableMap[tableName][field] = {
+                        "type":sqlToDartabase[dbType.split("(")[0].toUpperCase()],
+                        "default":defaultValue,
+                        "null":isNull
+                    };
+                });
+                print(sqlStatement);
+            } else {
+                print("database connection not found !!!!!!!!!! if you are trying to use sqlite check to uncomment the import package:sqlite.dart else check if your DBserver is running");
+            }
         }
     } catch (e) {
         print(e.toString());
