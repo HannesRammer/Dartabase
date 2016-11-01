@@ -298,7 +298,7 @@ class MainApp extends PolymerElement {
         String str = "";
         var className = DSC.toClassName(dbTableName);
         var varName = DSC.toVarName(dbTableName);
-        var polyName = "${DSC.toPolyName(dbTableName)}";
+        var polyName = "db-${DSC.toPolyName(dbTableName)}";
         //var tableName = "${DSC.toTableName(dbTableName)}";
 
         str += '''
@@ -333,7 +333,7 @@ class MainApp extends PolymerElement {
 
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var polyName = "db-${DSC.toPolyName(dbTableName)}";
             var tableName = "${DSC.toTableName(dbTableName)}";
             String dynamicPolyHTML = '''
 <!--
@@ -493,7 +493,7 @@ class MainApp extends PolymerElement {
         for (String dbTableName in dbTableNames) {
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
-            var polyName = "${DSC.toPolyName(dbTableName)}";
+            var polyName = "db-${DSC.toPolyName(dbTableName)}";
             var tableName = "${DSC.toTableName(dbTableName)}";
             String dynamicPolyDART = '''
 // Copyright (c) 2016, Hannes.Rammer@gmail.com. All rights reserved. Use of this source code

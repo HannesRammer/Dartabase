@@ -11,7 +11,7 @@ import 'package:postgresql/postgresql.dart';
 
 import 'package:sqljocky2/sqljocky.dart';
 
-//import 'package:sqlite/sqlite.dart' as sqlite;
+import 'package:sqlite/sqlite.dart' as sqlite;
 
 part '../tool/dbhelper.dart';
 
@@ -332,10 +332,10 @@ Future createTable(conn, fileId) async {
                     sqlQuery += DBHelper.pgTriggerForUpdatedAt(tableName);
                 }
                 print("\n+++++sqlQuery: $sqlQuery");
+                schema[tableName]=schemaTableMap;
                 await DBHelper.createDBTable(sqlQuery, conn, i, tableNames.length, fileId);
             } else {
-                print(
-                        "\nSCHEMA createTable Cancle: Table ${tableName} already exists in schema, table and columns not added");
+                print("\nSCHEMA createTable Cancle: Table ${tableName} already exists in schema, table and columns not added");
                 await createColumn(conn, fileId);
             }
         }
@@ -402,7 +402,7 @@ Future createRelation(conn, fileId) async {
             String intType = DBCore.typeMapping("INT");
             if (schema[relationTable] == null) {
                 List columns = ["${tableNames[0]}_id", "${tableNames[1]}_id"];
-                String sqlQuery = "CREATE TABLE IF NOT EXISTS $relationTable ( ${columns[0]} $intType NOT NULL, ${columns[1]} $intType NOT NULL) ;";
+                String sqlQuery = "CREATE TABLE IF NOT EXISTS $relationTable (id INTEGER NOT NULL PRIMARY KEY, ${columns[0]} $intType NOT NULL, ${columns[1]} $intType NOT NULL) ;";
                 schema[relationTable] = {};
                 Map schemaTableMap = schema[relationTable];
                 schemaTableMap["id"] = {
