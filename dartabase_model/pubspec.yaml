@@ -6,8 +6,11 @@ homepage: https://github.com/HannesRammer/Dartabase/tree/master/dartabase_model
 environment:
   sdk: '>=1.8.0 <2.0.0'
 dependencies:
-  dartabase_core: "^0.5.2"
+  dartabase_core: #"^0.5.2"
+    path: "/home/hannes/Projects/Dartabase/dartabase_core"
     #path: "c:/Projects/Dart/dartabase/dartabase_core"
+    #path: "/home/hannes/Projects/Dartabase/dartabase_core"
   json_object: '>=1.0.18+2 <1.1.0'
   postgresql: "^0.3.3"
-  sqljocky: "^0.14.1"
+  sqljocky2: "^0.14.4-dev"
+  sqlite: "^0.4.0"

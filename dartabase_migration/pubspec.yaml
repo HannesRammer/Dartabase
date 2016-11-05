@@ -7,7 +7,8 @@ dependencies:
   postgresql: "^0.3.3"
   sqljocky2: "^0.14.4-dev"
   sqlite: "^0.3.0"
-  dartabase_core: "^0.6.1"
+  dartabase_core: "^0.6.2"
+    #path: "/home/hannes/Projects/Dartabase/dartabase_core"
     #path: "c:/Projects/Dart/dartabase/dartabase_core"
   #dependencies used for web interface
   params: "^0.0.3"
