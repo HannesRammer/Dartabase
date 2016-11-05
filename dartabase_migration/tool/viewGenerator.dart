@@ -32,7 +32,11 @@ class ViewGenerator {
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="scaffolded-by" content="https://github.com/google/stagehand">
-   <title>${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}</title>
+   <title>${DSC.toVarName(rootPath
+                                                                .split(new String.fromCharCode(92))
+                                                                .last
+                                                                .split(new String.fromCharCode(47))
+                                                                .last)}</title>
    <!-- Add to homescreen for Chrome on Android -->
    <meta name="mobile-web-app-capable" content="yes">
    <link rel="icon" sizes="192x192" href="../images/touch/chrome-touch-icon-192x192.png">
@@ -192,7 +196,6 @@ main() async {
         });
     }
 
-
     /**
      *
      */
@@ -203,7 +206,11 @@ main() async {
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 @HtmlImport('main_app.html')
-library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.poly.main_app;
+library ${DSC.toVarName(rootPath
+                                                                 .split(new String.fromCharCode(92))
+                                                                 .last
+                                                                 .split(new String.fromCharCode(47))
+                                                                 .last)}.poly.main_app;
 
 import 'dart:html';
 
@@ -229,7 +236,7 @@ class MainApp extends PolymerElement {
 ''';
         int counter = 0;
         for (String tableName in dbTableNames) {
-            mainPolyDART += generateLinkAndContentString(tableName,counter);
+            mainPolyDART += generateLinkAndContentString(tableName, counter);
             if (counter == 3) {
                 counter = 0;
             } else {
@@ -330,7 +337,6 @@ class MainApp extends PolymerElement {
     static createDynamicPolyHTML(Map dbTables, String rootPath) async {
         List dbTableNames = dbTables.keys.toList();
         for (String dbTableName in dbTableNames) {
-
             var className = DSC.toClassName(dbTableName);
             var varName = DSC.toVarName(dbTableName);
             var polyName = "db-${DSC.toPolyName(dbTableName)}";
@@ -472,19 +478,26 @@ class MainApp extends PolymerElement {
                     if (column["type"] == "BOOLEAN") {
                         str +=
                         '''
-                       <paper-checkbox label="${columnName}" checked='{{${DSC.toVarName(tableName)}Map.${columnName}}}'></paper-checkbox>\n''';
+                       <paper-checkbox label="${columnName}" checked='{{${DSC.toVarName(tableName)}Map.${columnName}}}' ></paper-checkbox>\n''';
                     } else {
-                        str +=
-                        '''
-                       <paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}'></paper-input>\n''';
+                        if ([
+                            "BINT", "BINT UNSIGNED", "DOUBLE", "FLOAT", "FLOAT UNSIGNED", "INT", "INT UNSIGNED", "SINT",
+                            "SINT UNSIGNED", "TINT", "TINT UNSIGNED"
+                        ].contains(column["type"])) {
+                            str += '''<paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}' auto-validate='' pattern='[0-9]*'
+                            error-message='integers only 0-9 !'></paper-input>\n''';
+                        } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(column["type"])) {
+                            str += '''<paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}' auto-validate='' pattern='[0-9,.]*' error-message='allowed chars
+                            "0-9" "," and "." only!'></paper-input>\n''';
+                        } else {
+                            str += '''<paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}'></paper-input>\n''';
+                        }
                     }
                 }
             });
         }
         return str;
     }
-
-
 
     /**
      *
@@ -500,7 +513,11 @@ class MainApp extends PolymerElement {
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
 @HtmlImport('${tableName}.html')
-library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.lib.${tableName};
+library ${DSC.toVarName(rootPath
+                                                                                                 .split(new String.fromCharCode(92))
+                                                                                                 .last
+                                                                                                 .split(new String.fromCharCode(47))
+                                                                                                 .last)}.lib.${tableName};
 
 import 'dart:html';
 import 'dart:async';
@@ -687,7 +704,6 @@ class ${className} extends PolymerElement {
                 print("${rootPath}/web/db/poly/${tableName}.dart created");
                 print("----------------------------------------------------------");
             });
-
         }
     }
 }
