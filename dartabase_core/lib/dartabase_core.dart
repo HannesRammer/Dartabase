@@ -49,7 +49,7 @@ class DBCore {
 
     /// schema.json to Map
     static Map loadSchemaToMap(String rootPath) {
-        var schema = new File('$rootPath/db/schema.json');
+        var schema = new File("$rootPath/db/schema.json");
         schema.writeAsStringSync("", encoding: ASCII, mode: FileMode.APPEND);
         String fileText = schema.readAsStringSync(encoding: ASCII);
         if (fileText == "") {
@@ -78,7 +78,7 @@ class DBCore {
 
     /// Map to FILE
     static void mapToJsonFilePath(Map contentMap, String filePath) {
-        JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+        JsonEncoder encoder = new JsonEncoder.withIndent("  ");
         String ppContentString = encoder.convert(contentMap);
         stringToFilePath(ppContentString, filePath);
     }
@@ -104,7 +104,7 @@ class DBCore {
         } else if (mapOrString.runtimeType.toString() == "_InternalLinkedHashMap") {
             dartabaseType = mapOrString["type"];
             String defaultValue = mapOrString["default"];
-            if (defaultValue == null) {
+            if (defaultValue == null || defaultValue == "" ) {
                 return defaultForType(dartabaseType);
             } else {
                 if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(dartabaseType)) {
@@ -149,10 +149,10 @@ class DBCore {
             return false;
         } else if (["CHAR", "VARCHAR"]
                 .contains(dartabaseType)) {
-            return "";
+            return "''";
         } else if (["LTEXT", "MTEXT", "TEXT", "TTEXT"]
                 .contains(dartabaseType)) {
-            return "";
+            return "''";
         } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
                 dartabaseType)) {
             return new DateTime.now().toString();
@@ -256,12 +256,12 @@ class DBCore {
     }
 
     static void loadConfigFile(String rootPath) {
-        //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configPGSQL.json');
-        //parsedMap = DBHelper.jsonFilePathToMap('$rootPath/db/configMYSQL.json');
-        parsedMap = jsonFilePathToMap('$rootPath/db/config.json');
+        //parsedMap = DBHelper.jsonFilePathToMap("$rootPath/db/configPGSQL.json");
+        //parsedMap = DBHelper.jsonFilePathToMap("$rootPath/db/configMYSQL.json");
+        parsedMap = jsonFilePathToMap("$rootPath/db/config.json");
         adapter = parsedMap["adapter"];
         if (adapter != MySQL && adapter != SQLite && adapter != PGSQL) {
-            print("\nadapter in config file not correct!!! Should be '$MySQL' or '$PGSQL' or '$SQLite'!!!");
+            print("\nadapter in config file not correct!!! Should be \"$MySQL\" or \"$PGSQL\" or \"$SQLite\"!!!");
         }
         database = parsedMap["database"];
         username = parsedMap["username"];
@@ -275,7 +275,7 @@ class DBCore {
             ssl = false;
         }
 
-        schemaVersion = DBCore.jsonFilePathToMap('$rootPath/db/schemaVersion.json')["schemaVersion"];
+        schemaVersion = DBCore.jsonFilePathToMap("$rootPath/db/schemaVersion.json")["schemaVersion"];
     }
 
     static String toTableName(String text) {
