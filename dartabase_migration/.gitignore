@@ -5,3 +5,4 @@ db/configMySQL.json
 db/configPGSQL.json
 db/migrations/20130623043400_create_player.json
 db/migrations/20130623043401_create_player2.json
+/.packages
