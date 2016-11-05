@@ -6,17 +6,22 @@
   
   inspired by Ruby on Rails models
     
-  This requires the use of [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) 
+  This requires the setup of [Dartabase Migration](http://pub.dartlang.org/packages/dartabase_migration) 
     
-	Tested on 
-
-    Dart SDK version 1.16.0
+  Tested on 
+ 
+    Windows 10 - MYSQL & PGSQL
+    
+    Ubuntu 16.04 - MYSQL & PGSQL & SQLITE 
+ 
 	    
   Uses
   
-  MYSQL via [sqljocky](http://pub.dartlang.org/packages/sqljocky) version 0.14.1
-  
-  PGSQL via [postgresql](http://pub.dartlang.org/packages/postgresql) version 0.3.3
+  MYSQL via sqljoky2 ^0.14.4-dev
+    
+  PGSQL via postgresql ^0.3.3
+    
+  SQLITE via sqlite version ^0.3.0
 
 ------------
 ####Dartabase Documentation
@@ -29,7 +34,10 @@
   
   2.[How to create a Dartabase supported app for an existing database](https://github.com/HannesRammer/Dartabase/blob/master/dartabase_migration/how_to_from_existing.md) 
   
-------------
+####HOMEPAGE
+  [http://dartabase-app.appspot.com](http://dartabase-app.appspot.com/)
+
+-----------------
     	
 HOW TO SETUP MODEL
 ------------
