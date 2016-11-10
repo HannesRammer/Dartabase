@@ -4,24 +4,24 @@ import "dart:convert";
 import "dart:io";
 import "dart:async";
 
-import 'package:dartabase_core/dartabase_core.dart';
-import 'package:dev_string_converter/dev_string_converter.dart' as DSC;
-import 'package:postgresql/pool.dart';
-import 'package:postgresql/postgresql.dart';
+import "package:dartabase_core/dartabase_core.dart";
+import "package:dev_string_converter/dev_string_converter.dart" as DSC;
+import "package:postgresql/pool.dart";
+import "package:postgresql/postgresql.dart";
 
-import 'package:sqljocky2/sqljocky.dart';
+import "package:sqljocky2/sqljocky.dart";
 
-import 'package:sqlite/sqlite.dart' as sqlite;
+//import "package:sqlite/sqlite.dart" as sqlite;
 
-part '../tool/dbhelper.dart';
+part "../tool/dbhelper.dart";
 
-part '../tool/migrationGenerator.dart';
+part "../tool/migrationGenerator.dart";
 
-part '../tool/modelGenerator.dart';
+part "../tool/modelGenerator.dart";
 
-part '../tool/viewGenerator.dart';
+part "../tool/viewGenerator.dart";
 
-part '../tool/serverGenerator.dart';
+part "../tool/serverGenerator.dart";
 
 String uri;
 
@@ -100,8 +100,8 @@ Future connectDB(rootPath) async {
     try {
         DBCore.loadConfigFile(rootPath);
         if (DBCore.adapter == DBCore.PGSQL) {
-            uri = 'postgres://${DBCore.username}:${DBCore.password}@${DBCore
-                    .host}:${DBCore.port}/${DBCore.database}';
+            uri = "postgres://${DBCore.username}:${DBCore.password}@${DBCore
+                    .host}:${DBCore.port}/${DBCore.database}";
             if (DBCore.ssl) {
                 uri += "?sslmode=require";
             }
@@ -132,7 +132,7 @@ Future connectDB(rootPath) async {
             var sqlitePath = DBCore.sqlitePath;
             conn = new sqlite.Database(sqlitePath);
         }
-        print('connections established.');
+        print("connections established.");
 
         return conn;
     } catch (e) {
@@ -191,7 +191,7 @@ Future serverStatus(String rootPath) async {
 //TODO move to helper
 Future<String> migrate(conn, fileId) async {
     var result;
-    DBCore.parsedMapping = DBCore.jsonFilePathToMap('bin/../tool/typeMapper${DBCore.adapter}.json');
+    DBCore.parsedMapping = DBCore.jsonFilePathToMap("bin/../tool/typeMapper${DBCore.adapter}.json");
     Directory directory = new Directory("${DBCore.rootPath}/db/migrations");
     files = directory.listSync()
         ..sort((a, b) => a.path.compareTo(b.path));
@@ -240,7 +240,7 @@ Future<String> migrate(conn, fileId) async {
 
 void doExit(bool exitAfter) {
     if (exitAfter) {
-        print('exit dartabase.');
+        print("exit dartabase.");
         exit(0);
     }
 }
@@ -252,7 +252,7 @@ void doClose(conn) {
 
     } else if (DBCore.adapter == DBCore.SQLite) {
         conn.close();
-        print(' db connection closed.');
+        print(" db connection closed.");
     }
 }
 
@@ -264,7 +264,7 @@ Future <String> doFile(conn, fileId) async {
     if (DBCore.parsedMap != null) {
         await createTable(conn, fileId);
     } else {
-        print("migration direction '$direction' not specified in file ${files[fileId].path}");
+        print("migration direction \"$direction\" not specified in file ${files[fileId].path}");
     }
     return "done";
 //load with next file after this has finished
@@ -280,7 +280,7 @@ String notNull(String notNull) {
 
 String defaultValue(String dv) {
     if (dv != null && dv != "") {
-        return " DEFAULT '${dv}' ";
+        return " DEFAULT \"${dv}\" ";
     } else {
         return "";
     }
@@ -340,7 +340,7 @@ Future createTable(conn, fileId) async {
             }
         }
     } else {
-//print("\nNothing to add since 'createTable' is not specified in json");
+//print("\nNothing to add since "createTable" is not specified in json");
         await createColumn(conn, fileId);
     }
 }
@@ -359,7 +359,7 @@ Future createColumn(conn, fileId) async {
             }
         }
     } else {
-//print("\nNothing to add since 'createColumn' is not specified in json");
+//print("\nNothing to add since "createColumn" is not specified in json");
         await removeColumn(conn, fileId);
     }
 }
@@ -382,7 +382,7 @@ Future removeColumn(conn, fileId) async {
             }
         }
     } else {
-//print("\nNothing to remove since 'removeColumn' is not specified in json");
+//print("\nNothing to remove since "removeColumn" is not specified in json");
         await createRelation(conn, fileId);
     }
 }
@@ -429,7 +429,7 @@ Future createRelation(conn, fileId) async {
             print("\nSCHEMA createRelation Finish: Table $relationTable");
         }
     } else {
-//print("\nNothing to relate since 'createRelation' is not specified in json");
+//print("\nNothing to relate since "createRelation" is not specified in json");
         await removeRelation(conn, fileId);
     }
 }
@@ -452,7 +452,7 @@ Future removeRelation(conn, fileId) async {
             }
         }
     } else {
-        //print("\nNothing to remove since 'removeRelation' is not specified in json");
+        //print("\nNothing to remove since "removeRelation" is not specified in json");
         await removeTable(conn, fileId);
     }
 }
@@ -472,13 +472,13 @@ Future removeTable(conn, fileId) async {
             }
         }
     } else {
-        //print("\nNothing to remove since 'removeTable' is not specified in json");
+        //print("\nNothing to remove since "removeTable" is not specified in json");
     }
 
     print("\n-----------------------End migration-----------------------");
     var filePath = files[fileId].path;
     String schemaVersion = filePath.split("migrations")[1].replaceAll("\\", "");
-    DBCore.mapToJsonFilePath({"schemaVersion": schemaVersion}, '${DBCore.rootPath}/db/schemaVersion.json');
+    DBCore.mapToJsonFilePath({"schemaVersion": schemaVersion}, "${DBCore.rootPath}/db/schemaVersion.json");
     if (direction == "UP") {
         fileId++;
         if (fileId < files.length) {
@@ -498,11 +498,11 @@ Future removeTable(conn, fileId) async {
             } else {
                 var filePath = files[fileId].path;
                 schemaVersion = filePath.split("migrations")[1].replaceAll("\\", "");
-                DBCore.mapToJsonFilePath({ "schemaVersion": schemaVersion}, '${DBCore.rootPath}/db/schemaVersion.json');
+                DBCore.mapToJsonFilePath({ "schemaVersion": schemaVersion}, "${DBCore.rootPath}/db/schemaVersion.json");
                 print("goal migration reached");
             }
         } else {
-            DBCore.mapToJsonFilePath({ "schemaVersion": ""}, '${DBCore.rootPath}/db/schemaVersion.json');
+            DBCore.mapToJsonFilePath({ "schemaVersion": ""}, "${DBCore.rootPath}/db/schemaVersion.json");
             print("goal migration reached");
         }
     }
@@ -517,8 +517,8 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
 
         if (DBCore.adapter == DBCore.PGSQL) {
             //query = await conn.query("SELECT 1").toList();
-            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='public' AND TABLE_CATALOG='${DBCore
-                    .database}';";
+            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = \"BASE TABLE\" AND TABLE_SCHEMA=\"public\" AND TABLE_CATALOG=\"${DBCore
+                    .database}\";";
             print(sql);
             var results = await conn.query(sql).toList();
 
@@ -528,8 +528,8 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
             });
         } else if (DBCore.adapter == DBCore.MySQL) {
             //conn = await pool.ping();
-            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='${DBCore
-                    .database}';";
+            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = \"BASE TABLE\" AND TABLE_SCHEMA=\"${DBCore
+                    .database}\";";
             print(sql);
             var results = await conn.query(sql);
 
@@ -540,7 +540,7 @@ Future extractExistingDatabaseTableNames(String rootPath) async {
         } else if (DBCore.adapter == DBCore.SQLite) {
             //TODO
             if (conn != null) {
-                String sql = "SELECT name FROM sqlite_master WHERE type='table';";
+                String sql = "SELECT name FROM sqlite_master WHERE type=\"table\";";
                 print(sql);
                 var count = await conn.execute(sql, callback: (row) {
                     print("${row[0]}");
@@ -567,9 +567,9 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
         DBCore.loadConfigFile(rootPath);
         conn = await connectDB(rootPath);
         if (DBCore.adapter == DBCore.PGSQL) {
-            Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/pGSQLToType.json');
-            String sql = "SELECT column_name,data_type,is_nullable,column_default FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='${tableName}' AND TABLE_CATALOG='${DBCore
-                    .database}';";
+            Map sqlToDartabase = DBCore.jsonFilePathToMap("bin/../tool/pGSQLToType.json");
+            String sql = "SELECT column_name,data_type,is_nullable,column_default FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=\"${tableName}\" AND TABLE_CATALOG=\"${DBCore
+                    .database}\";";
             print(sql);
             var results = await conn.query(sql).toList();
             await results.forEach((row) {
@@ -592,7 +592,7 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
             });
         } else if (DBCore.adapter == DBCore.MySQL) {
             Map sqlToDartabase = DBCore.jsonFilePathToMap(
-                    'bin/../tool/mySQLToType.json');
+                    "bin/../tool/mySQLToType.json");
             String sql = "DESC ${DBCore.database}.${tableName};";
             print(sql);
             var results = await conn.query(sql);
@@ -619,8 +619,8 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
         } else if (DBCore.adapter == DBCore.SQLite) {
             //TODO
             if (conn != null) {
-                Map sqlToDartabase = DBCore.jsonFilePathToMap('bin/../tool/sQLiteToType.json');
-                String sqlStatement = "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';";
+                Map sqlToDartabase = DBCore.jsonFilePathToMap("bin/../tool/sQLiteToType.json");
+                String sqlStatement = "SELECT sql FROM sqlite_master WHERE type = \"table\" AND name = \"${tableName}\";";
                 String result = "";
 // Iterating over a result set
                 var count = await conn.execute(sqlStatement, callback: (row) {

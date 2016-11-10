@@ -41,10 +41,10 @@ Future main() async {
 
     for (var name in projectMapping.keys) {
         Map schemaV = DBCore.jsonFilePathToMap("${projectMapping[name]}/db/schemaVersion.json");
-        if (schemaV['schemaVersion'] == "" || schemaV['schemaVersion'] == null) {
-            //print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
+        if (schemaV["schemaVersion"] == "" || schemaV["schemaVersion"] == null) {
+            //print("$name *:* ${projectMapping[name]} *:* ${schemaV["schemaVersion"]}");
         } else {
-            print("$name *:* ${projectMapping[name]} *:* ${schemaV['schemaVersion']}");
+            print("$name *:* ${projectMapping[name]} *:* ${schemaV["schemaVersion"]}");
         }
     }
 
@@ -62,7 +62,7 @@ Future main() async {
             projectDoesntExistsInProjectMapping = !projectExistsInProjectMapping;
 
             if (projectDoesntExistsInProjectMapping) {
-                print("Project '$line' unknown to dartabase, maybe you forgot to initiate your project with dbInit.dart ");
+                print("Project \"$line\" unknown to dartabase, maybe you forgot to initiate your project with dbInit.dart ");
             } else if (projectExistsInProjectMapping) {
                 state = 1;
                 String rootPath = projectMapping[line];
@@ -75,7 +75,7 @@ Future main() async {
                     print("0 : revert all");
                     for (int i = 0; i < files.length; i++) {
                         String version = files[i].path.split("migrations")[1].replaceAll("\\", "");
-                        if (rootSchema['schemaVersion'] == version) {
+                        if (rootSchema["schemaVersion"] == version) {
                             print("${i + 1} : $version <--- current version");
                         } else {
                             print("${i + 1} : $version");

@@ -1,11 +1,11 @@
-@HtmlImport('serverStatus.html')
+@HtmlImport("serverStatus.html")
 library dartabase.poly.serverStatus;
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/paper_material.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/paper_material.dart";
 
-@PolymerRegister('custom-server-status')
+@PolymerRegister("custom-server-status")
 class ServerStatus extends PolymerElement {
     @property
     String status;

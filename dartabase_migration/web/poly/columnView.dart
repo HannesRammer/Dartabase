@@ -1,17 +1,17 @@
-@HtmlImport('columnView.html')
+@HtmlImport("columnView.html")
 library dartabase.poly.columnView;
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import'package:polymer_elements/paper_material.dart';
-import'package:polymer_elements/paper_input.dart';
-import 'package:polymer_elements/paper_dropdown_menu.dart';
-import 'package:polymer_elements/paper_listbox.dart';
-import 'package:polymer_elements/paper_item.dart';
-import 'package:polymer_elements/paper_checkbox.dart';
-import 'package:polymer_elements/paper_button.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import"package:polymer_elements/paper_material.dart";
+import"package:polymer_elements/paper_input.dart";
+import "package:polymer_elements/paper_dropdown_menu.dart";
+import "package:polymer_elements/paper_listbox.dart";
+import "package:polymer_elements/paper_item.dart";
+import "package:polymer_elements/paper_checkbox.dart";
+import "package:polymer_elements/paper_button.dart";
 
-@PolymerRegister('custom-column-view')
+@PolymerRegister("custom-column-view")
 class ColumnView extends PolymerElement {
 
     ColumnView.created() : super.created();

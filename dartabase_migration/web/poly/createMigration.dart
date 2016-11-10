@@ -1,20 +1,20 @@
-@HtmlImport('createMigration.html')
+@HtmlImport("createMigration.html")
 library dartabase.poly.createMigration;
 
 import "dart:convert" show JSON;
 import "dart:html" as dom;
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/iron_pages.dart';
-import 'package:polymer_elements/iron_form.dart';
-import 'package:polymer_elements/paper_toast.dart';
-import 'package:polymer_elements/paper_button.dart';
-import 'package:polymer_elements/paper_material.dart';
-import 'package:polymer_elements/paper_input.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/iron_pages.dart";
+import "package:polymer_elements/iron_form.dart";
+import "package:polymer_elements/paper_toast.dart";
+import "package:polymer_elements/paper_button.dart";
+import "package:polymer_elements/paper_material.dart";
+import "package:polymer_elements/paper_input.dart";
 import "package:polymer_elements/paper_tabs.dart";
 import "package:polymer_elements/paper_tab.dart";
-import 'package:dev_string_converter/dev_string_converter.dart';
+import "package:dev_string_converter/dev_string_converter.dart";
 import "../poly/createMigrationTable.dart";
 import "../poly/createMigrationColumn.dart";
 import "../poly/createMigrationRelation.dart";
@@ -24,7 +24,7 @@ import "../poly/removeMigrationTable.dart";
 
 import "../poly/pm.dart";
 
-@PolymerRegister('custom-create-migration')
+@PolymerRegister("custom-create-migration")
 class CreateMigration extends PolymerElement {
     @Property(notify: true)
     Project project;
@@ -86,7 +86,7 @@ class CreateMigration extends PolymerElement {
         });
 
         // POST the data to the server
-        var url = "http://127.0.0.1:8075/createMigration?migrationActions=${JSON.encode(project.migrationActions).replaceAll('[', '%5B').replaceAll(']', '%5D')}&projectRootPath=${project.path}";
+        var url = "http://127.0.0.1:8075/createMigration?migrationActions=${Uri.encodeQueryComponent(JSON.encode(project.migrationActions))}&projectRootPath=${Uri.encodeQueryComponent(project.path)}";
         request.open("POST", url);
 
         request.send(); // perform the async POST
@@ -99,7 +99,7 @@ class CreateMigration extends PolymerElement {
     }
 
     updateView(String responseText) {
-        PaperToast pt = Polymer.dom($['toast1']).querySelector("#toast1");
+        PaperToast pt = Polymer.dom($["toast1"]).querySelector("#toast1");
         pt.text = responseText;
         pt.show(pt.text);
         set("project.migrationActions", {

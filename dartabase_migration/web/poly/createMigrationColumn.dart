@@ -1,19 +1,19 @@
-@HtmlImport('createMigrationColumn.html')
+@HtmlImport("createMigrationColumn.html")
 library dartabase.poly.createMigrationColumn;
 
-import 'dart:async';
+import "dart:async";
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/paper_dropdown_menu.dart';
-import 'package:polymer_elements/paper_listbox.dart';
-import 'package:polymer_elements/paper_item.dart';
-import 'package:polymer_elements/paper_button.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/paper_dropdown_menu.dart";
+import "package:polymer_elements/paper_listbox.dart";
+import "package:polymer_elements/paper_item.dart";
+import "package:polymer_elements/paper_button.dart";
 import "../poly/columnView.dart";
 import "../poly/pm.dart";
 
 
-@PolymerRegister('custom-create-migration-column')
+@PolymerRegister("custom-create-migration-column")
 class CreateMigrationColumn extends PolymerElement {
     @Property(notify: true)
     Project project;
@@ -47,7 +47,7 @@ class CreateMigrationColumn extends PolymerElement {
     @reflectable
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
         Map table = {
             "name":"",
             "columns" : [ {
@@ -69,7 +69,7 @@ class CreateMigrationColumn extends PolymerElement {
                 model.index);
     }
 
-    @Observe('selectedTable')
+    @Observe("selectedTable")
     Future updateColumns(String newSelectedTable) async {
         var existingColumns = await project.getColumns(newSelectedTable);
         set("existingColumns", existingColumns);
@@ -80,7 +80,7 @@ class CreateMigrationColumn extends PolymerElement {
     void cancelTable(event, [_]) {
         set("project.migrationActions.createColumns", new List());
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
     }
 
     @reflectable

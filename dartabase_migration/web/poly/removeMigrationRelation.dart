@@ -1,18 +1,18 @@
-@HtmlImport('removeMigrationRelation.html')
+@HtmlImport("removeMigrationRelation.html")
 library dartabase.poly.removeMigrationRelation;
 
-import 'dart:async';
+import "dart:async";
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/paper_dropdown_menu.dart';
-import 'package:polymer_elements/paper_listbox.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/paper_dropdown_menu.dart";
+import "package:polymer_elements/paper_listbox.dart";
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_button.dart";
 
 import "../poly/pm.dart";
 
-@PolymerRegister('custom-remove-migration-relation')
+@PolymerRegister("custom-remove-migration-relation")
 class RemoveMigrationRelation extends PolymerElement {
     @Property(notify: true)
     Project project;
@@ -29,7 +29,7 @@ class RemoveMigrationRelation extends PolymerElement {
     @reflectable
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
         Map relation = {"selectedRelation":""};
         add("project.migrationActions.removeRelations", relation);
         List names = await project.getRelationTables();
@@ -40,7 +40,7 @@ class RemoveMigrationRelation extends PolymerElement {
     void cancelTable(event, [_]) {
         set("project.migrationActions.removeRelations", new List());
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
 
     }
 

@@ -1,18 +1,18 @@
-@HtmlImport('createMigrationRelation.html')
+@HtmlImport("createMigrationRelation.html")
 library dartabase.poly.createMigrationRelation;
 
-import 'dart:async';
+import "dart:async";
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/paper_dropdown_menu.dart';
-import 'package:polymer_elements/paper_listbox.dart';
-import 'package:polymer_elements/paper_item.dart';
-import 'package:polymer_elements/paper_button.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/paper_dropdown_menu.dart";
+import "package:polymer_elements/paper_listbox.dart";
+import "package:polymer_elements/paper_item.dart";
+import "package:polymer_elements/paper_button.dart";
 import "../poly/columnView.dart";
 import "../poly/pm.dart";
 
-@PolymerRegister('custom-create-migration-relation')
+@PolymerRegister("custom-create-migration-relation")
 class CreateMigrationRelation extends PolymerElement {
     @Property(notify: true)
     Project project;
@@ -31,7 +31,7 @@ class CreateMigrationRelation extends PolymerElement {
     @reflectable
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
         Map relation = {"selectedTableOne":"","selectedTableTwo":""};
         add("project.migrationActions.createRelations", relation);
         set("existingTableNamesOne", await project.getTableNamesWithoutRelation());
@@ -44,7 +44,7 @@ class CreateMigrationRelation extends PolymerElement {
         set("selectedTableOne", "");
         set("selectedTableTwo", "");
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
 
     }
 }

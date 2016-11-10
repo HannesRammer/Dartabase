@@ -100,7 +100,7 @@ class DBHelper {
     static void printQueryCompleted(String type, result, String sql) {
         print("\ncompleted SQL Query: $sql");
         print("DB returned: $result");
-        DBCore.mapToJsonFilePath(schema, '${DBCore.rootPath}/db/schema.json');
+        DBCore.mapToJsonFilePath(schema, "${DBCore.rootPath}/db/schema.json");
         print("Schema: $schema");
         print("${type} Finish");
     }
@@ -145,10 +145,8 @@ class DBHelper {
         String sql = "";
         //sql += "CREATE OR REPLACE FUNCTION create_timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS \$\$ BEGIN NEW.created_at = CURRENT_TIMESTAMP; RETURN NEW; END; \$\$; ";
         //sql += "CREATE TRIGGER create_trigger BEFORE INSERT ON $tableName FOR EACH ROW EXECUTE PROCEDURE create_timestamp();";
-        sql +=
-        "CREATE OR REPLACE FUNCTION update_timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS \$\$ BEGIN NEW.updated_at = CURRENT_TIMESTAMP; RETURN NEW; END; \$\$; ";
-        sql +=
-        "CREATE TRIGGER update_trigger BEFORE UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE update_timestamp();";
+        sql += "CREATE OR REPLACE FUNCTION update_timestamp() RETURNS TRIGGER LANGUAGE plpgsql AS \$\$ BEGIN NEW.updated_at = CURRENT_TIMESTAMP; RETURN NEW; END; \$\$; ";
+        sql += "CREATE TRIGGER update_trigger BEFORE UPDATE ON $tableName FOR EACH ROW EXECUTE PROCEDURE update_timestamp();";
         return sql;
     }
 
@@ -229,8 +227,7 @@ class DBHelper {
 
         if (DBCore.adapter == DBCore.SQLite) {
             var existingSqlStatement;
-            var count = await conn
-                    .execute("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = '${tableName}';", callback: (row) {
+            var count = await conn.execute("SELECT sql FROM sqlite_master WHERE type = \"table\" AND name = \"${tableName}\";", callback: (row) {
                 existingSqlStatement = row[0].toLowerCase();
             });
             String split1 = "";

@@ -20,7 +20,7 @@ class CreateMigrationTable extends PolymerElement {
     @reflectable
     addTable(event, [_]) {
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
         Map table = {
             "name":"",
             "columns" : []
@@ -50,7 +50,7 @@ class CreateMigrationTable extends PolymerElement {
     void cancelTable(event, [_]) {
         set("project.migrationActions.createTables", new List());
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
     }
 
     @reflectable

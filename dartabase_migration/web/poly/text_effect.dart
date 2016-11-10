@@ -1,28 +1,28 @@
-@HtmlImport('text_effect.html')
+@HtmlImport("text_effect.html")
 library dartabase.poly.textEffect;
 
 import "dart:convert" show JSON;
 import "dart:html" as dom;
 import "dart:math";
-import 'dart:async';
+import "dart:async";
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/iron_pages.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/iron_pages.dart";
 import "package:polymer_elements/paper_listbox.dart";
 import "package:polymer_elements/paper_toast.dart";
 import "package:polymer_elements/paper_dropdown_menu.dart";
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_checkbox.dart";
-import 'package:polymer_elements/paper_material.dart';
-import 'package:polymer_elements/paper_button.dart';
-import 'package:polymer_elements/paper_icon_button.dart';
-import 'package:polymer_elements/paper_input.dart';
-import 'package:polymer_elements/paper_radio_group.dart';
-import 'package:polymer_elements/paper_radio_button.dart';
-import 'package:polymer_elements/iron_form.dart';
+import "package:polymer_elements/paper_material.dart";
+import "package:polymer_elements/paper_button.dart";
+import "package:polymer_elements/paper_icon_button.dart";
+import "package:polymer_elements/paper_input.dart";
+import "package:polymer_elements/paper_radio_group.dart";
+import "package:polymer_elements/paper_radio_button.dart";
+import "package:polymer_elements/iron_form.dart";
 
-@PolymerRegister('custom-text-effect')
+@PolymerRegister("custom-text-effect")
 class TextEffect extends PolymerElement {
     @Property(notify: true)
     num width = 5;
@@ -187,7 +187,7 @@ class TextEffect extends PolymerElement {
 
     ///////////////////////////////////////
     @reflectable
-//converts string 'rgb(0,0,0)' to string '0,0,0'
+//converts string "rgb(0,0,0)" to string "0,0,0"
     String rgbString2NumbersString(String rgb) {
         return rgb.split("(")[1].split(")")[0];
     }

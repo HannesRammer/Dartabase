@@ -1,12 +1,12 @@
-@HtmlImport('migrationCreateTable.html')
+@HtmlImport("migrationCreateTable.html")
 library dartabase.poly.migrationCreateTable;
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/paper_input.dart';
-import 'package:polymer_elements/paper_material.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/paper_input.dart";
+import "package:polymer_elements/paper_material.dart";
 
-@PolymerRegister('custom-migration-create-table')
+@PolymerRegister("custom-migration-create-table")
 class MigrationCreateTable extends PolymerElement {
     @property
     String tableName;

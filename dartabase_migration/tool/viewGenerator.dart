@@ -76,8 +76,8 @@ class ViewGenerator {
 // Copyright (c) 2016, Hannes.Rammer@gmail.com. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'poly/main_app.dart';
-import 'package:polymer/polymer.dart';
+import "poly/main_app.dart";
+import "package:polymer/polymer.dart";
 
 /// [MainApp] used!
 main() async {
@@ -200,29 +200,29 @@ main() async {
      *
      */
     static void createMainPolyDART(List dbTableNames, String rootPath) {
-        String str = "['${dbTableNames.join("','")}']";
+        String str = "[\"${dbTableNames.join("\",\"")}\"]";
         String mainPolyDART = '''
 // Copyright (c) 2016, Hannes.Rammer@gmail.com. All rights reserved. Use of this source code
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
-@HtmlImport('main_app.html')
+@HtmlImport("main_app.html")
 library ${DSC.toVarName(rootPath
                                                                  .split(new String.fromCharCode(92))
                                                                  .last
                                                                  .split(new String.fromCharCode(47))
                                                                  .last)}.poly.main_app;
 
-import 'dart:html';
+import "dart:html";
 
-import 'package:polymer_elements/paper_input.dart';
-import 'package:polymer_elements/paper_checkbox.dart';
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
+import "package:polymer_elements/paper_input.dart";
+import "package:polymer_elements/paper_checkbox.dart";
+import "package:polymer/polymer.dart";
+import "package:web_components/web_components.dart";
 
 ${ generateImportString(dbTableNames)}
 
 /// Uses [PaperInput]
-@PolymerRegister('main-app')
+@PolymerRegister("main-app")
 class MainApp extends PolymerElement {
    /// Constructor used to create instance of MainApp.
    MainApp.created() : super.created();
@@ -255,7 +255,7 @@ class MainApp extends PolymerElement {
        a.setInnerHtml(modelName);
        a.onClick.listen((MouseEvent event) {
            Element target = event.target;
-           target.classes.toggle('active');
+           target.classes.toggle("active");
            container.classes.add("main-app");
            create.classes.add("main-app");
            container.classes.toggle("hidden");
@@ -293,7 +293,7 @@ class MainApp extends PolymerElement {
     static String generateImportString(dbTableNames) {
         String str = "";
         for (String dbTableName in dbTableNames) {
-            str += "import '${DSC.toTableName(dbTableName)}.dart';\n";
+            str += "import \"${DSC.toTableName(dbTableName)}.dart\";\n";
         }
         return str;
     }
@@ -311,7 +311,7 @@ class MainApp extends PolymerElement {
         str += '''
            ${className} ${varName}Container = new Element.tag("${polyName}");
            ${className} ${varName}Create = new Element.tag("${polyName}");
-           LIElement li${className} = createLink('${dbTableName}',${varName}Create, ${varName}Container, colors[${colorId}]);
+           LIElement li${className} = createLink("${dbTableName}",${varName}Create, ${varName}Container, colors[${colorId}]);
            ${className} ${varName} = createContent(${varName}Create, ${varName}Container, colors[${colorId}]);
            menu.append(li${className});
            querySelector("#project_content").append(${varName}Create);
@@ -468,29 +468,30 @@ class MainApp extends PolymerElement {
                     if (column["type"] == "BOOLEAN") {
                         str +=
                         '''
-                       <paper-checkbox label="${columnName}" checked='{{${DSC.toVarName(tableName)}Map.${columnName}}}' disabled></paper-checkbox>\n''';
+                       <paper-checkbox label="${columnName}" checked="{{${DSC.toVarName(tableName)}Map.${columnName}}}" disabled></paper-checkbox>\n''';
                     } else {
                         str +=
                         '''
-                       <paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}' disabled></paper-input>\n''';
+                       <paper-input label="${columnName}" value="{{${DSC.toVarName(tableName)}Map.${columnName}}}" disabled></paper-input>\n''';
                     }
                 } else {
                     if (column["type"] == "BOOLEAN") {
                         str +=
                         '''
-                       <paper-checkbox label="${columnName}" checked='{{${DSC.toVarName(tableName)}Map.${columnName}}}' ></paper-checkbox>\n''';
+                       <paper-checkbox label="${columnName}" checked="{{${DSC.toVarName(tableName)}Map.${columnName}}}" ></paper-checkbox>\n''';
                     } else {
                         if ([
                             "BINT", "BINT UNSIGNED", "DOUBLE", "FLOAT", "FLOAT UNSIGNED", "INT", "INT UNSIGNED", "SINT",
                             "SINT UNSIGNED", "TINT", "TINT UNSIGNED"
                         ].contains(column["type"])) {
-                            str += '''<paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}' auto-validate='' pattern='[0-9]*'
-                            error-message='integers only 0-9 !'></paper-input>\n''';
+                            str += '''<paper-input label="${columnName}" value="{{${DSC.toVarName(tableName)}Map.${columnName}}}" auto-validate="" allowed-pattern="[0-9]"
+                            error-message="integers only 0-9 !"></paper-input>\n''';
                         } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(column["type"])) {
-                            str += '''<paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}' auto-validate='' pattern='[0-9,.]*' error-message='allowed chars
-                            "0-9" "," and "." only!'></paper-input>\n''';
+                            str += '''<paper-input label="${columnName}" value="{{${DSC.toVarName(tableName)}Map.${columnName}}}" auto-validate="" allowed-pattern="[0-9,.]" error-message="allowed
+                            chars
+                            "0-9" "," and "." only!"></paper-input>\n''';
                         } else {
-                            str += '''<paper-input label="${columnName}" value='{{${DSC.toVarName(tableName)}Map.${columnName}}}'></paper-input>\n''';
+                            str += '''<paper-input label="${columnName}" value="{{${DSC.toVarName(tableName)}Map.${columnName}}}"></paper-input>\n''';
                         }
                     }
                 }
@@ -512,27 +513,27 @@ class MainApp extends PolymerElement {
 // Copyright (c) 2016, Hannes.Rammer@gmail.com. All rights reserved. Use of this source code
 
 // is governed by a BSD-style license that can be found in the LICENSE file.
-@HtmlImport('${tableName}.html')
+@HtmlImport("${tableName}.html")
 library ${DSC.toVarName(rootPath
                                                                                                  .split(new String.fromCharCode(92))
                                                                                                  .last
                                                                                                  .split(new String.fromCharCode(47))
                                                                                                  .last)}.lib.${tableName};
 
-import 'dart:html';
-import 'dart:async';
-import 'dart:convert';
+import "dart:html";
+import "dart:async";
+import "dart:convert";
 
-import 'package:polymer_elements/paper_input.dart';
-import 'package:polymer_elements/paper_button.dart';
-import 'package:polymer_elements/paper_checkbox.dart';
-import 'package:polymer_elements/iron_form.dart';
-import 'package:polymer/polymer.dart';
-import 'package:web_components/web_components.dart';
-import '${tableName}.dart';
+import "package:polymer_elements/paper_input.dart";
+import "package:polymer_elements/paper_button.dart";
+import "package:polymer_elements/paper_checkbox.dart";
+import "package:polymer_elements/iron_form.dart";
+import "package:polymer/polymer.dart";
+import "package:web_components/web_components.dart";
+import "${tableName}.dart";
 
 /// Uses [PaperInput]
-@PolymerRegister('${polyName}')
+@PolymerRegister("${polyName}")
 class ${className} extends PolymerElement {
 
    @Property(notify: true)
@@ -632,7 +633,7 @@ class ${className} extends PolymerElement {
                set("state", "show");
            }
        });
-       var url = "http://127.0.0.1:8071/save${className}?${tableName}=\${JSON.encode(${varName}Map)}";
+       var url = "http://127.0.0.1:8071/save${className}?${tableName}=\${Uri.encodeQueryComponent(JSON.encode(${varName}Map))}";
 
        request.open("POST", url);
        request.send();
@@ -672,7 +673,7 @@ class ${className} extends PolymerElement {
                window.location.reload();
            }
        });
-       var url = "http://127.0.0.1:8071/save${className}?${tableName}=\${JSON.encode(${varName}Map)}";
+       var url = "http://127.0.0.1:8071/save${className}?${tableName}=\${Uri.encodeQueryComponent(JSON.encode(${varName}Map))}";
 
        request.open("POST", url);
        request.send();
@@ -688,7 +689,7 @@ class ${className} extends PolymerElement {
 
    /// Called when an instance of main-app is inserted into the DOM.
    attached() {
-       customStyle['--my-toolbar-color'] = color;
+       customStyle["--my-toolbar-color"] = color;
        updateStyles();
        super.attached();
    }

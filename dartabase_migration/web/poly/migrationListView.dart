@@ -1,11 +1,11 @@
-@HtmlImport('migrationListView.html')
+@HtmlImport("migrationListView.html")
 library dartabase.poly.migrationListView;
 
 import "dart:html";
 import "dart:async";
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
 import "package:polymer_elements/paper_material.dart";
 import "package:polymer_elements/paper_button.dart";
 import "package:polymer_elements/paper_listbox.dart";
@@ -16,9 +16,9 @@ import "package:polymer_elements/paper_tabs.dart";
 import "package:polymer_elements/paper_tab.dart";
 
 import "../poly/migrationView.dart";
-import '../poly/pm.dart';
+import "../poly/pm.dart";
 
-@PolymerRegister('custom-migration-list-view')
+@PolymerRegister("custom-migration-list-view")
 class MigrationListView extends PolymerElement {
     @Property(notify: true)
     Project project;
@@ -36,8 +36,8 @@ class MigrationListView extends PolymerElement {
         var model = new DomRepeatModel.fromEvent(event);
         var index = model.item.index;
         project.setSelectedMigrationByIndex(model.item.index);
-        this.set('project.selectedMigration', project.selectedMigration);
-        this.notifyPath('project.selectedMigration', project.selectedMigration);
+        this.set("project.selectedMigration", project.selectedMigration);
+        this.notifyPath("project.selectedMigration", project.selectedMigration);
         var activeButton = querySelector(".selected");
         if (activeButton != null) {
             activeButton.classes.toggle("selected");
@@ -48,8 +48,7 @@ class MigrationListView extends PolymerElement {
 
     @reflectable
     Future runMigration(event, [_]) async {
-        var url = "http://127.0.0.1:8075/runMigration?projectRootPath=${project
-                .path}&direction=${project.migrationDirection}";
+        var url = "http://127.0.0.1:8075/runMigration?projectRootPath=${Uri.encodeQueryComponent(project.path)}&direction=${Uri.encodeQueryComponent(project.migrationDirection)}";
         if (project.migrationDirection == "UP") {
             url += "&index=${project.selectedMigration.index - 1}";
         } else if (project.migrationDirection == "DOWN") {
@@ -60,13 +59,13 @@ class MigrationListView extends PolymerElement {
     }
 
     Future updateView(responseText) async {
-        PaperToast test = Polymer.dom($['toast1']).querySelector("#toast1");
+        PaperToast test = Polymer.dom($["toast1"]).querySelector("#toast1");
 
         Map migrations = await project.requestMigrations();
 
-        //this.set('project.migrations', null);
-        this.set('project.migrations', migrations);
-        //this.notifyPath('project.migrations', migrations);
+        //this.set("project.migrations", null);
+        this.set("project.migrations", migrations);
+        //this.notifyPath("project.migrations", migrations);
         test.text = responseText + project.selectedMigration.toString();
         test.show(test.text);
     }

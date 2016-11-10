@@ -16,7 +16,7 @@ class ModelGenerator {
         });
 
         String file = '''
-import 'package:dartabase_model/dartabase_model.dart';
+import "package:dartabase_model/dartabase_model.dart";
 class ${className} extends Model{
 
  ${await generateDynamicFields(columnsMap)}

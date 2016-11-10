@@ -1,28 +1,28 @@
-@HtmlImport('createProject.html')
+@HtmlImport("createProject.html")
 library dartabase.poly.createProject;
 
 import "dart:convert" show JSON;
 import "dart:html" as dom;
-import 'dart:async';
+import "dart:async";
 
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/iron_pages.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/iron_pages.dart";
 import "package:polymer_elements/paper_listbox.dart";
 import "package:polymer_elements/paper_toast.dart";
 import "package:polymer_elements/paper_dropdown_menu.dart";
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_checkbox.dart";
-import 'package:polymer_elements/paper_material.dart';
-import 'package:polymer_elements/paper_button.dart';
-import 'package:polymer_elements/paper_icon_button.dart';
-import 'package:polymer_elements/paper_input.dart';
-import 'package:polymer_elements/paper_radio_group.dart';
-import 'package:polymer_elements/paper_radio_button.dart';
-import 'package:polymer_elements/iron_form.dart';
+import "package:polymer_elements/paper_material.dart";
+import "package:polymer_elements/paper_button.dart";
+import "package:polymer_elements/paper_icon_button.dart";
+import "package:polymer_elements/paper_input.dart";
+import "package:polymer_elements/paper_radio_group.dart";
+import "package:polymer_elements/paper_radio_button.dart";
+import "package:polymer_elements/iron_form.dart";
 
-@PolymerRegister('custom-create-project')
+@PolymerRegister("custom-create-project")
 class CreateProject extends PolymerElement {
     @Property(notify: true)
     String name;
@@ -61,7 +61,7 @@ class CreateProject extends PolymerElement {
     @reflectable
     Future initiateMigration(dom.Event event, [_])  async{
         //String config = "&adapter=${adapter}&username=${username}&host=${password}&database=${database}&password=${password}&port=${port}&ssl${ssl}";
-        var url = "http://127.0.0.1:8075/initiateMigration?name=${name}&projectRootPath=${path}&config=${JSON.encode(config)}";
+        var url = "http://127.0.0.1:8075/initiateMigration?name=${Uri.encodeQueryComponent(name)}&projectRootPath=${Uri.encodeQueryComponent(path)}&config=${Uri.encodeQueryComponent(JSON.encode(config))}";
         var responseText = await dom.HttpRequest.getString(url);
         generateSchema(event);
         generateModels(event);
@@ -80,7 +80,7 @@ class CreateProject extends PolymerElement {
             }
         });
         // POST the data to the server
-        var url = "http://127.0.0.1:8075/generateModels?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/generateModels?projectRootPath=${Uri.encodeQueryComponent(path)}";
         request.open("POST", url);
         request.send(); // perform the async POST
         await request.onLoadEnd.first;
@@ -98,7 +98,7 @@ class CreateProject extends PolymerElement {
             }
         });
         // POST the data to the server
-        var url = "http://127.0.0.1:8075/generateSchema?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/generateSchema?projectRootPath=${Uri.encodeQueryComponent(path)}";
         request.open("POST", url);
         request.send(); // perform the async POST
         await request.onLoadEnd.first;
@@ -106,7 +106,7 @@ class CreateProject extends PolymerElement {
 
     initiationCompleted(responseText) {
         print(responseText.toString());
-        PaperToast pt = Polymer.dom($['toast1']).querySelector("#toast1");
+        PaperToast pt = Polymer.dom($["toast1"]).querySelector("#toast1");
         pt.text = responseText + "please reload the page if not reloaded automatically";
 
         pt.show(pt.text);

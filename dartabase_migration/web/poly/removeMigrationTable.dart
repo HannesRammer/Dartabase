@@ -1,11 +1,11 @@
-@HtmlImport('removeMigrationTable.html')
+@HtmlImport("removeMigrationTable.html")
 library dartabase.poly.removeMigrationTable;
-import 'dart:async';
+import "dart:async";
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
-import 'package:polymer_elements/paper_dropdown_menu.dart';
-import 'package:polymer_elements/paper_listbox.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
+import "package:polymer_elements/paper_dropdown_menu.dart";
+import "package:polymer_elements/paper_listbox.dart";
 import "package:polymer_elements/paper_item.dart";
 import "package:polymer_elements/paper_button.dart";
 import "../poly/columnView.dart";
@@ -13,7 +13,7 @@ import "../poly/pm.dart";
 
 
 
-@PolymerRegister('custom-remove-migration-table')
+@PolymerRegister("custom-remove-migration-table")
 class RemoveMigrationTable extends PolymerElement {
     @Property(notify: true)
     Project project;
@@ -33,7 +33,7 @@ class RemoveMigrationTable extends PolymerElement {
     @reflectable
     Future addTable(event, [_]) async {
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
         Map table = new Map();
         add("project.migrationActions.removeTables", table);
         List names = await project.getTableNamesWithoutRelation();
@@ -46,7 +46,7 @@ class RemoveMigrationTable extends PolymerElement {
         set("existingTableNames", filteredNames);
     }
 
-    @Observe('selectedTable')
+    @Observe("selectedTable")
     Future updateColumns(String newSelectedTable) async {
         var columns = await project.getColumns(newSelectedTable);
         set("project.migrationActions.removeTables.0.columns", columns);
@@ -58,7 +58,7 @@ class RemoveMigrationTable extends PolymerElement {
     void cancelTable(event, [_]) {
         set("project.migrationActions.removeTables", new List());
         var tableButton = querySelector("#tableButton");
-        tableButton.classes.toggle('hidden');
+        tableButton.classes.toggle("hidden");
     }
 
     @reflectable

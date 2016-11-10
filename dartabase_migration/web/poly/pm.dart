@@ -1,9 +1,9 @@
-import 'dart:convert' show JSON;
-import 'dart:html';
-import 'dart:async';
+import "dart:convert" show JSON;
+import "dart:html";
+import "dart:async";
 
-import 'package:web_components/web_components.dart' show HtmlImport;
-import 'package:polymer/polymer.dart';
+import "package:web_components/web_components.dart" show HtmlImport;
+import "package:polymer/polymer.dart";
 
 
 class Migration extends JsProxy {
@@ -78,7 +78,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestConfig() async {
-        var url = "http://127.0.0.1:8075/requestConfig?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestConfig?projectRootPath=${Uri.encodeQueryComponent(path)}";
         String responseText = await HttpRequest.getString(url);
         updateConfig(responseText);
     }
@@ -91,7 +91,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestMigrations() async {
-        var url = "http://127.0.0.1:8075/requestMigrations?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestMigrations?projectRootPath=${Uri.encodeQueryComponent(path)}";
         String responseText = await HttpRequest.getString(url);
         return updateMigrations(responseText);
     }
@@ -102,11 +102,11 @@ class Project extends JsProxy {
         Map migrationsMap = new Map();
         List<Map> migrationsList = JSON.decode(responseText);
         for (Map migMap in migrationsList) {
-            Migration mig = new Migration(index: migMap['index'],
-                    version: migMap['version'],
+            Migration mig = new Migration(index: migMap["index"],
+                    version: migMap["version"],
                     colorPalette: colorPalette,
-                    actions: migMap['actions'],
-                    state: migMap['state']);
+                    actions: migMap["actions"],
+                    state: migMap["state"]);
             migrations.add(mig);
 
             if (mig.state == "current") {
@@ -119,7 +119,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestServerStatus() async {
-        var url = "http://127.0.0.1:8075/requestServerStatus?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestServerStatus?projectRootPath=${Uri.encodeQueryComponent(path)}";
         String responseText = await HttpRequest.getString(url);
         updateServerStatus(responseText);
     }
@@ -165,7 +165,7 @@ class Project extends JsProxy {
 
     @reflectable
     Future requestSchema() async {
-        var url = "http://127.0.0.1:8075/requestSchema?projectRootPath=${path}";
+        var url = "http://127.0.0.1:8075/requestSchema?projectRootPath=${Uri.encodeQueryComponent(path)}";
         String responseText = await HttpRequest.getString(url);
         return updateSchema(responseText);
     }

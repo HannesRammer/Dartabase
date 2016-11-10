@@ -22,13 +22,13 @@ library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(n
 
 import "dart:io";
 
-import 'package:dartabase_model/dartabase_model.dart';
-import 'package:route/url_pattern.dart';
-import 'package:routes/server.dart' as Routes;
+import "package:dartabase_model/dartabase_model.dart";
+import "package:route/url_pattern.dart";
+import "package:routes/server.dart" as Routes;
 
-import 'server_functions.dart';
+import "server_functions.dart";
 
-part '../routes.dart';
+part "../routes.dart";
 
 /* A simple web server that responds to **ALL** GET and **POST** requests
 * Browse to it using http://localhost:8071
@@ -62,8 +62,8 @@ void printError(error) => print(error);
         String simplefunctionImportDART = '''
 library ${DSC.toVarName(rootPath.split(new String.fromCharCode(92)).last.split(new String.fromCharCode(47)).last)}.server_function;
 
-import 'dart:io';
-import 'dart:convert';
+import "dart:io";
+import "dart:convert";
 import "package:routes/server.dart" as Routes;
 
 ${importSTRING(tableNames)}
@@ -86,7 +86,7 @@ ${partSTRING(tableNames)}
     static String importSTRING(tableNames) {
         String str = "";
         for (String name in tableNames) {
-            str += "import '../models/${name}.dart';\n";
+            str += "import \"../models/${name}.dart\";\n";
         }
         return str;
     }
@@ -98,7 +98,7 @@ ${partSTRING(tableNames)}
     static String partSTRING(tableNames) {
         String str = "";
         for (String name in tableNames) {
-            str += "part '${name}_functions.dart';\n";
+            str += "part \"${name}_functions.dart\";\n";
         }
         return str;
     }
@@ -150,9 +150,8 @@ load${className}(Map params, HttpResponse res) async {
 
 save${className}(Map params, HttpResponse res) async {
    String text;
-   var cleanJSON = JSON.decode(params["${tableName}"].replaceAll('%5C', '\\\\').replaceAll('%7B', '{').replaceAll('%22', '"')
-           .replaceAll('%20', ' ').replaceAll('%7D', '}').replaceAll('%5B', '[')
-           .replaceAll('%5D', ']'));
+
+   var cleanJSON = JSON.decode(Uri.decodeQueryComponent(params["${tableName}"]));
    ${className} ${varName} = new ${className}();
    //${className} ${varName} = await new ${className}().findById(cleanJSON["id"]);
    if (${varName} != null) {
@@ -205,9 +204,31 @@ delete${className}(Map params, HttpResponse res) async {
         Map table = tables[tableName];
         List columnNames = table.keys.toList();
         for (String columnName in columnNames) {
-            if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
-                str += '${varName}.${columnName} = cleanJSON["$columnName"];\n';
-            }
+            Map column = table[columnName];
+        //    await table.forEach((columnName, column) {
+           if([
+               "BINT", "BINT UNSIGNED", "DOUBLE", "FLOAT", "FLOAT UNSIGNED", "INT", "INT UNSIGNED", "SINT",
+               "SINT UNSIGNED", "TINT", "TINT UNSIGNED"
+           ].contains(column["type"])){
+               if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
+                   str += "if(cleanJSON[\"$columnName\"]== null || cleanJSON[\"$columnName\"]== \"\"){\n";
+                   str += "cleanJSON[\"$columnName\"]=\"0\";\n";
+                   str += "}\n";
+                   str += "${varName}.${columnName} = num.parse(cleanJSON[\"$columnName\"].toString());\n";
+               }
+           }else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(column["type"])) {
+               if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
+                   str += "if(cleanJSON[\"$columnName\"]== null || cleanJSON[\"$columnName\"]== \"\"){\n";
+                   str += "cleanJSON[\"$columnName\"]=\"0.0\";\n";
+                   str += "}\n";
+                   str += "${varName}.${columnName} = num.parse(cleanJSON[\"$columnName\"].toString());\n";
+               }
+           } else {
+               if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
+                   str += "${varName}.${columnName} = cleanJSON[\"$columnName\"];\n";
+               }
+           }
+
         }
         return str;
     }
@@ -244,10 +265,10 @@ ${generateRoutesString(dbTableNames)}
             //var tableName = "${DSC.toTableName(dbTableName)}";
 
             str =
-            ''' 'list${className}':{'url':new UrlPattern(r'/list${className}'),'method':'POST','action': list${className} ,'async':true},
-        'load${className}':{'url':new UrlPattern(r'/load${className}'),'method':'POST','action': load${className} ,'async':true},
-        'save${className}':{'url':new UrlPattern(r'/save${className}'),'method':'POST','action': save${className},'async':true },
-        'delete${className}':{'url':new UrlPattern(r'/delete${className}'),'method':'POST','action': delete${className},'async':true }
+            ''' "list${className}":{"url":new UrlPattern(r"/list${className}"),"method":"POST","action": list${className} ,"async":true},
+        "load${className}":{"url":new UrlPattern(r"/load${className}"),"method":"POST","action": load${className} ,"async":true},
+        "save${className}":{"url":new UrlPattern(r"/save${className}"),"method":"POST","action": save${className},"async":true },
+        "delete${className}":{"url":new UrlPattern(r"/delete${className}"),"method":"POST","action": delete${className},"async":true }
         ''';
             list.add(str);
         }

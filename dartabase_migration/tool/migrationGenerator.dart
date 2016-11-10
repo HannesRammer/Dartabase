@@ -5,18 +5,18 @@ class MigrationGenerator {
 
 
     /*static void createTableJson(var project){
-        String string = '''"createTable": {\n''';
+        String string = """"createTable": {\n""";
         String tables = "";
         for(var table in project.migrationActions.createTables){
-            string += '''  "${table.name}": { \n''';
+            string += """  "${table.name}": { \n""";
             List list =[];
             for(var column in table.columns) {
-                list.add('''    "${column.name}": {"type":"${column.type}","default":"${column.def}","null":"${column.nil}"}''');
+                list.add("""    "${column.name}": {"type":"${column.type}","default":"${column.def}","null":"${column.nil}"}""");
             }
             string += list.join(",\n");
         }
-        string += '''  }''';
-        string += '''}''';
+        string += """  }""";
+        string += """}""";
         DBCore.mapToJsonFilePath(string,"")
     }
 */
@@ -43,7 +43,7 @@ class MigrationGenerator {
         createRelationJson(migrationActionsMap["removeRelations"], "DOWN");
         removeRelationJson(migrationActionsMap["createRelations"], "DOWN");
 
-        JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+        JsonEncoder encoder = new JsonEncoder.withIndent("  ");
         String prettyprint = encoder.convert(map);
 
         print("Generated Migration:${prettyprint}");
@@ -128,9 +128,9 @@ class MigrationGenerator {
     static void removeColumnJson(List migrationActionsMap, String direction) {
         Map tables = {};
         for (var table in migrationActionsMap) {
-            tables["${table['name']}"] = new List();
+            tables["${table["name"]}"] = new List();
             for (var column in table["columns"]) {
-                tables["${table['name']}"].add(column["name"]);
+                tables["${table["name"]}"].add(column["name"]);
             }
         }
         if (tables.length > 0) {

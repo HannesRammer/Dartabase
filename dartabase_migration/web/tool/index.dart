@@ -1,15 +1,15 @@
-import 'dart:html';
-import 'dart:async';
-import 'dart:convert' show JSON;
+import "dart:html";
+import "dart:async";
+import "dart:convert" show JSON;
 
-import 'package:params/client.dart';
+import "package:params/client.dart";
 
-import 'package:polymer_elements/paper_toast.dart';
-import '../poly/dartabaseMigration.dart';
-import '../poly/pm.dart';
+import "package:polymer_elements/paper_toast.dart";
+import "../poly/dartabaseMigration.dart";
+import "../poly/pm.dart";
 
-import '../poly/createProject.dart';
-import 'package:polymer/polymer.dart';
+import "../poly/createProject.dart";
+import "package:polymer/polymer.dart";
 
 
 List<Project> projects = [];
@@ -37,6 +37,6 @@ Future displayProjects(responseText) async {
         print(project.config["adapter"]);
     }
     DartabaseMigration polyItem = new Element.tag("dartabase-migration");
-    polyItem.set('projects', projects);
+    polyItem.set("projects", projects);
     document.querySelector("#content").append(polyItem);
 }
