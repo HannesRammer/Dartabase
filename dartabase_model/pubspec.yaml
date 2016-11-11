@@ -1,7 +1,7 @@
 name: dartabase_model
 version: 1.2.0
 author: Hannes Rammer <Hannes.Rammer@gmail.com>
-description: "Database Model is for simple dot notation data manipulation for MySQL and PGSQL without having to write SQL. Inspired by Ruby on Rails"
+description: "Database Model is a lightweight ORM for data manipulation using MySQL, PGSQL or SQLite without writing SQL. Inspired by Ruby on Rails activerecords"
 homepage: http://dartabase-app.appspot.com/
 environment:
   sdk: '>=1.8.0 <2.0.0'
@@ -9,7 +9,6 @@ dependencies:
   dartabase_core: "^0.6.2"
     #path: "/home/hannes/Projects/Dartabase/dartabase_core"
     #path: "c:/Projects/Dart/dartabase/dartabase_core"
-    #path: "/home/hannes/Projects/Dartabase/dartabase_core"
   json_object: '>=1.0.18+2 <1.1.0'
   postgresql: "^0.3.3"
   sqljocky2: "^0.14.4-dev"

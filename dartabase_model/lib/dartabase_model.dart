@@ -7,7 +7,7 @@ import "package:dartabase_core/dartabase_core.dart";
 import "package:postgresql/postgresql_pool.dart";
 
 import "package:sqljocky2/sqljocky.dart";
-import "package:sqlite/sqlite.dart"as sqlite;
+//import "package:sqlite/sqlite.dart"as sqlite;
 
 var MAX = 1;
 
@@ -33,24 +33,23 @@ class Model {
         } else if (DBCore.adapter == DBCore.MySQL) {
             if (DBCore.ssl) {
                 DBPOOL = new ConnectionPool(host: DBCore.host,
-                        port: DBCore.port,
-                        user: DBCore.username,
-                        password: DBCore.password,
-                        db: DBCore.database,
-                        max: 5,
-                        useSSL: true);
+                                                    port: DBCore.port,
+                                                    user: DBCore.username,
+                                                    password: DBCore.password,
+                                                    db: DBCore.database,
+                                                    max: 5,
+                                                    useSSL: true);
             } else {
                 DBPOOL = new ConnectionPool(host: DBCore.host,
-                        port: DBCore.port,
-                        user: DBCore.username,
-                        password: DBCore.password,
-                        db: DBCore.database,
-                        max: 5);
+                                                    port: DBCore.port,
+                                                    user: DBCore.username,
+                                                    password: DBCore.password,
+                                                    db: DBCore.database,
+                                                    max: 5);
             }
         } else if (DBCore.adapter == DBCore.SQLite) {
             var sqlitePath = DBCore.sqlitePath;
             DBPOOL = new sqlite.Database(sqlitePath);
-
         }
     }
 
@@ -105,11 +104,17 @@ class Model {
                 conn.close();
                 result = "created";
             } else if (usedObjectData["createOrUpdate"] == "update") {
-                String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
-                print(updateSQL);
-                await conn.execute(updateSQL);
-                conn.close();
-                result = "updated";
+                if(usedObjectData["updateValues"].isEmpty){
+                    conn.close();
+                    result = "no sql changes";
+                }else{
+
+                    String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
+                    print(updateSQL);
+                    await conn.execute(updateSQL);
+                    conn.close();
+                    result = "updated";
+                }
             }
         } else if (DBCore.adapter == DBCore.MySQL) {
             ConnectionPool pool = DBPOOL;
@@ -123,12 +128,17 @@ class Model {
                 //savePool.close();
                 result = "created";
             } else if (usedObjectData["createOrUpdate"] == "update") {
-                String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
-                print(updateSQL);
+                if(usedObjectData["updateValues"].isEmpty){
+                    //conn.close();
+                    result = "no sql changes";
+                }else {
+                    String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
+                    print(updateSQL);
 
-                var res = await pool.query(updateSQL);
-                //savePool.close();
-                result = "updated";
+                    var res = await pool.query(updateSQL);
+                    //savePool.close();
+                    result = "updated";
+                }
             }
         } else if (DBCore.adapter == DBCore.SQLite) {
             //TODO
@@ -142,15 +152,20 @@ class Model {
                 //savePool.close();
                 result = "created";
             } else if (usedObjectData["createOrUpdate"] == "update") {
-                String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
-                print(updateSQL);
+                if(usedObjectData["updateValues"].isEmpty){
+                    //conn.close();
+                    result = "no sql changes";
+                }else {
+                    String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
+                    print(updateSQL);
 
-                var res = await pool.execute(updateSQL);
-                //savePool.close();
-                result = "updated";
+                    var res = await pool.execute(updateSQL);
+                    //savePool.close();
+                    result = "updated";
+                }
+            }
         }
-        }
-
+        print(result);
         return result;
     }
 
@@ -205,12 +220,12 @@ class Model {
             }
         } else if (DBCore.adapter == DBCore.SQLite) {
             var pool = DBPOOL;
-            List results= [];
+            List results = [];
             List data = new List();
             final subscription = pool.query(sql).listen(await (row) async {
-                    results.add(row);
-                    var object = await setObjectSchemaAttributes(this, row);
-                    data.add(object);
+                results.add(row);
+                var object = await setObjectSchemaAttributes(this, row);
+                data.add(object);
             });
             await subscription.asFuture();
             if (resultAsList == true) {
@@ -223,7 +238,7 @@ class Model {
                 } else {
                     //pool.close();
                     result = null;
-        }
+                }
             }
         }
 
@@ -521,7 +536,6 @@ class Model {
         return (await has(object, true, column, value));
     }
 
-
     /**
      * Future remove(object)
      *
@@ -566,12 +580,10 @@ class Model {
         } else if (DBCore.adapter == DBCore.SQLite) {
             var pool = DBPOOL;
             result = await pool.execute(SQL);
-
         }
 
         return result;
     }
-
 
 //################HELPERMETHODS
     InstanceMirror getMirrorOf(object) {
@@ -629,17 +641,17 @@ class Model {
                     createOrUpdate = "update";
                     updateWhere = "id=$value";
 
-                    if(DBCore.adapter==DBCore.SQLite){
+                    if (DBCore.adapter == DBCore.SQLite) {
                         listValues.add("${value}");
-                    }else{
-                    listValues.add(value);
+                    } else {
+                        listValues.add(value);
                     }
                     objectId = value;
                 }
                 insertColumns.add("id");
             } else if (column != "id" && value != null) {
-                if (value == "" && DBCore.adapter==DBCore.SQLite) {
-                    value ="''";
+                if (value == "" && DBCore.adapter == DBCore.SQLite) {
+                    value = "''";
                 }
                 insertColumns.add(column);
                 var dbType = DBCore.dbType(objectSchemaMap[column]);
@@ -665,7 +677,7 @@ class Model {
                 updateValues.add("${column}=\"${value}\"");
             } else if (column != "id" && value == null) {
                 insertColumns.add(column);
-                if (column == "created_at" && DBCore.adapter==DBCore.SQLite) {
+                if (column == "created_at" && DBCore.adapter == DBCore.SQLite) {
                     DateTime dT = new DateTime.now();
 
                     var month = "${dT.month}".length == 1 ? "0${dT.month}" : "${dT.month}";
@@ -675,14 +687,13 @@ class Model {
                     var second = "${dT.second}".length == 1 ? "0${dT.second}" : "${dT.second}";
                     value = "\"${dT.year}-$month-$day $hour:$minute:$second\"";
                     listValues.add(value);
-                }else{
+                } else {
                     value = DBCore.defaultValueFor(objectSchemaMap[column]);
-                    if (value == "" && DBCore.adapter==DBCore.SQLite) {
+                    if (value == "" && DBCore.adapter == DBCore.SQLite) {
                         value = "''";
                     }
                     listValues.add(value);
                 }
-
             }
             if (DBCore.adapter == DBCore.PGSQL) {
                 insertSpaceholder.add("@${column}");
@@ -808,7 +819,7 @@ class Model {
                     value = 1;
                 } else {
                     value = rows[0] + 1;
-        }
+                }
                 print("new Index ${value}");
                 result = value;
             });
@@ -845,19 +856,17 @@ class Model {
                 //delRelations.add("DELETE t$tableName FROM $tableName as t$tableName WHERE ${initiatedObject}_id = \"${this.id}\"");
             }
             delRelations.add("DELETE t${relatedObject} " +
-                    "FROM ${relatedObject} as t${relatedObject}" +
-                    "JOIN ${tableName} as t${tableName}" +
-                    "ON t${relatedObject}.id = t${tableName}.${relatedObject}_id" +
-                    "AND b.quizId = @quizId" +
+                             "FROM ${relatedObject} as t${relatedObject}" +
+                             "JOIN ${tableName} as t${tableName}" +
+                             "ON t${relatedObject}.id = t${tableName}.${relatedObject}_id" +
+                             "AND b.quizId = @quizId" +
 
-                    "DELETE t${tableName} WHERE quizId = @quizId");
+                             "DELETE t${tableName} WHERE quizId = @quizId");
         });
 
-
         //TODO 2.get related objects
 
         //TODO 2.get related objects
-
 
         /**String initiatedObject = "${this.runtimeType}".toLowerCase();
          *String relatedObject = "${object.runtimeType}".toLowerCase();
@@ -886,7 +895,6 @@ class Model {
             if (val.runtimeType == Blob) {
                 map[key] = val.toString();
             } else {
-
                 map[key] = val;
             }
         });
