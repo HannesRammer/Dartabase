@@ -270,6 +270,14 @@ Future <String> doFile(conn, fileId) async {
 //load with next file after this has finished
 }
 
+String allowNull(String isNull) {
+    if (isNull == "true") {
+        return "";
+    } else {
+        return " NOT NULL ";
+    }
+}
+
 String notNull(String notNull) {
     if (notNull == "true") {
         return " NOT NULL ";
@@ -314,8 +322,7 @@ Future createTable(conn, fileId) async {
                         } else if (columns[columnName].runtimeType.toString() == "_InternalLinkedHashMap") {
                             Map columnOptions = columns[columnName];
                             String columnType = columnOptions["type"];
-                            sqlList.add("${columnName} ${DBCore
-                                    .typeMapping(columnType)} ${notNull(columnOptions["null"])} ${defaultValue(columnOptions["default"])} ");
+                            sqlList.add("${columnName} ${DBCore.typeMapping(columnType)} ${allowNull(columnOptions["null"])} ${defaultValue(columnOptions["default"])} ");
                             schemaTableMap[columnName] = columnOptions;
                         }
                         print("\nSCHEMA createTable OK: Column ${columnName} added to table ${tableName}");
@@ -600,11 +607,16 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
                 print(row.toString());
                 String field = row[0].toString();
                 String dbType = row[1].toString();
-                String isNull = row[2].toString();
+                String allowNull = row[2].toString();
                 //String priKey = row[3];
                 String defaultValue = row[4].toString();
                 if (defaultValue == "null") {
                     defaultValue = "";
+                }
+                if(allowNull == "NO"){
+                  allowNull = "false";
+                }else if(allowNull == "YES"){
+                    allowNull = "true";
                 }
                 //String extra = row[5];
                 if (existingDatabaseTableMap[tableName] == null) {
@@ -613,7 +625,7 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
                 existingDatabaseTableMap[tableName][field] = {
                     "type":sqlToDartabase[dbType.split("(")[0].toUpperCase()],
                     "default":defaultValue,
-                    "null":isNull
+                    "null":allowNull
                 };
             });
         } else if (DBCore.adapter == DBCore.SQLite) {

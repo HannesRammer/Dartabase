@@ -2,24 +2,6 @@ part of dartabaseMigration;
 
 //TODO think about making dartabase_core lib that gets imported by dartabase tools
 class MigrationGenerator {
-
-
-    /*static void createTableJson(var project){
-        String string = """"createTable": {\n""";
-        String tables = "";
-        for(var table in project.migrationActions.createTables){
-            string += """  "${table.name}": { \n""";
-            List list =[];
-            for(var column in table.columns) {
-                list.add("""    "${column.name}": {"type":"${column.type}","default":"${column.def}","null":"${column.nil}"}""");
-            }
-            string += list.join(",\n");
-        }
-        string += """  }""";
-        string += """}""";
-        DBCore.mapToJsonFilePath(string,"")
-    }
-*/
     static Map map = {"UP":{}, "DOWN":{}};
 
     static void createMigration(Map migrationActionsMap, String rootPath) {
@@ -75,10 +57,8 @@ class MigrationGenerator {
                 tables["${table["name"]}"] = {};
             }
             for (var column in table["columns"]) {
-                if (column["name"] != "id" && column["name"] != "created_at" &&
-                        column["name"] != "updated_at") {
-                    if (tables["${table["name"]}"]["${column["name"]}"] ==
-                            null) {
+                if (column["name"] != "id" && column["name"] != "created_at" && column["name"] != "updated_at") {
+                    if (tables["${table["name"]}"]["${column["name"]}"] == null) {
                         tables["${table["name"]}"]["${column["name"]}"] = {};
                     }
                     String defVal = defaultValue(column["default"]);
@@ -104,9 +84,8 @@ class MigrationGenerator {
             }
             for (var column in table["columns"]) {
                 if (column["name"] != "id" && column["name"] != "created_at" &&
-                        column["name"] != "updated_at") {
-                    if (tables["${table["name"]}"]["${column["name"]}"] ==
-                            null) {
+                    column["name"] != "updated_at") {
+                    if (tables["${table["name"]}"]["${column["name"]}"] == null) {
                         tables["${table["name"]}"]["${column["name"]}"] = {};
                     }
                     String defVal = defaultValue(column["default"]);
