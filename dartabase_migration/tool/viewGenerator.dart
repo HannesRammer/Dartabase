@@ -370,6 +370,8 @@ class MainApp extends PolymerElement {
        .column paper-input {
            display: table-cell;
            padding: 0px 10px;
+           float: left;
+           min-width: 100px;
        }
 
        .column paper-button {

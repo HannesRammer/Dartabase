@@ -36,7 +36,9 @@ class ${className} extends Model{
     static Future generateDynamicFields(Map columnsMap) async {
         String s = "";
         await columnsMap.forEach((columnName, map) async {
-            s += "${DBCore.dartabaseTypeToDartType(map["type"].toString().split("(")[0].toUpperCase())} ${columnName};\n  ";
+            //TODO DBCore.typeMapping() use TINYINT(1) in mysqlToType.json and typeMapperMysql.json and adopt code to make use of numbers
+            //TODO to differentiate between tinyint(1) BOOLEAN and TINYINT(3) UN and TINYINT(4)
+            s += "${DBCore.dartabaseTypeToDartType(map["type"].toUpperCase())} ${columnName};\n  ";
         });
         return s;
     }

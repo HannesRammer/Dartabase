@@ -207,7 +207,7 @@ delete${className}(Map params, HttpResponse res) async {
             Map column = table[columnName];
         //    await table.forEach((columnName, column) {
            if([
-               "BINT", "BINT UNSIGNED", "DOUBLE", "FLOAT", "FLOAT UNSIGNED", "INT", "INT UNSIGNED", "SINT",
+               "BINT", "BINT UNSIGNED", "INT", "INT UNSIGNED", "SINT",
                "SINT UNSIGNED", "TINT", "TINT UNSIGNED"
            ].contains(column["type"])){
                if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
@@ -223,7 +223,16 @@ delete${className}(Map params, HttpResponse res) async {
                    str += "}\n";
                    str += "${varName}.${columnName} = num.parse(cleanJSON[\"$columnName\"].toString());\n";
                }
-           } else {
+           }  else if (["DATE", "DATETIME","TIMESTAMP"].contains(column["type"])) {
+               if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
+                   str += "${varName}.${columnName} = new DateTime.fromMicrosecondsSinceEpoch(num.parse(cleanJSON[\"$columnName\"].toString()));\n";
+               }
+           }  else if (["TIME"].contains(column["type"])) {
+               if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
+                   str += "${varName}.${columnName} = cleanJSON[\"$columnName\"].toString();\n";
+               }
+           }
+           else {
                if(columnName != "id" && columnName != "created_at" && columnName != "updated_at"){
                    str += "${varName}.${columnName} = cleanJSON[\"$columnName\"];\n";
                }

@@ -339,7 +339,7 @@ Future createTable(conn, fileId) async {
                     sqlQuery += DBHelper.pgTriggerForUpdatedAt(tableName);
                 }
                 print("\n+++++sqlQuery: $sqlQuery");
-                schema[tableName]=schemaTableMap;
+                schema[tableName] = schemaTableMap;
                 await DBHelper.createDBTable(sqlQuery, conn, i, tableNames.length, fileId);
             } else {
                 print("\nSCHEMA createTable Cancle: Table ${tableName} already exists in schema, table and columns not added");
@@ -592,7 +592,7 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
                     existingDatabaseTableMap[tableName] = {};
                 }
                 existingDatabaseTableMap[tableName][field] = {
-                    "type":sqlToDartabase[dbType.split("(")[0].toLowerCase()],
+                    "type":sqlToDartabase[dbType.toLowerCase()],
                     "default":defaultValue,
                     "null":isNull
                 };
@@ -613,9 +613,9 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
                 if (defaultValue == "null") {
                     defaultValue = "";
                 }
-                if(allowNull == "NO"){
-                  allowNull = "false";
-                }else if(allowNull == "YES"){
+                if (allowNull == "NO") {
+                    allowNull = "false";
+                } else if (allowNull == "YES") {
                     allowNull = "true";
                 }
                 //String extra = row[5];
@@ -623,7 +623,7 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
                     existingDatabaseTableMap[tableName] = {};
                 }
                 existingDatabaseTableMap[tableName][field] = {
-                    "type":sqlToDartabase[dbType.split("(")[0].toUpperCase()],
+                    "type":sqlToDartabase[dbType.toUpperCase()],
                     "default":defaultValue,
                     "null":allowNull
                 };
@@ -646,14 +646,14 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
 
                     String field = column.split(" ")[0];
                     String dbType = column.split(" ")[1];
-                    String isNull = "1";
+                    String allowNull = "1";
                     String defaultValue = "";
                     String priKey = "0";
                     if (column.toLowerCase().contains("primary key")) {
                         priKey = "1";
                     }
                     if (column.toLowerCase().contains("not null")) {
-                        isNull = "0";
+                        allowNull = "0";
                     }
 
                     if (column.toLowerCase().contains("default")) {
@@ -667,9 +667,9 @@ Future extractExistingTableDescription(String tableName, String rootPath) async 
                         existingDatabaseTableMap[tableName] = {};
                     }
                     existingDatabaseTableMap[tableName][field] = {
-                        "type":sqlToDartabase[dbType.split("(")[0].toUpperCase()],
+                        "type":sqlToDartabase[dbType.toUpperCase()],
                         "default":defaultValue,
-                        "null":isNull
+                        "null":allowNull
                     };
                 });
                 print(sqlStatement);
