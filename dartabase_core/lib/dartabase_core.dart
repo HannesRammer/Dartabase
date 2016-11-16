@@ -149,13 +149,16 @@ class DBCore {
             return false;
         } else if (["CHAR", "VARCHAR"]
                 .contains(dartabaseType)) {
-            return "''";
+            return "";
         } else if (["LTEXT", "MTEXT", "TEXT", "TTEXT"]
                 .contains(dartabaseType)) {
-            return "''";
-        } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
+            return "";
+        } else if (["DATE", "DATETIME", "TIMESTAMP"].contains(
                 dartabaseType)) {
             return new DateTime.now().toString();
+        }else if (["TIME"].contains(
+                dartabaseType)) {
+            return '00:00:00';
         } else {
             /*
        "BINARY": "bytea",
@@ -195,52 +198,12 @@ class DBCore {
         } else if ([ "LTEXT", "MTEXT", "TEXT", "TTEXT"]
                 .contains(dartabaseType)) {
             return "var";
-        } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
+        } else if (["DATE", "DATETIME", "TIMESTAMP"].contains(
                 dartabaseType)) {
             return "DateTime";
-        } else {
-            return "List";
-            /*
-        "BINARY": "bytea",
-        "BIT": "bytea",
-        "BLOB": "bytea",
-        "BYTEARRAY": "bytea",
-        "LBLOB": "bytea",
-        "MBLOB": "bytea",
-        "TBLOB": "bytea",
-        "VARBINARY": "bytea",*/
-        }
-    }
-
-    static sqlTypeToDartabase(dartabaseType) {
-        if ([
-            "BINT",
-            "BINT UNSIGNED",
-            "DOUBLE",
-            "FLOAT",
-            "FLOAT UNSIGNED",
-            "INT",
-            "INT UNSIGNED",
-            "SINT",
-            "SINT UNSIGNED",
-            "TINT",
-            "TINT UNSIGNED"
-        ].contains(dartabaseType)) {
-            return "num";
-        } else if (["DOUBLE", "FLOAT", "FLOAT UNSIGNED"].contains(
+        } else if (["TIME"].contains(
                 dartabaseType)) {
-            return "double";
-        } else if (dartabaseType == "BOOLEAN") {
-            return "bool";
-        } else if (["CHAR", "VARCHAR"]
-                .contains(dartabaseType)) {
             return "String";
-        } else if ([ "LTEXT", "MTEXT", "TEXT", "TTEXT"]
-                .contains(dartabaseType)) {
-            return "var";
-        } else if (["DATE", "DATETIME", "TIME", "TIMESTAMP"].contains(
-                dartabaseType)) {
-            return "DateTime";
         } else {
             return "List";
             /*
