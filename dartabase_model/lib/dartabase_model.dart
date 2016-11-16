@@ -104,11 +104,10 @@ class Model {
                 conn.close();
                 result = "created";
             } else if (usedObjectData["createOrUpdate"] == "update") {
-                if(usedObjectData["updateValues"].isEmpty){
+                if (usedObjectData["updateValues"].isEmpty) {
                     conn.close();
                     result = "no sql changes";
-                }else{
-
+                } else {
                     String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
                     print(updateSQL);
                     await conn.execute(updateSQL);
@@ -128,10 +127,10 @@ class Model {
                 //savePool.close();
                 result = "created";
             } else if (usedObjectData["createOrUpdate"] == "update") {
-                if(usedObjectData["updateValues"].isEmpty){
+                if (usedObjectData["updateValues"].isEmpty) {
                     //conn.close();
                     result = "no sql changes";
-                }else {
+                } else {
                     String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
                     print(updateSQL);
 
@@ -152,10 +151,10 @@ class Model {
                 //savePool.close();
                 result = "created";
             } else if (usedObjectData["createOrUpdate"] == "update") {
-                if(usedObjectData["updateValues"].isEmpty){
+                if (usedObjectData["updateValues"].isEmpty) {
                     //conn.close();
                     result = "no sql changes";
-                }else {
+                } else {
                     String updateSQL = "UPDATE $tableName SET ${usedObjectData["updateValues"].join(",")} WHERE ${usedObjectData["updateWhere"]}";
                     print(updateSQL);
 
@@ -760,6 +759,8 @@ class Model {
                     } else {
                         value = row[i];
                     }
+                } else if (dbType == "TIME") {
+                    value = row[i].toString();
                 } else {
                     value = row[i];
                 }
