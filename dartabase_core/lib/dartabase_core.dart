@@ -37,11 +37,11 @@ class DBCore {
     static Map jsonFilePathToMap(String path) {
         File file = new File(path);
         if (file.existsSync()) {
-            String fileText = file.readAsStringSync(encoding: ASCII);
+            String fileText = file.readAsStringSync(encoding: utf8);
             if (fileText == "") {
                 fileText = "{}";
             }
-            return JSON.decode(fileText);
+            return json.decode(fileText);
         } else {
             return {};
         }
@@ -50,19 +50,19 @@ class DBCore {
     /// schema.json to Map
     static Map loadSchemaToMap(String rootPath) {
         var schema = new File("$rootPath/db/schema.json");
-        schema.writeAsStringSync("", encoding: ASCII, mode: FileMode.APPEND);
-        String fileText = schema.readAsStringSync(encoding: ASCII);
+        schema.writeAsStringSync("", encoding: utf8, mode: FileMode.APPEND);
+        String fileText = schema.readAsStringSync(encoding: utf8);
         if (fileText == "") {
             fileText = "{}";
         }
-        return JSON.decode(fileText);
+        return json.decode(fileText);
     }
 
     /// create backup with timestamp
     static void backupFile(String filePath, String checkupText) {
         File file = new File(filePath);
         if (file.existsSync()) {
-            String fileText = file.readAsStringSync(encoding: ASCII);
+            String fileText = file.readAsStringSync(encoding: utf8);
             if (fileText.trim().replaceAll(" ", "").replaceAll("\n", "") != checkupText.replaceAll(" ", "").replaceAll("\n", "")) {
                 DateTime now = new DateTime.now();
                 var cleanTime = now.toString().split(".")[0].replaceAll(" ", "").replaceAll(":", "").replaceAll("-", "");
@@ -71,7 +71,7 @@ class DBCore {
                 print("file backup created at ${backupPath}");
                 print("----------------------------------------------------------");
 
-                backupFile.writeAsStringSync(fileText, encoding: ASCII, mode: FileMode.APPEND);
+                backupFile.writeAsStringSync(fileText, encoding: utf8, mode: FileMode.APPEND);
             }
         }
     }
@@ -87,7 +87,7 @@ class DBCore {
     static void stringToFilePath(String text, String filePath) {
         backupFile(filePath, text.trim());
         var file = new File(filePath);
-        file.writeAsStringSync(text, encoding: ASCII);
+        file.writeAsStringSync(text, encoding: utf8);
         print(text);
         print("file created at ${filePath}");
         print("----------------------------------------------------------");
@@ -147,7 +147,7 @@ class DBCore {
             return 0.0;
         } else if (dartabaseType == "BOOLEAN") {
             return false;
-        } else if (["CHAR", "VARCHAR"]
+        } else if (["CHAR", "VARCHAR","BINARY","VARBINARY"]
                 .contains(dartabaseType)) {
             return "";
         } else if (["LTEXT", "MTEXT", "TEXT", "TTEXT"]
@@ -161,7 +161,6 @@ class DBCore {
             return '00:00:00';
         } else {
             /*
-       "BINARY": "bytea",
        "BIT": "bytea",
        "BLOB": "bytea",
        "BYTEARRAY": "bytea",
@@ -192,7 +191,7 @@ class DBCore {
             return "double";
         } else if (dartabaseType == "BOOLEAN") {
             return "bool";
-        } else if (["CHAR", "VARCHAR"]
+        } else if (["CHAR", "VARCHAR","BINARY","VARBINARY"]
                 .contains(dartabaseType)) {
             return "String";
         } else if ([ "LTEXT", "MTEXT", "TEXT", "TTEXT"]
@@ -207,7 +206,6 @@ class DBCore {
         } else {
             return "List";
             /*
-        "BINARY": "bytea",
         "BIT": "bytea",
         "BLOB": "bytea",
         "BYTEARRAY": "bytea",

@@ -1,6 +1,6 @@
 import "dart:html";
 import "dart:async";
-import "dart:convert" show JSON;
+import "dart:convert";
 
 import "package:params/client.dart";
 
@@ -28,7 +28,7 @@ Future main() async {
 }
 
 Future displayProjects(responseText) async {
-    Map userProjects = JSON.decode(responseText);
+    Map userProjects = json.decode(responseText);
     for (String key in userProjects.keys) {
         Project project = new Project(name: key, path: userProjects[key], colorPalette: {});
         await project.prepare();

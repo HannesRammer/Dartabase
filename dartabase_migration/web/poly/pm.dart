@@ -1,4 +1,4 @@
-import "dart:convert" show JSON;
+import "dart:convert" ;
 import "dart:html";
 import "dart:async";
 
@@ -86,7 +86,7 @@ class Project extends JsProxy {
     @reflectable
     updateConfig(String responseText) {
         config = new Map();
-        config = JSON.decode(responseText);
+        config = json.decode(responseText);
     }
 
     @reflectable
@@ -100,7 +100,7 @@ class Project extends JsProxy {
     Map updateMigrations(String responseText) {
         List migrations = new List();
         Map migrationsMap = new Map();
-        List<Map> migrationsList = JSON.decode(responseText);
+        List<Map> migrationsList = json.decode(responseText);
         for (Map migMap in migrationsList) {
             Migration mig = new Migration(index: migMap["index"],
                     version: migMap["version"],
@@ -172,7 +172,7 @@ class Project extends JsProxy {
 
     @reflectable
     updateSchema(String responseText) {
-        var schema = JSON.decode(responseText);
+        var schema = json.decode(responseText);
         dependencyRelations = new Map();
         tables = new Map();
         for (String tableName in schema.keys) {

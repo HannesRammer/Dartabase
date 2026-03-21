@@ -1,7 +1,7 @@
 @HtmlImport("createProject.html")
 library dartabase.poly.createProject;
 
-import "dart:convert" show JSON;
+import "dart:convert" ;
 import "dart:html" as dom;
 import "dart:async";
 
@@ -61,7 +61,7 @@ class CreateProject extends PolymerElement {
     @reflectable
     Future initiateMigration(dom.Event event, [_])  async{
         //String config = "&adapter=${adapter}&username=${username}&host=${password}&database=${database}&password=${password}&port=${port}&ssl${ssl}";
-        var url = "http://127.0.0.1:8075/initiateMigration?name=${Uri.encodeQueryComponent(name)}&projectRootPath=${Uri.encodeQueryComponent(path)}&config=${Uri.encodeQueryComponent(JSON.encode(config))}";
+        var url = "http://127.0.0.1:8075/initiateMigration?name=${Uri.encodeQueryComponent(name)}&projectRootPath=${Uri.encodeQueryComponent(path)}&config=${Uri.encodeQueryComponent(json.encode(config))}";
         var responseText = await dom.HttpRequest.getString(url);
         generateSchema(event);
         generateModels(event);

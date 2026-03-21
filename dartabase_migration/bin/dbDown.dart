@@ -53,7 +53,7 @@ Future main() async {
     Stream<List<int>> stream = stdin;
 
     stream
-            .transform(UTF8.decoder)
+            .transform(utf8.decoder)
             .transform(new LineSplitter())
             .listen((String line) async {
         /* Do something with line. */

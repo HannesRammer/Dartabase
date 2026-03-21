@@ -5,17 +5,17 @@ loadProjectMapping(Map params, HttpResponse res) {
     DM.projectMapping = DBCore.jsonFilePathToMap("bin/projectsMapping.json");
     if (!DM.projectMapping.isEmpty) {
         print("found ${DM.projectMapping.length} userAccounts");
-        text = JSON.encode(DM.projectMapping);
+        text = json.encode(DM.projectMapping);
     } else {
-        print(JSON.encode({"no projects found":""}));
-        text = JSON.encode({"no projects found":""});
+        print(json.encode({"no projects found":""}));
+        text = json.encode({"no projects found":""});
     }
     closeResWith(res, text);
 }
 
 loadConfig(Map params, HttpResponse res) {
     Map config = DBCore.jsonFilePathToMap("${Uri.decodeQueryComponent(params["projectRootPath"])}/db/config.json");
-    closeResWith(res, JSON.encode(config));
+    closeResWith(res, json.encode(config));
 }
 
 Future loadMigrations(Map params, HttpResponse res) async {
@@ -60,10 +60,10 @@ Future loadMigrations(Map params, HttpResponse res) async {
                 print("${i + 1} : $version");
             }
         }
-        text = JSON.encode(list);
+        text = json.encode(list);
     } else {
         print("no migrations found");
-        text = JSON.encode(list);
+        text = json.encode(list);
     }
     closeResWith(res, text);
 }
@@ -110,13 +110,13 @@ saveConfig(Map params, HttpResponse res) {
 
 loadSchema(Map params, HttpResponse res) {
     Map schema = DBCore.loadSchemaToMap(Uri.decodeQueryComponent(params["projectRootPath"]));
-    closeResWith(res, JSON.encode(schema));
+    closeResWith(res, json.encode(schema));
 }
 
 createMigration(Map params, HttpResponse res) {
     print(params.toString());
     String cleanMigrationActions = Uri.decodeQueryComponent(params["migrationActions"]);
-    Map cleanMigrationActionsMap = JSON.decode(cleanMigrationActions);
+    Map cleanMigrationActionsMap = json.decode(cleanMigrationActions);
 
     String rootPath = "${Uri.decodeQueryComponent(params["projectRootPath"])}/db/migrations/${cleanMigrationActionsMap["generatedName"]}.json";
     DM.MigrationGenerator.createMigration(cleanMigrationActionsMap, rootPath);

@@ -1,7 +1,7 @@
 @HtmlImport("configView.html")
 library dartabase.poly.configView;
 
-import "dart:convert" show JSON;
+import "dart:convert";
 import "dart:html";
 import "dart:async";
 
@@ -55,7 +55,7 @@ class ConfigView extends PolymerElement {
         });
 
         // POST the data to the server
-        var url = "http://127.0.0.1:8075/saveConfig?config=${Uri.encodeQueryComponent(JSON.encode(project.config))}&projectRootPath=${Uri.encodeQueryComponent(project.path)}";
+        var url = "http://127.0.0.1:8075/saveConfig?config=${Uri.encodeQueryComponent(json.encode(project.config))}&projectRootPath=${Uri.encodeQueryComponent(project.path)}";
         request.open("POST", url);
         //String jsonData = "{"config":${JSON.encode(project.config)},"projectRootPath":${project.path}}"; // etc...
         request.send(); // perform the async POST

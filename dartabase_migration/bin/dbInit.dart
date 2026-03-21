@@ -30,7 +30,7 @@ void main() {
     Stream<List<int>> stream = stdin;
     int count = 0;
     String name = "";
-    stream.transform(UTF8.decoder)
+    stream.transform(utf8.decoder)
             .transform(new LineSplitter())
             .listen((String line) async {
         /* Do something with line. */

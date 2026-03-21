@@ -1,7 +1,7 @@
 @HtmlImport("createMigration.html")
 library dartabase.poly.createMigration;
 
-import "dart:convert" show JSON;
+import "dart:convert" ;
 import "dart:html" as dom;
 
 import "package:web_components/web_components.dart" show HtmlImport;
@@ -86,7 +86,7 @@ class CreateMigration extends PolymerElement {
         });
 
         // POST the data to the server
-        var url = "http://127.0.0.1:8075/createMigration?migrationActions=${Uri.encodeQueryComponent(JSON.encode(project.migrationActions))}&projectRootPath=${Uri.encodeQueryComponent(project.path)}";
+        var url = "http://127.0.0.1:8075/createMigration?migrationActions=${Uri.encodeQueryComponent(json.encode(project.migrationActions))}&projectRootPath=${Uri.encodeQueryComponent(project.path)}";
         request.open("POST", url);
 
         request.send(); // perform the async POST
